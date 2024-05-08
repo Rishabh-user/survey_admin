@@ -152,8 +152,15 @@
                         <td ngClass="action" *ngIf="role !== 'user'">
                             <div class="d-flex gap-2 editaction">
                                 <div>
+                                    <a *ngIf="item.status!='ACT' && item.status!='HOL'&& role?.toLowerCase() !== 'vendor'"
+                                        href="javascript:"
+                                        [routerLink]="'/survey/manage-survey/'+ (item.surveyId |  encrypt)"
+                                        (click)="redirectQuota(item.surveyId)">
+                                        <ng-icon name="heroPencil" ngClass="edit-action"></ng-icon></a>
+                                </div>
+                                <div *ngIf=" role?.toLowerCase() == 'vendor'">
                                     <a *ngIf="item.status!='ACT' && item.status!='HOL'" href="javascript:"
-                                        [routerLink]="'/survey/quota-management/manage-survey/'+ (item.surveyId |  encrypt)">
+                                        (click)="redirectQuota(item.surveyId)">
                                         <ng-icon name="heroPencil" ngClass="edit-action"></ng-icon></a>
                                 </div>
 

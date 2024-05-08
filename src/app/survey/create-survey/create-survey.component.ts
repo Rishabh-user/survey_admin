@@ -614,21 +614,21 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
 
   logicIndex: number;
 
-  toggleLogic(index: number, questionId: any,mode:string) {
+  toggleLogic(index: number, questionId: any, mode: string) {
     //this.logicIndex = index;
     console.log("questionId : ", questionId);
     console.log("index :", index);
-    if(mode==="add")
+    if (mode === "add")
       this.addNewLogicEntry(index);
 
     this.questions[index].isLogicShow = !this.questions[index].isLogicShow;
     /*setTimeout(() => {
     
   }, 10000);*/
-    console.log('this.questions[index].isLogicShow',this.questions[index].isLogicShow)
+    console.log('this.questions[index].isLogicShow', this.questions[index].isLogicShow)
     this.getLogicQuestionList(questionId);
 
-    
+
     setTimeout(() => { // Adding a small delay to ensure the section is rendered before scrolling
       const sectionToScroll = this.el.nativeElement.querySelector(`#question-${questionId}`);
 
@@ -639,7 +639,7 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
         console.warn(`Section with ID "question-${questionId}" not found.`);
       }
     }, 100); // Adjust the delay as needed
-    
+
   }
 
   getLogicValues() {
@@ -1078,8 +1078,8 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
       console.log(logicEntry)
       const thanTermValue = logicEntry.thanExpected;
       var elseTermValue = logicEntry.elseExpected;
-      if(elseTermValue === null)
-        elseTermValue=0
+      if (elseTermValue === null)
+        elseTermValue = 0
       if (logicEntry.elseExpected !== null && logicEntry.elseExpected !== 0) {
         logicEntry.elseExpected = logicEntry.elseExpected.replace('Q-', '').replace('L-', '');
       } else {
@@ -1179,6 +1179,7 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
         );
       }
     }
+
   }
 
   isRandomizationChecked: boolean = false;
@@ -1196,6 +1197,15 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
 
   removeRandomizationSection(index: number) {
     this.randormizeEntries.splice(index, 1);
+    this.surveyservice.deleteRandomizedQuestions(this.surveyId, this.randomizegroupid).subscribe(
+      (data: any) => {
+        this.utils.showSuccess('Question Deleted.');
+        window.location.reload();
+      },
+      (error: any) => {
+        this.utils.showError('Error deleting question.');
+      }
+    );
   }
 
   saveRandomization(): void {
@@ -1438,6 +1448,7 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
   //getQuestionListRandomization
   apiResponseRandomization: any[] = [];
   groupedDataRandomization: { [key: string]: any[] } = {};
+  randomizegroupid: any
 
   getRandomization(): void {
 
@@ -1445,7 +1456,12 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
       (response: any[]) => {
         // Store the API response
         console.log("randomize", response)
+        console.log("type", typeof (response))
         this.apiResponseRandomization = response;
+        if (response.length > 0) {
+          this.randomizegroupid = response[0].groupNumber;
+        }
+        console.log("randomizegroupid", this.randomizegroupid)
 
         // Handle the response from the API
         this.handleApiData();

@@ -24,7 +24,7 @@ export class MyAccountComponent {
   country: any;
   zip: any;
   centerId: any;
-  centerName : string;
+  centerName: string;
   planName: any;
   planAmount: any;
   plans: any;
@@ -32,7 +32,7 @@ export class MyAccountComponent {
     this.baseUrl = environment.baseURL;
     this.centerName = this.utils.getCenterName();
   }
-  
+
 
   files: File[] = [];
   role: any;
@@ -70,13 +70,13 @@ export class MyAccountComponent {
 
   userId: any;
 
-  
+
   getMyAccount() {
     //this.userId = localStorage.getItem("userId");
     this.userId = this.util.getUserId();
     this.themeService.GetMyAccount(this.userId).subscribe((data: any) => {
       console.log("data", data)
-      this.plans = data.plan 
+      this.plans = data.plan
       console.log("plan", this.plans)
       console.log("organizationName", this.centerName)
       this.firstName = data.firstName;
@@ -94,7 +94,7 @@ export class MyAccountComponent {
       this.state = data.state
       this.country = data.country
       this.zip = data.zip
-       
+
       this.cdr.detectChanges();
     });
   }
@@ -237,12 +237,12 @@ export class MyAccountComponent {
     this.Contact = !!this.contactNo && this.contactNo.toString().trim().length > 0;
     this.roletype = !!this.role && this.role.trim().length > 0;
     this.emailaddress = !!this.email && this.email.trim().length > 0;
-    this.Useraddress = !!this.address && this.address.trim().length > 0;
-    this.CompanyGstNumber = !!this.gstNumber && this.gstNumber.trim().length > 0;
-    this.Usercity = !!this.city && this.city.trim().length > 0;
-    this.Userstate = !!this.state && this.state.trim().length > 0;
-    this.Usercountry = !!this.country && this.country.trim().length > 0;
-    this.Userzip = !!this.zip && this.zip.trim().length > 0;
+    // this.Useraddress = !!this.address && this.address.trim().length > 0;
+    // this.CompanyGstNumber = !!this.gstNumber && this.gstNumber.trim().length > 0;
+    // this.Usercity = !!this.city && this.city.trim().length > 0;
+    // this.Userstate = !!this.state && this.state.trim().length > 0;
+    // this.Usercountry = !!this.country && this.country.trim().length > 0;
+    // this.Userzip = !!this.zip && this.zip.trim().length > 0;
 
     // You might want to return whether all fields are valid
     return (
@@ -256,7 +256,7 @@ export class MyAccountComponent {
       this.Usercity &&
       this.Userstate &&
       this.Usercountry &&
-      this.Userzip 
+      this.Userzip
     );
   }
 
