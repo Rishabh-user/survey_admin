@@ -614,18 +614,21 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
 
   logicIndex: number;
 
-  toggleLogic(index: number, questionId: any) {
+  toggleLogic(index: number, questionId: any,mode:string) {
     //this.logicIndex = index;
     console.log("questionId : ", questionId);
     console.log("index :", index);
-    this.addNewLogicEntry(index);
+    if(mode==="add")
+      this.addNewLogicEntry(index);
+
+    this.questions[index].isLogicShow = !this.questions[index].isLogicShow;
+    /*setTimeout(() => {
+    
+  }, 10000);*/
+    console.log('this.questions[index].isLogicShow',this.questions[index].isLogicShow)
     this.getLogicQuestionList(questionId);
 
-    setTimeout(() => {
-      //debugger;
-      this.questions[index].isLogicShow = !this.questions[index].isLogicShow;
-
-    }, 30000000);
+    
     setTimeout(() => { // Adding a small delay to ensure the section is rendered before scrolling
       const sectionToScroll = this.el.nativeElement.querySelector(`#question-${questionId}`);
 
@@ -636,6 +639,7 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
         console.warn(`Section with ID "question-${questionId}" not found.`);
       }
     }, 100); // Adjust the delay as needed
+    
   }
 
   getLogicValues() {
@@ -654,6 +658,7 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
   }
   logicQuestionListById: any
   getLogicQuestionList(questionId: any) {
+    //alert(questionId);
     this.logicQuestionList = [];
     const dataToSend = {
       surveyId: this.surveyId,
@@ -875,6 +880,7 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
     console.log("logics", this.logicEntriesPerQuestion);
   }
   getQuestionLogic(index: number, questionId: number): void {
+    //alert('getQuestionLogic')
 
     this.getOptionsByQuestionIdLogic(questionId);
     this.surveyservice.getQuestionLogics(questionId, this.surveyId).subscribe(
@@ -1052,8 +1058,9 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
             // Push the new logic entry to the array
             this.logicEntriesPerQuestion[index].push(newLogicEntry);
           });
-
-          this.questions[index].isLogicShow = !this.questions[index].isLogicShow;
+          //alert('First '+this.questions[index].isLogicShow)
+          //this.questions[index].isLogicShow = !this.questions[index].isLogicShow;
+          //alert('Second '+this.questions[index].isLogicShow)
           console.log("this.logicEntriesPerQuestion", this.logicEntriesPerQuestion);
         }
       },
@@ -1070,7 +1077,9 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
       this.createLogicCount++;
       console.log(logicEntry)
       const thanTermValue = logicEntry.thanExpected;
-      const elseTermValue = logicEntry.elseExpected;
+      var elseTermValue = logicEntry.elseExpected;
+      if(elseTermValue === null)
+        elseTermValue=0
       if (logicEntry.elseExpected !== null && logicEntry.elseExpected !== 0) {
         logicEntry.elseExpected = logicEntry.elseExpected.replace('Q-', '').replace('L-', '');
       } else {
@@ -1190,7 +1199,7 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
   }
 
   saveRandomization(): void {
-
+    debugger
     console.log("randomize", this.randormizeEntries);
     const anyCheckboxChecked = this.randormizeEntries.some(entry => entry.isRandomizationChecked);
     console.log(anyCheckboxChecked)
@@ -1227,10 +1236,17 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
       const fromQuestionId = randomization.fromQuestion;
       const toQuestionId = randomization.toQuestion;
 
-      if (fromQuestionId && toQuestionId && randomization.isRandomizationChecked) {
-        const filteredQuestions = this.logicQuestionList.filter(question => question.id >= fromQuestionId && question.id <= toQuestionId);
+      console.log("fromQuestionId", fromQuestionId)
+      console.log("toQuestionId", toQuestionId)
 
-        const formattedQuestions = filteredQuestions.map(question => {
+      if (fromQuestionId && toQuestionId && randomization.isRandomizationChecked) {
+        const filteredQuestions = this.logicQuestionListById.filter((question: { id: number; }) => question.id >= fromQuestionId && question.id <= toQuestionId);
+        // const filteredQuestions = this.randormizeEntries.filter((question: { id: string; }) => {
+        //   const questionId = parseInt(question.id, 10); // Convert question ID to a number
+        //   return questionId >= parseInt(fromQuestionId, 10) && questionId <= parseInt(toQuestionId, 10);
+        // });
+
+        const formattedQuestions = filteredQuestions.map((question: { id: { toString: () => any; }; }) => {
           return {
             surveyId: this.surveyId.toString(), // Convert surveyId to string
             questionId: question.id.toString(), // Convert questionId to string
@@ -1388,7 +1404,7 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
     this.logicQuestionListForCalculation = '';
     const dataToSend = {
       surveyId: this.surveyId,
-      surveyStatus: questionId
+      questionId: questionId
     };
     this.surveyservice.getLogicQuestionList(dataToSend).subscribe((response: responseDTO) => {
       console.log("logicQuestionListForCalculation", response);

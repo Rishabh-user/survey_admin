@@ -448,7 +448,7 @@
 
                                 <div class="badge text-bg-primary fw-normal me-2 position-relative"
                                     *ngIf="question?.logics.length>0"
-                                    (click)="getQuestionLogic(i,question?.id);getQuestionListBranching(question?.id);toggleLogic(i,question?.id)">
+                                    (click)="getQuestionLogic(i,question?.id);getQuestionListBranching(question?.id);toggleLogic(i,question?.id,'edit')">
                                     <ng-icon class="me-1" name="heroCommandLine"></ng-icon>
                                     <span>logics</span>
                                     <!-- <span
@@ -494,7 +494,7 @@
                                         </li>
                                         <li *ngIf="question?.logics.length==0">
                                             <a href="javascript:void(0);" class="dropdown-item"
-                                                (click)="toggleLogic(i,question?.id);getQuestionListBranching(question?.id);getOptionsByQuestionIdLogic(question?.id)">
+                                                (click)="toggleLogic(i,question?.id,'add');getQuestionListBranching(question?.id);getOptionsByQuestionIdLogic(question?.id)">
                                                 <ng-icon name="heroCommandLine"></ng-icon>
                                                 Logic
                                             </a>
@@ -586,7 +586,7 @@
                                             </div>
                                         </div>
                                         <ng-icon name="heroXMark" ngClass="edit-action info-circle"
-                                            (click)="toggleLogic(i,question?.id)"></ng-icon>
+                                            (click)="toggleLogic(i,question?.id,'add')"></ng-icon>
                                     </div>
                                     <div ngClass="mb-4">
                                         <div class="logic-tab">
