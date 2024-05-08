@@ -569,10 +569,23 @@ export class QuotaManagementComponent {
   quotaById() {
 
     this.surveyservice.getQuotaById(this.quotoid).subscribe({
-      next: (resp: any) => {
-        console.log("quota response", resp);
+      next: (data: any) => {
+        this.isQuotasVisible = true;
+
+        this.surveyQuotaJson = data as QuotaData;
+        this.quotaid = data.quotaId
+        this.surveycount = data.totalUsers;
+
+
+        console.log("Quotas:", this.quotas);
       },
       error: (err: any) => {
+
+
+        this.initializeQuotaData();
+        //#endregion
+
+        console.log("Error fetching quotas", err);
       }
     });
 
