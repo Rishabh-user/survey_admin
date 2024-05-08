@@ -47,6 +47,7 @@ export class VendarSurveyListComponent {
   totalItemsCount: number = 20
   currentPage: number = 1;
   baseUrl = '';
+  vendor: any;
   ngOnInit(): void {
     //debugger;
     this.visibilityService.closeSideBar();

@@ -34,7 +34,7 @@
                         <th scope="col">Category</th>
                         <th scope="col">Creator Name</th>
                         <th scope="col">Last Modification</th>
-                        <th scope="col">
+                        <th scope="col" *ngIf="role != 'vendor'">
                             <div class="infocircle">
                                 Status
                                 <div class="custom-tooltip">
@@ -133,7 +133,7 @@
                                 <span class="slider round"></span>
                             </label>
                           </td> -->
-                        <td *ngIf="role !== 'Vendar'">
+                        <td *ngIf="role != 'vendor'">
                             <ng-container *ngIf="role === 'admin' || role === 'superadmin'">
                                 <select [(ngModel)]="item.status" (change)="toggleSlider($event, item.surveyId, item)"
                                     class="form-select form-select-sm">
@@ -153,10 +153,12 @@
                             <div class="d-flex gap-2 editaction">
                                 <div>
                                     <a *ngIf="item.status!='ACT' && item.status!='HOL'" href="javascript:"
-                                        [routerLink]="'/survey/manage-survey/'+ (item.surveyId |  encrypt)">
+                                        [routerLink]="'/survey/quota-management/manage-survey/'+ (item.surveyId |  encrypt)">
                                         <ng-icon name="heroPencil" ngClass="edit-action"></ng-icon></a>
                                 </div>
-                                <ng-container *ngIf="role !== 'user'">
+
+                                <ng-container
+                                    *ngIf="role?.toLowerCase() !== 'user' && role?.toLowerCase() !== 'vendor'">
                                     <a href="javascript:" (click)="openLg(sidecontent,item.surveyId,item.name)"><ng-icon
                                             name="heroTrash" ngClass="edit-action delete-trash"></ng-icon></a>
                                 </ng-container>
