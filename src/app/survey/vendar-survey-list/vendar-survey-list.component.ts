@@ -8,6 +8,7 @@ import { FormControl } from '@angular/forms';
 import { UtilsService } from 'src/app/service/utils.service';
 import { environment } from 'src/environments/environment';
 import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
+import { CryptoService } from 'src/app/service/crypto.service';
 
 @Component({
   selector: 'app-vendar-survey-list',
@@ -27,7 +28,7 @@ export class VendarSurveyListComponent {
   surveyData: any = "";
   categoryList: any;
   selectedCategory: string = 'All Categories';
-  constructor(private visibilityService: DataService, private util: UtilsService, private modalService: NgbModal, public themeService: SurveyService, private utility: UtilsService, private cdr: ChangeDetectorRef, private router: Router) {
+  constructor(private visibilityService: DataService, private util: UtilsService, private modalService: NgbModal, public themeService: SurveyService, private utility: UtilsService, private cdr: ChangeDetectorRef, private router: Router, private crypto: CryptoService) {
     this.baseUrl = environment.baseURL;
     visibilityService.closeSideBar();
   }
@@ -201,18 +202,5 @@ export class VendarSurveyListComponent {
       }
     });
   }
-  redirectQuota(surveyid: any) {
-    this.themeService.getQuotaBySurveyId(surveyid).subscribe({
-      next: (resp: any) => {
-        console.log("response", resp);
-        this.utility.showSuccess('Successsfully');
-        let url = '/survey/quota-management/surveyid';
-        this.router.navigateByUrl(url);
 
-      },
-      error: (err: any) => {
-      }
-    });
-
-  }
 }

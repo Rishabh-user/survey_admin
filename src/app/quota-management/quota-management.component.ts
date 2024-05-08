@@ -7,6 +7,7 @@ import { ActivatedRoute } from '@angular/router';
 import { environment } from 'src/environments/environment';
 import { UtilsService } from '../service/utils.service';
 import { QuestionDto, QuotaData } from '../types/quota';
+import { CryptoService } from 'src/app/service/crypto.service';
 
 @Component({
   selector: 'app-quota-management',
@@ -27,15 +28,24 @@ export class QuotaManagementComponent {
   countryImage: any;
   categoryName: any;
   centerId: any;
+  quotoid: any
 
   surveyQuotaJson: QuotaData;
   isEditQuota: boolean = false;
   //QuotaData: QuotaData;
 
 
-  constructor(private route: ActivatedRoute, private visibilityService: DataService,
+  constructor(private route: ActivatedRoute, private visibilityService: DataService, private crypto: CryptoService,
     private modalService: NgbModal, private surveyservice: SurveyService, private utils: UtilsService, private utility: UtilsService) {
     this.baseUrl = environment.baseURL;
+    this.route.paramMap.subscribe(params => {
+      let _queryData = params.get('param1');
+      if (_queryData) {
+        let _queryDecodedData = this.crypto.decryptQueryParam(_queryData);
+        let _data = _queryDecodedData.split('_');
+        this.quotoid = _data[0];
+      }
+    })
 
   }
   initializeQuotaData() {
@@ -78,6 +88,7 @@ export class QuotaManagementComponent {
     });
     this.GetSurveyDetails();
     this.getQuotaBySurveyId();
+    this.quotaById();
   }
   showCountError: boolean = false;
 
@@ -102,12 +113,12 @@ export class QuotaManagementComponent {
 
     if (lastItem.questionId == 0) {
       alert("Please select question.");
-    }else{
+    } else {
       const newQuestion = new QuestionDto();
       newQuestion.type = 'none';
       this.surveyQuotaJson.questionDto.push(newQuestion);
     }
-    
+
   }
 
 
@@ -553,5 +564,17 @@ export class QuotaManagementComponent {
   showInterlockedQuotas: boolean = false;
   toggleInterlockedQuotas() {
     this.showInterlockedQuotas = !this.showInterlockedQuotas;
+  }
+
+  quotaById() {
+
+    this.surveyservice.getQuotaById(this.quotoid).subscribe({
+      next: (resp: any) => {
+        console.log("quota response", resp);
+      },
+      error: (err: any) => {
+      }
+    });
+
   }
 }

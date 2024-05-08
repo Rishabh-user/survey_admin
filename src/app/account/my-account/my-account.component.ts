@@ -68,6 +68,11 @@ export class MyAccountComponent {
     }, { validator: this.passwordMatchValidator });
   }
 
+  getCurrentDateTime(): string {
+    const currentDateTime = new Date().toISOString();
+    return currentDateTime.substring(0, currentDateTime.length - 1) + 'Z';
+  }
+
   userId: any;
 
 
@@ -111,31 +116,77 @@ export class MyAccountComponent {
       id: this.id,
       firstName: this.firstName,
       lastName: this.lastName,
-      email: this.email,
+      status: 'ACT',
       contactNo: this.contactNo,
+      createdDate: this.getCurrentDateTime(),
+      modifiedDate: '',
+      email: this.email,
       roleId: this.roleId,
-      // address: this.address,
-      // city: this.city,
-      // state: this.state,
-      // country: this.country,
-      // zip: this.zip,
-      center: {
-        address: this.address,
-        city: this.city,
-        state: this.state,
-        country: this.country,
-        zip: this.zip
-      },
-      imageName: imageName,
-      status: 'ACT'
+      centerId: this.centerId,
+      image: imageName,
+      role: this.role,
+      isPaid: true,
+      address: this.address,
+      city: this.city,
+      state: this.state,
+      country: this.country,
+      zip: this.zip,
+      phone: 0,
+      gstNumber: this.gstNumber,
+      plan: [
+        {
+          id: 0,
+          planId: 0,
+          organizationId: 0,
+          paidAmount: 0,
+          pendingAmount: 0,
+          totalAmount: 0,
+          startDate: this.getCurrentDateTime(),
+          endDate: '',
+          status: '',
+          orderId: ''
+        }
+      ],
+      surveyList: [
+        {
+          vendarSurveyId: 0
+        }
+      ]
+      // id: this.id,
+      // firstName: this.firstName,
+      // lastName: this.lastName,
+      // email: this.email,
+      // contactNo: this.contactNo,
+      // roleId: this.roleId,
+      // centerId: this.centerId,
+      // // address: this.address,
+      // // city: this.city,
+      // // state: this.state,
+      // // country: this.country,
+      // // zip: this.zip,
+      // center: {
+      //   address: this.address,
+      //   city: this.city,
+      //   state: this.state,
+      //   country: this.country,
+      //   zip: this.zip
+      // },
+      // imageName: imageName,
+      // status: 'ACT'
     };
     console.log("dataToSend", dataToSend)
     this.themeService.CreateMyAccount(dataToSend).subscribe(
       response => {
         console.log('Response from server:', response);
-        this.util.showSuccess(response);
-        window.location.reload();
-        // Swal.fire('', response);
+        if (response == '"UpdatedSuccessfully"') {
+          this.util.showSuccess(response);
+          // window.location.reload();
+          // Swal.fire('', response);
+        } else if (response == '"UpdatedFailed"') {
+          this.util.showError("Profile not updated successfully")
+        } else {
+          this.util.showError(response)
+        }
         // Handle response based on the server behavior
       },
       error => {
