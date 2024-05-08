@@ -384,10 +384,10 @@ export class SurveyService {
     return this.http.post(url, data, { responseType: 'text' });
   }
 
-  // getQuotaBySurveyId(surveyId: any): Observable<responseDTO[]> {
-  //   const url = `${this.apiUrl}api/admin/${this.userId}/Quota/GetQuotaBySurveyId?surveyId=${surveyId}`;
-  //   return this.http.get<responseDTO[]>(url);
-  // }
+  getQuotaBySurveyId(surveyId: any): Observable<responseDTO[]> {
+    const url = `${this.apiUrl}api/admin/${this.userId}/Quota/GetQuotaBySurveyId?surveyId=${surveyId}`;
+    return this.http.get<responseDTO[]>(url);
+  }
 
   uploadAddScreenVideoQuestion(file: File, qid: any): Observable<any> {
     const formData = new FormData();
@@ -411,8 +411,8 @@ export class SurveyService {
     const url = `${this.apiUrl}api/admin/${this.userId}/GeneralQuestion/DeleteQuestionRandomize?surveyId=${surveyId}&groupId=${groupId}`;
     return this.http.post(url, { responseType: 'text' });
   }
-  getQuotaBySurveyId(surveyId: any): Observable<any> {
-    const url = `${this.apiUrl}api/admin/${this.userId}Vendar/GetQuotaBySurveyId?surveyId=${surveyId}`;
-    return this.http.get(url, { responseType: 'text' });
+  getQuotaById(surveyId: any): Observable<responseDTO[]> {
+    const url = `${this.apiUrl}api/admin/${this.userId}/Vendar/GetQuotaBySurveyId?surveyId=${surveyId}`;
+    return this.http.get<responseDTO[]>(url);
   }
 }
