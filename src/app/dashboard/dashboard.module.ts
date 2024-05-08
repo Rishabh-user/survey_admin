@@ -9,6 +9,7 @@ import { NgIconsModule, provideNgIconsConfig } from '@ng-icons/core';
 import { heroUsers } from '@ng-icons/heroicons/outline';
 import { heroChevronRight } from '@ng-icons/heroicons/outline';
 import { heroStopCircle } from '@ng-icons/heroicons/outline';
+import { heroPencil } from '@ng-icons/heroicons/outline';
 import { heroClipboardDocumentList } from '@ng-icons/heroicons/outline';
 import { heroQuestionMarkCircle } from '@ng-icons/heroicons/outline';
 import { heroClipboardDocumentCheck } from '@ng-icons/heroicons/outline';
@@ -68,7 +69,8 @@ import { MatButtonModule } from '@angular/material/button';
       heroBell,
       heroArrowLongRight,
       heroBars3,
-      heroMagnifyingGlass
+      heroMagnifyingGlass,
+      heroPencil
     }),
     SharedModule
   ],
