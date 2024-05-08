@@ -219,6 +219,15 @@ li.single-sidebar-menu {
 }
 .support .btn-primary{background-color: var(--white);border-color: var(--white);color: var(--primary);}
 .support>div{margin-top: -4rem;margin-bottom: 1rem;}
+.addwidth:not(.hoveraddwidth) .support>div{margin-top: -2rem;}
+.addwidth:not(.hoveraddwidth) .support>div img{width: 40px}
+.addwidth:not(.hoveraddwidth) .support {background: inherit;padding: initial;color: initial;}
+.addwidth:not(.hoveraddwidth) .support .btn-primary {
+    background-color: var(--primary);
+    border-color: var(--primary);
+    color: var(--white);
+}
+.addwidth:not(.hoveraddwidth) .support p{font-size: 0;}
 .sidebar-upgrade {
     padding: 1rem;
     text-align: center;
