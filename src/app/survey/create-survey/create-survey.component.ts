@@ -1071,7 +1071,118 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
     );
   }
   createLogicCount: number = 0;
+  // createLogic(questionId: any, logicEntries: any[]): void {
+
+  //   for (const logicEntry of logicEntries) {
+  //     this.createLogicCount++;
+  //     console.log(logicEntry)
+  //     const thanTermValue = logicEntry.thanExpected;
+  //     var elseTermValue = logicEntry.elseExpected;
+  //     if (elseTermValue === null)
+  //       elseTermValue = 0
+  //     if (logicEntry.elseExpected !== null && logicEntry.elseExpected !== 0) {
+  //       logicEntry.elseExpected = logicEntry.elseExpected.replace('Q-', '').replace('L-', '');
+  //     } else {
+  //       logicEntry.elseExpected = 0
+  //       console.log("elseExpected : ", logicEntry.elseExpected)
+  //     }
+
+  //     if (logicEntry.thanExpected !== null && logicEntry.thanExpected !== 0) {
+  //       logicEntry.thanExpected = logicEntry.thanExpected.replace(/Q-/g, '').replace(/L-/g, '');
+  //     } else {
+  //       logicEntry.thanExpected = 0
+  //       console.log("thanExpected :", logicEntry.thanExpected)
+  //     }
+
+
+  //     const id = logicEntry.id
+  //     const ifIdValue = logicEntry.ifId;
+  //     const ifExpectedValue = logicEntry.ifExpected;
+  //     const thanIdValue = logicEntry.thanId;
+  //     const thanExpectedValue = logicEntry.thanExpected;
+  //     const elseIdValue = logicEntry.elseId;
+  //     const elseExpectedValue = logicEntry.elseExpected;
+  //     const nameValue = "Logic " + this.createLogicCount;
+  //     var popupTextValue: string = "", isEveryTimeValue: boolean = false, timesPeriodValue: number = 0;
+  //     if (thanIdValue == 5) {
+  //       popupTextValue = logicEntry.popupText
+  //       isEveryTimeValue = logicEntry.isEveryTime
+  //       timesPeriodValue = logicEntry.timesPeriod
+  //     }
+  //     if (elseIdValue == 5) {
+  //       popupTextValue = logicEntry.popupTextElse
+  //       isEveryTimeValue = logicEntry.isEveryTimeElse
+  //       timesPeriodValue = logicEntry.timesPeriodElse
+  //     }
+  //     this.questionLogic.id = id
+  //     this.questionLogic.surveyId = this.surveyId;
+  //     this.questionLogic.questionId = questionId;
+  //     this.questionLogic.ifId = ifIdValue;
+  //     this.questionLogic.ifExpected = ifExpectedValue;
+  //     this.questionLogic.thanId = thanIdValue;
+  //     this.questionLogic.thanExpected = thanExpectedValue;
+  //     this.questionLogic.thanTerm = thanTermValue
+  //     this.questionLogic.elseId = elseIdValue
+  //     this.questionLogic.elseExpected = elseExpectedValue
+  //     this.questionLogic.elseTerm = elseTermValue
+  //     this.questionLogic.name = nameValue
+  //     this.questionLogic.popupText = popupTextValue
+  //     this.questionLogic.isEveryTime = isEveryTimeValue
+  //     this.questionLogic.timesPeriod = timesPeriodValue
+  //     if (!this.questionLogic.logicConditions[0]) {
+  //       this.questionLogic.logicConditions[0] = {
+  //         id: 0,
+  //         logicId: 0,
+  //         isAnd: false,
+  //         isOr: false,
+  //         questionId: 0,
+  //         ifId: 0,
+  //         ifExpected: ""
+  //       };
+  //     }
+  //     console.log("isAnd : ", logicEntry.isAnd)
+  //     console.log("isAnd : ", logicEntry.isAnd)
+  //     if (!(logicEntry.isAnd === false && logicEntry.isOr === false)) {
+  //       console.log("In Side And Or If")
+  //       if (!logicEntry.isAnd)
+  //         this.questionLogic.logicConditions[0].isAnd = true
+  //       else
+  //         this.questionLogic.logicConditions[0].isOr = true
+
+  //       this.questionLogic.logicConditions[0].questionId = logicEntry.questionIdAndOr
+  //       this.questionLogic.logicConditions[0].ifId = logicEntry.ifIdAndOr
+  //       this.questionLogic.logicConditions[0].ifExpected = logicEntry.ifExpectedAndOr
+  //     }
+
+  //     console.log("dataToSend", this.questionLogic);
+  //     if (this.questionLogic.id > 0) {
+  //       this.surveyservice.updateLogic(this.questionLogic).subscribe(
+  //         response => {
+  //           console.log('Response from server:', response);
+  //           this.utils.showSuccess('Logic Created Successfully.');
+  //         },
+  //         error => {
+  //           console.error('Error occurred while sending POST request:', error);
+  //           this.utils.showError(error);
+  //         }
+  //       );
+  //     } else {
+  //       this.surveyservice.createLogic(this.questionLogic).subscribe(
+  //         response => {
+  //           console.log('Response from server:', response);
+  //           this.utils.showSuccess('Logic Created Successfully.');
+  //         },
+  //         error => {
+  //           console.error('Error occurred while sending POST request:', error);
+  //           this.utils.showError(error);
+  //         }
+  //       );
+  //     }
+  //   }
+
+  // }
   createLogic(questionId: any, logicEntries: any[]): void {
+    let delayCounter = 0;
 
     for (const logicEntry of logicEntries) {
       this.createLogicCount++;
@@ -1154,30 +1265,35 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
         this.questionLogic.logicConditions[0].ifExpected = logicEntry.ifExpectedAndOr
       }
 
+
       console.log("dataToSend", this.questionLogic);
-      if (this.questionLogic.id > 0) {
-        this.surveyservice.updateLogic(this.questionLogic).subscribe(
-          response => {
-            console.log('Response from server:', response);
-            this.utils.showSuccess('Logic Created Successfully.');
-          },
-          error => {
-            console.error('Error occurred while sending POST request:', error);
-            this.utils.showError(error);
-          }
-        );
-      } else {
-        this.surveyservice.createLogic(this.questionLogic).subscribe(
-          response => {
-            console.log('Response from server:', response);
-            this.utils.showSuccess('Logic Created Successfully.');
-          },
-          error => {
-            console.error('Error occurred while sending POST request:', error);
-            this.utils.showError(error);
-          }
-        );
-      }
+      setTimeout(() => {
+        if (this.questionLogic.id > 0) {
+
+          this.surveyservice.updateLogic(this.questionLogic).subscribe(
+            response => {
+              console.log('Response from server:', response);
+              this.utils.showSuccess('Logic Created Successfully.');
+            },
+            error => {
+              console.error('Error occurred while sending POST request:', error);
+              this.utils.showError(error);
+            }
+          );
+        } else {
+          this.surveyservice.createLogic(this.questionLogic).subscribe(
+            response => {
+              console.log('Response from server:', response);
+              this.utils.showSuccess('Logic Created Successfully.');
+            },
+            error => {
+              console.error('Error occurred while sending POST request:', error);
+              this.utils.showError(error);
+            }
+          );
+        }
+      }, delayCounter * 1000)
+      delayCounter++;
     }
 
   }
