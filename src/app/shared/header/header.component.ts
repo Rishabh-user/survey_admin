@@ -7,7 +7,7 @@ import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { FormControl } from '@angular/forms';
 import { EncryptPipe } from 'src/app/pipes/encrypt.pipe';
 import { CryptoService } from 'src/app/service/crypto.service';
-import { Router,NavigationStart  } from '@angular/router';
+import { Router, NavigationStart } from '@angular/router';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { HttpErrorResponse } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
@@ -33,7 +33,7 @@ export class HeaderComponent {
   //excludedRoutes: string[] = ['/payment', '/login', '/signup', '/thankyou'];
   public constructor(private modalService: NgbModal, public themeService: DataService, private auth: AuthService, private util: UtilsService, public surveyService: SurveyService, private crypto: CryptoService, private router: Router) {
     this.baseUrl = environment.baseURL;
-   
+
   }
   ngOnInit(): void {
     this.getNotification()
@@ -47,7 +47,7 @@ export class HeaderComponent {
       .subscribe((value: string) => {
         this.filterSurveys(value);
       });
-     
+
   }
   openPopup() {
     this.modalService.open(this.popupTemplate, { centered: true, backdrop: 'static' });
@@ -177,33 +177,36 @@ export class HeaderComponent {
   //   }
   //   );
   // }
-  
+
   getNotification() {
-    this.surveyService.getNotification().subscribe({
-      next: (resp: any) => {
-        console.log('getNotification Response:', resp);
-        this.notificationdata = resp;
-        console.log("notification data", this.notificationdata);
-  
-        let count = 0;
-        this.notificationdata.forEach((entry: { status: string; }) => {
-          if (entry.status === 'ACT') {
-            count++;
+    this.userId = this.util.getUserId();
+    if (this.userId) {
+      this.surveyService.getNotification().subscribe({
+        next: (resp: any) => {
+          console.log('getNotification Response:', resp);
+          this.notificationdata = resp;
+          console.log("notification data", this.notificationdata);
+
+          let count = 0;
+          this.notificationdata.forEach((entry: { status: string; }) => {
+            if (entry.status === 'ACT') {
+              count++;
+            }
+          });
+          this.notificationcount = count;
+          console.log("notification count", this.notificationcount);
+        },
+        error: (error) => {
+          console.error("An error occurred while fetching notifications:", error);
+          if (error.status === 402 && error.error?.message === 'payment-required') {
+            this.openPopup();
+          } else {
+            console.error("Error fetching user account:", error);
           }
-        });
-        this.notificationcount = count;
-        console.log("notification count", this.notificationcount);
-      },
-      error: (error) => {
-        console.error("An error occurred while fetching notifications:", error);
-        if (error.status === 402 && error.error?.message === 'payment-required') {
-          this.openPopup();
-        } else {
-          console.error("Error fetching user account:", error);
         }
-      }
-    });
+      });
+    }
   }
-  
+
 
 }

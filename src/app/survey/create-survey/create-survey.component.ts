@@ -662,7 +662,7 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
     this.logicQuestionList = [];
     const dataToSend = {
       surveyId: this.surveyId,
-      surveyStatus: questionId
+      questionId: questionId
     };
     this.surveyservice.getLogicQuestionList(dataToSend).subscribe(
       (response: LogicQuestion[]) => {
@@ -881,6 +881,8 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
   }
   getQuestionLogic(index: number, questionId: number): void {
     //alert('getQuestionLogic')
+
+    this.logicEntriesPerQuestion[index] = []
 
     this.getOptionsByQuestionIdLogic(questionId);
     this.surveyservice.getQuestionLogics(questionId, this.surveyId).subscribe(
@@ -1268,32 +1270,54 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
 
       console.log("dataToSend", this.questionLogic);
       setTimeout(() => {
+
         if (this.questionLogic.id > 0) {
 
           this.surveyservice.updateLogic(this.questionLogic).subscribe(
+
             response => {
+
               console.log('Response from server:', response);
+
               this.utils.showSuccess('Logic Created Successfully.');
+
             },
+
             error => {
+
               console.error('Error occurred while sending POST request:', error);
+
               this.utils.showError(error);
+
             }
+
           );
+
         } else {
+
           this.surveyservice.createLogic(this.questionLogic).subscribe(
+
             response => {
+
               console.log('Response from server:', response);
+
               this.utils.showSuccess('Logic Created Successfully.');
+
             },
+
             error => {
+
               console.error('Error occurred while sending POST request:', error);
+
               this.utils.showError(error);
+
             }
+
           );
+
         }
-      }, delayCounter * 1000)
-      delayCounter++;
+
+      }, 1000);
     }
 
   }
