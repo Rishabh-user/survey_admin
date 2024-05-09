@@ -1,8 +1,6 @@
 import { ChangeDetectorRef, Component } from '@angular/core';
-//import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { NgModule } from '@angular/core';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { DataService } from 'src/app/service/data.service';
+
 import { SurveyService } from 'src/app/service/survey.service';
 import { environment } from 'src/environments/environment';
 
@@ -18,8 +16,10 @@ export class ReportsComponent {
   pageSize: number = 10;
   pageNumber: number = 1
   currentPage: number = 1;
-  totalItemsCount: number = 20
-  resportSurvey: any;
+  totalItemsCount: number = 100
+  reportSurvey: any;
+  surveyId: any;
+  
   toggleTooltip(identifier: string) {
     this.showTooltip[identifier] = !this.showTooltip[identifier];
   }
@@ -29,40 +29,44 @@ export class ReportsComponent {
 // Tooltip
 
   baseUrl = '';
-  constructor( public themeService: SurveyService, private cdr: ChangeDetectorRef) {
+  constructor(  public themeService: SurveyService,private cdr: ChangeDetectorRef,) {
     this.baseUrl = environment.baseURL;
+  
   }
   ngOnInit(): void {
     this.getSurveyReportBySurvey(this.pageNumber, this.pageSize);
   }
+
   getSurveyReportBySurvey(pageNumber: number, pageSize: number) {
     this.themeService.getSurveyReportBySurvey(pageNumber, pageSize).subscribe((data: any) => {
       console.log("reports", data)
-      this.resportSurvey = data.surveyType;
-      this.resportSurvey = data.surveyType;
+      this.reportSurvey = data.surveyType;
       this.totalItemsCount = data.totalCount;
+      
       console.log("totalCount", this.totalItemsCount)
-      console.log("resportSurvey", this.resportSurvey)
+      console.log("reportSurvey", this.reportSurvey)
+      console.log("surveyId", this.surveyId)
       this.cdr.detectChanges();
     });
   }
   
-  onPageChange(pageNumber: number) {
-    console.log(pageNumber);
-    // Handle page change event
-    this.pageNumber = pageNumber;
-    this.getSurveyReportBySurvey(this.pageNumber, this.pageSize)
-    this.currentPage = this.pageNumber
-    // You can also fetch data for the selected page here based on the pageNumber
-  }
-  jumpToPage() {
-    // Add any necessary validation logic before emitting the pageChange event
-    if (this.currentPage > 0 && this.currentPage <= Math.ceil(this.totalItemsCount / this.pageSize)) {
-      this.onPageChange(this.currentPage);
-    }
-  }
-  onPageSizeChange() {
-    this.onPageChange(this.pageNumber)
+  onPageChange(event: any) {
+    const pageNumber = event.page;
+    this.currentPage = pageNumber;
+    this.getSurveyReportBySurvey(this.currentPage, this.pageSize);
   }
 
+  onPageSizeChange() {
+    this.currentPage = 1; // Reset to first page when page size changes
+    this.getSurveyReportBySurvey(this.currentPage, this.pageSize);
+  }
+
+  jumpToPage() {
+    if (this.currentPage > 0 && this.currentPage <= Math.ceil(this.totalItemsCount / this.pageSize)) {
+      this.getSurveyReportBySurvey(this.currentPage, this.pageSize);
+    }
+  }
+  refresh() {
+    this.getSurveyReportBySurvey(this.pageSize, 1);
+  }
 }
