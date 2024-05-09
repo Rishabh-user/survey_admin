@@ -1187,10 +1187,10 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
     for (const logicEntry of logicEntries) {
       this.createLogicCount++;
       console.log(logicEntry)
-      const thanTermValue = logicEntry.thanExpected;
-      var elseTermValue = logicEntry.elseExpected;
-      if (elseTermValue === null)
-        elseTermValue = 0
+      
+      const thanTermValue = logicEntry.thanExpected !== null ? logicEntry.thanExpected : 0;
+      const elseTermValue = logicEntry.elseExpected !== null ? logicEntry.elseExpected : 0;
+
       if (logicEntry.elseExpected !== null && logicEntry.elseExpected !== 0) {
         logicEntry.elseExpected = logicEntry.elseExpected.replace('Q-', '').replace('L-', '');
       } else {
@@ -1210,9 +1210,9 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
       const ifIdValue = logicEntry.ifId;
       const ifExpectedValue = logicEntry.ifExpected;
       const thanIdValue = logicEntry.thanId;
-      const thanExpectedValue = logicEntry.thanExpected;
-      const elseIdValue = logicEntry.elseId;
-      const elseExpectedValue = logicEntry.elseExpected;
+      const thanExpectedValue = logicEntry.thanExpected !== null ? logicEntry.thanExpected : 0;
+      const elseIdValue = logicEntry.elseId !== null ? logicEntry.elseId : 0;  
+      const elseExpectedValue = logicEntry.elseExpected !== null ? logicEntry.elseExpected : 0;
       const nameValue = "Logic " + this.createLogicCount;
       var popupTextValue: string = "", isEveryTimeValue: boolean = false, timesPeriodValue: number = 0;
       if (thanIdValue == 5) {
