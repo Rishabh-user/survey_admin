@@ -1,5 +1,5 @@
 <div ngClass="survey-name">
-    <div>
+    <!-- <div>
         <div class="d-flex">
             <h4 ngClass="mb-3">
                 <ng-container *ngIf="surveyData.countryName !== 'Other Country'">
@@ -26,7 +26,7 @@
             <span *ngIf="surveyData && surveyData.categoryName =='Others'" class="ms-3">Survey ID-
                 {{surveyData.surveyId}}</span>
         </div>
-    </div>
+    </div> -->
 
 </div>
 <div class="common-bg">
@@ -61,22 +61,22 @@
 </div>
 <div class="common-bg" [style.display]="isQuotasVisible ? 'block' : 'none'">
     <div class="quota-management">
-        <h4>Quotas</h4>
+        <h4>Quotas </h4>
         <p>Quotas help you split the completes into group of specific age, gender, regions and/or profiling. To
             interlock quotas click new interlocked quota below.</p>
 
         <div>
             {{surveyQuotaJson | json}}
+
             <div *ngFor="let question of surveyQuotaJson?.questionDto; let i = index" class="add-quota">
-                <label class="form-label">Select Question</label>
+                <label class="form-label">Select Question </label>
                 <!-- <select class="form-select" [(ngModel)]="quota.selectedQuestion"
                     (change)="showQuestionQuotas(i);selectedOptionDetails(quota.selectedQuestion,i)" >
                     <option value="" disabled>Select Question</option>
                     <option *ngFor="let ques of questionList.questions" [value]="ques.id">{{ ques.question }}</option>
                 </select> -->
                 <mat-form-field>
-                    <mat-select [(ngModel)]="question.questionId"
-                        (ngModelChange)="showQuestionQuotas(i);"
+                    <mat-select [(ngModel)]="question.questionId" (ngModelChange)="showQuestionQuotas(i);"
                         #selectElement>
                         <mat-option [disabled]="true" [value]="0"> Select Question</mat-option>
                         <mat-option *ngFor="let ques of questionList.questions" [value]="ques.id">
