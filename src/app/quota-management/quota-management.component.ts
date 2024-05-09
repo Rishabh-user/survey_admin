@@ -510,6 +510,7 @@ export class QuotaManagementComponent {
   questionDto: any;
   quotaid: any
   getQuotaBySurveyId() {
+
     this.surveyservice.getQuotaBySurveyId(this.surveyId).subscribe({
       next: (data: any) => {
         this.isQuotasVisible = true;
@@ -557,6 +558,7 @@ export class QuotaManagementComponent {
         console.log("Error fetching quotas", err);
       }
     });
+
   }
 
 
@@ -576,18 +578,18 @@ export class QuotaManagementComponent {
         this.quotaid = data.quotaId
         this.surveycount = data.totalUsers;
 
-
-        console.log("Quotas:", this.quotas);
+        console.log("quotabyid json", this.surveyQuotaJson)
+        console.log("quotabyid id", this.quotaid)
+        console.log("Quotas: quotabyid", this.quotas);
       },
       error: (err: any) => {
-
-
         this.initializeQuotaData();
         //#endregion
 
-        console.log("Error fetching quotas", err);
+        console.log("Error fetching quotas quotabyid", err);
       }
     });
+
 
   }
 }

@@ -147,13 +147,14 @@ export class EditSurveyComponent {
 
         if (opt.status == 'ACT') {
           if (opt.isFixed)
-            this.optionsArr2.push(newOption); // Push the new Option object to optionsArr1
+            this.optionsArr2.push(newOption);
           else
             this.optionsArr1.push(newOption);
 
         }
 
         console.log("see", this.optionsArr1)
+        console.log("see2", this.optionsArr2)
         console.log("option id", newOption.id)
         console.log("image", newOption.image)
 
@@ -245,7 +246,7 @@ export class EditSurveyComponent {
 
     }
     this.getAllSurveyList();
-
+    console.log("optionarr2 check", this.optionsArr2)
 
 
   }
@@ -784,13 +785,16 @@ export class EditSurveyComponent {
       this.optionsArr1.splice(index, 1);
       console.log("deleted", this.optionsArr1)
     } else {
+
       this.newoptionImages.splice(index, 1)
       this.optionsArr2.splice(index, 1);
       console.log("newoptionarr", this.newoptionImages)
+      console.log("deleted 2", this.optionsArr2)
       // this.optionsArr2 = [];
 
     }
     this.allOptions = [];
+
     this.allOptions.push(...this.optionsArr1, ...this.optionsArr2);
   }
 
