@@ -62,7 +62,6 @@ export class IndustryPopupComponent {
       },
       error: (err) => {
         console.log("An Error occurred while fetching questions", err);
-        // Handle error - show a message or perform any necessary action
       }
     });
   }
@@ -73,7 +72,6 @@ export class IndustryPopupComponent {
   continueClicked() {
 
     const currentDateTime = this.getCurrentDateTime();
-    // Assuming 'questions' is an array containing multiple instances of the Question class
 
     let successfulAPICalls = 0;
     for (let i = 0; i < this.questions.length; i++) {
@@ -85,12 +83,9 @@ export class IndustryPopupComponent {
       currentQuestion.genericTypeId = this.typeid
       currentQuestion.openEndedType = "text"
 
-      // Make an API call for each question with its selected options
       this.surveyservice.CreateGeneralQuestion(currentQuestion).subscribe({
         next: (resp: any) => {
-          // Handle success response for each question
           console.log(`API call ${i + 1} successful`);
-          // Add further logic if needed upon successful creation of each question
           successfulAPICalls++;
 
           if (successfulAPICalls === this.questions.length) {
@@ -104,13 +99,10 @@ export class IndustryPopupComponent {
           }
         },
         error: (err: any) => {
-          // Handle error response for each question
           console.error(`Error in API call ${i + 1}:`, err);
-          // Perform any necessary actions upon error for each question
         }
       });
     }
-    //window.location.reload()
 
   }
 }

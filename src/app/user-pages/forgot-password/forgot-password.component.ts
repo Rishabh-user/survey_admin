@@ -18,13 +18,13 @@ export class ForgotPasswordComponent implements OnInit {
   loading: boolean = false;
   loginForm: FormGroup;
   resetForm: FormGroup;
-  userId:any
-  showUserDetails:boolean=false
-  constructor(private router: Router,private fb: FormBuilder, private authService: AuthService,
-    private utility: UtilsService,private visibilityService: DataService,private route: ActivatedRoute) { 
-      visibilityService.articleVisible.next(false);
-    }
-    
+  userId: any
+  showUserDetails: boolean = false
+  constructor(private router: Router, private fb: FormBuilder, private authService: AuthService,
+    private utility: UtilsService, private visibilityService: DataService, private route: ActivatedRoute) {
+    visibilityService.articleVisible.next(false);
+  }
+
 
   passwordMatchValidator(formGroup: FormGroup): ValidationErrors | null {
     const password = formGroup.get('password')?.value;
@@ -82,13 +82,11 @@ export class ForgotPasswordComponent implements OnInit {
         .subscribe(
           response => {
             this.userId = response
-            this.showUserDetails=true
-            // Handle successful response
+            this.showUserDetails = true
             console.log('Password reset request successful:', response);
             this.loading = false;
           },
           error => {
-            // Handle error
             console.error('Error resetting password:', error);
             this.errorMessage = 'Failed to reset password. Please try again later.';
             this.loading = false;
@@ -106,26 +104,24 @@ export class ForgotPasswordComponent implements OnInit {
     if (this.resetForm.valid) {
       const formData = {
         ...this.resetForm.value,
-        oId: this.userId // Add the oId here
-    };
-    this.authService.verifyEmailAndResetPassword(formData)
+        oId: this.userId
+      };
+      this.authService.verifyEmailAndResetPassword(formData)
         .subscribe(
-            response => {
-                // Handle successful response
-                
-                console.log('Email verification and password reset successful:', response);
-                this.loading = false;
-                const returnUrl = this.route.snapshot.queryParamMap.get('returnUrl') || '/login';
-                this.router.navigateByUrl(returnUrl).then(() => {
-                  window.location.reload();
-                });
-            },
-            error => {
-                // Handle error
-                console.error('Error verifying email and resetting password:', error);
-                this.errorMessage = 'Failed to verify email and reset password. Please try again later.';
-                this.loading = false;
-            }
+          response => {
+
+            console.log('Email verification and password reset successful:', response);
+            this.loading = false;
+            const returnUrl = this.route.snapshot.queryParamMap.get('returnUrl') || '/login';
+            this.router.navigateByUrl(returnUrl).then(() => {
+              window.location.reload();
+            });
+          },
+          error => {
+            console.error('Error verifying email and resetting password:', error);
+            this.errorMessage = 'Failed to verify email and reset password. Please try again later.';
+            this.loading = false;
+          }
         );
     }
   }

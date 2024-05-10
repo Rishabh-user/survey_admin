@@ -15,7 +15,7 @@ declare var Razorpay: any;
 })
 export class SignUpComponent {
   baseUrl = '';
-  // Tooltip
+
   showTooltip: { [key: string]: boolean } = {};
   userId: any;
   location: any;
@@ -26,10 +26,10 @@ export class SignUpComponent {
   hideTooltip(identifier: string) {
     this.showTooltip[identifier] = false;
   }
-  // Tooltip
+
 
   formSubmitted: boolean = false;
-  showCompanyDetails: boolean = true; // Initially show company details
+  showCompanyDetails: boolean = true;
   showUserDetails: boolean = false;
   themeService: any;
   signupForm: FormGroup;
@@ -87,7 +87,7 @@ export class SignUpComponent {
       captchertoken: ['', Validators.required],
     });
 
-    //url
+
     this.route.queryParams.subscribe((data) => {
       this.purchaseprice = data['price'];
       this.amount = this.purchaseprice;
@@ -103,7 +103,7 @@ export class SignUpComponent {
     nav: false,
     dots: true
   };
-  // Upload Image
+
   token: string | undefined;
   selectedImage: string | ArrayBuffer | null = null;
   defaultImage: string = './assets/images/profile/pic.png';
@@ -116,7 +116,7 @@ export class SignUpComponent {
         this.selectedImage = reader.result;
       };
     } else {
-      this.selectedImage = null; // Reset selected image if no file is chosen
+      this.selectedImage = null;
     }
   }
   generateOTP() {
@@ -130,7 +130,7 @@ export class SignUpComponent {
     if (this.signupForm.valid) {
       const formData = this.signupForm.value;
 
-      // Call the registration service to make the POST request
+
       this.authService.registerOrganization(formData).subscribe(
         (response) => {
           console.log('Registration successful centerId:', response.centerId);
@@ -138,10 +138,10 @@ export class SignUpComponent {
           console.log('Registration successful userId:', response.message);
           if (response.message === 'AlreadyExists') {
             this.utility.showError("This Organisation Already Registered");
-            //EmailAlreadyExits
+
           } else if (response.message === 'EmailAlreadyExits') {
             this.utility.showError("This Email Id Already Registered");
-            //EmailAlreadyExits
+
           } else {
             this.organizationId = response.centerId
             this.userId = response.userId
@@ -151,60 +151,17 @@ export class SignUpComponent {
         (error) => {
           console.error('Registration failed:', error);
           this.utility.showError(error);
-          // Handle registration failure, display an error message, etc.
         }
       );
     }
   }
-  // submitForm() {
-  //   // Handle submission of the final form
-  //   Object.keys(this.signupForm.controls).forEach(field => {
-  //     const control = this.signupForm.get(field);
-  //     control?.markAsTouched({ onlySelf: true });
-  //   });
-  //   if (this.signupForm.valid) {
-  //     // You can make API calls or perform other actions here
-  //     console.log('Final form data:', this.signupForm.value);
-  //   }
-  // }
-  // verifyEmail() {
-  //   Object.keys(this.verificationForm.controls).forEach(field => {
-  //     const control = this.verificationForm.get(field);
-  //     control?.markAsTouched({ onlySelf: true });
-  //   });
-  //   // Call the email verification service to make the GET request
-  //   const otp = this.verificationForm.get('email_otp')?.value;
-  //   const captchertoken = this.verificationForm.get('captchertoken')?.value
-  //   console.log("captchertoken : ", captchertoken)
-  //   if (this.verificationForm.valid) {
-  //     const returnUrl = this.route.snapshot.queryParamMap.get('returnUrl') || '/dashboard';
-  //     const dataToSend = {
-  //       oId: this.organizationId,
-  //       otp: otp,
-  //       captcha: captchertoken
-  //     }
-  //     this.authService.verifyEmail(dataToSend).subscribe(
-  //       (response) => {
-  //         this.verifyemail = true
-  //         console.log('Email verification successful:', response);
-  //         this.router.navigateByUrl(returnUrl).then(() => {
-  //           window.location.reload();
-  //         });
-  //       },
-  //       (error) => {
-  //         console.error('Email verification failed:', error);
-  //         this.utility.showError("Please enter correct OTP ");
-  //         // Handle email verification failure, display an error message, etc.
-  //       }
-  //     );
-  //   }
-  // }
+
   verifyEmail(skipClicked: boolean = false) {
     Object.keys(this.verificationForm.controls).forEach(field => {
       const control = this.verificationForm.get(field);
       control?.markAsTouched({ onlySelf: true });
     });
-    // Call the email verification service to make the GET request
+
     const otp = this.verificationForm.get('email_otp')?.value;
     const captchertoken = this.verificationForm.get('captchertoken')?.value
     console.log("captchertoken : ", captchertoken)
@@ -217,33 +174,28 @@ export class SignUpComponent {
       }
       this.authService.verifyEmail(dataToSend).subscribe(
         (response) => {
-          // this.verifyemail = true;
-          // this.suurveypurchaseprice = true;
-          // console.log('Email verification successful:', response);
-          // this.router.navigateByUrl(returnUrl).then(() => {
-          //   window.location.reload();
-          // });
+
           if (skipClicked) {
             const returnUrl = this.route.snapshot.queryParamMap.get('returnUrl') || '/dashboard';
             this.router.navigateByUrl(returnUrl).then(() => {
-              // After navigation, set suurveypurchaseprice to false
+
               this.suurveypurchaseprice = false;
             });
           } else {
-            // Otherwise, set suurveypurchaseprice to true to show the purchase section
+
             this.suurveypurchaseprice = true;
           }
         },
         (error) => {
           console.error('Email verification failed:', error);
           this.utility.showError("Please enter correct OTP ");
-          // Handle email verification failure, display an error message, etc.
+
         }
       );
     }
   }
 
-  //read url
+
   suurveypurchaseprice: boolean = false
   emailopt: boolean = false
 
@@ -251,7 +203,6 @@ export class SignUpComponent {
     this.verifyEmail();
     if (this.verifyemail) {
       this.suurveypurchaseprice = true;
-      // this.showUserDetails = false;
     }
 
   }
@@ -265,7 +216,7 @@ export class SignUpComponent {
 
   }
 
-  //Pyament Gateway
+
   subscriptionPlans = [
     { id: 'basic', name: 'Basic', price: '500' },
     { id: 'standard', name: 'Standard', price: '1200' },
@@ -283,9 +234,9 @@ export class SignUpComponent {
       organizationId: this.organizationId,
       planId: this.amount
     };
-    this.postAmount(formData).subscribe((response: any) => { // Type assertion to any
+    this.postAmount(formData).subscribe((response: any) => {
       console.log('Response from server:', response);
-      this.payNow(response, response.orderId); // Call the payNow function with order data to initiate Razorpay payment
+      this.payNow(response, response.orderId);
     }, error => {
       console.error('Error occurred:', error);
     });
@@ -300,10 +251,9 @@ export class SignUpComponent {
     const razorpayOptions = {
       description: 'Sample Razorpay demo',
       currency: 'INR',
-      amount: orderData.amount * 100, // Convert amount to paisa (Razorpay expects amount in paisa)
+      amount: orderData.amount * 100,
       name: 'Scrip8',
-      key: 'rzp_test_Ncll0VDPCO6Ffq', // Replace with your Razorpay key
-      //image: 'https://mobile.angular.opinionest.com/manage/assets/images/logo/T-logo.png',
+      key: 'rzp_test_Ncll0VDPCO6Ffq',
       prefill: {
         name: 'Testing',
         email: 'test@gmail.com',
@@ -319,7 +269,6 @@ export class SignUpComponent {
       },
       handler: (response: any) => {
         console.log(response);
-        // Handle payment success
         this.sendPaymentDetails(response.razorpay_payment_id, orderId);
       }
     };
@@ -336,7 +285,7 @@ export class SignUpComponent {
     const apiUrl = `${environment.apiUrl}api/admin/${this.userId}/Payment/CompleteOrderProcess`;
     this.httpClient.post(apiUrl, requestData).subscribe(
       (response: any) => {
-        console.log('Response:', response); // Log the response        
+        console.log('Response:', response);
         if (response.message === "Success") {
           console.log('Success:', response);
 
@@ -345,17 +294,14 @@ export class SignUpComponent {
           this.router.navigate(["/"]).then(() => {
             window.location.reload();
           })
-          //this.router.navigate(['/']);  // Redirect to the thank you page
 
         } else {
-          console.error('Error in response:', response); // Handle the error condition appropriately
+          console.error('Error in response:', response);
         }
       },
       (error: any) => {
-        console.error('HTTP Error:', error); // Log the HTTP error        
-        // Handle the error response as plain text
-        console.error('Server Error:', error); // Log the server error
-        // Handle the server error condition appropriately
+        console.error('HTTP Error:', error);
+        console.error('Server Error:', error);
       }
     );
   }

@@ -55,7 +55,7 @@ export class GenderPopupComponent {
   typeid = 1;
 
   questions: Question[] = [];
-  isValidQuestion:boolean=true
+  isValidQuestion: boolean = true
   getQuestions() {
     this.surveyservice.getGenericQuestionType1(this.typeid).subscribe({
       next: (resp: responseGenericQuestion[]) => {
@@ -65,17 +65,14 @@ export class GenderPopupComponent {
           const question = new Question();
           question.id = item.questionId;
           question.question = item.question;
-          question.image = item.image || ''; // Handling null image
-
-          // Assign other properties to the 'question' object from 'ResponseDTO' if needed
+          question.image = item.image || '';
 
           // Assign options
           question.options = item.options.map((optionItem: { id: number, option: string, image: string }) => {
             const option = new Option();
             option.id = optionItem.id;
             option.option = optionItem.option;
-            option.image = optionItem.image || ''; // Handling null image for options if required
-            // Assign other properties to the 'option' object from 'ResponseDTO' if needed
+            option.image = optionItem.image || '';
             return option;
           });
 
@@ -85,14 +82,13 @@ export class GenderPopupComponent {
         if (this.questions && this.questions.length > 0) {
           console.log('Value of questionText 1:', this.questions[0].question);
           this.questionText = this.questions[0].question;
-          // Set other properties here if needed
         }
       },
       error: (err) => console.log("An Error occurred while fetching questions", err)
     });
   }
   selectOption(option: Option) {
-    option.selected = !option.selected; // Toggle selection on click
+    option.selected = !option.selected;
   }
   selectedQuestionTypes: number[] = [];
 
@@ -137,7 +133,6 @@ export class GenderPopupComponent {
     this.question.question = this.questionText;
     console.log('Value of this.question.question:', this.question.question);
 
-    //this.question.options = this.allOptions;
     this.question.options = this.questions[0]?.options.filter(option => option.selected);
     const currentDateTime = this.getCurrentDateTime();
     this.question.options.forEach(option => {
@@ -147,14 +142,14 @@ export class GenderPopupComponent {
     this.question.genericTypeId = this.typeid
     this.surveyservice.CreateGeneralQuestion(this.question).subscribe({
       next: (resp: any) => {
-        if(resp=='"QuestionAlreadyExits"'){
+        if (resp == '"QuestionAlreadyExits"') {
           this.utility.showError("This Question Already Created ");
-        }else{
+        } else {
           this.utility.showSuccess('Question Generated Successfully.');
           this.close();
           this.onSaveEvent.emit();
         }
-        
+
       },
       error: (err: any) => {
         this.utility.showError(err.error);

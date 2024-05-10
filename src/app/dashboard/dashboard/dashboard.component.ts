@@ -83,75 +83,40 @@ export class DashboardComponent {
   ShowBreadcrumb() {
     this.visibilityService.toggleBreadcrumbVisibility(true);
   }
-  // ngOnInit() {
-  //   this.hideSideBar();
-  // }
-  // isSubMenu1Visible = false;
-  // isSubMenu2Visible = false;
-  // isSubMenu3Visible = false;
 
-  // toggleSubMenu(subMenuNumber: number) {
-  //   switch (subMenuNumber) {
-  //     case 1:
-  //       this.isSubMenu1Visible = !this.isSubMenu1Visible;
-  //       break;
-  //     case 2:
-  //       this.isSubMenu2Visible = !this.isSubMenu2Visible;
-  //       break;
-  //     case 3:
-  //       this.isSubMenu3Visible = !this.isSubMenu3Visible;
-  //       break;
-  //     default:
-  //       break;
-  //   }
-  // }
- 
+
   getMyAccount() {
     this.themeService.GetMyAccount(this.userId).subscribe((data: any) => {
       console.log("Info", data)
       if (data) {
-        
+
         this.firstName = data.firstName;
         this.lastName = data.lastName;
         this.id = data.id;
         this.isPaid = data.isPaid;
         this.orgCreatedDate = new Date(data.orgCreatedDate);
-        // Calculate difference in days
-        console.log("isPaid",this.isPaid)
+        console.log("isPaid", this.isPaid)
         if (isNaN(this.orgCreatedDate.getTime())) {
           console.error("Invalid orgCreatedDate:", data.orgCreatedDate);
           return;
-        }  
-        // Calculate difference in days
-        const trialPeriodDays = 7; // Total trial period days
+        }
+        const trialPeriodDays = 7;
         const currentDate = new Date();
         const trialEndDate = new Date(this.orgCreatedDate.getTime() + trialPeriodDays * 24 * 60 * 60 * 1000);
         this.remainingTrialDays = Math.ceil((trialEndDate.getTime() - currentDate.getTime()) / (24 * 60 * 60 * 1000));
         if (this.remainingTrialDays < 0) {
-          this.remainingTrialDays = 0; // Set to 0 if trial has expired
+          this.remainingTrialDays = 0;
         }
-        //console.log("Remaining Trial Days:", this.remainingTrialDays);
-        // if (this.remainingTrialDays === 0 && this.isPaid === "false") {
-        //   this.openPopup();
-        // }
-        
+
       }
     },
-    // (error: HttpErrorResponse) => {
-    //   if (error.status === 402) {
-    //     this.openPopup();
-    //   } else {
-    //     console.error("Error fetching user account:", error);
-    //   }
-    // }
-  );    
+
+    );
   }
-  
-  // openPopup() {
-  //   this.modalService.open(this.popupTemplate, { centered: true, backdrop: 'static' });
-  // }
+
+
   logOut(modal: NgbModalRef) {
-    this.auth.logout(); 
+    this.auth.logout();
     modal.dismiss();
   }
 
@@ -168,47 +133,7 @@ export class DashboardComponent {
     this.getReportForSelectedYear();
   }
   
- 
-  // createChart() {
-    
-  //   this.chart = new Chart("canvas", {
-  //     type: 'line',
-  //     data: {
-  //       labels: ['2023-04-06', '2023-05-06', '2023-06-06', '2023-07-06', '2023-08-06', '2023-09-06', '2023-10-06'],
-  //       datasets: [
-  //         {
-  //           label: "online",
-  //           data: ['300', '350', '280', '550', '450', '700', '680'],
-  //           borderColor: '#00e396',
-  //           backgroundColor: 'rgba(0, 227, 150, 0.2)',
-  //           fill: {
-  //             target: 'origin',
-  //             above: 'rgba(0, 227, 150, 0.2)',
-  //             below: 'rgba(0, 227, 150, 0)'
-  //           },
-  //           tension: 0.3
-  //         },
-  //         {
-  //           label: "offline",
-  //           data: ['100', '300', '520', '300', '320', '400', '350'],
-  //           borderColor: '#008ffb',
-  //           backgroundColor: 'rgba(0, 143, 251, 0.2)',
-  //           fill: {
-  //             target: 'origin',
-  //             above: 'rgba(0, 143, 251, 0.2)',
-  //             below: 'rgba(0, 143, 251, 0)'
-  //           },
-  //           tension: 0.3
-  //         }
-  //       ]
-  //     },
-  //     options: {
-  //       aspectRatio: 3
-  //     }
-  //   });
-  // }
-  
-  
+   
 
   openVerticallyCentered(content: any) {
     this.modalService.open(content, { centered: true, size: 'lg' });
@@ -239,7 +164,7 @@ export class DashboardComponent {
     this.surveyservice.GetRecentSurveyList().subscribe({
       next: (resp: responseDTO[]) => {
         console.log('surveylist:', resp);
-        
+
         this.surveylist = resp.map(item => ({
           name: item.name,
           status: item.status.toString(),
@@ -247,12 +172,12 @@ export class DashboardComponent {
           userName: item.userName,
           createdDate: new Date(item.createdDate),
           surveyId: item.surveyId
-          
+
         }));
       },
       error: (err) => console.log("An Error occur while fetching survey list", err)
     });
-    
+
   }
   onAddNewSurveyClick() {
     this.CreateSurveyModal.show();
@@ -409,7 +334,6 @@ export class DashboardComponent {
   }
 
 
-  //create survey popup
   categoryName: any = "";
   surveyName: any;
   categoryId: number;
@@ -424,8 +348,6 @@ export class DashboardComponent {
   selectedCountryId: string | null = null;
 
 
-
-  // selectedCountry: string = "IN";
   surveyNameCheck: boolean = true
   countryNameCheck: boolean = true
   categoryNameCheck: boolean = true
@@ -527,13 +449,10 @@ export class DashboardComponent {
             console.log(this.newsurveyId)
             const encryptedId = this.crypto.encryptParam(`${this.newsurveyId}`);
             const url = `/survey/manage-survey/${encryptedId}`;
-            // this.modal.close();
             this.router.navigateByUrl(url);
-            // if (this.router.url.includes('/manage-survey')) {
-            // window.location.reload();
             setTimeout(() => {
               window.location.reload();
-            }, 100); // Adjust the delay as needed
+            }, 100);
             // }
           }
         },
@@ -545,11 +464,11 @@ export class DashboardComponent {
     }
   }
   convertStringToNumber(str: string): number | null {
-    const converted = +str; // Using the unary plus operator to attempt conversion
+    const converted = +str;
     return isNaN(converted) ? null : converted;
   }
   removeQuotes(str: string): string {
-    return str.replace(/"/g, ''); // Replaces all occurrences of double quotes with an empty string
+    return str.replace(/"/g, '');
   }
 
 

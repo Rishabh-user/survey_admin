@@ -1,8 +1,7 @@
 <app-header *ngIf="headerVisible" [class.addMargin]="themeService.addMargin"></app-header>
 <div *ngIf="loaderservice.isLoading | async" class="loader"><img class="img-fluid"
         src="./assets/images/logo/logo-GIF.gif" width="100" height="50" priority></div>
-<!-- Your component template -->
-<!-- your-component-template.html -->
+
 
 <app-sidebar *ngIf="navbarVisible" [class.addwidth]="themeService.addwidth"
     [class.hoveraddwidth]="themeService.hoveraddwidth" (mouseenter)="onMouseEnter()"

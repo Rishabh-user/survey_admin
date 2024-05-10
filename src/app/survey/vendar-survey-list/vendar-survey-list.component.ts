@@ -24,7 +24,7 @@ export class VendarSurveyListComponent {
   hideTooltip(identifier: string) {
     this.showTooltip[identifier] = false;
   }
-  //ToolTip
+
   surveyData: any = "";
   categoryList: any;
   selectedCategory: string = 'All Categories';
@@ -51,7 +51,7 @@ export class VendarSurveyListComponent {
   baseUrl = '';
   vendor: any;
   ngOnInit(): void {
-    //debugger;
+
     this.visibilityService.closeSideBar();
     this.visibilityService.isSidebarVisibleSubject.next(false);
 
@@ -66,22 +66,20 @@ export class VendarSurveyListComponent {
     this.getNames()
 
     this.visibilityService.getSearchQuery().subscribe((searchQuery) => {
-      // Use the search query to filter the list
+
       this.applyFilter(searchQuery);
       console.log("applyfilter", searchQuery)
     });
   }
-  // surveyData: any[] = []; 
+
   filteredSurveyData: any[] = [];
   searchQuery: any
   applyFilter(searchQuery: string): void {
     console.log('Search query:', searchQuery);
 
     if (!searchQuery) {
-      // If searchQuery is undefined or empty, display the entire list
       this.filteredSurveyData = [];
     } else {
-      // Filter the list based on the search query
       this.filteredSurveyData = this.surveyData.filter((item: { name: string; userName: string; email: string; }) =>
         (item.name && item.name.toLowerCase().includes(searchQuery.toLowerCase())) ||
         (item.userName && item.userName.toLowerCase().includes(searchQuery.toLowerCase())) ||
@@ -97,11 +95,10 @@ export class VendarSurveyListComponent {
       this.surveyData = data.surveyType;
       this.totalItemsCount = data.totalCount;
       console.log("totalCount", this.totalItemsCount)
-      // alert(this.totalItemsCount);
       this.cdr.detectChanges();
     });
   }
-  models: { id: number, name: string }[] = []; // Assuming 'id' is a number
+  models: { id: number, name: string }[] = [];
 
   getNames() {
     this.themeService.GetCategories().subscribe((data: any) => {
@@ -130,32 +127,32 @@ export class VendarSurveyListComponent {
         },
         error => {
           console.error('Error occurred while sending POST request:', error);
-          // Swal.fire('', error, 'error');
+
           this.utility.showError('error');
           item.status = originalStatus;
         }
       );
     } else {
-      // User doesn't have sufficient permissions
+
       console.log('Insufficient permissions to toggle');
-      // Swal.fire('', 'You have no permissions', 'error');
+
       this.utility.showError('You have no permissions');
       if (item.status !== originalStatus) {
         item.status = originalStatus;
       }
-      // Additional action or feedback for insufficient permissions
+
     }
   }
   onPageChange(pageNumber: number) {
     console.log(pageNumber);
-    // Handle page change event
+
     this.pageNumber = pageNumber;
     this.getVendarSurveyList(this.pageNumber, this.pageSize)
     this.currentPage = this.pageNumber
-    // You can also fetch data for the selected page here based on the pageNumber
+
   }
   jumpToPage() {
-    // Add any necessary validation logic before emitting the pageChange event
+
     if (this.currentPage > 0 && this.currentPage <= Math.ceil(this.totalItemsCount / this.pageSize)) {
       this.onPageChange(this.currentPage);
     }
@@ -164,10 +161,7 @@ export class VendarSurveyListComponent {
     this.onPageChange(this.pageNumber)
   }
 
-  //delete
-  // openLg(content: any) {
-  //   this.modalService.open(content, { size: 'lg', centered: true });
-  // }
+
 
 
   itemId: 5;
@@ -188,7 +182,7 @@ export class VendarSurveyListComponent {
     this.modalService.open(sidecontent, { centered: true });
   }
 
-  // Function to delete survey
+
   deleteSurvey(itemId: any) {
     this.userId = this.utility.getUserId();
 

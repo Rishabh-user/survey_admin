@@ -37,7 +37,6 @@ export class NccsPopupComponent {
 
   show() {
     this.modal.show();
-    //this.getNccs();
     this.getQuestions();
   }
 
@@ -69,7 +68,7 @@ export class NccsPopupComponent {
     }
   }
   trackByFn(index: number, question: Question): number {
-    return question.id; // Assuming 'id' is a unique identifier for each question
+    return question.id;
   }
   getQuestions() {
     this.surveyservice.getGenericQuestionType1(this.typeid).subscribe({
@@ -99,7 +98,6 @@ export class NccsPopupComponent {
       },
       error: (err) => {
         console.log("An Error occurred while fetching questions", err);
-        // Handle error - show a message or perform any necessary action
       }
     });
   }
@@ -114,23 +112,20 @@ export class NccsPopupComponent {
   continueClicked() {
 
     const currentDateTime = this.getCurrentDateTime();
-    // Assuming 'questions' is an array containing multiple instances of the Question class
 
-    // Check if at least one option is selected for all questions
     if (!this.questions.every(question => question.options.some(option => option.selected))) {
       this.utility.showError("Please select at least one option for each question");
       return;
     }
 
-    let successfulAPICalls = 0; // Counter to track successful API calls
+    let successfulAPICalls = 0;
     let delayCounter = 0;
     for (let i = 0; i < this.questions.length; i++) {
 
       const currentQuestion = this.questions[i];
       console.log("currentQuestion", this.questions[i])
-      // currentQuestion.questionTypeId = this.questionTypeId
       if (i === 1) {
-        currentQuestion.questionTypeId = 7; // Set questionTypeId to 7 for the third question
+        currentQuestion.questionTypeId = 7;
 
       } else {
         currentQuestion.questionTypeId = this.questionTypeId
@@ -145,7 +140,6 @@ export class NccsPopupComponent {
 
 
 
-      // Filter selected options for the current question
       currentQuestion.options = currentQuestion.options.filter(option => option.selected);
       currentQuestion.options.forEach(option => {
         option.createdDate = currentDateTime;
@@ -156,7 +150,6 @@ export class NccsPopupComponent {
         continue;
       }
 
-      // Skip current question if no options are selected
 
 
       setTimeout(() => {
@@ -175,7 +168,7 @@ export class NccsPopupComponent {
             console.error(`Error in API call ${i + 1}:`, err);
           }
         });
-      }, delayCounter * 1000); // Delay each API call by 'delayCounter' seconds
+      }, delayCounter * 1000);
       delayCounter++;
     }
 
