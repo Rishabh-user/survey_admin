@@ -86,22 +86,27 @@
     <div class="mb-5">
         <div class="card">
             <div class="row align-items-center justify-content-between">
-                <div class="col-md-6">
+                <div class="col-md-4">
                     <h4 class="mb-2">Sessions Overview</h4>
-                    <p>25/09/2023 - 25/10/2023</p>
+                    <!-- <p>25/09/2023 - 25/10/2023</p> -->
                 </div>
-                <div class="col-md-6 text-end">
+                <div class="col-md-8 text-end">
                     <div class="row">
                         <div class="col">
-                            <select class="form-select">
-                                <option selected>Open this select menu</option>
-                                <option value="1">Online Survey</option>
-                                <option value="2">Offline Survey</option>
+                            <select class="form-select" [(ngModel)]="selectedYear"  (change)="getReportForSelectedYear()">
+                                <option *ngFor="let year of years" [value]="year">{{year}}</option>
                             </select>
                         </div>
                         <div class="col">
-                            <a href="#" class="btn btn-primary">Download CSV <ng-icon class="ms-3"
-                                    name="heroArrowLongRight"></ng-icon></a>
+                            <select class="form-select" [(ngModel)]="selectedMonth" (change)="getReportForSelectedYear()">
+                                <option value="All">All</option>
+                                <option *ngFor="let month of months" [value]="month.value">{{month.name}}</option>
+                            </select>
+                        </div>
+                        
+                        <div class="col">
+                            <a href="javascript:" class="btn btn-primary">Download CSV <ng-icon class="ms-3"
+                                name="heroArrowLongRight"></ng-icon></a>
                         </div>
                     </div>
                 </div>

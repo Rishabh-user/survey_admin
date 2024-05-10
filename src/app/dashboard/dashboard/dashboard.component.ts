@@ -32,9 +32,14 @@ export class DashboardComponent {
   @ViewChild('CreateSurveyModal', { static: true }) CreateSurveyModal!: ModalDirective;
   @ViewChild('popupTemplate') popupTemplate: TemplateRef<any>;
   modalRef: NgbModalRef;
+  byYear: any;
+  reportSurvey: any;
+  surveyReportData: any;
+  chart: Chart;
     
   constructor(private visibilityService: DataService, private modalService: NgbModal, public themeService: DataService,
     public surveyservice: SurveyService, private auth: AuthService, private utility: UtilsService, private crypto: CryptoService, private router: Router,
+    private csvService: SurveyService,
     private datePipe: DatePipe) {
     this.baseUrl = environment.baseURL;
     visibilityService.articleVisible.next(true);
@@ -150,7 +155,6 @@ export class DashboardComponent {
     modal.dismiss();
   }
 
-  chart: any = [];
   ngOnInit(): void {
     this.showHeader();
     this.createChart();
@@ -161,47 +165,50 @@ export class DashboardComponent {
     this.getSurveyList();
     this.getCountries();
     this.getNames();
-    
+    this.getReportForSelectedYear();
   }
+  
  
-  createChart() {
+  // createChart() {
     
-    this.chart = new Chart("canvas", {
-      type: 'line',
-      data: {
-        labels: ['2023-04-06', '2023-05-06', '2023-06-06', '2023-07-06', '2023-08-06', '2023-09-06', '2023-10-06'],
-        datasets: [
-          {
-            label: "online",
-            data: ['300', '350', '280', '550', '450', '700', '680'],
-            borderColor: '#00e396',
-            backgroundColor: 'rgba(0, 227, 150, 0.2)',
-            fill: {
-              target: 'origin',
-              above: 'rgba(0, 227, 150, 0.2)',
-              below: 'rgba(0, 227, 150, 0)'
-            },
-            tension: 0.3
-          },
-          {
-            label: "offline",
-            data: ['100', '300', '520', '300', '320', '400', '350'],
-            borderColor: '#008ffb',
-            backgroundColor: 'rgba(0, 143, 251, 0.2)',
-            fill: {
-              target: 'origin',
-              above: 'rgba(0, 143, 251, 0.2)',
-              below: 'rgba(0, 143, 251, 0)'
-            },
-            tension: 0.3
-          }
-        ]
-      },
-      options: {
-        aspectRatio: 3
-      }
-    });
-  }
+  //   this.chart = new Chart("canvas", {
+  //     type: 'line',
+  //     data: {
+  //       labels: ['2023-04-06', '2023-05-06', '2023-06-06', '2023-07-06', '2023-08-06', '2023-09-06', '2023-10-06'],
+  //       datasets: [
+  //         {
+  //           label: "online",
+  //           data: ['300', '350', '280', '550', '450', '700', '680'],
+  //           borderColor: '#00e396',
+  //           backgroundColor: 'rgba(0, 227, 150, 0.2)',
+  //           fill: {
+  //             target: 'origin',
+  //             above: 'rgba(0, 227, 150, 0.2)',
+  //             below: 'rgba(0, 227, 150, 0)'
+  //           },
+  //           tension: 0.3
+  //         },
+  //         {
+  //           label: "offline",
+  //           data: ['100', '300', '520', '300', '320', '400', '350'],
+  //           borderColor: '#008ffb',
+  //           backgroundColor: 'rgba(0, 143, 251, 0.2)',
+  //           fill: {
+  //             target: 'origin',
+  //             above: 'rgba(0, 143, 251, 0.2)',
+  //             below: 'rgba(0, 143, 251, 0)'
+  //           },
+  //           tension: 0.3
+  //         }
+  //       ]
+  //     },
+  //     options: {
+  //       aspectRatio: 3
+  //     }
+  //   });
+  // }
+  
+  
 
   openVerticallyCentered(content: any) {
     this.modalService.open(content, { centered: true, size: 'lg' });
@@ -247,20 +254,158 @@ export class DashboardComponent {
     });
     
   }
-
-  // getSurveyReport() {
-  //   this.surveyservice.getReportSurvey(this.surveyId).subscribe({
-  //     next: (resp: any) => {
-  //       this.utility.showSuccess('Updated.');
-  //       window.location.reload();
-  //     },
-  //     error: (err: any) => {
-  //       this.utility.showError('error');
-  //     }
-  //   });
-  // }
   onAddNewSurveyClick() {
     this.CreateSurveyModal.show();
+  }
+  // Get Report Graph
+  selectedMonth: any = 'All';
+  months: { name: string, value: number }[] = [    
+    { name: 'March', value: 3 },
+    { name: 'April', value: 4 },
+    { name: 'May', value: 5 },
+    { name: 'June', value: 6 },
+    { name: 'July', value: 7 },
+    { name: 'August', value: 8 },
+    { name: 'September', value: 9 },
+    { name: 'October', value: 10 },
+    { name: 'November', value: 11 },
+    { name: 'December', value: 12 },
+    { name: 'January', value: 1 },
+    { name: 'February', value: 2 }
+  ];
+  selectedYear: string = '2024';
+  years: string[] = [
+    '2023', '2024', '2025', '2026', '2027', '2027', '2028', '2029', '2030'
+  ];
+  getReportForSelectedYear(): void {
+    if (this.selectedMonth === 'All') {
+        this.surveyservice.getReportBySurvey(this.selectedYear).subscribe({
+            next: (resp: any) => {
+                this.surveyReportData = resp.surveyReportData;
+                this.createChart();
+            },
+            error: (err: any) => {
+                console.error('Error fetching report data:', err);
+            }
+        });
+    } else {
+        this.surveyservice.getReportBySurvey(this.selectedYear, this.selectedMonth).subscribe({
+            next: (resp: any) => {
+                this.surveyReportData = resp.surveyReportData;
+                this.createChart();
+            },
+            error: (err: any) => {
+                console.error('Error fetching report data:', err);
+            }
+        });
+    }
+}
+  
+  //create Chart
+  createChart(): void {    
+    if (!this.surveyReportData || !Array.isArray(this.surveyReportData)) {
+      console.error('Survey report data is missing or not an array.');
+      return;
+    }
+  
+    const months: string[] = [
+      '0', 'March', 'April', 'May', 'June', 
+      'July', 'August', 'September', 'October', 'November', 'December', 'January', 'February'
+    ];
+    const isMonthSelected = this.selectedMonth !== 'All';
+    //const uniqueMonths: string[] = Array.from(new Set(this.surveyReportData.map(item => months[item.month - 1])));
+    const uniqueMonths: string[] = [...new Set(months)];
+    const uniqueDates = isMonthSelected 
+    ? Array.from(new Set(this.surveyReportData.map(item => item.date)))
+    : Array.from(new Set(this.surveyReportData.map(item => item.date.split('-')[0])));
+    const delData: number[] = Array(uniqueMonths.length).fill(0);
+    const holData: number[] = Array(uniqueMonths.length).fill(0);
+    const actData: number[] = Array(uniqueMonths.length).fill(0);
+  
+    this.surveyReportData.forEach((item: any) => {
+      const index = item.month;
+      if (item.status === 'DEL') {
+        delData[index] = item.total;
+      } else if (item.status === 'HOL') {
+        holData[index] = item.total;
+      } else if (item.status === 'ACT') {
+        actData[index] = item.total;
+      }
+    });
+    this.surveyReportData.forEach((item: any) => {
+      const index = isMonthSelected ? uniqueDates.indexOf(item.date) : uniqueDates.indexOf(item.date.split('-')[0]);
+      if (item.status === 'DEL') {
+        delData[index] += item.total;
+      } else if (item.status === 'HOL') {
+        holData[index] += item.total;
+      } else if (item.status === 'ACT') {
+        actData[index] += item.total;
+      }
+    });
+
+    if (this.chart) {
+      this.chart.destroy();
+    }
+  
+    this.chart = new Chart("canvas", {
+      type: 'line',
+      data: {
+        labels: isMonthSelected ? uniqueDates : uniqueMonths,
+        datasets: [
+          {
+            label: "Inactive",
+            data: delData,
+            borderColor: '#FF5733',
+            backgroundColor: 'rgba(255, 87, 51, 0.2)',
+            fill: {
+              target: 'origin',
+              above: 'rgba(255, 87, 51, 0.2)',
+              below: 'rgba(255, 87, 51, 0)'
+            },
+            tension: 0.3
+          },
+          {
+            label: "Hold",
+            data: holData,
+            borderColor: '#33FFB8',
+            backgroundColor: 'rgba(51, 255, 184, 0.2)',
+            fill: {
+              target: 'origin',
+              above: 'rgba(51, 255, 184, 0.2)',
+              below: 'rgba(51, 255, 184, 0)'
+            },
+            tension: 0.3
+          },
+          {
+            label: "Active",
+            data: actData,
+            borderColor: '#3363FF',
+            backgroundColor: 'rgba(51, 99, 255, 0.2)',
+            fill: {
+              target: 'origin',
+              above: 'rgba(51, 99, 255, 0.2)',
+              below: 'rgba(51, 99, 255, 0)'
+            },
+            tension: 0.3
+          }
+        ]
+      },
+      options: {
+        aspectRatio: 3,
+        scales: {
+          x: {
+            beginAtZero: true,
+            
+          },
+          y: {
+            beginAtZero: true
+          }
+        }
+      }
+    });
+  }
+  onYearChange(): void {
+    this.getReportForSelectedYear();
   }
 
 

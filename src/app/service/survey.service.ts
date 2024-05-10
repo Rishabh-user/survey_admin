@@ -420,4 +420,12 @@ export class SurveyService {
     const url = `${this.apiUrl}api/admin/${this.userId}/Vendar/GetQuotaBySurveyId?surveyId=${surveyId}`;
     return this.http.get<responseDTO[]>(url);
   }
+  getReportBySurvey(year: any, month?: number | null): Observable<responseDTO[]> {
+    let url = `${this.apiUrl}api/admin/${this.userId}/Survey/ReportBySurvey?byYear=${year}`;
+    if (month) {
+      url += `&byMonth=${month}`;
+    }
+    return this.http.get<responseDTO[]>(url);
+  }
+
 }
