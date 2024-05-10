@@ -39,9 +39,8 @@ export class SupportComponent {
       console.log("centerId", this.centerId)
     });
   }
-  // post data
   submitForm() {
-    
+
     const url = `${this.apiUrl}SubmitQuery`;
     const params = {
       Id: this.id,
@@ -50,22 +49,22 @@ export class SupportComponent {
       Message: this.message,
       ContactNumber: this.contactNo
     };
-    
+
     this.http.post(url, null, { params, responseType: 'text' }).subscribe({
       next: (response: any) => {
-          console.log('Response:', response);
-          if (response.includes('CreatedSuccessfully')) {
-              console.log('Data sent successfully');
-              this.utils.showSuccess('Data sent successfully');
-          } else {
-              console.error('Unexpected response:', response);
-              this.utils.showError('Unexpected response');
-          }
+        console.log('Response:', response);
+        if (response.includes('CreatedSuccessfully')) {
+          console.log('Data sent successfully');
+          this.utils.showSuccess('Data sent successfully');
+        } else {
+          console.error('Unexpected response:', response);
+          this.utils.showError('Unexpected response');
+        }
       },
       error: (err: any) => {
-          console.error('Error occurred while sending form data:', err);
-          this.utils.showError(err);
+        console.error('Error occurred while sending form data:', err);
+        this.utils.showError(err);
       }
-  });
+    });
   }
 }

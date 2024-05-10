@@ -45,11 +45,6 @@ export class ProfileIdPopupComponent {
     this.baseUrl = environment.baseURL;
 
 
-    // this.filteredOptions = this.searchControl.valueChanges
-    //   .pipe(
-    //     startWith(''),
-    //     map(value => this._filter(value))
-    //   );
 
   }
 
@@ -150,24 +145,24 @@ export class ProfileIdPopupComponent {
             if (this.router.url.includes('/manage-survey')) {
               setTimeout(() => {
                 window.location.reload();
-              }, 100); // Adjust the delay as needed
+              }, 100);
             }
           }
         },
         error => {
           console.error('Error occurred while sending POST request:', error);
-          // Swal.fire('', error, 'error');
+
           this.utility.showError(error);
         }
       );
     }
   }
   convertStringToNumber(str: string): number | null {
-    const converted = +str; // Using the unary plus operator to attempt conversion
+    const converted = +str;
     return isNaN(converted) ? null : converted;
   }
   removeQuotes(str: string): string {
-    return str.replace(/"/g, ''); // Replaces all occurrences of double quotes with an empty string
+    return str.replace(/"/g, '');
   }
 
 }

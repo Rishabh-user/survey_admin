@@ -39,7 +39,6 @@ export class NoOfChildPopupComponent {
 
   show() {
     this.modal.show();
-    //this.getNoOfChild();
     this.getQuestions();
   }
 
@@ -61,17 +60,14 @@ export class NoOfChildPopupComponent {
           const question = new Question();
           question.id = item.questionId;
           question.question = item.question;
-          question.image = item.image || ''; // Handling null image
-
-          // Assign other properties to the 'question' object from 'ResponseDTO' if needed
+          question.image = item.image || '';
 
           // Assign options
           question.options = item.options.map((optionItem: { id: number, option: string, image: string }) => {
             const option = new Option();
             option.id = optionItem.id;
             option.option = optionItem.option;
-            option.image = optionItem.image || ''; // Handling null image for options if required
-            // Assign other properties to the 'option' object from 'ResponseDTO' if needed
+            option.image = optionItem.image || '';
             return option;
           });
 
@@ -82,7 +78,7 @@ export class NoOfChildPopupComponent {
     });
   }
   selectOption(option: Option) {
-    option.selected = !option.selected; // Toggle selection on click
+    option.selected = !option.selected;
   }
   selectedQuestionTypes: number[] = [];
 
@@ -100,7 +96,7 @@ export class NoOfChildPopupComponent {
     }
   }
   trackByFn(index: number, question: Question): number {
-    return question.id; // Assuming 'id' is a unique identifier for each question
+    return question.id;
   }
 
   isAtLeastOneOptionSelected(): boolean {
@@ -115,7 +111,6 @@ export class NoOfChildPopupComponent {
     }
 
     const currentDateTime = this.getCurrentDateTime();
-    // Assuming 'questions' is an array containing multiple instances of the Question class
 
     let successfulAPICalls = 0;
     for (let i = 0; i < this.questions.length; i++) {
@@ -126,25 +121,21 @@ export class NoOfChildPopupComponent {
       currentQuestion.modifiedDate = this.getCurrentDateTime();
       currentQuestion.genericTypeId = this.typeid
 
-      // Filter selected options for the current question
       currentQuestion.options = currentQuestion.options.filter(option => option.selected);
       currentQuestion.options.forEach(option => {
         option.createdDate = currentDateTime;
         option.modifiedDate = currentDateTime;
       });
 
-      // Make an API call for each question with its selected options
       this.surveyservice.CreateGeneralQuestion(currentQuestion).subscribe({
         next: (resp: any) => {
-          // Handle success response for each question
           console.log(`API call ${i + 1} successful`);
-          // Add further logic if needed upon successful creation of each question
           successfulAPICalls++;
 
           if (successfulAPICalls === this.questions.length) {
-            if(resp=='"QuestionAlreadyExits"'){
+            if (resp == '"QuestionAlreadyExits"') {
               this.utility.showError("This Question Already Created ");
-            }else{
+            } else {
               this.utility.showSuccess('Question Generated Successfully.');
               this.close();
               this.onSaveEvent.emit();
@@ -152,9 +143,7 @@ export class NoOfChildPopupComponent {
           }
         },
         error: (err: any) => {
-          // Handle error response for each question
           console.error(`Error in API call ${i + 1}:`, err);
-          // Perform any necessary actions upon error for each question
         }
       });
     }

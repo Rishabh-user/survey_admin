@@ -24,7 +24,6 @@ export class HttpInterceptorService implements HttpInterceptor {
       });
     }
 
-    // Show loader before the request is made
     this.loaderService.show();
 
     return next.handle(request).pipe(
@@ -38,11 +37,9 @@ export class HttpInterceptorService implements HttpInterceptor {
           if (!this.modalService.isModalOpen()) {
             this.modalService.triggerModal(true);
           }
-          // return new Observable<HttpEvent<any>>();
         }
         return throwError(() => err);
       }),
-      // Hide loader after the request is completed
       finalize(() => {
         this.loaderService.hide();
       })

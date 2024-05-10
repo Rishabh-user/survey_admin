@@ -93,7 +93,6 @@ export class ProfileByIdComponent {
 
   userName: any
   lastname: any
-  // contactNo: any
   userroledata: any
   usercreateddate: any
   userstatus: any
@@ -112,14 +111,11 @@ export class ProfileByIdComponent {
       this.userstatus = filteredUser.status
 
 
-      // You can access other properties in a similar manner
-
       console.log("User Name:", this.userName);
       console.log("User Name:", this.lastname);
       console.log("User Email:", this.email);
       console.log("user contact", this.contactNo)
       console.log("status", this.userstatus)
-      // Output other details as needed
       this.isChecked = this.userstatus === 'ACT';
       console.log(this.isChecked)
 
@@ -173,7 +169,7 @@ export class ProfileByIdComponent {
 
   }
 
-  // checkbox
+
   selectAll: boolean = false;
 
   selectAllCheckboxes() {
@@ -182,11 +178,10 @@ export class ProfileByIdComponent {
     }
   }
 
-  // filtering
+
 
   selectedCategory: string = 'All Roles';
 
-  //validate
 
   firstNamerequired: boolean = true
   lastNamerequired: boolean = true

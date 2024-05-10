@@ -35,37 +35,13 @@ export class LoginFormComponent {
     this.token = undefined;
   }
 
-  // hideHeader() {
-  //   this.visibilityService.toggleHeaderVisibility(false);
-  // }
-  // showHeader() {
-  //   this.visibilityService.toggleHeaderVisibility(true);
-  // }
-  // hideSideBar() {
-  //   this.visibilityService.toggleNavbarVisibility(false);
-  // }
-  // showSideBar() {
-  //   this.visibilityService.toggleNavbarVisibility(true);
-  // }
-
-  // hideBreadcrumb() {
-  //   this.visibilityService.toggleBreadcrumbVisibility(false);
-  // }
-
-  // ShowBreadcrumb() {
-  //   this.visibilityService.toggleBreadcrumbVisibility(true);
-  // }
 
   ngOnInit() {
-    // this.hideHeader();
-    // this.hideSideBar();
-    // this.hideBreadcrumb();
 
     this.createForm();
   }
- 
 
-  //login api
+
   createForm() {
     this.loginForm = this.fb.group({
       email: [
@@ -83,7 +59,6 @@ export class LoginFormComponent {
   }
 
   onSubmit() {
-    //if (this.captchaComponent.validateCaptcha()) {
     this.submitted = true;
     if (this.loginForm.valid) {
       this.loginForm.removeControl('rememberMe');
@@ -91,7 +66,7 @@ export class LoginFormComponent {
       this.loading = true;
       const returnUrl =
         this.route.snapshot.queryParamMap.get('returnUrl') || '/dashboard';
-      //this.router.navigate(['/dashboard']);
+
 
       const userDetails = {
         email: this.loginForm.get('email')?.value,
@@ -104,7 +79,7 @@ export class LoginFormComponent {
         .pipe(first())
         .subscribe({
           next: (result) => {
-            // debugger;
+
             if (result) {
               this.loginForm.reset();
 
@@ -117,8 +92,6 @@ export class LoginFormComponent {
             }
           },
           error: (errObject) => {
-            //console.log(error);
-            //Swal.fire('', errObject?.error, 'error');
             this.utility.showError("Please enter correct password ");
           },
           complete: () => {

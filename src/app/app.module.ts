@@ -8,7 +8,6 @@ import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { FormsModule } from '@angular/forms';
 
-// import { EditorModule, TINYMCE_SCRIPT_SRC } from '@tinymce/tinymce-angular';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 
@@ -16,7 +15,7 @@ import { MatInputModule } from '@angular/material/input';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatSelectModule } from '@angular/material/select';
-// Icons
+
 import { NgIconsModule, provideNgIconsConfig } from '@ng-icons/core';
 
 import { heroHome } from '@ng-icons/heroicons/outline';
@@ -41,7 +40,7 @@ import { heroShoppingBag } from '@ng-icons/heroicons/outline';
 import { heroInformationCircle } from '@ng-icons/heroicons/outline';
 import { heroLink } from '@ng-icons/heroicons/outline';
 import { heroPlus } from '@ng-icons/heroicons/outline';
-// Icons
+
 
 import { HeaderComponent } from './shared/header/header.component';
 import { FooterComponent } from './shared/footer/footer.component';
@@ -85,7 +84,6 @@ import { SupportComponent } from './support/support.component';
     CreateSurveyPopupComponent,
     SignUpComponent,
     ErrorComponent,
-    //DashboardComponent,
     ForgotPasswordComponent,
     PaymentComponent,
     LoginFormComponent,
@@ -140,7 +138,6 @@ import { SupportComponent } from './support/support.component';
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   providers: [
-    // { provide: TINYMCE_SCRIPT_SRC, useValue: 'tinymce/tinymce.min.js' },
     LoaderService,
     provideNgIconsConfig({
       size: '1.8em',

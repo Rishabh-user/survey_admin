@@ -9,7 +9,6 @@ import { heroHome } from '@ng-icons/heroicons/outline';
 import { heroArrowLongRight } from '@ng-icons/heroicons/outline';
 
 import { FormsModule } from '@angular/forms';
-// import { EditorModule, TINYMCE_SCRIPT_SRC } from '@tinymce/tinymce-angular';
 
 
 @NgModule({
@@ -27,7 +26,6 @@ import { FormsModule } from '@angular/forms';
   ],
   schemas: [NO_ERRORS_SCHEMA],
   providers: [
-    // { provide: TINYMCE_SCRIPT_SRC, useValue: 'tinymce/tinymce.min.js' }
   ]
 })
 export class AccountModule { }

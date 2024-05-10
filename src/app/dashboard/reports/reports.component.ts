@@ -10,7 +10,7 @@ import { environment } from 'src/environments/environment';
   styleUrls: ['./reports.component.css']
 })
 export class ReportsComponent {
-  // Tooltip
+
   showTooltip: { [key: string]: boolean } = {};
   userId: any;
   pageSize: number = 10;
@@ -19,19 +19,19 @@ export class ReportsComponent {
   totalItemsCount: number = 100
   reportSurvey: any;
   surveyId: any;
-  
+
   toggleTooltip(identifier: string) {
     this.showTooltip[identifier] = !this.showTooltip[identifier];
   }
   hideTooltip(identifier: string) {
-      this.showTooltip[identifier] = false;
+    this.showTooltip[identifier] = false;
   }
-// Tooltip
+  // Tooltip
 
   baseUrl = '';
-  constructor(  public themeService: SurveyService,private cdr: ChangeDetectorRef,) {
+  constructor(public themeService: SurveyService, private cdr: ChangeDetectorRef,) {
     this.baseUrl = environment.baseURL;
-  
+
   }
   ngOnInit(): void {
     this.getSurveyReportBySurvey(this.pageNumber, this.pageSize);
@@ -42,14 +42,14 @@ export class ReportsComponent {
       console.log("reports", data)
       this.reportSurvey = data.surveyType;
       this.totalItemsCount = data.totalCount;
-      
+
       console.log("totalCount", this.totalItemsCount)
       console.log("reportSurvey", this.reportSurvey)
       console.log("surveyId", this.surveyId)
       this.cdr.detectChanges();
     });
   }
-  
+
   onPageChange(event: any) {
     const pageNumber = event.page;
     this.currentPage = pageNumber;

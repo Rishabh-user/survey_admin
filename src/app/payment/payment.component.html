@@ -1,115 +1,86 @@
 <section>
-    <div class="row justify-content-center">
-      <div class="col-md-8">
-        <div class="select-plan">
-          <h4>Puchase plan</h4>
-          <p>Best for medium business owners, startups who need landing pages for their business.</p>
-          <ul>
-            <li *ngFor="let plan of subscriptionPlans; let i = index">
-              <input type="radio" [attr.id]="plan.price" name="amount" [(ngModel)]="amount" [value]="plan.price" [checked]="selectedPlan === plan.id"
+  <div class="row justify-content-center">
+    <div class="col-md-8">
+      <div class="select-plan">
+        <h4>Puchase plan</h4>
+        <p>Best for medium business owners, startups who need landing pages for their business.</p>
+        <ul>
+          <li *ngFor="let plan of subscriptionPlans; let i = index">
+            <input type="radio" [attr.id]="plan.price" name="amount" [(ngModel)]="amount" [value]="plan.price"
+              [checked]="selectedPlan === plan.id" (blur)="validateSurvey()">
+            <label [attr.for]="plan.price">
+              <h5>{{ plan.name }}</h5>
+              <p>₹ {{ plan.price }}<span> /month</span></p>
+              <div class="text-end">
+                <button type="button" class="btn btn-primary btn-sm mt-3 w-100">Upgrade</button>
+              </div>
+            </label>
+          </li>
+        </ul>
+        <div *ngIf="!amountSelected && amountError" class="text-danger" class="text-danger">Select your package.</div>
+        <div class="row mt-4">
+          <div class="col-md-6 mb-4">
+            <label for="name" class="form-label">First Name</label>
+            <input type="text" class="form-control" [(ngModel)]="firstName" name="firstName" aria-label="First name"
               (blur)="validateSurvey()">
-              <label [attr.for]="plan.price">
-                <h5>{{ plan.name }}</h5>
-                <p>₹ {{ plan.price }}<span> /month</span></p>
-                <div class="text-end">
-                  <button type="button" class="btn btn-primary btn-sm mt-3 w-100">Upgrade</button>
-                </div>
-              </label>
-            </li>            
-          </ul> 
-          <div *ngIf="!amountSelected && amountError" class="text-danger" class="text-danger">Select your package.</div>                  
-          <div class="row mt-4">
-              <div class="col-md-6 mb-4">
-                  <label for="name" class="form-label">First Name</label>
-                  <input type="text" class="form-control" [(ngModel)]="firstName" name="firstName"
-                      aria-label="First name" (blur)="validateSurvey()">
-                  <div *ngIf="!firstname" class="text-danger">First Name is required.</div>
-              </div>
-              <div class="col-md-6 mb-4">
-                <label for="contactNo" class="form-label">Contact No</label>
-                <input type="number" class="form-control" [(ngModel)]="contactNo" name="contactNo"
-                    (blur)="validateSurvey()" minlength="10" maxlength="10">
-                <div *ngIf="!Contact" class="text-danger">Contact is required.</div>
-              </div>
+            <div *ngIf="!firstname" class="text-danger">First Name is required.</div>
           </div>
-          <div class="row">
-            <div class="col-md-6 mb-4">
-              <label for="email" class="form-label">Email Address</label>
-              <input type="email" class="form-control" [(ngModel)]="email" name="email" disabled
-                  (blur)="validateSurvey()">
-              <div *ngIf="!emailaddress" class="text-danger">Email is required.</div>
-            </div>
-            <div class="col-md-6 mb-4">
-              <label for="centerId" class="form-label">Organisation ID</label>
-              <input type="text" class="form-control" id="centerId" [(ngModel)]="centerId" name="centerId" disabled>
-            </div>
-            
+          <div class="col-md-6 mb-4">
+            <label for="contactNo" class="form-label">Contact No</label>
+            <input type="number" class="form-control" [(ngModel)]="contactNo" name="contactNo" (blur)="validateSurvey()"
+              minlength="10" maxlength="10">
+            <div *ngIf="!Contact" class="text-danger">Contact is required.</div>
           </div>
-          <div class="row">
-            <div class="col-md-6 mb-4">
-              <label for="address" class="form-label">Address</label>
-              <input type="text" class="form-control" [(ngModel)]="address" name="address" >
-            </div>
-            <div class="col-md-6 mb-4">
-              <label for="centerId" class="form-label">City</label>
-              <input type="text" class="form-control" id="city" [(ngModel)]="city" name="city">
-            </div>
-            
-            <div class="col-md-6 mb-4">
-              <label for="centerId" class="form-label">Country</label>
-              <input type="text" class="form-control" id="country" [(ngModel)]="country" name="country">
-              <!-- <mat-form-field>
-                <mat-select name="countryString" [(value)]="selectedCountry" placeholder="Country">
-                    <mat-select-trigger>
-                        <img *ngIf="selectedCountry && selectedCountry.images"
-                            [src]="baseUrl + '/assets/images/country-flag/' + selectedCountry.images"
-                            class="me-2 rounded-circle" style="width: 30px;height: 30px;" />
-                        {{selectedCountry ? selectedCountry.name : ''}}
-                    </mat-select-trigger>
-                    <mat-option *ngFor="let item of country" [value]="item">
-                       
-                        <img *ngIf="item.images"
-                            [src]="baseUrl + '/assets/images/country-flag/' + item.images"
-                            class="me-2 rounded-circle" style="width: 30px;height: 30px;" />
-                        {{item.name}}
-                    </mat-option>
-                </mat-select>
-              </mat-form-field> -->
-              
-            </div>
-            <div class="col-md-6 mb-4">
-              <label for="centerId" class="form-label">State</label>
-              <input type="text" class="form-control" id="state" [(ngModel)]="state" name="state">
-            </div>
-            <div class="col-md-6 mb-4">
-              <label for="centerId" class="form-label">Zip Code</label>
-              <input type="text" class="form-control" id="zip" [(ngModel)]="zip" name="zip">
-            </div>
-            <div class="col-md-6 mb-4">
-              <label for="centerId" class="form-label">GST Number</label>
-              <input type="text" class="form-control" id="gstNumber" [(ngModel)]="gstNumber" name="gstNumber">
-            </div>
-          </div>
-          
-          <div class="d-flex gap-3 justify-content-end">
-            <button type="button" class="btn btn-primary mt-3" (click)="submitForm()">Upgrade</button>
-          </div>
-          <!-- <div class="alert alert-primary d-flex align-items-start p-2 my-4" role="alert">
-            <ng-icon name="heroInformationCircle" class="me-2"></ng-icon>
-            <div>
-              Are you sure you want to upgrade you plan? This will shifting  your account to the basic, standard or premium plan.
-            </div>
-          </div> -->
-          
         </div>
-          
+        <div class="row">
+          <div class="col-md-6 mb-4">
+            <label for="email" class="form-label">Email Address</label>
+            <input type="email" class="form-control" [(ngModel)]="email" name="email" disabled
+              (blur)="validateSurvey()">
+            <div *ngIf="!emailaddress" class="text-danger">Email is required.</div>
+          </div>
+          <div class="col-md-6 mb-4">
+            <label for="centerId" class="form-label">Organisation ID</label>
+            <input type="text" class="form-control" id="centerId" [(ngModel)]="centerId" name="centerId" disabled>
+          </div>
+
+        </div>
+        <div class="row">
+          <div class="col-md-6 mb-4">
+            <label for="address" class="form-label">Address</label>
+            <input type="text" class="form-control" [(ngModel)]="address" name="address">
+          </div>
+          <div class="col-md-6 mb-4">
+            <label for="centerId" class="form-label">City</label>
+            <input type="text" class="form-control" id="city" [(ngModel)]="city" name="city">
+          </div>
+
+          <div class="col-md-6 mb-4">
+            <label for="centerId" class="form-label">Country</label>
+            <input type="text" class="form-control" id="country" [(ngModel)]="country" name="country">
+
+
+          </div>
+          <div class="col-md-6 mb-4">
+            <label for="centerId" class="form-label">State</label>
+            <input type="text" class="form-control" id="state" [(ngModel)]="state" name="state">
+          </div>
+          <div class="col-md-6 mb-4">
+            <label for="centerId" class="form-label">Zip Code</label>
+            <input type="text" class="form-control" id="zip" [(ngModel)]="zip" name="zip">
+          </div>
+          <div class="col-md-6 mb-4">
+            <label for="centerId" class="form-label">GST Number</label>
+            <input type="text" class="form-control" id="gstNumber" [(ngModel)]="gstNumber" name="gstNumber">
+          </div>
+        </div>
+
+        <div class="d-flex gap-3 justify-content-end">
+          <button type="button" class="btn btn-primary mt-3" (click)="submitForm()">Upgrade</button>
+        </div>
+
       </div>
-      <!-- <div class="col-md-4">
-        <div class="total-amount">
-          <div class="d-flex justify-content-between mb-3">Selected Plans : <span>{{ selectedPlanName }}</span></div>
-          <div class="d-flex justify-content-between mb-3">Total Amount : <span>{{amount }}</span></div>
-          
-        </div>
-      </div> -->
+
     </div>
+  </div>
 </section>

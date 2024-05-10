@@ -24,15 +24,20 @@
                                 <div class="infocircle">
                                     Status
                                     <div class="custom-tooltip">
-                                        <ng-icon name="heroInformationCircle" ngClass="edit-action info-circle" (click)="toggleTooltip('1')"></ng-icon>
+                                        <ng-icon name="heroInformationCircle" ngClass="edit-action info-circle"
+                                            (click)="toggleTooltip('1')"></ng-icon>
                                         <div class="toast show" *ngIf="showTooltip['1']">
                                             <div class="toast-header">
-                                                <img [src]="baseUrl + '/assets/images/icons/Add-new-question.png'" class="rounded me-2" width="30" height="30" />
+                                                <img [src]="baseUrl + '/assets/images/icons/Add-new-question.png'"
+                                                    class="rounded me-2" width="30" height="30" />
                                                 <h6 class="mb-0 me-auto">Status: Active, Deactive</h6>
-                                                <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close" (click)="hideTooltip('1')"></button>
+                                                <button type="button" class="btn-close" data-bs-dismiss="toast"
+                                                    aria-label="Close" (click)="hideTooltip('1')"></button>
                                             </div>
                                             <div class="toast-body">
-                                                Here is the current status of the aid you have requested. If the aid is active, it means that it is still being processed. If the aid is deactivated, it means that our support team has closed the request.
+                                                Here is the current status of the aid you have requested. If the aid is
+                                                active, it means that it is still being processed. If the aid is
+                                                deactivated, it means that our support team has closed the request.
                                             </div>
                                         </div>
                                     </div>
@@ -57,16 +62,12 @@
                                     </li>
                                 </ul>
                             </span></td>
-                        <!-- <td [ngClass]="'done status'"><span>{{item.status}}</span></td> -->
                         <td
                             [ngClass]="{'done donestatus': item.status === 'ACT', 'paused status': item.status !== 'ACT'}">
                             <span>{{ item.status === 'ACT' ? 'Active' : 'Deactive' }}</span>
                         </td>
                         <td [ngClass]="'action'">
                             <div class="form-check form-switch">
-                                <!-- <input class="form-check-input" type="checkbox" role="switch"
-                                    [ngModel]="item.isChecked ? 1 : 0"
-                                    (ngModelChange)="updateStatus(item.id, $event == 1 ? 'ACT' : 'Other')" /> -->
                                 <input class="form-check-input" type="checkbox" role="switch"
                                     [ngModel]="item.status === 'ACT'"
                                     (ngModelChange)="updateStatus(item.id, $event == 1 ? 'ACT' : 'Other')" />

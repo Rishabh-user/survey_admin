@@ -24,23 +24,21 @@ export class PaymentComponent {
   city: string = '';
   state: string = '';
   country: string;
-  // selectedCountry: { id: string, name: string, images: string } | null = null;
-  // selectedCountryId: string | null = null;
   zip: string = '';
   gstNumber: string = '';
   planId: string = '';
-  
+
   constructor(private surveyservice: SurveyService, public themeService: DataService, private util: UtilsService, private httpClient: HttpClient, private router: Router, private visibilityService: DataService) {
-     
+
   }
- 
+
 
   hideBreadcrumb() {
     this.visibilityService.toggleBreadcrumbVisibility(false);
   }
 
   userId: any;
-  getMyAccount() {    
+  getMyAccount() {
     this.userId = this.util.getUserId();
     this.themeService.GetMyAccount(this.userId).subscribe((data: any) => {
       console.log("data", data)
@@ -51,29 +49,22 @@ export class PaymentComponent {
       this.centerId = data.centerId
     });
   }
- 
-  selectedPlan: string = ''; 
-  selectedPlanName: string = ''; 
 
-  subscriptionPlans: any[] = [ 
+  selectedPlan: string = '';
+  selectedPlanName: string = '';
+
+  subscriptionPlans: any[] = [
     { id: 'basic', name: 'Basic', price: 500 },
     { id: 'standard', name: 'Standard', price: 1200 },
     { id: 'premium', name: 'Premium', price: 2500 }
-  ]; 
-  // updateAmount(): void {
-  //   const selectedPlan = this.subscriptionPlans.find(plan => plan.id === this.selectedPlan);
-  //   if (selectedPlan) {
-  //     this.amount = selectedPlan.price;
-  //     this.selectedPlanName = selectedPlan.name;
-  //   }
-  // }
-  ngOnInit() {    
+  ];
+
+  ngOnInit() {
     this.hideBreadcrumb();
     this.userId = this.util.getUserId();
     this.getMyAccount();
-    //this.getCountries();
   }
-  
+
   information: any[] = [];
   firstname: boolean = true
   amount: string
@@ -85,13 +76,11 @@ export class PaymentComponent {
 
   validateSurvey(): boolean {
     this.firstname = !!this.firstName && this.firstName.trim().length > 0;
-    //this.amount = !!this.amount;
     this.amountSelected = !!this.amount;
     this.amountError = !this.amountSelected;
     this.Contact = !!this.contactNo && this.contactNo.toString().trim().length > 0;
     this.emailaddress = !!this.email && this.email.trim().length > 0;
 
-    // You might want to return whether all fields are valid
     return (
       this.firstname &&
       this.amountSelected &&
@@ -99,11 +88,9 @@ export class PaymentComponent {
       this.emailaddress
     );
   }
-//Pyament Gateway
   razorpayOptions: any = {};
-  //amount: any ;
   apiUrl = environment.apiUrl;
-  
+
   submitForm(): void {
     if (!this.validateSurvey()) {
       this.util.showError('Please fill all required fields.');
@@ -123,16 +110,16 @@ export class PaymentComponent {
       organizationId: this.centerId,
       planId: this.amount
     };
-    this.postAmount(formData).subscribe((response: any) => { // Type assertion to any
-        console.log('Response from server:', response);
-        this.payNow(response, response.orderId); // Call the payNow function with order data to initiate Razorpay payment
-      }, error => {
-        console.error('Error occurred:', error);
-      });
+    this.postAmount(formData).subscribe((response: any) => {
+      console.log('Response from server:', response);
+      this.payNow(response, response.orderId);
+    }, error => {
+      console.error('Error occurred:', error);
+    });
   }
 
   postAmount(formData: any) {
-    
+
     return this.httpClient.post(`${this.apiUrl}api/admin/${this.userId}/Payment/ProcessRequestOrder`, formData);
   }
 
@@ -140,10 +127,9 @@ export class PaymentComponent {
     const razorpayOptions = {
       description: 'Sample Razorpay demo',
       currency: 'INR',
-      amount: orderData.amount * 100, // Convert amount to paisa (Razorpay expects amount in paisa)
+      amount: orderData.amount * 100,
       name: 'Scrip8',
-      key: 'rzp_test_Ncll0VDPCO6Ffq', // Replace with your Razorpay key
-      //image: 'https://mobile.angular.opinionest.com/manage/assets/images/logo/T-logo.png',
+      key: 'rzp_test_Ncll0VDPCO6Ffq',
       prefill: {
         name: 'testing',
         email: 'test@gmail.com',
@@ -159,7 +145,6 @@ export class PaymentComponent {
       },
       handler: (response: any) => {
         console.log(response);
-        // Handle payment success
         this.sendPaymentDetails(response.razorpay_payment_id, orderId);
       }
     };
@@ -167,35 +152,33 @@ export class PaymentComponent {
     const razorpayInstance = new Razorpay(razorpayOptions);
     razorpayInstance.open();
   }
-  sendPaymentDetails(paymentId: string, orderId: string): void {  
+  sendPaymentDetails(paymentId: string, orderId: string): void {
     const requestData = {
       organizationId: this.centerId,
       paymentId: paymentId,
       orderid: orderId,
-      
+
     };
     const apiUrl = `${environment.apiUrl}api/admin/${this.userId}/Payment/CompleteOrderProcess`;
     this.httpClient.post(apiUrl, requestData).subscribe(
       (response: any) => {
-        console.log('Response:', response); // Log the response        
+        console.log('Response:', response);
         if (response.message === "Success") {
           const token = response.token;
           localStorage.setItem('authToken', token);
 
           console.log('Success:', response);
           console.log('Navigating to thank you page...');
-          this.router.navigate(['/thankyou']);  // Redirect to the thank you page
+          this.router.navigate(['/thankyou']);
         } else {
-          console.error('Error in response:', response); // Handle the error condition appropriately
+          console.error('Error in response:', response);
         }
       },
       (error: any) => {
-        console.error('HTTP Error:', error); // Log the HTTP error        
-        // Handle the error response as plain text
-        console.error('Server Error:', error); // Log the server error
-        // Handle the server error condition appropriately
+        console.error('HTTP Error:', error);
+        console.error('Server Error:', error);
       }
     );
   }
- 
+
 }

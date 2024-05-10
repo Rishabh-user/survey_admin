@@ -53,6 +53,7 @@ export class EditSurveyComponent {
   groups: any[] = [];
   questionImage: any
   filesImage: File[] = [];
+  questionfilesImage: File[] = []
   filesVideo: File[] = [];
   logicQuestionList: any
   pipeQuestionList: any
@@ -266,13 +267,12 @@ export class EditSurveyComponent {
   }
 
   onSelectOptionImage(event: any, index: number, qid: number, oid: number): void {
-
+    debugger
     if (!this.optionImages[index]) {
       this.optionImages[index] = [];
     }
 
     this.optionImages[index].push(...event.addedFiles);
-    console.log("newoptionImages:", this.optionImages);
 
     this.optionsArr1[index].images = [...event.addedFiles];
 
@@ -293,25 +293,25 @@ export class EditSurveyComponent {
     } else {
       console.error("No files found for the specified index.");
     }
+    debugger
   }
 
   onSelectNewOptionImage(event: any, index: number, qid: number, oid: number): void {
-    // Ensure inner array exists for the option index
+
     if (!this.newoptionImages[index]) {
       this.newoptionImages[index] = [];
     }
 
-    this.newoptionImages[index].push(...event.addedFiles); // Add the newly added files to the array
+    this.newoptionImages[index].push(...event.addedFiles);
     console.log("newoptionImages:", this.newoptionImages);
 
-    this.optionsArr1[index].images = [...event.addedFiles]; // Update the images array for the corresponding option
+    this.optionsArr1[index].images = [...event.addedFiles];
 
-    // Access the file from this.newoptionImages
+    console.log("opppindex", this.optionsArr1)
     const filesForIndex = this.newoptionImages[index];
 
-    // Check if there are files for the specified index
     if (filesForIndex && filesForIndex.length > 0) {
-      const file = filesForIndex[filesForIndex.length - 1]; // Assuming you want the last added file
+      const file = filesForIndex[filesForIndex.length - 1];
       console.log("file:", file);
       console.log("qid:", qid);
 
@@ -328,34 +328,16 @@ export class EditSurveyComponent {
   }
 
 
-
-  // uploadOptionImage(fileoption: File, qid: number, oid: number): void {
-  //   console.log("oid", oid)
-
-  //   this.surveyservice.uploadOptionImage(fileoption, qid, oid).subscribe(
-  //     (response: String) => {
-  //       console.log('Upload successful:', response);
-  //       this.optionImage = response
-  //       console.log("questionimage", this.optionImage)
-  //       this.optionsArr1[qid].images = this.optionImage
-  //       console.log("optionarr", this.optionsArr1)
-  //     },
-  //     (error) => {
-  //       console.error('Error occurred while uploading:', error);
-
-  //     }
-  //   );
-  // }
-
   uploadOptionImage(fileoption: File, qid: number, oid: number): void {
+    debugger
     console.log("oid", oid);
 
     this.surveyservice.uploadOptionImage(fileoption, qid, oid).subscribe(
       (response: string) => {
         console.log('Upload successful:', response);
         const optionIndex = this.optionsArr1.findIndex(option => option.id === oid);
+        console.log("optionIndex", optionIndex)
         if (optionIndex !== -1) {
-          // Assuming your option object has an 'image' property to store the image URL
 
           this.optionsArr1[optionIndex].image = response.replace(/"/g, "");
 
@@ -368,6 +350,7 @@ export class EditSurveyComponent {
         console.error('Error occurred while uploading:', error);
       }
     );
+    debugger
   }
 
 
@@ -684,12 +667,10 @@ export class EditSurveyComponent {
           }
         },
         error: (err: any) => {
-          // Swal.fire('', err.error, 'error');
           this.utility.showError('error');
         }
       });
     } else {
-      // Create new question
       this.surveyservice.CreateGeneralQuestion(this.question).subscribe({
         next: (resp: any) => {
           this.categoryNameCheck = false;
@@ -826,7 +807,7 @@ export class EditSurveyComponent {
     const file = event.addedFiles && event.addedFiles.length > 0 ? event.addedFiles[0] : null;
 
     if (file) {
-      this.filesImage.push(file); // Store the selected file
+      this.questionfilesImage.push(file); // Store the selected file
       this.uploadImage(file); // Trigger upload after selecting the file
     }
   }

@@ -14,7 +14,7 @@ export class ExpertAidListComponent {
     this.showTooltip[identifier] = !this.showTooltip[identifier];
   }
   hideTooltip(identifier: string) {
-      this.showTooltip[identifier] = false;
+    this.showTooltip[identifier] = false;
   }
 
   UserData: any;
@@ -57,7 +57,6 @@ export class ExpertAidListComponent {
     this.themeService.getExpertAidById(this.centerId).subscribe((data: any) => {
       this.UserData = data;
       console.log("Rishabh", data);
-      //this.cdr.detectChanges();
     });
   }
 

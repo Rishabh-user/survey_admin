@@ -14,7 +14,7 @@ declare var Dropzone: any;
   styleUrls: ['./about.component.css']
 })
 export class AboutComponent {
-  // Tooltip
+
   showTooltip: { [key: string]: boolean } = {};
   toggleTooltip(identifier: string) {
     this.showTooltip[identifier] = !this.showTooltip[identifier];
@@ -22,7 +22,6 @@ export class AboutComponent {
   hideTooltip(identifier: string) {
     this.showTooltip[identifier] = false;
   }
-  // Tooltip
   public Editor = ClassicEditor;
   userId: any;
   constructor(public themeService: DataService, private cdr: ChangeDetectorRef, private util: UtilsService) {
@@ -36,7 +35,7 @@ export class AboutComponent {
   centerId: any;
   baseUrl = '';
 
-  onRemove(event: any) { // Use 'any' as the event type
+  onRemove(event: any) {
     console.log(event);
     this.files.splice(this.files.indexOf(event), 1);
   }
@@ -65,7 +64,6 @@ export class AboutComponent {
   }
 
 
-  // Define a variable to track whether the image has been updated
   imageUpdated: boolean = false;
 
   onSelect(event: any) {
@@ -83,7 +81,7 @@ export class AboutComponent {
       (response: string) => {
         console.log('Upload successful:', response);
         this.image = response.replace(/"/g, '');
-        this.imageUpdated = true; // Set to true since the image has been updated
+        this.imageUpdated = true;
         console.log(this.image);
       },
       (error) => {
@@ -101,7 +99,6 @@ export class AboutComponent {
 
     let imageName = '';
 
-    // Check if image is updated or not
     if (this.imageUpdated) {
       imageName = this.image.split('\\').pop() || this.image;
     }
@@ -145,7 +142,6 @@ export class AboutComponent {
     this.title = !!this.name && this.name.trim().length > 0;
     this.descriptioninfo = !!this.description && this.description.trim().length > 0;
 
-    // You might want to return whether all fields are valid
     return (
       this.title &&
       this.descriptioninfo

@@ -18,7 +18,6 @@ import { environment } from 'src/environments/environment';
   styleUrls: ['./header.component.css']
 })
 export class HeaderComponent {
-  // toggle notification
   showNotification: boolean = false;
   baseUrl: any;
   toggleNotification() {
@@ -30,7 +29,6 @@ export class HeaderComponent {
   surveyControl = new FormControl();
   @ViewChild('popupTemplate') popupTemplate: TemplateRef<any>;
   modalRef: NgbModalRef;
-  //excludedRoutes: string[] = ['/payment', '/login', '/signup', '/thankyou'];
   public constructor(private modalService: NgbModal, public themeService: DataService, private auth: AuthService, private util: UtilsService, public surveyService: SurveyService, private crypto: CryptoService, private router: Router) {
     this.baseUrl = environment.baseURL;
 
@@ -41,7 +39,7 @@ export class HeaderComponent {
     this.getAllSurveyList()
     this.surveyControl.valueChanges
       .pipe(
-        debounceTime(300), // Adjust debounce time as needed
+        debounceTime(300),
         distinctUntilChanged()
       )
       .subscribe((value: string) => {
@@ -88,7 +86,7 @@ export class HeaderComponent {
   }
   filterSurveys(value: string) {
     if (!value) {
-      this.filteredSurveys = this.surveyData; // Show all surveys if search value is empty
+      this.filteredSurveys = this.surveyData;
       return;
     }
     value = value.toLowerCase();
@@ -102,22 +100,19 @@ export class HeaderComponent {
     const selectedSurvey = this.surveyData.find((survey: any) => survey.name === selectedSurveyName);
 
     if (selectedSurvey) {
-      // Log all properties of the selected survey
       for (const key in selectedSurvey) {
         if (Object.prototype.hasOwnProperty.call(selectedSurvey, key)) {
           console.log(`${key}:`, selectedSurvey[key]);
         }
       }
       console.log("selectedSurveyId", selectedSurvey.surveyId)
-      const encryptedId = this.encryptId(selectedSurvey.surveyId); // Assuming you have a function to encrypt the ID
+      const encryptedId = this.encryptId(selectedSurvey.surveyId);
       this.router.navigate(['/survey/manage-survey/', encryptedId]);
-      // You can also store this information in a variable for further use if needed
-      // this.selectedSurveyDetails = selectedSurvey;
     }
   }
   encryptId(id: number): string {
-    const encryptPipe = new EncryptPipe(this.crypto); // Create an instance of the EncryptPipe
-    return encryptPipe.transform(id); // Use the transform method of the pipe to encrypt the ID
+    const encryptPipe = new EncryptPipe(this.crypto);
+    return encryptPipe.transform(id);
   }
 
   surveyControlform = new FormControl();
@@ -142,41 +137,10 @@ export class HeaderComponent {
   }
 
 
-  // search(searchQuery: string): void {
-  //   console.log("search", searchQuery)
-  //   this.surveyService.getSurveySearch({ surveyname: searchQuery }).subscribe((response) => {
-  //     console.log(response);
-  //   });
-  // }
+
   notificationdata: any;
   notificationcount: number
-  // getNotification() {
-  //   this.surveyService.getNotification().subscribe({
-  //     next: (resp: any) => {
-  //       console.log('getNotification Response:', resp);
-  //       this.notificationdata = resp
-  //       console.log("notification data", this.notificationdata)
 
-  //       let count = 0;
-  //       this.notificationdata.forEach((entry: { status: string; }) => {
-  //         if (entry.status === 'ACT') {
-  //           count++;
-  //         }
-  //       });
-  //       this.notificationcount = count
-  //       console.log("notification count", this.notificationcount)
-  //     },
-  //     error: (err) => console.log("An Error occurred while fetching question types", err)
-  //   },
-  //   (error: HttpErrorResponse) => {
-  //     if (error.status === 402) {
-  //       this.openPopup();
-  //     } else {
-  //       console.error("Error fetching user account:", error);
-  //     }
-  //   }
-  //   );
-  // }
 
   getNotification() {
     this.userId = this.util.getUserId();
