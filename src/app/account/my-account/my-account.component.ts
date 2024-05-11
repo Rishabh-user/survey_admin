@@ -79,10 +79,8 @@ export class MyAccountComponent {
   getMyAccount() {
     this.userId = this.util.getUserId();
     this.themeService.GetMyAccount(this.userId).subscribe((data: any) => {
-      console.log("data", data)
+
       this.plans = data.plan
-      console.log("plan", this.plans)
-      console.log("organizationName", this.centerName)
       this.firstName = data.firstName;
       this.lastName = data.lastName
       this.id = data.id
@@ -101,7 +99,6 @@ export class MyAccountComponent {
       this.zip = data.zip
 
       this.cdr.detectChanges();
-      console.log("isPaid", this.isPaid)
     });
 
   }
@@ -162,10 +159,8 @@ export class MyAccountComponent {
       ]
 
     };
-    console.log("dataToSend", dataToSend)
     this.themeService.CreateMyAccount(dataToSend).subscribe(
       response => {
-        console.log('Response from server:', response);
         if (response == '"UpdatedSuccessfully"') {
           this.util.showSuccess(response);
           window.location.reload();
@@ -194,10 +189,8 @@ export class MyAccountComponent {
         newPassword: this.newPassword,
         confirmPassword: this.confirmPassword,
       };
-      console.log("dataToSend", dataToSend2)
       this.themeService.ChangePassword(dataToSend2).subscribe({
         next: (response) => {
-          console.log('Response from server:', response);
           this.util.showSuccess(response);
           this.authService.logout();
           window.location.reload();
@@ -232,10 +225,8 @@ export class MyAccountComponent {
       console.error('No file selected.');
       return;
     }
-    console.log("inside onUpload");
     this.themeService.uploadImage(file, this.userId).subscribe(
       (response) => {
-        console.log('Upload successful:', response);
       },
       (error) => {
         console.error('Error occurred while uploading:', error);

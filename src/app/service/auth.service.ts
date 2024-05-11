@@ -70,8 +70,6 @@ export class AuthService {
         userDetails.CenterName = _userDetail?.CenterName;
 
         this.userData.next(userDetails);
-        console.log("userid", userDetails.userId)
-        console.log("CenterName", userDetails.CenterName)
       } else {
         this.logout();
       }

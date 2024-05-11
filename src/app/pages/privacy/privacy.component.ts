@@ -33,7 +33,6 @@ export class PrivacyComponent {
 
 
   onRemove(event: any) {
-    console.log(event);
     this.files.splice(this.files.indexOf(event), 1);
   }
 
@@ -47,7 +46,7 @@ export class PrivacyComponent {
   getPrivacy() {
     this.userId = this.util.getUserId()
     this.themeService.GetPrivacyPolicy(this.userId).subscribe((data: any) => {
-      console.log("data", data)
+
       this.name = data.name;
       this.id = data.id
       this.description = data.description
@@ -65,17 +64,14 @@ export class PrivacyComponent {
     if (file) {
       this.files.push(file);
       this.uploadImage(file);
-      console.log("uploaded", this.uploadImage(file));
     }
   }
 
   uploadImage(file: File): void {
     this.themeService.uploadImageAboutUs(file, this.userId).subscribe(
       (response: string) => {
-        console.log('Upload successful:', response);
         this.image = response.replace(/"/g, '');
         this.imageUpdated = true;
-        console.log(this.image);
       },
       (error) => {
         console.error('Error occurred while uploading:', error);
@@ -107,11 +103,11 @@ export class PrivacyComponent {
       centerId: this.centerId
     };
 
-    console.log("dataToSend", dataToSend);
+
 
     this.themeService.CreatePrivacyPolicy(dataToSend).subscribe(
       response => {
-        console.log('Response from server:', response);
+
         this.util.showSuccess(response);
         window.location.reload();
       },

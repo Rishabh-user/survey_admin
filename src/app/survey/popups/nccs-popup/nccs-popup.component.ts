@@ -27,10 +27,8 @@ export class NccsPopupComponent {
 
     this.route.paramMap.subscribe(params => {
       let _surveyId = params.get('param1');
-      console.log("param1 Inside Gender Question", params.get('param1'))
       if (_surveyId) {
         this.surveyId = parseInt(this.crypto.decryptQueryParam(_surveyId));
-        console.log("surveyId Inside NCCS Question", this.surveyId)
       }
     });
   }
@@ -97,7 +95,6 @@ export class NccsPopupComponent {
         }
       },
       error: (err) => {
-        console.log("An Error occurred while fetching questions", err);
       }
     });
   }
@@ -123,7 +120,6 @@ export class NccsPopupComponent {
     for (let i = 0; i < this.questions.length; i++) {
 
       const currentQuestion = this.questions[i];
-      console.log("currentQuestion", this.questions[i])
       if (i === 1) {
         currentQuestion.questionTypeId = 7;
 
@@ -131,7 +127,6 @@ export class NccsPopupComponent {
         currentQuestion.questionTypeId = this.questionTypeId
       }
 
-      console.log(currentQuestion)
       currentQuestion.surveyTypeId = this.surveyId
       currentQuestion.createdDate = this.getCurrentDateTime()
       currentQuestion.modifiedDate = this.getCurrentDateTime();
@@ -155,7 +150,6 @@ export class NccsPopupComponent {
       setTimeout(() => {
         this.surveyservice.CreateGeneralQuestion(currentQuestion).subscribe({
           next: (resp: any) => {
-            console.log(`API call ${i + 1} successful`);
             successfulAPICalls++;
 
             if (successfulAPICalls === this.questions.length) {

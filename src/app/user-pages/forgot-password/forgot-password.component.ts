@@ -83,7 +83,6 @@ export class ForgotPasswordComponent implements OnInit {
           response => {
             this.userId = response
             this.showUserDetails = true
-            console.log('Password reset request successful:', response);
             this.loading = false;
           },
           error => {
@@ -99,8 +98,6 @@ export class ForgotPasswordComponent implements OnInit {
       const control = this.resetForm.get(field);
       control?.markAsTouched({ onlySelf: true });
     });
-    console.log('Form data:', this.resetForm.value);
-    console.log('Valid Form :', this.resetForm.valid);
     if (this.resetForm.valid) {
       const formData = {
         ...this.resetForm.value,
@@ -110,7 +107,6 @@ export class ForgotPasswordComponent implements OnInit {
         .subscribe(
           response => {
 
-            console.log('Email verification and password reset successful:', response);
             this.loading = false;
             const returnUrl = this.route.snapshot.queryParamMap.get('returnUrl') || '/login';
             this.router.navigateByUrl(returnUrl).then(() => {

@@ -85,10 +85,6 @@ export class EditSurveyComponent {
         this.mode = _data[2];
         this.questionId = _data[3]
 
-        console.log("surveyId", this.surveyId)
-        console.log("questionTypeId", this.questionTypeId)
-        console.log("mode", this.mode)
-        console.log("questionId", this.questionId)
         if (this.questionId > 1)
           this.isLogicShow = true
         if (this.mode == 'modify') {
@@ -106,9 +102,7 @@ export class EditSurveyComponent {
   groupedOptions: { [key: number]: { options: Option[], isRandomize: boolean, isExcluded: boolean } } = {};
   getQuestionDetails() {
     this.surveyservice.getQuestionDetailsById(this.questionId).subscribe((data: any) => {
-      console.log("data", data)
-      console.log("questionTypeId", data.questionTypeId)
-      console.log("questionTypeName", data.questionTypeName)
+
       this.questionTypeId = data.questionTypeId
       this.surveyId = data.surveyTypeId
       this.question.questionTypeId = parseInt(data.questionTypeId);
@@ -126,7 +120,6 @@ export class EditSurveyComponent {
       this.alphabet = data.isAlphabet
       this.screeningRedirectUrl = data.screeningRedirectUrl
 
-      console.log("piping", this.question.piping)
 
       data.options.forEach((opt: any) => {
 
@@ -144,7 +137,6 @@ export class EditSurveyComponent {
         newOption.sort = opt.sort;
 
         this.optionimagennew.push(opt.image)
-        console.log("qwertyuertyui", this.optionimagennew);
 
         if (opt.status == 'ACT') {
           if (opt.isFixed)
@@ -153,11 +145,6 @@ export class EditSurveyComponent {
             this.optionsArr1.push(newOption);
 
         }
-
-        console.log("see", this.optionsArr1)
-        console.log("see2", this.optionsArr2)
-        console.log("option id", newOption.id)
-        console.log("image", newOption.image)
 
 
         if (opt.group > 0) {
@@ -213,9 +200,8 @@ export class EditSurveyComponent {
           this.groups.push(newGroup); // Push newGroup to groups array
         }
       }
-      console.log('Groups:', this.groups);
+
     } else {
-      console.log('groupedOptions is empty or does not have keys.');
     }
   }
 
@@ -247,7 +233,7 @@ export class EditSurveyComponent {
 
     }
     this.getAllSurveyList();
-    console.log("optionarr2 check", this.optionsArr2)
+
 
 
   }
@@ -262,7 +248,7 @@ export class EditSurveyComponent {
   newoptionImages: File[][] = [];
 
   onSelect(event: any) { // Use 'any' as the event type
-    console.log(event);
+
     this.files.push(...event.addedFiles);
   }
 
@@ -280,20 +266,18 @@ export class EditSurveyComponent {
 
     if (filesForIndex && filesForIndex.length > 0) {
       const file = filesForIndex[filesForIndex.length - 1];
-      console.log("file:", file);
-      console.log("qid:", qid);
+
 
       if (file) {
         this.filesImage.push(file);
         this.uploadOptionImage(file, this.questionId, oid);
       } else {
-        console.error("File is null or undefined.");
-        console.log("newoptionImages:", this.optionImages);
+
       }
     } else {
-      console.error("No files found for the specified index.");
+
     }
-    debugger
+
   }
 
   onSelectNewOptionImage(event: any, index: number, qid: number, oid: number): void {
@@ -303,24 +287,23 @@ export class EditSurveyComponent {
     }
 
     this.newoptionImages[index].push(...event.addedFiles);
-    console.log("newoptionImages:", this.newoptionImages);
+
 
     this.optionsArr1[index].images = [...event.addedFiles];
 
-    console.log("opppindex", this.optionsArr1)
+
     const filesForIndex = this.newoptionImages[index];
 
     if (filesForIndex && filesForIndex.length > 0) {
       const file = filesForIndex[filesForIndex.length - 1];
-      console.log("file:", file);
-      console.log("qid:", qid);
+
 
       if (file) {
         this.filesImage.push(file); // Store the selected file
         this.uploadOptionImage(file, this.questionId, oid); // Trigger upload after selecting the file
       } else {
         console.error("File is null or undefined.");
-        console.log("newoptionImages:", this.newoptionImages);
+
       }
     } else {
       console.error("No files found for the specified index.");
@@ -330,18 +313,17 @@ export class EditSurveyComponent {
 
   uploadOptionImage(fileoption: File, qid: number, oid: number): void {
     debugger
-    console.log("oid", oid);
+
 
     this.surveyservice.uploadOptionImage(fileoption, qid, oid).subscribe(
       (response: string) => {
-        console.log('Upload successful:', response);
+
         const optionIndex = this.optionsArr1.findIndex(option => option.id === oid);
-        console.log("optionIndex", optionIndex)
+
         if (optionIndex !== -1) {
 
           this.optionsArr1[optionIndex].image = response.replace(/"/g, "");
 
-          console.log("optionarr", this.optionsArr1);
         } else {
           console.error('Option not found for ID:', oid);
         }
@@ -391,7 +373,7 @@ export class EditSurveyComponent {
       if (indexToRemove !== -1) {
         this.filteredOptions.splice(indexToRemove, 1);
       } else {
-        console.log(`Item with option '${optionValue}' not found in filtered Options.`);
+
       }
     }
 
@@ -403,7 +385,7 @@ export class EditSurveyComponent {
       this.allOptions[indexToModify].isRandomize = groupDetail.isRandomize;
       this.allOptions[indexToModify].isExcluded = groupDetail.isExcluded;
     } else {
-      console.log(`Item with option '${optionValue}' not found in all Options.`);
+
     }
 
   }
@@ -416,7 +398,7 @@ export class EditSurveyComponent {
       this.groups[groupIndex].options.splice(indexToRemove, 1);
 
     } else {
-      console.log(`Item with option '${optionValue}' not found.`);
+
     }
 
     this.filteredOptions.push(data);
@@ -427,21 +409,16 @@ export class EditSurveyComponent {
       this.allOptions[indexToModify].isRandomize = false;
       this.allOptions[indexToModify].isExcluded = false;
     } else {
-      console.log(`Item with option '${optionValue}' not found in all Options.`);
+
     }
 
   }
 
-  onRemove(event: any) { // Use 'any' as the event type
-    console.log(event);
+  onRemove(event: any) {
     this.files.splice(this.files.indexOf(event), 1);
   }
 
-  // onRemove(file: File, index: number): void {
-  //   console.log(file); // Log the file being removed
-  //   console.log(index); // Log the index of the file being removed
-  //   this.files.splice(index, 1); // Remove the file at the specified index from the files array
-  // }
+
 
 
   userId: any
@@ -453,29 +430,27 @@ export class EditSurveyComponent {
       next: (resp: any) => {
         this.questionTypes = resp;
         this.createquestionType = resp.type
-        console.log("this.questionTypes", this.questionTypes)
-        // alert(this.questionTypeId)
         this.questionTypeNameGet = this.getTypeById(this.questionTypeId);
-        // alert(this.questionTypeNameGet)
+
       },
-      error: (err) => console.log("An Error occurred while fetching question types", err)
+      error: (err) => { }
     });
   }
   questionTypeNameGet: any
   getTypeById(targetId: number): string | null {
-    console.log("Searching for ID:", targetId);
+
     const questionType = this.questionTypes.find(item => item.id === targetId);
     if (questionType) {
-      console.log("Found type:", questionType.type);
+
       return questionType.type;
     } else {
-      console.log("Type not found for ID:", targetId);
+
       return null;
     }
   }
 
   intializeDefaultValue() {
-    console.log("Inside IntializeDefaultValue")
+
     this.question.questionTypeId = parseInt(this.questionTypeId);
     this.question.surveyTypeId = parseInt(this.surveyId);
     this.question.question = '';
@@ -485,7 +460,6 @@ export class EditSurveyComponent {
 
     this.filteredOptions.push(...this.optionsArr1, ...this.optionsArr2);
     this.allOptions.push(...this.optionsArr1, ...this.optionsArr2);
-    console.log("createquesttype", this.question.questionTypeName)
 
 
 
@@ -501,7 +475,7 @@ export class EditSurveyComponent {
     if (type == 'other') {
       newOption.option = "Other";
       newOption.isFixed = true
-      console.log("others")
+
     }
     else if (type == 'noneOfAbove') {
       newOption.option = "None of above";
@@ -534,12 +508,12 @@ export class EditSurveyComponent {
     this.filteredOptions = [];
     this.filteredOptions.push(...this.optionsArr1, ...this.optionsArr2);
 
-    console.log("filteroption", this.filteredOptions)
+
 
     this.allOptions = [];
     this.allOptions.push(...this.optionsArr1, ...this.optionsArr2);
 
-    console.log("add option", this.allOptions)
+
     // this.question.options.push(newOption);
   }
 
@@ -647,10 +621,8 @@ export class EditSurveyComponent {
 
     this.question.image = this.questionImage;
     this.question.youtubeUrl = this.youtubeUrl;
-    console.log("url", this.question.youtubeUrl)
     this.question.options = this.allOptions;
     this.question.piping = this.questionsortvalue
-    console.log("checking", this.question.options)
 
     // Send the request based on whether it's an update or creation
     if (parseFloat(this.questionId) > 0) {
@@ -685,14 +657,8 @@ export class EditSurveyComponent {
       });
     }
 
-    console.log(this.question); // Log the question
+
   }
-
-
-
-
-  // validateSurvey() function
-
 
 
 
@@ -701,30 +667,27 @@ export class EditSurveyComponent {
   onGroupValueChange(type: string, value: boolean, groupId: number) {
     // Update the specified group directly
     let groupoption = new Option();
-    console.log("groupId", groupId)
+
     const groupToUpdate = this.groups.find(group => group.id === groupId);
     if (!groupToUpdate) {
       console.error('Group not found with ID:', groupId);
       return;
     }
-    console.log(groupToUpdate);
+
 
     if (type === 'randomize') {
       groupToUpdate.isRandomize = value;
-      console.log("isRandomize", groupToUpdate)
+
       this.allOptions.forEach(option => {
         if (option.group === groupId) {
           option.isRandomize = true;
-          console.log("isRandomize option", option)
         }
       });
     } else if (type === 'excluded') {
       groupToUpdate.isExcluded = true;
-      console.log("isExcluded", groupToUpdate.isExcluded)
       this.allOptions.forEach(option => {
         if (option.group === groupId) {
           option.isExcluded = true;
-          console.log("isExcluded option", option)
         }
       });
     }
@@ -742,8 +705,7 @@ export class EditSurveyComponent {
   onDropOption(e: CdkDragDrop<string[]>) {
     moveItemInArray(this.optionsArr1, e.previousIndex, e.currentIndex);
     moveItemInArray(this.optionImages, e.previousIndex, e.currentIndex);
-    console.log("previous", e.previousIndex)
-    console.log("current", e.currentIndex)
+
 
     this.optionsArr1.forEach((option, index) => {
       option.sort = index;
@@ -759,18 +721,14 @@ export class EditSurveyComponent {
 
     if (type == 'optionArr1') {
 
-      console.log(this.optionImages)
-
       this.optionImages.splice(index, 1)
 
       this.optionsArr1.splice(index, 1);
-      console.log("deleted", this.optionsArr1)
+
     } else {
 
       this.newoptionImages.splice(index, 1)
       this.optionsArr2.splice(index, 1);
-      console.log("newoptionarr", this.newoptionImages)
-      console.log("deleted 2", this.optionsArr2)
       // this.optionsArr2 = [];
 
     }
@@ -819,7 +777,7 @@ export class EditSurveyComponent {
     if (fileoption) {
       this.filesImageoption.push(fileoption); // Store the selected file
       this.uploadImageOption(fileoption);
-      console.log("check", fileoption); // Trigger upload after selecting the file
+
     }
   }
 
@@ -835,7 +793,6 @@ export class EditSurveyComponent {
 
     this.surveyservice.uploadImageQuestion(fileoption, queryParams).subscribe(
       (response: String) => {
-        console.log('Upload successful:', response);
         this.questionImage = response
         //  response from the image upload
         // You may want to retrieve the URL or any other relevant information from the response
@@ -849,7 +806,7 @@ export class EditSurveyComponent {
 
 
   onRemoveImage(event: any) { // Use 'any' as the event type
-    console.log(event);
+
     this.filesImage.splice(this.files.indexOf(event), 1);
   }
   uploadImage(file: File): void {
@@ -863,10 +820,8 @@ export class EditSurveyComponent {
 
     this.surveyservice.uploadImageQuestion(file, queryParams).subscribe(
       (response: String) => {
-        console.log('Upload successful:', response);
+
         this.questionImage = response
-        // Handle response from the image upload
-        // You may want to retrieve the URL or any other relevant information from the response
       },
       (error) => {
         console.error('Error occurred while uploading:', error);
@@ -884,7 +839,7 @@ export class EditSurveyComponent {
     }
   }
   onRemoveVideo(event: any) { // Use 'any' as the event type
-    console.log(event);
+
     this.filesVideo.splice(this.files.indexOf(event), 1);
   }
   uploadVideo(file: File): void {
@@ -897,7 +852,7 @@ export class EditSurveyComponent {
     }
     this.surveyservice.uploadVideoQuestion(file, queryParams).subscribe(
       (response: String) => {
-        console.log('Upload successful:', response);
+
         this.questionImage = response
       },
       (error) => {
@@ -913,38 +868,34 @@ export class EditSurveyComponent {
       questionId: questionId
     };
     this.surveyservice.getLogicQuestionList(dataToSend).subscribe((response: responseDTO) => {
-      console.log("logicQuestionList", response);
-      console.log("Question Sort Value", this.question.sort);
+
       this.questionsort = this.question.sort
-      console.log("questionsort", this.questionsort)
       this.pipeQuestionList = response
-      console.log("pipe", this.pipeQuestionList)
       //this.logicQuestionList = response.filter((item: Question) => item.sort < this.question.sort);
       this.logicQuestionList = this.pipeQuestionList
       if (this.logicQuestionList.length > 0) {
         this.getOptionsByQuestionId(this.logicQuestionList[0].id);
       }
-      console.log("Filtered logicQuestionList", this.logicQuestionList);
     });
   }
   getLogicValues() {
     this.surveyservice.getLogicValues().subscribe((response: { [x: string]: any; }) => {
       var result = Object.keys(response).map(e => response[e]);
-      console.log("logicValues", response)
+
       this.logicValuesList = response
     });
   }
   getOptionsLogicValues() {
     this.surveyservice.getOptionsLogicValues().subscribe((response: { [x: string]: any; }) => {
       var result = Object.keys(response).map(e => response[e]);
-      console.log("optionLogicValues", response)
+
       this.optionLogicValuesList = response
     });
   }
   getOptionsByQuestionId(selectedQuestion: any) {
     this.selectedOptions = [];
     this.optionListByQuestionId = ''
-    console.log("selectedQuestion", selectedQuestion);
+
     const selectedValue = selectedQuestion;
     let queryParams = {
       qid: selectedValue
@@ -953,7 +904,6 @@ export class EditSurveyComponent {
       var result = Object.keys(response).map(e => response[e]);
 
       this.optionListByQuestionId = response
-      console.log("optionListByQuestionId", this.optionListByQuestionId)
       this.optionListByQuestionId = JSON.parse(this.optionListByQuestionId)
     });
   }
@@ -1014,37 +964,12 @@ export class EditSurveyComponent {
 
 
 
-  // validateSurvey() {
-  //   this.questionadded = !!this.question && !!this.question.question && this.question.question.length >= 0;
-  //   this.qusstionaddednext = !!this.question && !!this.question.questionTypeName && this.question.questionTypeName.trim().length > 0;
 
-  //   if (!this.option.option.trim()) {
-  //     // Display error message or perform any other action
-  //     console.log("Option is required.");
-  //   }
-  // }
-
-  // validateSurvey(): boolean {
-  //   // Validate each field individually
-  //   this.questionadded = !!this.question && !!this.question.question && this.question.question.trim().length > 0;
-  //   this.categoryNameCheck = !!this.categoryId && this.categoryId !== 0;
-  //   this.qusstionaddednext = !!this.question && !!this.question.questionTypeName && this.question.questionTypeName.trim().length > 0;
-
-  //   const questionadded = !!this.question && !!this.question.question && this.question.question.trim().length > 0;
-  //   const categoryNameCheck = !!this.categoryId && this.categoryId !== 0;
-  //   const qusstionaddednext = !!this.question && !!this.question.questionTypeName && this.question.questionTypeName.trim().length > 0;
-
-  //   // Update the validity state of the survey
-  //   this.isValidSurvey = questionadded && categoryNameCheck && qusstionaddednext;
-
-  //   return this.isValidSurvey; // Return the validation result
-  // }
 
   onQuestionTypeClickchoice(ques: any) {
     // this.question.question = `${ques.type}`;
     this.question.questionTypeName = `${ques.type}`;
     this.questionTypeId = ques.id;
-    console.log("questionTypeNameqwerty", this.question.questionTypeName)
     this.optionsArr1 = [];
 
     if (this.question.questionTypeName !== 'Rating Scale' && this.question.questionTypeName !== 'Boolean' && this.question.questionTypeName !== 'Image Selection' && this.question.questionTypeName !== 'NPS' && this.question.questionTypeName !== 'Open Ended' && this.question.questionTypeName !== 'Slider Scale') {
@@ -1073,10 +998,6 @@ export class EditSurveyComponent {
     //const target = event.target as HTMLSelectElement;
     const selectedValue = event.value;
     // Use selectedValue as needed
-    console.log('Selected value:', selectedValue);
-    console.log('Question Sort value:', questionSortValue);
-    console.log('sid', this.surveyId)
-    console.log("question", this.questionId)
 
     let queryParams = null;
     // if (questionId != 0) {
@@ -1093,7 +1014,6 @@ export class EditSurveyComponent {
 
     this.surveyservice.changeQuestionPosition(queryParams).subscribe(
       (response: String) => {
-        console.log('Update successful:', response);
         // window.location.reload();
       },
       (error) => {
@@ -1108,26 +1028,6 @@ export class EditSurveyComponent {
   }
 
 
-  //preview
-
-  // inputText: string = '';
-
-  // dataArray: string[] = [];
-
-  // addButtonClicked() {
-  //   // Remove all whitespace from inputText and assign it to dataArray
-  //   this.dataArray = this.inputText.replace(/\s+/g, '').split('\n').filter(item => item.trim() !== '');
-  //   console.log(this.dataArray);
-
-  //   this.inputText = '';
-  // }
-
-  // lines: string[]
-  // processInputText(): void {
-  //   this.inputText = this.inputText.replace(/\n+/g, '\n');
-
-  //   console.log(this.lines); // You can use this array as needed
-  // }
 
 
 
@@ -1155,7 +1055,7 @@ export class EditSurveyComponent {
   addButtonClicked(): void {
     // Split the input text by newline characters and assign it to dataArray
     this.dataArray = this.inputText.split('\n').map(line => line.trim()).filter(line => line !== '');
-    console.log(this.dataArray);
+
 
     this.inputText = '';
 
@@ -1169,8 +1069,6 @@ export class EditSurveyComponent {
         newOption.createdDate = this.getCurrentDateTime()
 
         this.optionsArr1.push(newOption);
-        // Push the new Option object to optionsArr1
-        console.log("see", this.optionsArr1);
       }
     });
 
@@ -1189,44 +1087,11 @@ export class EditSurveyComponent {
     this.getLogicQuestionList(this.questionId)
   }
 
-  // addButtonClicked(): void {
-  //   // Split the input text by newline characters and assign it to dataArray
-  //   this.dataArray = this.inputText.split('\n').map(line => line.trim()).filter(line => line !== '');
-  //   console.log(this.dataArray);
 
-  //   // Clear the input field
-  //   this.inputText = '';
-
-  //   this.dataArray.forEach((line: string) => {
-  //     // Check if line is not empty
-  //     if (line) {
-  //       let newOption = new Option();
-  //       newOption.option = line.trim();
-  //       newOption.createdDate = this.getCurrentDateTime();
-
-  //       this.optionsArr1.push(newOption);
-  //       console.log("see", this.optionsArr1);
-  //     }
-  //   });
-
-  //   this.allOptions = [...this.optionsArr1, ...this.optionsArr2]; // Update allOptions array
-  // }
-
-
-  // selectedIndex: any
-  // imageoption: any;
-
-  // openModal(index: number) {
-  //   this.selectedIndex = index;
-  //   console.log(this.selectedIndex)
-  //   this.imageoption = this.selectedIndex;
-  //   console.log(this.imageoption)
-  // }
 
   youtubeUrl: any
   addyoutubevideourl() {
     const youtubeUrl = this.youtubeUrl;
-    console.log('youtube url:', youtubeUrl);
   }
 
   //createanswerthen
@@ -1266,7 +1131,6 @@ export class EditSurveyComponent {
       if (!this.groups[groupIndex].options.some((opt: any) => opt.option === option.option)) {
         this.groups[groupIndex].options.push(option);
       }
-      console.log("group push option", this.groups)
     }
 
     this.filteredOptions = [];
@@ -1296,18 +1160,12 @@ export class EditSurveyComponent {
     const selectedQuestionId = event.value;
     const selectedQuestion = this.logicQuestionListById.find((item: { id: any; }) => item.id === selectedQuestionId);
     if (selectedQuestion) {
-      console.log("selected question", selectedQuestion.item)
-      console.log('question Sort Value:', selectedQuestion.sort);
     }
     this.questionsortvalue = selectedQuestion.sort
     this.logicquestionname = selectedQuestion.item
-    console.log("questionsortvalue", this.questionsortvalue)
-    console.log("logicquestionname", this.logicquestionname)
 
     const selectedQuestionsort = this.logicQuestionListById.find((item: { sort: any; }) => item.sort === selectedQuestion.sort);
     if (selectedQuestionsort) {
-      console.log("Selected Question ID:", selectedQuestionsort.id);
-      console.log("Selected Question Name:", selectedQuestionsort.item);
     }
     this.logicquestionid = selectedQuestionsort.id
 
@@ -1321,7 +1179,7 @@ export class EditSurveyComponent {
     this.logicQuestionListById = []; // Assuming logicQuestionListById is of type responseDTO[]
     this.surveyservice.GetQuestionListBySurveyId(this.surveyId).subscribe((response: responseDTO[]) => {
       this.logicQuestionListById = response;
-      console.log("qwertyu", this.logicQuestionListById);
+
     });
   }
   starRating: any[] = [];
@@ -1332,7 +1190,6 @@ export class EditSurveyComponent {
       startOption.id = i;
       startOption.createdDate = this.getCurrentDateTime()
       this.optionsArr1.push(startOption);
-      console.log("star rating", this.optionsArr1)
     }
 
     this.allOptions = [...this.optionsArr1, ...this.optionsArr2];
@@ -1347,7 +1204,6 @@ export class EditSurveyComponent {
       booleanOption.id = i + 1;
       booleanOption.createdDate = this.getCurrentDateTime();
       this.optionsArr1.push(booleanOption);
-      console.log("boolean options", this.optionsArr1);
     }
 
     this.allOptions = [...this.optionsArr1, ...this.optionsArr2];
@@ -1361,7 +1217,6 @@ export class EditSurveyComponent {
       startOption.id = i;
       startOption.createdDate = this.getCurrentDateTime()
       this.optionsArr1.push(startOption);
-      console.log("star rating", this.optionsArr1)
     }
 
     this.allOptions = [...this.optionsArr1, ...this.optionsArr2];
@@ -1382,8 +1237,6 @@ export class EditSurveyComponent {
     }
     this.question.isNumeric = this.numeric;
     this.question.isAlphabet = this.alphabet;
-    console.log("nc", this.question.isAlphabet);
-    console.log("nca", this.question.isNumeric);
   }
 
 
@@ -1414,11 +1267,6 @@ export class EditSurveyComponent {
       this.filteredcategoryName = filteredSurveys.map(survey => survey.categoryName);
 
       this.surveystatus = filteredSurveys.map(survey => survey.status)
-      // Log filtered survey names
-      console.log("Filtered Survey Names:", this.filteredSurveyNames);
-      console.log("Filtered Survey Names:", this.filteredCountryNames);
-      console.log("Filtered Survey Names:", this.filteredcategoryName);
-      console.log("Filtered surveystatus :", this.surveystatus);
     });
   }
 

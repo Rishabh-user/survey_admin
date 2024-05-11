@@ -55,12 +55,12 @@ export class AddUserComponent {
   }
 
   onSelect(event: any) {
-    console.log(event);
+
     this.files.push(...event.addedFiles);
   }
 
   onRemove(event: any) {
-    console.log(event);
+
     this.files.splice(this.files.indexOf(event), 1);
   }
   getCurrentDateTime(): string {
@@ -120,10 +120,8 @@ export class AddUserComponent {
     }
 
 
-    console.log("dataToSend", dataToSend)
     this.themeService.AddNewUser(dataToSend).subscribe(
       response => {
-        console.log('Response from server:', response);
         if (response == '"UserAlreadyExits"') {
           this.utility.showError("User Already Exist");
         } else if (response == '"Failed"') {
@@ -183,7 +181,7 @@ export class AddUserComponent {
     if (this.role) {
       this.role = this.role.toLowerCase();
     }
-    console.log("SideBar Role", this.role)
+
     if (this.role === 'superadmin') {
       this.isSuperAdmin = false;
       this.isAdmin = true;
@@ -206,7 +204,7 @@ export class AddUserComponent {
     this.surveyservice.GetSurveyList().subscribe((data: any) => {
       this.surveyData = data.surveyType;
       this.totalItemsCount = data.totalCount;
-      console.log("totalCount", this.totalItemsCount)
+
     });
   }
 
@@ -214,7 +212,7 @@ export class AddUserComponent {
   selectedSurveyIds: any[] = []
   onSelectionChange(event: MatSelectChange): void {
     this.selectedSurveyIds = event.value;
-    console.log('Selected SurveyIds:', this.selectedSurveyIds);
+
   }
 
 

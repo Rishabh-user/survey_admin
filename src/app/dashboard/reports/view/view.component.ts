@@ -11,13 +11,12 @@ import { SurveyService } from 'src/app/service/survey.service';
 })
 export class ViewComponent {
   surveyId: any;
-  reportsurveyid:any
+  reportsurveyid: any
   surveyReport: any;
   surveyReportById: any;
-  constructor( public themeService: SurveyService,private route: ActivatedRoute, private crypto: CryptoService,) {
+  constructor(public themeService: SurveyService, private route: ActivatedRoute, private crypto: CryptoService,) {
     this.route.paramMap.subscribe(params => {
       let _queryData = params.get('param1');
-      console.log("qwerty", _queryData)
       this.surveyId = _queryData;
       if (_queryData) {
         let _queryDecodedData = this.crypto.decryptQueryParam(_queryData);
@@ -98,12 +97,11 @@ export class ViewComponent {
   //   return this.charts.find(chart => chart.ctx.canvas.id === canvasId);
   // }
 
-  
+
   getSurveyReportBySurveyId() {
-    if (this.surveyId) { 
+    if (this.surveyId) {
       this.themeService.getSurveyReportBySurveyId(this.surveyId).subscribe((data: any) => {
         this.surveyReportById = data;
-        console.log("Reports", this.surveyReportById);
       });
     } else {
       console.error("Survey ID is null or undefined.");
@@ -112,12 +110,12 @@ export class ViewComponent {
   // Function to generate CSV data
   generateCSV(): void {
     // Convert survey report data to CSV format
-    const csvContent = this.convertToCSV(this.surveyReportById);    
+    const csvContent = this.convertToCSV(this.surveyReportById);
     this.downloadCSV(csvContent, 'survey_report.csv');
-}
+  }
 
-// Function to convert data to CSV format
-convertToCSV(data: any[]): string {
+  // Function to convert data to CSV format
+  convertToCSV(data: any[]): string {
     // Define the header fields
     const headerFields = ['Survey ID', 'Survey Name', 'Question ID', 'Question', 'Option ID', 'Answer', 'Rating ID', 'Survey Attempt ID', 'Count'];
 
@@ -126,39 +124,39 @@ convertToCSV(data: any[]): string {
 
     // Iterate over the data and format each row
     data.forEach(item => {
-        const formattedRow = [
-            item.surveyId,
-            `"${item.surveyName}"`, // Wrap in double quotes to handle commas in data
-            item.questionId,
-            `"${item.question}"`, // Wrap in double quotes to handle commas in data
-            item.optionId,
-            item.answer,
-            item.ratingId,
-            item.surveyAttemptId,
-            item.count
-        ].join(',');
-        csvContent += formattedRow + '\n';
+      const formattedRow = [
+        item.surveyId,
+        `"${item.surveyName}"`, // Wrap in double quotes to handle commas in data
+        item.questionId,
+        `"${item.question}"`, // Wrap in double quotes to handle commas in data
+        item.optionId,
+        item.answer,
+        item.ratingId,
+        item.surveyAttemptId,
+        item.count
+      ].join(',');
+      csvContent += formattedRow + '\n';
     });
 
     return csvContent;
-}
+  }
 
-// Function to trigger file download
-downloadCSV(csvContent: string, filename: string): void {
+  // Function to trigger file download
+  downloadCSV(csvContent: string, filename: string): void {
     const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
     if ((navigator as any).msSaveBlob) { // IE 10+
-        (navigator as any).msSaveBlob(blob, filename);
+      (navigator as any).msSaveBlob(blob, filename);
     } else {
-        const link = document.createElement('a');
-        if (link.download !== undefined) {
-            const url = URL.createObjectURL(blob);
-            link.setAttribute('href', url);
-            link.setAttribute('download', filename);
-            link.style.visibility = 'hidden';
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-        }
+      const link = document.createElement('a');
+      if (link.download !== undefined) {
+        const url = URL.createObjectURL(blob);
+        link.setAttribute('href', url);
+        link.setAttribute('download', filename);
+        link.style.visibility = 'hidden';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      }
     }
-}
+  }
 }

@@ -41,14 +41,12 @@ export class UserListingComponent {
     this.themeService.getSearchQuery().subscribe((searchQuery) => {
 
       this.applyFilter(searchQuery);
-      console.log("applyfilter", searchQuery)
     });
   }
 
   filteredSurveyData: any[] = [];
   searchQuery: any
   applyFilter(searchQuery: string): void {
-    console.log('Search query:', searchQuery);
 
     if (!searchQuery) {
       this.filteredSurveyData = [];
@@ -58,7 +56,6 @@ export class UserListingComponent {
         (item.userName && item.userName.toLowerCase().includes(searchQuery.toLowerCase())) ||
         (item.email && item.email.toLowerCase().includes(searchQuery.toLowerCase()))
       );
-      console.log("filterdata email", this.filteredSurveyData)
     }
   }
 
@@ -70,7 +67,6 @@ export class UserListingComponent {
     this.userId = localStorage.getItem("userId");
     this.themeService.GetAllUser(this.userId).subscribe((data: any) => {
       this.UserData = data;
-      console.log("data", data)
 
       this.cdr.detectChanges();
     });

@@ -60,7 +60,6 @@ export class EmailAddressPopupComponent {
         }
       },
       error: (err) => {
-        console.log("An Error occurred while fetching questions", err);
       }
     });
   }
@@ -84,7 +83,6 @@ export class EmailAddressPopupComponent {
 
       this.surveyservice.CreateGeneralQuestion(currentQuestion).subscribe({
         next: (resp: any) => {
-          console.log(`API call ${i + 1} successful`);
           successfulAPICalls++;
 
           if (successfulAPICalls === this.questions.length) {

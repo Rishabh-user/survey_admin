@@ -92,7 +92,6 @@ export class SignUpComponent {
       this.purchaseprice = data['price'];
       this.amount = this.purchaseprice;
     });
-    console.log("purchaseprice", this.purchaseprice)
     this.userId = this.util.getUserId();
 
   }
@@ -124,8 +123,6 @@ export class SignUpComponent {
       const control = this.signupForm.get(field);
       control?.markAsTouched({ onlySelf: true });
     });
-    console.log('Form data:', this.signupForm.value);
-    console.log('Valid Form :', this.signupForm.valid);
     this.formSubmitted = true;
     if (this.signupForm.valid) {
       const formData = this.signupForm.value;
@@ -133,9 +130,6 @@ export class SignUpComponent {
 
       this.authService.registerOrganization(formData).subscribe(
         (response) => {
-          console.log('Registration successful centerId:', response.centerId);
-          console.log('Registration successful userId:', response.userId);
-          console.log('Registration successful userId:', response.message);
           if (response.message === 'AlreadyExists') {
             this.utility.showError("This Organisation Already Registered");
 
@@ -164,7 +158,7 @@ export class SignUpComponent {
 
     const otp = this.verificationForm.get('email_otp')?.value;
     const captchertoken = this.verificationForm.get('captchertoken')?.value
-    console.log("captchertoken : ", captchertoken)
+
     if (this.verificationForm.valid) {
       const returnUrl = this.route.snapshot.queryParamMap.get('returnUrl') || '/dashboard';
       const dataToSend = {
@@ -235,7 +229,7 @@ export class SignUpComponent {
       planId: this.amount
     };
     this.postAmount(formData).subscribe((response: any) => {
-      console.log('Response from server:', response);
+
       this.payNow(response, response.orderId);
     }, error => {
       console.error('Error occurred:', error);
@@ -264,11 +258,11 @@ export class SignUpComponent {
       },
       modal: {
         ondismiss: () => {
-          console.log('Payment dismissed');
+
         }
       },
       handler: (response: any) => {
-        console.log(response);
+
         this.sendPaymentDetails(response.razorpay_payment_id, orderId);
       }
     };
@@ -285,9 +279,9 @@ export class SignUpComponent {
     const apiUrl = `${environment.apiUrl}api/admin/${this.userId}/Payment/CompleteOrderProcess`;
     this.httpClient.post(apiUrl, requestData).subscribe(
       (response: any) => {
-        console.log('Response:', response);
+
         if (response.message === "Success") {
-          console.log('Success:', response);
+
 
           const token = response.token;
           localStorage.setItem('authToken', token);

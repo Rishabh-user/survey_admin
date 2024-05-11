@@ -65,11 +65,10 @@ export class HeaderComponent {
     this.userId = this.util.getUserId();
     if (this.userId) {
       this.themeService.GetMyAccount(this.userId).subscribe((data: any) => {
-        console.log("inside header data", data)
+
         this.image = data.image
         this.firstName = data.firstName
         this.lastName = data.lastName
-        console.log("userimage", this.image)
       })
     }
   }
@@ -80,7 +79,6 @@ export class HeaderComponent {
         if (data) {
           this.surveyData = data.surveyType;
         }
-        console.log("surveyData In Header", this.surveyData)
       });
     }
   }
@@ -102,10 +100,8 @@ export class HeaderComponent {
     if (selectedSurvey) {
       for (const key in selectedSurvey) {
         if (Object.prototype.hasOwnProperty.call(selectedSurvey, key)) {
-          console.log(`${key}:`, selectedSurvey[key]);
         }
       }
-      console.log("selectedSurveyId", selectedSurvey.surveyId)
       const encryptedId = this.encryptId(selectedSurvey.surveyId);
       this.router.navigate(['/survey/manage-survey/', encryptedId]);
     }
@@ -119,11 +115,8 @@ export class HeaderComponent {
   SurveyData: any[] = [];
 
   search(searchQuery: string): void {
-    console.log("search", searchQuery);
     this.themeService.setSearchQuery(searchQuery);
-    console.log("search Query", searchQuery)
     this.surveyService.getSurveySearch({ surveyname: searchQuery }).subscribe((response) => {
-      console.log(response);
       // Assuming response contains the survey data
       this.SurveyData = response.filter((item: { name: string; userName: string; email: string; }) => {
         return (
@@ -132,7 +125,6 @@ export class HeaderComponent {
           item.email.toLowerCase().includes(searchQuery.toLowerCase())
         );
       });
-      console.log(this.SurveyData)
     });
   }
 
@@ -147,9 +139,7 @@ export class HeaderComponent {
     if (this.userId) {
       this.surveyService.getNotification().subscribe({
         next: (resp: any) => {
-          console.log('getNotification Response:', resp);
           this.notificationdata = resp;
-          console.log("notification data", this.notificationdata);
 
           let count = 0;
           this.notificationdata.forEach((entry: { status: string; }) => {
@@ -158,7 +148,6 @@ export class HeaderComponent {
             }
           });
           this.notificationcount = count;
-          console.log("notification count", this.notificationcount);
         },
         error: (error) => {
           console.error("An error occurred while fetching notifications:", error);

@@ -31,10 +31,8 @@ export class SecLsmPopupComponent {
 
     this.route.paramMap.subscribe(params => {
       let _surveyId = params.get('param1');
-      console.log("param1 Inside Gender Question", params.get('param1'))
       if (_surveyId) {
         this.surveyId = parseInt(this.crypto.decryptQueryParam(_surveyId));
-        console.log("surveyId Inside NCCS Question", this.surveyId)
       }
     });
   }
@@ -135,7 +133,6 @@ export class SecLsmPopupComponent {
       setTimeout(() => {
         this.surveyservice.CreateGeneralQuestion(currentQuestion).subscribe({
           next: (resp: any) => {
-            console.log(`API call ${i + 1} successful`);
             successfulAPICalls++;
 
             if (successfulAPICalls === this.questions.length) {
@@ -190,7 +187,7 @@ export class SecLsmPopupComponent {
   addOption(questionIndex: number) {
 
     const question = this.questions[questionIndex];
-    console.log(question)
+
     if (question && question.shouldAddOption) {
       const newOption = new Option();
       newOption.id = question.options.length + 1;
@@ -217,7 +214,7 @@ export class SecLsmPopupComponent {
   addNewOption(questionIndex: number) {
 
     const question = this.questions[questionIndex];
-    console.log(question)
+
     if (question && question.shouldAddOption) {
       const newOption = new Option();
       newOption.id = question.options.length + 1;

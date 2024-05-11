@@ -79,7 +79,7 @@ export class CreateSurveyPopupComponent {
     this.surveyservice.getCountries().subscribe(response => {
 
       const result = Object.keys(response).map((key) => response[key]);
-      console.log(result)
+
       const countries: { id: string; name: string; images: string }[] = result.map((value: any) => ({
         id: value['countryId'],
         name: value['name'],
@@ -88,7 +88,6 @@ export class CreateSurveyPopupComponent {
       }));
 
       this.country = countries;
-      console.log("country", this.country)
     });
 
   }
@@ -128,20 +127,17 @@ export class CreateSurveyPopupComponent {
         countryId: this.selectedCountryId
       };
 
-      console.log("dataToSend", dataToSend);
 
       this.surveyservice.createSurvey(dataToSend).subscribe(
         response => {
-          console.log('Response from server:', response);
           if (this.removeQuotes(response) == 'AlreadyExits') {
             this.utility.showError("This Survey Already Created")
             return
           }
           const result = this.convertStringToNumber(this.removeQuotes(response));
-          console.log("result", result)
+
           if (result !== null) {
             this.newsurveyId = result
-            console.log(this.newsurveyId)
             const encryptedId = this.crypto.encryptParam(`${this.newsurveyId}`);
             const url = `/survey/manage-survey/${encryptedId}`;
             this.modal.hide();

@@ -34,10 +34,8 @@ export class GenderPopupComponent {
     this.baseUrl = environment.baseURL;
     this.route.paramMap.subscribe(params => {
       let _surveyId = params.get('param1');
-      console.log("param1 Inside Gender Question", params.get('param1'))
       if (_surveyId) {
         this.surveyId = parseInt(this.crypto.decryptQueryParam(_surveyId));
-        console.log("surveyId Inside Gender Question", this.surveyId)
       }
     });
   }
@@ -80,11 +78,10 @@ export class GenderPopupComponent {
         });
 
         if (this.questions && this.questions.length > 0) {
-          console.log('Value of questionText 1:', this.questions[0].question);
           this.questionText = this.questions[0].question;
         }
       },
-      error: (err) => console.log("An Error occurred while fetching questions", err)
+      error: (err) => { }
     });
   }
   selectOption(option: Option) {
@@ -107,7 +104,6 @@ export class GenderPopupComponent {
   }
 
   intializeDefaultValue() {
-    console.log("Inside IntializeDefaultValue")
     this.question.questionTypeId = 7;
     this.question.surveyTypeId = this.surveyId;
     this.question.question = '';
@@ -129,9 +125,9 @@ export class GenderPopupComponent {
       this.utility.showError("Please select at least one option");
       return;
     }
-    console.log('Value of questionText:', this.questionText);
+
     this.question.question = this.questionText;
-    console.log('Value of this.question.question:', this.question.question);
+
 
     this.question.options = this.questions[0]?.options.filter(option => option.selected);
     const currentDateTime = this.getCurrentDateTime();
@@ -155,9 +151,7 @@ export class GenderPopupComponent {
         this.utility.showError(err.error);
       }
     });
-    console.log(this.question);
 
-    console.log(this.question);
   }
 
 }

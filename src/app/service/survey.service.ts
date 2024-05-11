@@ -58,13 +58,12 @@ export class SurveyService {
 
     const sanitizedData = this.removeCircularReferences(data);
 
-    console.log("posted data", sanitizedData);
     return this.http.post(url, sanitizedData, { responseType: 'text' });
   }
 
   updateSurvey(data: any): Observable<any> {
     const url = `${this.apiUrl}api/admin/${this.userId}/Survey/UpdateSurvey`;
-    console.log("posted data", data);
+
     return this.http.post(url, data, { responseType: 'text' });
   }
 
@@ -106,7 +105,7 @@ export class SurveyService {
   updateSurveyStatus(data: any): Observable<any> {
     const { surveyId, surveyStatus } = data;
     const url = `${this.apiUrl}api/admin/${this.userId}/Survey/UpdateSurveyStatus?surveyId=${encodeURIComponent(surveyId)}&status=${encodeURIComponent(surveyStatus)}`;
-    console.log("posted data", data);
+
     return this.http.post(url, data, { responseType: 'text' });
   }
   // getLogicQuestionList(data: any) {

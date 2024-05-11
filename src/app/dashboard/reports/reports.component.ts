@@ -39,13 +39,10 @@ export class ReportsComponent {
 
   getSurveyReportBySurvey(pageNumber: number, pageSize: number) {
     this.themeService.getSurveyReportBySurvey(pageNumber, pageSize).subscribe((data: any) => {
-      console.log("reports", data)
+
       this.reportSurvey = data.surveyType;
       this.totalItemsCount = data.totalCount;
 
-      console.log("totalCount", this.totalItemsCount)
-      console.log("reportSurvey", this.reportSurvey)
-      console.log("surveyId", this.surveyId)
       this.cdr.detectChanges();
     });
   }

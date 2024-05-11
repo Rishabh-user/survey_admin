@@ -48,7 +48,6 @@ export class ExpertAidComponent {
       this.selectedItems = this.selectedItems.filter(selectedItem => selectedItem !== item);
     } else {
       this.selectedItems.push(item);
-      console.log(this.selectedItems)
     }
   }
 
@@ -56,7 +55,6 @@ export class ExpertAidComponent {
     return this.selectedItems.includes(item);
   }
   selectedItems1(item: string): boolean {
-    console.log("selected one", this.selectedItems)
     return this.selectedItems.includes(item);
 
   }
@@ -87,7 +85,6 @@ export class ExpertAidComponent {
       this.selectedItems.splice(index, 1);
     } else {
       this.selectedItems.push(service);
-      console.log(this.selectedItems)
     }
   }
   name: string;

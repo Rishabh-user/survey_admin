@@ -53,18 +53,15 @@ export class CityPopupComponent {
   constructor(private surveyservice: SurveyService, private route: ActivatedRoute, private crypto: CryptoService, private router: Router, private utility: UtilsService) {
     this.route.paramMap.subscribe(params => {
       let _surveyId = params.get('param1');
-      console.log("param1 Inside Gender Question", params.get('param1'))
       if (_surveyId) {
-        console.log("surveyId Inside City Question First", this.crypto.decryptQueryParam(_surveyId))
         this.surveyId = parseInt(this.crypto.decryptQueryParam(_surveyId));
-        console.log("surveyId Inside City Question", this.surveyId)
       }
     });
   }
 
   show() {
     this.surveyservice.getSurveyDetailsById(1, 1, this.surveyId).subscribe((data: any) => {
-      console.log("Country Id : ", data)
+
       this.countryId = data.countryId
       if (this.countryId == "IN")
         this.isPanIndiaShow = true
@@ -137,8 +134,7 @@ export class CityPopupComponent {
     const selectedCities = this.getSelectedCities();
     const selectedPanIndiaStates = this.getSelectedPanIndiaStates();
 
-    console.log('Selected States:', selectedStates);
-    console.log('Selected Cities:', selectedCities);
+
 
     if ((selectedStates.length === 0 && selectedCities.length === 0) || (selectedStates.length > 0 && selectedCities.length > 0)) {
       this.utility.showError("Please select either state or city");
@@ -241,11 +237,9 @@ export class CityPopupComponent {
 
         if (this.questions && this.questions.length > 0) {
           this.questionText = this.questions[0].question;
-          console.log("questionText", this.questionText)
         }
       },
       error: (err) => {
-        console.log("An Error occurred while fetching questions", err);
       }
     });
   }

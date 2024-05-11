@@ -84,7 +84,7 @@ export class DataService {
   CreateAboutUs(data: any): Observable<any> {
     var userId = this.util.getUserId();
     const url = `${this.apiUrl}api/admin/${userId}/AboutUs/CreateAboutUs`;
-    console.log("posted data", data);
+
     return this.http.post(url, data, { responseType: 'text' });
   }
 
@@ -96,7 +96,7 @@ export class DataService {
   CreatePrivacyPolicy(data: any): Observable<any> {
     var userId = this.util.getUserId();
     const url = `${this.apiUrl}api/admin/${userId}/PrivacyPolicy/CreatePrivacyPolicy`;
-    console.log("posted data", data);
+
     return this.http.post(url, data, { responseType: 'text' });
   }
 
@@ -109,7 +109,7 @@ export class DataService {
   CreateTermsConditions(data: any): Observable<any> {
     var userId = this.util.getUserId();
     const url = `${this.apiUrl}api/admin/${userId}/TermAndCondition/CreateTermAndCondition`;
-    console.log("posted data", data);
+
     return this.http.post(url, data, { responseType: 'text' });
   }
 
@@ -121,7 +121,7 @@ export class DataService {
   CreateMyAccount(data: any): Observable<any> {
     var userId = this.util.getUserId();
     const url = `${this.apiUrl}api/admin/${userId}/Profile/UpdateProfile`;
-    console.log("posted data", data);
+
     return this.http.post(url, data, { responseType: 'text' });
   }
 
@@ -129,7 +129,7 @@ export class DataService {
   ChangePassword(data: any): Observable<any> {
     var userId = this.util.getUserId();
     const url = `${this.apiUrl}api/admin/${userId}/Profile/ChangePassword`;
-    console.log("posted data", data);
+
     return this.http.post(url, data, { responseType: 'text' });
   }
 
@@ -142,7 +142,7 @@ export class DataService {
   AddNewUser(data: any): Observable<any> {
     var userId = this.util.getUserId();
     const url = `${this.apiUrl}api/admin/${userId}/Profile/CreateProfile`;
-    console.log("posted data", data);
+
     return this.http.post(url, data, { responseType: 'text' });
   }
   uploadImage(file: File, userId: any): Observable<any> {

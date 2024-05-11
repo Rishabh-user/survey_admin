@@ -55,7 +55,6 @@ export class SurveyListingComponent {
     this.visibilityService.isSidebarVisibleSubject.next(false);
 
     this.role = this.util.getRole();
-    console.log("role", this.role)
     this.role = this.role.toLowerCase()
 
     if (this.role == 'admin' || this.role == 'superadmin') {
@@ -67,14 +66,12 @@ export class SurveyListingComponent {
     this.visibilityService.getSearchQuery().subscribe((searchQuery) => {
 
       this.applyFilter(searchQuery);
-      console.log("applyfilter", searchQuery)
     });
   }
 
   filteredSurveyData: any[] = [];
   searchQuery: any
   applyFilter(searchQuery: string): void {
-    console.log('Search query:', searchQuery);
 
     if (!searchQuery) {
       this.filteredSurveyData = [];
@@ -84,7 +81,6 @@ export class SurveyListingComponent {
         (item.userName && item.userName.toLowerCase().includes(searchQuery.toLowerCase())) ||
         (item.email && item.email.toLowerCase().includes(searchQuery.toLowerCase()))
       );
-      console.log("filterdata", this.filteredSurveyData)
     }
   }
 
@@ -93,7 +89,6 @@ export class SurveyListingComponent {
     this.themeService.getSurveyListWithPage(pageNumber, pageSize).subscribe((data: any) => {
       this.surveyData = data.surveyType;
       this.totalItemsCount = data.totalCount;
-      console.log("totalCount", this.totalItemsCount)
 
       this.cdr.detectChanges();
     });
@@ -102,7 +97,7 @@ export class SurveyListingComponent {
 
   getNames() {
     this.themeService.GetCategories().subscribe((data: any) => {
-      console.log("categoryList", data)
+
       this.categoryList = data
     });
   }
@@ -110,8 +105,6 @@ export class SurveyListingComponent {
     const isChecked = (event.target as HTMLInputElement).checked;
     const selectedStatus = (event.target as HTMLSelectElement).value;
     const originalStatus = item.status;
-    console.log("Selected status:", selectedStatus);
-    console.log("show status", originalStatus)
     if (this.role === 'admin' || this.role === 'superadmin') {
       let surveyStatus = isChecked ? 'ACT' : 'DEL';
 
@@ -119,11 +112,11 @@ export class SurveyListingComponent {
         surveyId: itemId,
         surveyStatus: originalStatus
       };
-      console.log("dataToSend", dataToSend)
+
       this.themeService.updateSurveyStatus(dataToSend).subscribe(
         response => {
           this.utility.showSuccess('Updated.');
-          console.log('Response from server:', response);
+
         },
         error => {
           console.error('Error occurred while sending POST request:', error);
@@ -132,7 +125,7 @@ export class SurveyListingComponent {
         }
       );
     } else {
-      console.log('Insufficient permissions to toggle');
+
       this.utility.showError('You have no permissions');
       if (item.status !== originalStatus) {
         item.status = originalStatus;
@@ -140,7 +133,7 @@ export class SurveyListingComponent {
     }
   }
   onPageChange(pageNumber: number) {
-    console.log(pageNumber);
+
     this.pageNumber = pageNumber;
     this.getAllSurveyList(this.pageNumber, this.pageSize)
     this.currentPage = this.pageNumber
@@ -164,10 +157,7 @@ export class SurveyListingComponent {
   deletesurveyname: any
   openLg(sidecontent: any, itemId: any, name: any) {
     this.itemId = itemId;
-    console.log("itemid", this.itemId)
-    console.log("survey name", name);
     this.deletesurveyname = name
-    console.log("qwertyu", this.deletesurveyname)
 
     this.modalService.open(sidecontent, { centered: true });
   }
@@ -178,7 +168,6 @@ export class SurveyListingComponent {
 
     this.themeService.deleteSurvey(itemId).subscribe({
       next: (resp: any) => {
-        console.log("response", resp);
         this.utility.showSuccess('Question Deleted Sucessfully');
         window.location.reload()
       },

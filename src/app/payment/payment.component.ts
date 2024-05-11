@@ -41,7 +41,7 @@ export class PaymentComponent {
   getMyAccount() {
     this.userId = this.util.getUserId();
     this.themeService.GetMyAccount(this.userId).subscribe((data: any) => {
-      console.log("data", data)
+
       this.firstName = data.firstName;
       this.id = data.id
       this.email = data.email
@@ -111,7 +111,6 @@ export class PaymentComponent {
       planId: this.amount
     };
     this.postAmount(formData).subscribe((response: any) => {
-      console.log('Response from server:', response);
       this.payNow(response, response.orderId);
     }, error => {
       console.error('Error occurred:', error);
@@ -140,11 +139,9 @@ export class PaymentComponent {
       },
       modal: {
         ondismiss: () => {
-          console.log('Payment dismissed');
         }
       },
       handler: (response: any) => {
-        console.log(response);
         this.sendPaymentDetails(response.razorpay_payment_id, orderId);
       }
     };
@@ -162,13 +159,10 @@ export class PaymentComponent {
     const apiUrl = `${environment.apiUrl}api/admin/${this.userId}/Payment/CompleteOrderProcess`;
     this.httpClient.post(apiUrl, requestData).subscribe(
       (response: any) => {
-        console.log('Response:', response);
         if (response.message === "Success") {
           const token = response.token;
           localStorage.setItem('authToken', token);
 
-          console.log('Success:', response);
-          console.log('Navigating to thank you page...');
           this.router.navigate(['/thankyou']);
         } else {
           console.error('Error in response:', response);

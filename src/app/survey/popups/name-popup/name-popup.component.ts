@@ -60,7 +60,6 @@ export class NamePopupComponent {
         }
       },
       error: (err) => {
-        console.log("An Error occurred while fetching questions", err);
       }
     });
   }
@@ -84,7 +83,6 @@ export class NamePopupComponent {
 
       this.surveyservice.CreateGeneralQuestion(currentQuestion).subscribe({
         next: (resp: any) => {
-          console.log(`API call ${i + 1} successful`);
           successfulAPICalls++;
 
           if (successfulAPICalls === this.questions.length) {

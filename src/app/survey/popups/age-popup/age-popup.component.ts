@@ -26,10 +26,8 @@ export class AgePopupComponent {
   constructor(private surveyservice: SurveyService, private route: ActivatedRoute, private crypto: CryptoService, private router: Router, private utility: UtilsService) {
     this.route.paramMap.subscribe(params => {
       let _surveyId = params.get('param1');
-      console.log("param1 Inside Gender Question", params.get('param1'))
       if (_surveyId) {
         this.surveyId = parseInt(this.crypto.decryptQueryParam(_surveyId));
-        console.log("surveyId Inside NCCS Question", this.surveyId)
       }
     });
   }
@@ -60,7 +58,6 @@ export class AgePopupComponent {
         }
       },
       error: (err) => {
-        console.log("An Error occurred while fetching questions", err);
       }
     });
   }
@@ -84,7 +81,6 @@ export class AgePopupComponent {
 
       this.surveyservice.CreateGeneralQuestion(currentQuestion).subscribe({
         next: (resp: any) => {
-          console.log(`API call ${i + 1} successful`);
           successfulAPICalls++;
 
           if (successfulAPICalls === this.questions.length) {

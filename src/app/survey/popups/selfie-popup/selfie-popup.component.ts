@@ -57,7 +57,7 @@ export class SelfiePopupComponent {
         }
       },
       error: (err) => {
-        console.log("An Error occurred while fetching questions", err);
+
       }
     });
   }
@@ -81,7 +81,7 @@ export class SelfiePopupComponent {
 
       this.surveyservice.CreateGeneralQuestion(currentQuestion).subscribe({
         next: (resp: any) => {
-          console.log(`API call ${i + 1} successful`);
+
           successfulAPICalls++;
 
           if (successfulAPICalls === this.questions.length) {

@@ -47,7 +47,6 @@ export class ExpertAidAllServicesComponent {
 
   ngOnInit(): void {
     this.role = this.utility.getRole()
-    console.log("Center Id :", this.centerId)
     this.getAllUser()
   }
 
@@ -58,7 +57,6 @@ export class ExpertAidAllServicesComponent {
     this.userId = this.utility.getUserId();
     this.themeService.getAllExpertAidList(this.userId).subscribe((data: any) => {
       this.UserData = data;
-      console.log("Rishabh", data);
     });
   }
 
@@ -77,7 +75,6 @@ export class ExpertAidAllServicesComponent {
 
 
   getUserDetails(userId: any): void {
-    console.log("userId", userId)
     const filteredUser = this.UserData.find((user: any) => user.id === userId);
     if (filteredUser) {
       this.userName = filteredUser.name;
@@ -86,12 +83,7 @@ export class ExpertAidAllServicesComponent {
       this.contact = filteredUser.mobile;
       this.createdDate = filteredUser.startDate;
       this.userstatus = filteredUser.status;
-
-      console.log("User Name:", this.userName);
-      console.log("User Email:", this.email);
-      console.log("Status:", this.userstatus);
     } else {
-      console.log("User not found with ID:", userId);
     }
   }
 
@@ -103,15 +95,12 @@ export class ExpertAidAllServicesComponent {
     const filteredUser = this.UserData.find((user: any) => user.id === id);
 
 
-    console.log("Id : ", id)
-    console.log("status : ", status)
-
     const dataToSend = {
       id: filteredUser.id,
       centerId: filteredUser.centerId,
       status: status === 'ACT' ? 'ACT' : 'DEL'
     };
-    console.log(filteredUser)
+
 
     this.surveyservice.updateExpertAidProfile(dataToSend).subscribe({
       next: (resp: any) => {

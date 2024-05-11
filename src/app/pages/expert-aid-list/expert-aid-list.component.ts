@@ -56,7 +56,6 @@ export class ExpertAidListComponent {
     this.userId = localStorage.getItem("userId");
     this.themeService.getExpertAidById(this.centerId).subscribe((data: any) => {
       this.UserData = data;
-      console.log("Rishabh", data);
     });
   }
 

@@ -41,7 +41,6 @@ export class SidebarComponent {
     if (this.role) {
       this.role = this.role.toLowerCase();
     }
-    console.log("SideBar Role", this.role)
     if (this.role == 'client')
       this.isClient = true;
     else if (this.role == 'superadmin')

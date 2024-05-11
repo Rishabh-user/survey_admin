@@ -29,14 +29,13 @@ export class SupportComponent {
   getMyAccount() {
     this.userId = this.utils.getUserId();
     this.themeService.GetMyAccount(this.userId).subscribe((data: any) => {
-      console.log("data", data)
+
       this.id = data.id;
       this.firstName = data.firstName;
       this.lastName = data.lastName
       this.email = data.email
       this.contactNo = data.contactNo
       this.centerId = data.centerId
-      console.log("centerId", this.centerId)
     });
   }
   submitForm() {
@@ -52,9 +51,7 @@ export class SupportComponent {
 
     this.http.post(url, null, { params, responseType: 'text' }).subscribe({
       next: (response: any) => {
-        console.log('Response:', response);
         if (response.includes('CreatedSuccessfully')) {
-          console.log('Data sent successfully');
           this.utils.showSuccess('Data sent successfully');
         } else {
           console.error('Unexpected response:', response);
