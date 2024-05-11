@@ -36,7 +36,7 @@ export class DashboardComponent {
   reportSurvey: any;
   surveyReportData: any;
   chart: Chart;
-    
+
   constructor(private visibilityService: DataService, private modalService: NgbModal, public themeService: DataService,
     public surveyservice: SurveyService, private auth: AuthService, private utility: UtilsService, private crypto: CryptoService, private router: Router,
     private csvService: SurveyService,
@@ -132,8 +132,8 @@ export class DashboardComponent {
     this.getNames();
     this.getReportForSelectedYear();
   }
-  
-   
+
+
 
   openVerticallyCentered(content: any) {
     this.modalService.open(content, { centered: true, size: 'lg' });
@@ -184,7 +184,7 @@ export class DashboardComponent {
   }
   // Get Report Graph
   selectedMonth: any = 'All';
-  months: { name: string, value: number }[] = [    
+  months: { name: string, value: number }[] = [
     { name: 'March', value: 3 },
     { name: 'April', value: 4 },
     { name: 'May', value: 5 },
@@ -204,49 +204,49 @@ export class DashboardComponent {
   ];
   getReportForSelectedYear(): void {
     if (this.selectedMonth === 'All') {
-        this.surveyservice.getReportBySurvey(this.selectedYear).subscribe({
-            next: (resp: any) => {
-                this.surveyReportData = resp.surveyReportData;
-                this.createChart();
-            },
-            error: (err: any) => {
-                console.error('Error fetching report data:', err);
-            }
-        });
+      this.surveyservice.getReportBySurvey(this.selectedYear).subscribe({
+        next: (resp: any) => {
+          this.surveyReportData = resp.surveyReportData;
+          this.createChart();
+        },
+        error: (err: any) => {
+          console.error('Error fetching report data:', err);
+        }
+      });
     } else {
-        this.surveyservice.getReportBySurvey(this.selectedYear, this.selectedMonth).subscribe({
-            next: (resp: any) => {
-                this.surveyReportData = resp.surveyReportData;
-                this.createChart();
-            },
-            error: (err: any) => {
-                console.error('Error fetching report data:', err);
-            }
-        });
+      this.surveyservice.getReportBySurvey(this.selectedYear, this.selectedMonth).subscribe({
+        next: (resp: any) => {
+          this.surveyReportData = resp.surveyReportData;
+          this.createChart();
+        },
+        error: (err: any) => {
+          console.error('Error fetching report data:', err);
+        }
+      });
     }
-}
-  
+  }
+
   //create Chart
-  createChart(): void {    
+  createChart(): void {
     if (!this.surveyReportData || !Array.isArray(this.surveyReportData)) {
       console.error('Survey report data is missing or not an array.');
       return;
     }
-  
+
     const months: string[] = [
-      '0', 'March', 'April', 'May', 'June', 
+      '0', 'March', 'April', 'May', 'June',
       'July', 'August', 'September', 'October', 'November', 'December', 'January', 'February'
     ];
     const isMonthSelected = this.selectedMonth !== 'All';
     //const uniqueMonths: string[] = Array.from(new Set(this.surveyReportData.map(item => months[item.month - 1])));
     const uniqueMonths: string[] = [...new Set(months)];
-    const uniqueDates = isMonthSelected 
-    ? Array.from(new Set(this.surveyReportData.map(item => item.date)))
-    : Array.from(new Set(this.surveyReportData.map(item => item.date.split('-')[0])));
+    const uniqueDates = isMonthSelected
+      ? Array.from(new Set(this.surveyReportData.map(item => item.date)))
+      : Array.from(new Set(this.surveyReportData.map(item => item.date.split('-')[0])));
     const delData: number[] = Array(uniqueMonths.length).fill(0);
     const holData: number[] = Array(uniqueMonths.length).fill(0);
     const actData: number[] = Array(uniqueMonths.length).fill(0);
-  
+
     this.surveyReportData.forEach((item: any) => {
       const index = item.month;
       if (item.status === 'DEL') {
@@ -271,7 +271,7 @@ export class DashboardComponent {
     if (this.chart) {
       this.chart.destroy();
     }
-  
+
     this.chart = new Chart("canvas", {
       type: 'line',
       data: {
@@ -320,7 +320,7 @@ export class DashboardComponent {
         scales: {
           x: {
             beginAtZero: true,
-            
+
           },
           y: {
             beginAtZero: true

@@ -381,12 +381,12 @@ export class SurveyService {
 
 
   getSurveyReportBySurvey(pageNumber: number, pageSize: number): Observable<responseDTO[]> {
-    const url = `${this.apiUrl}api/admin/${this.userId}/Report/GetSurveyList?pageNumber=${pageNumber}&pageSize=${pageSize}`;
+    const url = `${this.apiUrl}GetSurveyList?pageNumber=${pageNumber}&pageSize=100`;
     return this.http.get<responseDTO[]>(url);
   }
 
   getSurveyReportBySurveyId(surveyId: any): Observable<responseDTO[]> {
-    const url = `${this.apiUrl}api/admin/${this.userId}/Report/SurveyReport?surveyId=${surveyId}`;
+    const url = `${this.apiUrl}SurveyReport?surveyId=${surveyId}`;
     return this.http.get<responseDTO[]>(url);
   }
 
