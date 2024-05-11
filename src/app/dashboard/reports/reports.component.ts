@@ -16,7 +16,7 @@ export class ReportsComponent {
   pageSize: number = 10;
   pageNumber: number = 1
   currentPage: number = 1;
-  totalItemsCount: number = 100
+  totalItemsCount: number = 10
   reportSurvey: any;
   surveyId: any;
 
@@ -46,11 +46,11 @@ export class ReportsComponent {
       this.cdr.detectChanges();
     });
   }
+  onPageChange(pageNumber: number) {
 
-  onPageChange(event: any) {
-    const pageNumber = event.page;
-    this.currentPage = pageNumber;
-    this.getSurveyReportBySurvey(this.currentPage, this.pageSize);
+    this.pageNumber = pageNumber;
+    this.getSurveyReportBySurvey(this.pageNumber, this.pageSize)
+    this.currentPage = this.pageNumber
   }
 
   onPageSizeChange() {

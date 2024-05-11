@@ -380,7 +380,7 @@ export class SurveyService {
 
 
   getSurveyReportBySurvey(pageNumber: number, pageSize: number): Observable<responseDTO[]> {
-    const url = `${this.apiUrl}GetSurveyList?pageNumber=${pageNumber}&pageSize=100`;
+    const url = `${this.apiUrl}GetSurveyList?pageNumber=${pageNumber}&pageSize=${pageSize}`;
     return this.http.get<responseDTO[]>(url);
   }
 

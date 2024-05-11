@@ -17,8 +17,8 @@
                             <option value="5">Loop</option>
                         </select>
                     </div>
-                    <a href="javascript:" class="btn btn-primary ms-2" (click)="generateCSV()">Download CSV <ng-icon class="ms-3"
-                            name="heroArrowLongRight"></ng-icon></a>
+                    <a href="javascript:" class="btn btn-primary ms-2" (click)="generateCSV()">Download CSV <ng-icon
+                            class="ms-3" name="heroArrowLongRight"></ng-icon></a>
                 </div>
             </div>
         </div>
@@ -26,21 +26,18 @@
         <div class="Report-question-list">
             <ol>
                 <li *ngFor="let item of surveyReportById; let i = index">
-                    <figcaption>
-                        <div class="">
-                            <h4>Q.{{ i + 1 }} {{item.question}}</h4>
-                            
-                        </div>
-                    </figcaption>
-                    <figure>
-                        <div class="graph-gap">
-                            <canvas id="canvas1">{{charts[0]}}</canvas>
-                        </div>
-                    </figure>
-                   
+                  <figcaption>
+                    <div class="">
+                      <h4>Q.{{ i + 1 }} {{item.question}}</h4>
+                    </div>
+                  </figcaption>
+                  <figure>
+                    <div class="graph-gap">
+                      <canvas id="canvas{{i + 1}}"></canvas>
+                    </div>
+                  </figure>
                 </li>
-                
-            </ol>
+              </ol>
         </div>
 
     </div>

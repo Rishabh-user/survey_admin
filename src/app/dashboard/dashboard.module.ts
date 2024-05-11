@@ -34,6 +34,7 @@ import { MatChipsModule } from '@angular/material/chips';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatButtonModule } from '@angular/material/button';
+import { NgxPaginationModule } from 'ngx-pagination';
 // Icons
 
 @NgModule({
@@ -72,6 +73,7 @@ import { MatButtonModule } from '@angular/material/button';
       heroMagnifyingGlass,
       heroPencil
     }),
+    NgxPaginationModule,
     SharedModule
   ],
   providers: [

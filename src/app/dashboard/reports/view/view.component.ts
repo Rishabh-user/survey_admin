@@ -1,8 +1,24 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Chart, ChartData, ChartOptions, ChartType } from 'chart.js';
+import { Chart, ChartOptions, ChartType, registerables } from 'chart.js';
 import { CryptoService } from 'src/app/service/crypto.service';
 import { SurveyService } from 'src/app/service/survey.service';
+import { AfterViewInit } from '@angular/core';
+
+interface SurveyQuestion {
+  surveyId: number;
+  surveyName: string;
+  questionId: number;
+  question: string;
+  sort: number;
+  responsOptions: {
+    option: string;
+    optionId: number;
+    answer: string;
+    rating: number | null;
+    count: number;
+  }[];
+}
 
 @Component({
   selector: 'app-view',
@@ -13,7 +29,7 @@ export class ViewComponent {
   surveyId: any;
   reportsurveyid: any
   surveyReport: any;
-  surveyReportById: any;
+  surveyReportById: SurveyQuestion[] = [];
   constructor(public themeService: SurveyService, private route: ActivatedRoute, private crypto: CryptoService,) {
     this.route.paramMap.subscribe(params => {
       let _queryData = params.get('param1');
@@ -24,6 +40,7 @@ export class ViewComponent {
         this.reportsurveyid = _data[0];
       }
     })
+    Chart.register(...registerables);
   }
   chartType: string = 'line';
   validChartTypes: { [key: string]: ChartType } = {
@@ -36,9 +53,73 @@ export class ViewComponent {
   charts: Chart[] = [];
 
   ngOnInit(): void {
-    //this.createChart('canvas1');
-    //this.createChart('canvas2');
     this.getSurveyReportBySurveyId();
+
+  }
+  
+  createCharts(): void {
+    console.log(this.surveyReportById);
+    
+    if (this.surveyReportById.length === 0) {
+      console.error("Survey report data is empty.");
+      return;
+    }
+    
+    this.surveyReportById.forEach((item, index) => {
+      const canvasId = `canvas${index + 1}`;
+      const canvas = document.getElementById(canvasId) as HTMLCanvasElement | null;
+    
+      if (!canvas) {
+        console.error(`Canvas element with ID ${canvasId} not found.`);
+        return;
+      }
+    
+      const ctx = canvas.getContext('2d');
+    
+      if (!ctx) {
+        console.error(`Failed to get 2D context for canvas element with ID ${canvasId}.`);
+        return;
+      }
+    
+      const datasets = item.responsOptions
+        .filter(option => option.option !== null) // Remove options with null values
+        .map(option => ({
+          label: option.option,
+          data: [option.count], // Use count as the data for the bar chart
+          backgroundColor: this.getRandomColor() // Generate a random color for each bar
+        }));
+    
+        new Chart(ctx, {
+          type: 'bar',
+          data: {
+            labels: item.responsOptions.map(option => option.option), // Set options as labels for x-axis
+            datasets: datasets
+          },
+          options: {
+            indexAxis: 'x',
+            scales: {
+              x: {
+                display: false, // Display the x-axis
+                title: {
+                  display: true,
+                  text: 'Question Options' // Add a title to the x-axis if needed
+                }
+              },
+              y: {
+                beginAtZero: true
+              }
+            }
+          }
+        });
+    });
+  }
+  getRandomColor(): string {
+    const letters = '0123456789ABCDEF';
+    let color = '#';
+    for (let i = 0; i < 6; i++) {
+      color += letters[Math.floor(Math.random() * 16)];
+    }
+    return color;
   }
 
   // createChart(canvasId: string) {
@@ -102,6 +183,10 @@ export class ViewComponent {
     if (this.surveyId) {
       this.themeService.getSurveyReportBySurveyId(this.surveyId).subscribe((data: any) => {
         this.surveyReportById = data;
+        //this.createCharts(); // Call createCharts() after data is fetched
+        setTimeout(() => {
+          this.createCharts();
+        }, 5000); // 5 seconds in milliseconds
       });
     } else {
       console.error("Survey ID is null or undefined.");
