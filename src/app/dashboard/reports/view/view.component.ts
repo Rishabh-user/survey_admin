@@ -57,6 +57,13 @@ export class ViewComponent {
 
   }
 
+  graphtypevalue: any
+  graphType(event: any) {
+    this.graphtypevalue = event.target.value;
+    console.log("wertyuiop", this.graphtypevalue)
+    this.createCharts();
+  }
+
   createCharts(): void {
     console.log(this.surveyReportById);
 
@@ -81,6 +88,8 @@ export class ViewComponent {
         return;
       }
 
+
+
       const datasets = item.responsOptions
         .filter(option => option.option !== null) // Remove options with null values
         .map(option => ({
@@ -88,6 +97,7 @@ export class ViewComponent {
           data: [option.count], // Use count as the data for the bar chart
           backgroundColor: this.getRandomColor() // Generate a random color for each bar
         }));
+
 
       new Chart(ctx, {
         type: 'bar',
@@ -111,6 +121,7 @@ export class ViewComponent {
           }
         }
       });
+
     });
   }
   getRandomColor(): string {
