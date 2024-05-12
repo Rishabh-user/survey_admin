@@ -133,63 +133,7 @@ export class ViewComponent {
     return color;
   }
 
-  // createChart(canvasId: string) {
-  //   const existingChart = this.getChartByCanvasId(canvasId);
-  //   if (existingChart) {
-  //     existingChart.destroy();
-  //   }
-
-  //   if (this.validChartTypes[this.chartType]) {
-  //     const chartData: ChartData = {
-  //       labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
-  //       datasets: [
-  //         {
-  //           label: 'Dataset 1',
-  //           data: [5, 10, 15, 10, 20, 18, 25, 35, 28, 22, 25, 55],
-  //         },
-  //         {
-  //           label: 'Dataset 2',
-  //           data: [5, 10, 15, 10, 20, 18, 25, 35, 28, 22, 25, 55],
-  //         }
-  //       ]
-  //     };
-
-  //     const chartOptions: ChartOptions = {
-  //       responsive: true,
-  //       plugins: {
-  //         legend: {
-  //           position: 'top',
-  //         },
-  //         title: {
-  //           display: true,
-  //           text: 'Chart.js Line Chart'
-  //         }
-  //       }
-  //     };
-
-  //     const newChart = new Chart(canvasId, {
-  //       type: this.validChartTypes[this.chartType],
-  //       data: chartData,
-  //       options: chartOptions
-  //     });
-
-  //     this.charts.push(newChart);
-  //   }
-  // }
-
-  // onChartTypeChange(event: any, canvasId: string) {
-  //   const selectedType = event.target.value;
-  //   if (this.validChartTypes[selectedType]) {
-  //     this.chartType = selectedType;
-  //     this.createChart(canvasId);
-  //   }
-  // }
-
-  // private getChartByCanvasId(canvasId: string): Chart | undefined {
-  //   return this.charts.find(chart => chart.ctx.canvas.id === canvasId);
-  // }
-
-
+ 
   getSurveyReportBySurveyId() {
     if (this.surveyId) {
       this.themeService.getSurveyReportBySurveyId(this.surveyId).subscribe((data: any) => {
@@ -206,29 +150,31 @@ export class ViewComponent {
   // Function to generate CSV data
   generateCSV(): void {
     const csvContent = this.convertToCSV(this.surveyReportById);
-    this.downloadCSV(csvContent, 'survey_report.csv');
+    this.downloadCSV(csvContent, 'Survey_Report.csv');
   }
   convertToCSV(data: any[]): string {   
-    const headerFields = ['Survey ID', 'Survey Name', 'Question ID', 'Question', 'Option ID', 'Answer', 'Rating ID', 'Survey Attempt ID', 'Count'];
+    const headerFields = ['Survey ID', 'Survey Name', 'Question ID', 'Question', 'Option', 'Answer', 'Rating', 'Survey Attempt ID', 'Count'];
 
     let csvContent = headerFields.join(',') + '\n';
     data.forEach(item => {
-      const formattedRow = [
-        item.surveyId,
-        `"${item.surveyName}"`, 
-        item.questionId,
-        `"${item.question}"`, 
-        item.optionId,
-        item.answer,
-        item.ratingId,
-        item.surveyAttemptId,
-        item.count
-      ].join(',');
-      csvContent += formattedRow + '\n';
+      item.responsOptions.forEach((option: { option: any; answer: any; rating: any; surveyAttemptId: any; count: any; }) => {
+        const formattedRow = [
+          item.surveyId,
+          `"${item.surveyName}"`, 
+          item.questionId,
+          `"${item.question}"`, 
+          option.option,
+          option.answer,
+          option.rating || '',
+          option.surveyAttemptId || '',
+          option.count
+        ].join(',');
+        csvContent += formattedRow + '\n';
+      });
     });
 
     return csvContent;
-  }
+}
 
   // Function to trigger file download
   downloadCSV(csvContent: string, filename: string): void {
