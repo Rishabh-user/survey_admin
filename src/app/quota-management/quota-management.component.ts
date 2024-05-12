@@ -108,26 +108,33 @@ export class QuotaManagementComponent {
   quotas: any[] = [{ selectedQuestion: 'Select Question', showQuotasDiv: false }];
 
   addQuota() {
+    if (this.surveyQuotaJson.totalUsers > 0) {
+      this.showCountError = false;
 
-    const lastItem = this.surveyQuotaJson.questionDto[this.surveyQuotaJson.questionDto.length - 1];
+      const lastItem = this.surveyQuotaJson.questionDto[this.surveyQuotaJson.questionDto.length - 1];
 
-    if (lastItem.questionId == 0) {
-      alert("Please select question.");
-    } else {
-      const newQuestion = new QuestionDto();
-      newQuestion.type = 'none';
-      this.surveyQuotaJson.questionDto.push(newQuestion);
+      if (typeof lastItem == 'undefined' || lastItem?.questionId != 0) {
+        const newQuestion = new QuestionDto();
+        newQuestion.type = 'none';
+        this.surveyQuotaJson.questionDto.push(newQuestion);
+      }
+      else if (lastItem.questionId == 0) {
+        alert("Please select question.");
+      }
+    }
+    else {
+      this.showCountError = true;
     }
 
   }
 
 
   showQuestionQuotas(index: number) {
-    if (this.quotas[index].selectedQuestion !== 'Select Question') {
-      this.quotas[index].showQuotasDiv = true;
-    } else {
-      this.quotas[index].showQuotasDiv = false;
-    }
+    // if (this.quotas[index].selectedQuestion !== 'Select Question') {
+    //   this.quotas[index].showQuotasDiv = true;
+    // } else {
+    //   this.quotas[index].showQuotasDiv = false;
+    // }
   }
   // Show and hide Census/Custom dive
   // showCensusDiv: boolean = false;
@@ -591,5 +598,26 @@ export class QuotaManagementComponent {
     });
 
 
+  }
+
+
+  manageQuota() {
+
+    let isEdit = false;
+    if (this.surveyQuotaJson.quotaId > 0) {
+      isEdit = true;
+    }
+
+    this.surveyservice.manageQuota(this.surveyQuotaJson, isEdit).subscribe({
+      next: (response: any) => {
+        debugger;
+        this.getQuotaBySurveyId();
+
+
+      },
+      error: (error: any) => {
+        console.log("Error while submitting quota:", error);
+      }
+    });
   }
 }
