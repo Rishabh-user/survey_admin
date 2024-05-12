@@ -4,19 +4,23 @@
             <div class="infocircle justify-content-start">
                 <h4>Refine Your Surveys with Scrip8’s Expert Services </h4>
                 <div class="custom-tooltip ms-2">
-                    <ng-icon name="heroInformationCircle" ngClass="edit-action info-circle" (click)="toggleTooltip('1')"></ng-icon>
+                    <ng-icon name="heroInformationCircle" ngClass="edit-action info-circle"
+                        (click)="toggleTooltip('1')"></ng-icon>
                     <div class="toast show" *ngIf="showTooltip['1']">
                         <div class="toast-header">
-                            <img [src]="baseUrl + '/assets/images/icons/Add-new-question.png'" class="rounded me-2" width="30" height="30" />
+                            <img [src]="baseUrl + '/assets/images/icons/Add-new-question.png'" class="rounded me-2"
+                                width="30" height="30" />
                             <h6 class="mb-0 me-auto">Expert Aid</h6>
-                            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close" (click)="hideTooltip('1')"></button>
+                            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"
+                                (click)="hideTooltip('1')"></button>
                         </div>
                         <div class="toast-body">
-                            The service allows you to add a few of our tool features to your cart, and our support team will contact you.
+                            The service allows you to add a few of our tool features to your cart, and our support team
+                            will contact you.
                         </div>
                     </div>
                 </div>
-            </div>            
+            </div>
             <p>Manage your Survey with "Experts".</p>
         </div>
     </div>
@@ -76,7 +80,7 @@
     </div>
 </div>
 
-<!--  -->
+
 <ng-template #form let-modal>
     <div class="modal-header">
         <h4 class="modal-title">Add to Cart</h4>
@@ -85,12 +89,6 @@
     <div class="modal-body popup-ques">
         <form (submit)="onSaveExpertAid()">
             <div class="row">
-                <!-- <div class="col-md-6 form-group mb-3">
-                    <label>Full Name</label>
-                    <input if="name" type="text" class="form-control" placeholder="Enter your full name"
-                        [(ngModel)]="name" [ngModelOptions]="{standalone: true}" (blur)="validateSurvey()">
-                    <div *ngIf="!firstname" class="text-danger">Name is required.</div>
-                </div> -->
                 <div class="col-md-6 form-group mb-3">
                     <label>Full Name</label>
                     <input type="text" class="form-control" placeholder="Enter your full name" [(ngModel)]="name"
@@ -128,12 +126,6 @@
                         [ngModelOptions]="{standalone: true}" (blur)="validateSurvey()">
                     <div *ngIf="!emailaddress" class="text-danger">Email is required.</div>
                 </div>
-                <!-- <div class="col-md-6 form-group mb-3">
-                    <label>Phone Number</label>
-                    <input type="number" class="form-control" placeholder="Enter your phone number" [(ngModel)]="mobile"
-                        [ngModelOptions]="{standalone: true}" (blur)="validateSurvey()">
-                    <div *ngIf="!phone" class="text-danger">Phone Number is required.</div>
-                </div> -->
                 <div class="col-md-6 form-group mb-3">
                     <label>Phone Number</label>
                     <input type="number" class="form-control" placeholder="Enter your phone number" [(ngModel)]="mobile"
@@ -143,34 +135,11 @@
                         <ng-container *ngIf="mobile && !phoneLengthError">Phone Number cannot exceed 15
                             digits.</ng-container>
                     </div>
-                    <!-- <div *ngIf="!phone" class="text-danger">Phone Number is required.</div>
-                    <div *ngIf="phoneLengthError" class="text-danger">Phone Number cannot exceed 15 digits.</div> -->
                 </div>
             </div>
             <div class="form-group mb-3 services">
                 <label>Selected Service</label>
-                <!-- <mat-form-field class="form-control">
-                    <mat-select #selectElement>
-                        <mat-select-trigger>
-                            {{ selectedItems.length ? selectedItems[0] : 'Select an item' }}
-                        </mat-select-trigger>
-                        <mat-option *ngFor="let service of selectedItems" [value]="service">
-                            {{ service }}
-                        </mat-option>
-                    </mat-select>
-                </mat-form-field> -->
-                <!-- <mat-form-field>
-                    <mat-label>Color</mat-label>
-                    <mat-select [selectable]="selectable">
-                        <mat-option value="Expert Programmer/Scripte">Expert Programmer/Scripter</mat-option>
-                        <mat-option value="Expert Analysis">Expert Analysis</mat-option>
-                        <mat-option value="Report Writing">Report Writing</mat-option>
-                        <mat-option value="Data Validation">Data Validation</mat-option>
-                        <mat-option value="Purchase Responses"
-                            [class.active]="selectedItems1('Purchase Responses')">Purchase Responses</mat-option>
-                        <mat-option value="Customizable Report">Customizable Report</mat-option>
-                    </mat-select>
-                </mat-form-field> -->
+
 
                 <div class="form-control mark">
                     <mat-chip-list>
@@ -181,7 +150,7 @@
                             <mat-icon matChipRemove *ngIf="removable"><ng-icon name="heroXMark"></ng-icon></mat-icon>
                         </mat-chip>
                     </mat-chip-list>
-                    
+
                 </div>
                 <div *ngIf="selectedItems.length === 0" class="text-danger">Service is required</div>
 
@@ -194,9 +163,6 @@
                 <div *ngIf="!validMessageLength" class="text-danger">Message should be 250
                     words or less</div>
 
-                <!-- <div *ngIf="!message" class="text-danger">Message is required</div>
-                <div *ngIf="message && countWords(comments) > 250" class="text-danger">Message should be at most 250
-                    words</div> -->
             </div>
             <div class="text-end"><button type="submit" class="btn btn-primary">Submit</button></div>
         </form>

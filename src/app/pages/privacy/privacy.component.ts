@@ -12,15 +12,13 @@ import { environment } from 'src/environments/environment';
   styleUrls: ['./privacy.component.css']
 })
 export class PrivacyComponent {
-  // Tooltip
   showTooltip: { [key: string]: boolean } = {};
   toggleTooltip(identifier: string) {
     this.showTooltip[identifier] = !this.showTooltip[identifier];
   }
   hideTooltip(identifier: string) {
-      this.showTooltip[identifier] = false;
+    this.showTooltip[identifier] = false;
   }
-// Tooltip
   public Editor = ClassicEditor;
   constructor(public themeService: DataService, private cdr: ChangeDetectorRef, private util: UtilsService) {
     this.baseUrl = environment.baseURL;
@@ -34,8 +32,7 @@ export class PrivacyComponent {
   baseUrl = '';
 
 
-  onRemove(event: any) { // Use 'any' as the event type
-    console.log(event);
+  onRemove(event: any) {
     this.files.splice(this.files.indexOf(event), 1);
   }
 
@@ -49,7 +46,7 @@ export class PrivacyComponent {
   getPrivacy() {
     this.userId = this.util.getUserId()
     this.themeService.GetPrivacyPolicy(this.userId).subscribe((data: any) => {
-      console.log("data", data)
+
       this.name = data.name;
       this.id = data.id
       this.description = data.description
@@ -57,56 +54,7 @@ export class PrivacyComponent {
       this.cdr.detectChanges();
     });
   }
-  // postData() {
-  //   this.extractFileNameFromUrl
 
-  //   if (!this.validateSurvey()) {
-  //     this.util.showError('Please fill all required fields.');
-  //     return;
-  //   }
-  //   const imageName = this.image.split('\\').pop() || this.image;
-  //   const dataToSend = {
-  //     id: this.id,
-  //     name: this.name,
-  //     description: this.description,
-  //     image: imageName,
-  //     centerId: this.centerId
-  //   };
-  //   console.log("dataToSend", dataToSend)
-  //   this.themeService.CreatePrivacyPolicy(dataToSend).subscribe(
-  //     response => {
-  //       console.log('Response from server:', response);
-  //       this.util.showSuccess(response);
-  //       window.location.reload();
-  //     },
-  //     error => {
-  //       this.util.showError('error');
-  //       console.error('Error occurred while sending POST request:', error);
-  //     }
-  //   );
-  // }
-  // onSelect(event: any) {
-  //   const file = event.addedFiles && event.addedFiles.length > 0 ? event.addedFiles[0] : null;
-
-  //   if (file) {
-  //     this.files.push(file); 
-  //     this.uploadImage(file); 
-  //   }
-  // }
-
-  // uploadImage(file: File): void {
-
-  //   this.themeService.uploadImageAboutUs(file, this.userId).subscribe(
-  //     (response: String) => {
-  //       console.log('Upload successful:', response);
-  //       this.image = response.replace(/"/g, '')
-  //       console.log(this.image)
-  //     },
-  //     (error) => {
-  //       console.error('Error occurred while uploading:', error);
-  //     }
-  //   );
-  // }
 
   imageUpdated: boolean = false;
 
@@ -116,17 +64,14 @@ export class PrivacyComponent {
     if (file) {
       this.files.push(file);
       this.uploadImage(file);
-      console.log("uploaded", this.uploadImage(file));
     }
   }
 
   uploadImage(file: File): void {
     this.themeService.uploadImageAboutUs(file, this.userId).subscribe(
       (response: string) => {
-        console.log('Upload successful:', response);
         this.image = response.replace(/"/g, '');
-        this.imageUpdated = true; // Set to true since the image has been updated
-        console.log(this.image);
+        this.imageUpdated = true;
       },
       (error) => {
         console.error('Error occurred while uploading:', error);
@@ -143,7 +88,6 @@ export class PrivacyComponent {
 
     let imageName = '';
 
-    // Check if image is updated or not
     if (this.imageUpdated) {
       imageName = this.image.split('\\').pop() || this.image;
     }
@@ -159,11 +103,11 @@ export class PrivacyComponent {
       centerId: this.centerId
     };
 
-    console.log("dataToSend", dataToSend);
+
 
     this.themeService.CreatePrivacyPolicy(dataToSend).subscribe(
       response => {
-        console.log('Response from server:', response);
+
         this.util.showSuccess(response);
         window.location.reload();
       },
@@ -181,7 +125,6 @@ export class PrivacyComponent {
     this.title = !!this.name && this.name.trim().length > 0;
     this.descriptioninfo = !!this.description && this.description.trim().length > 0;
 
-    // You might want to return whether all fields are valid
     return (
       this.title &&
       this.descriptioninfo
@@ -192,10 +135,10 @@ export class PrivacyComponent {
     if (url.includes('/')) {
       const parts = url.split('/');
       if (parts.length > 0) {
-        return parts.pop()!; // Get and return the last part
+        return parts.pop()!;
       }
     }
-    return url; // If no '/' is found or parts array is empty, return the whole URL
+    return url;
   }
 
 }

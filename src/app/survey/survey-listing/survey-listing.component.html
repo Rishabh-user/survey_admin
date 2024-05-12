@@ -6,13 +6,7 @@
                 <p>Manage your Track Opinion "Survey List" page</p>
             </div>
             <div class="col-md-3">
-                <!-- <div class="input-group flex-nowrap sort">
-                        <span class="input-group-text" id="addon-wrapping"></span>
-                        <select class="form-select" [(ngModel)]="selectedCategory">
-                            <option selected value="All Categories">All Categories</option>
-                            <option *ngFor="let item of categoryList" [value]="item.name">{{item.name}}</option>
-                        </select>                    
-                    </div> -->
+
                 <mat-form-field>
                     <mat-select [(ngModel)]="selectedCategory">
                         <mat-option selected value="All Categories">All Categories</mat-option>
@@ -25,8 +19,6 @@
             <table class="table">
                 <thead>
                     <tr>
-                        <!-- <th scope="col"><input type="checkbox" ngClass="form-check-input" />
-                        </th> -->
                         <th scope="col">S.Count</th>
                         <th scope="col">S.ID</th>
                         <th scope="col">Survey Name</th>
@@ -66,13 +58,9 @@
                 <tbody>
                     <tr *ngFor="let item of surveyData | paginate: { id: 'server', itemsPerPage: pageSize, currentPage: pageNumber, totalItems: totalItemsCount } ; let i = index"
                         [hidden]="selectedCategory !== 'All Categories' && item.categoryName !== selectedCategory">
-                        <!-- <td><input type="checkbox" ngClass="form-check-input" /> -->
-                        <!-- </td> -->
-                        <!-- <td>{{item.id}}</td> -->
-                        <!-- <td>{{ i + 1 }}</td> -->
+
                         <td>{{ (pageNumber - 1) * pageSize + i + 1 }}</td>
                         <td>{{ item.surveyId}}</td>
-                        <!-- <td>{{item.name}}</td> -->
                         <td matTooltip={{item.name}}>
                             {{ item.name.split(' ').slice(0, 3).join(' ') }}{{item.name.split('
                             ').length > 3 ? ' ...' : ''}}
@@ -82,10 +70,6 @@
                                 <img [src]="baseUrl + '/assets/images/country-flag/' + item.countryImage"
                                     class="me-2 rounded-circle" style="width: 30px;height: 30px;" />
                             </ng-container>
-                            <!-- <img [src]="baseUrl + '/assets/images/country-flag/' + item.countryImage"
-                                class="me-2 rounded-circle" style="width: 30px;height: 30px;" /> -->
-                            <!-- <img loading="lazy" [src]="baseUrl + '/assets/images/country-flag/' + countryName + '.png'"
-                                width="30" height="30" alt={{countryName}} /> -->
                             {{item.countryName}}
                         </td>
                         <td *ngIf="item.categoryName !='Others'">{{item.categoryName}}</td>
@@ -109,30 +93,13 @@
                             </div>
                         </td>
 
-                        <!-- <td *ngIf="item.userImage =='https://beta.angular.opinionest.com/Files/Images/'">
-                            <div class="me-2 rounded-circle defaultprofile">{{ item.userName ? (item.userName.charAt(0)
-                                +
-                                item.userName.split(' ')[1]?.charAt(0)) : '' }}</div>
-                        </td> -->
                         <td>
                             {{
                             (item.modifiedDate ? (item.modifiedDate | date:'medium':'IST') : (item.createdDate |
                             date:'medium':'IST'))
                             }}
                         </td>
-                        <!-- <td [ngClass]="{'done': item.status === 'ACT', 'paused': item.status !== 'ACT'}">
-                            <span>{{ item.status === 'ACT' ? 'Ongoing' : 'Pause' }}</span>
-                        </td> -->
-                        <!-- <td>
-                            <label class="toggle" *ngIf="role === 'admin' || role === 'superadmin'">
-                              <input type="checkbox" [checked]="item.status === 'ACT'" (change)="toggleSlider($event, item.id, item)">
-                              <span class="slider round"></span>
-                            </label>
-                            <label class="toggle" *ngIf="role !== 'admin' && role !== 'superadmin'">
-                                <input type="checkbox" [checked]="item.status === 'ACT'" [disabled]="true">
-                                <span class="slider round"></span>
-                            </label>
-                          </td> -->
+
                         <td>
                             <ng-container *ngIf="role === 'admin' || role === 'superadmin'">
                                 <select [(ngModel)]="item.status" (change)="toggleSlider($event, item.surveyId, item)"
@@ -149,7 +116,7 @@
                                 </select>
                             </ng-container>
                         </td>
-                        <td ngClass="action" *ngIf="role !== 'user'">
+                        <td ngClass="action">
                             <div class="d-flex gap-2 editaction">
                                 <div>
                                     <a *ngIf="item.status!='ACT' && item.status!='HOL'" href="javascript:"
@@ -161,8 +128,6 @@
                                             name="heroTrash" ngClass="edit-action delete-trash"></ng-icon></a>
                                 </ng-container>
 
-                                <!-- <a *ngIf="item.status=='ACT'" href="javascript:">
-                                <ng-icon name="heroPencil" ngClass="edit-action"></ng-icon></a> -->
                             </div>
                         </td>
                     </tr>
@@ -175,16 +140,7 @@
                     </tr>
 
             </table>
-            <!-- <div class="custom-pagination d-flex justify-content-between align-items-center mt-5">
-                <pagination-controls *ngIf="surveyData != null && surveyData.length > 0"
-                    class="d-flex justify-content-center" id="server" (pageChange)="onPageChange($event)">
-                </pagination-controls>
-                <div class="d-flex align-items-center">
-                    <span class="me-2">Jump to:</span>
-                    <input style="flex: 1;" type="number" [(ngModel)]="currentPage" (keyup.enter)="jumpToPage()"
-                        class="form-control" />
-                </div>
-            </div> -->
+
             <div class="custom-pagination mt-5" *ngIf="surveyData.length>pageSize-1 || pageNumber>1">
                 <pagination-controls *ngIf="surveyData != null && surveyData.length > 0"
                     class="d-flex justify-content-center" id="server" (pageChange)="onPageChange($event)">
@@ -196,7 +152,6 @@
                         <option value="10">10</option>
                         <option value="20">20</option>
                         <option value="50">50</option>
-                        <!-- Add more options as needed -->
                     </select>
                 </div>
 

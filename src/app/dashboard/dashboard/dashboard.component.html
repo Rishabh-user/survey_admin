@@ -1,11 +1,12 @@
 <div>
     <ng-container *ngIf="isPaid === false">
-        <div class="alert alert-success alert-dismissible fade show" role="alert" >
-            <strong >Dear {{firstName}}</strong> You have created your free 7 days trial survey on <span>{{ orgCreatedDate  }}</span> and it will expired in <span>{{ remainingTrialDays  }} days.</span>
-             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <strong>Dear {{firstName}}</strong> You have created your free 7 days trial survey on <span>{{
+                orgCreatedDate }}</span> and it will expired in <span>{{ remainingTrialDays }} days.</span>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
     </ng-container>
-    
+
     <div class="card card-color p-lg-5 p-4 mb-5">
         <div class="row align-items-center justify-content-between">
             <div class="col-md-8">
@@ -18,10 +19,6 @@
                     and download the list of surveys.</p>
 
             </div>
-            <!-- <div class="col-md-4 text-lg-end mt-lg-0 mt-3">
-                <a href="javascript:void(0);" (click)="onAddNewSurveyClick()" class="btn btn-primary btn-lg">Add New
-                    Survey <ng-icon class="ms-3" name="heroArrowLongRight"></ng-icon></a>
-            </div> -->
             <div class="col-md-4 text-lg-end mt-lg-0 mt-3">
                 <a href="javascript:void(0);" (click)="openLg(sidecontent)" class="btn btn-primary btn-lg">Add New
                     Survey <ng-icon class="ms-3" name="heroArrowLongRight"></ng-icon></a>
@@ -33,21 +30,10 @@
         <h4 class="mb-3">Recent Survey</h4>
         <div class="row">
             <div class="col-md-6" *ngFor="let list of surveylist">
-                <!-- The slice(-4) method extracts the last four elements, and reverse() reverses the order to display the most recent ones first -->
+
                 <div class="card p-3 ps-5 mb-4"
                     [ngClass]="{'recent-project-list': true, 'online': list.status === 'ACT', 'offline': list.status !== 'ACT'}">
                     <div class="d-flex justify-content-between">
-                        <!-- <div class="col-md-8">
-                            <h4 class="mb-2">{{ list.name }}</h4>
-                            <h5 class="mb-2">
-
-                                <a style="color: #000;" *ngIf="list.status !== 'ACT' && list.status !== 'HOL'"
-                                    [routerLink]="'/survey/manage-survey/' + (list.surveyId | encrypt)"
-                                    href="javascript:">
-                                    {{ list.name }}
-                                </a>
-                            </h5>
-                        </div> -->
                         <div class="col-md-8">
                             <h5 class="mb-2">
                                 <ng-container *ngIf="list.status !== 'ACT' && list.status !== 'HOL'; else disabledLink">
@@ -74,9 +60,6 @@
                             <p class="text-body-tertiary small mb-0">Last Updated by <Strong>{{ list.userName
                                     }}</Strong> {{ list.createdDate | date: 'yyyy-MM-dd' }}</p>
                         </div>
-                        <!-- <div class="col-md-4 text-end">
-                            <div class="responses small">Total Responses <strong>263</strong></div>
-                        </div> -->
                     </div>
                 </div>
             </div>
@@ -86,22 +69,27 @@
     <div class="mb-5">
         <div class="card">
             <div class="row align-items-center justify-content-between">
-                <div class="col-md-6">
+                <div class="col-md-4">
                     <h4 class="mb-2">Sessions Overview</h4>
-                    <p>25/09/2023 - 25/10/2023</p>
+                    <!-- <p>25/09/2023 - 25/10/2023</p> -->
                 </div>
-                <div class="col-md-6 text-end">
+                <div class="col-md-8 text-end">
                     <div class="row">
                         <div class="col">
-                            <select class="form-select">
-                                <option selected>Open this select menu</option>
-                                <option value="1">Online Survey</option>
-                                <option value="2">Offline Survey</option>
+                            <select class="form-select" [(ngModel)]="selectedYear"  (change)="getReportForSelectedYear()">
+                                <option *ngFor="let year of years" [value]="year">{{year}}</option>
                             </select>
                         </div>
                         <div class="col">
-                            <a href="#" class="btn btn-primary">Download CSV <ng-icon class="ms-3"
-                                    name="heroArrowLongRight"></ng-icon></a>
+                            <select class="form-select" [(ngModel)]="selectedMonth" (change)="getReportForSelectedYear()">
+                                <option value="All">All</option>
+                                <option *ngFor="let month of months" [value]="month.value">{{month.name}}</option>
+                            </select>
+                        </div>
+                        
+                        <div class="col">
+                            <a href="javascript:" class="btn btn-primary">Download CSV <ng-icon class="ms-3"
+                                name="heroArrowLongRight"></ng-icon></a>
                         </div>
                     </div>
                 </div>
@@ -111,31 +99,7 @@
     </div>
 </div>
 
-<!-- <div class="modal-header">
-        <h4 class="modal-title" id="modal-basic-title">Create Your New Survey</h4>
-        <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
-    </div>
-    <div class="modal-body popup-ques">
-        <form>
-            <div class="mb-4">
-                <label for="surveyname" class="form-label">Enter your Survey Name</label>
-                <div class="input-group">
 
-                    <input id="surveyname" type="text" class="form-control" placeholder="ED-Tech Brand Ranking" />
-                </div>
-            </div>
-            <div class="mb-4">
-                <label for="category" class="form-label">Select Survey Category</label>
-                <input type="search" id="category" placeholder="Search for Categories" class="form-control">
-            </div>
-        </form>
-    </div>
-    <div class="modal-footer upload">
-        <button type="button" class="btn">Cancel</button>
-        <button type="button" class="btn btn-primary d-flex" (click)="modal.close('Save click')">Create <ng-icon
-                class="ms-5" name="heroArrowLongRight"></ng-icon>
-        </button>
-    </div> -->
 <ng-template #sidecontent let-modal>
     <div class="modal-header">
         <h4 class="modal-title">Create Your New Survey</h4>
@@ -200,13 +164,3 @@
 </ng-template>
 
 <app-create-survey-popup #CreateSurveyModal></app-create-survey-popup>
-
-
-<!-- <ng-template #popupTemplate let-modal>
-    <div class="modal-body text-center p-5">
-      <h3>Your trial period has ended</h3>
-      <p>Your trial period has expired. Please upgrade your plan first to continue for using our services.</p>
-      <a class="btn btn-primary mt-3 me-2" routerLink="/payment" (click)="modal.dismiss('Cross click')">Upgrade</a>
-      <button class="btn btn-primary mt-3"  (click)="logOut(modal)">Back to Login</button>
-    </div>
-</ng-template> -->

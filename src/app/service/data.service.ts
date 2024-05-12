@@ -16,7 +16,6 @@ export class DataService {
 
   userId: any;
 
-  // Collapse left sidebar
   public addMargin: boolean = false;
   public addwidth: boolean = false;
   public dashboardMargin: boolean = false;
@@ -72,13 +71,12 @@ export class DataService {
     this.breadcrumbVisibleSubject.next(visible);
   }
 
-  // APIs
+
   apiUrl = environment.apiUrl;
   constructor(private http: HttpClient, private util: UtilsService) {
     this.userId = util.getUserId();
   }
 
-  // About Us get & Post APIs
   GetAboutUs(userId: any): Observable<responseDTO[]> {
     const url = `${this.apiUrl}api/admin/${userId}/AboutUs/GetAboutUs`;
     return this.http.get<responseDTO[]>(url);
@@ -86,12 +84,11 @@ export class DataService {
   CreateAboutUs(data: any): Observable<any> {
     var userId = this.util.getUserId();
     const url = `${this.apiUrl}api/admin/${userId}/AboutUs/CreateAboutUs`;
-    console.log("posted data", data);
+
     return this.http.post(url, data, { responseType: 'text' });
   }
-  // About Us get & Post APIs
 
-  // PrivacyPolicy get & Post APIs
+
   GetPrivacyPolicy(userId: any): Observable<responseDTO[]> {
     const url = `${this.apiUrl}api/admin/${userId}/PrivacyPolicy/GetPrivacyPolicy`;
     return this.http.get<responseDTO[]>(url);
@@ -99,12 +96,12 @@ export class DataService {
   CreatePrivacyPolicy(data: any): Observable<any> {
     var userId = this.util.getUserId();
     const url = `${this.apiUrl}api/admin/${userId}/PrivacyPolicy/CreatePrivacyPolicy`;
-    console.log("posted data", data);
+
     return this.http.post(url, data, { responseType: 'text' });
   }
-  // PrivacyPolicy get & Post APIs
 
-  // Terms&Conditions get & Post APIs
+
+
   GetTermsConditions(userId: any): Observable<responseDTO[]> {
     const url = `${this.apiUrl}api/admin/${userId}/TermAndCondition/GetTermAndConditions`;
     return this.http.get<responseDTO[]>(url);
@@ -112,12 +109,11 @@ export class DataService {
   CreateTermsConditions(data: any): Observable<any> {
     var userId = this.util.getUserId();
     const url = `${this.apiUrl}api/admin/${userId}/TermAndCondition/CreateTermAndCondition`;
-    console.log("posted data", data);
+
     return this.http.post(url, data, { responseType: 'text' });
   }
-  // Terms&Conditions get & Post APIs
 
-  // MyAccount get & Post APIs
+
   GetMyAccount(userId: any): Observable<responseDTO[]> {
     const url = `${this.apiUrl}api/admin/${userId}/Profile/GetProfileById?usetId=${userId}`;
     return this.http.get<responseDTO[]>(url);
@@ -125,21 +121,19 @@ export class DataService {
   CreateMyAccount(data: any): Observable<any> {
     var userId = this.util.getUserId();
     const url = `${this.apiUrl}api/admin/${userId}/Profile/UpdateProfile`;
-    console.log("posted data", data);
+
     return this.http.post(url, data, { responseType: 'text' });
   }
-  // MyAccount get & Post APIs
 
-  // ChangePassword Api 
+
   ChangePassword(data: any): Observable<any> {
     var userId = this.util.getUserId();
     const url = `${this.apiUrl}api/admin/${userId}/Profile/ChangePassword`;
-    console.log("posted data", data);
+
     return this.http.post(url, data, { responseType: 'text' });
   }
-  // ChangePassword Api
 
-  // User get & Post APIs
+
   GetAllUser(userId: any): Observable<responseDTO[]> {
     var userId = this.util.getUserId();
     const url = `${this.apiUrl}api/admin/${userId}/Profile/GetProfile`;
@@ -148,15 +142,13 @@ export class DataService {
   AddNewUser(data: any): Observable<any> {
     var userId = this.util.getUserId();
     const url = `${this.apiUrl}api/admin/${userId}/Profile/CreateProfile`;
-    console.log("posted data", data);
+
     return this.http.post(url, data, { responseType: 'text' });
   }
   uploadImage(file: File, userId: any): Observable<any> {
     const formData = new FormData();
     formData.append('file', file);
-    //var userId = localStorage.getItem("userId")
     const url = `${this.apiUrl}api/admin/${userId}/Profile/ChangeProfileImage`;
-    // Replace 'your_upload_endpoint' with your actual upload API endpoint
     return this.http.post<any>(url, formData);
   }
   uploadImageAboutUs(file: File, userId: number): Observable<any> {
@@ -195,11 +187,6 @@ export class DataService {
   }
 
 
-  // User get & Post APIs
-
-  // APIs
-
-  //search filtering
   private searchQuerySubject = new BehaviorSubject<string>('');
 
   setSearchQuery(query: string): void {
@@ -209,6 +196,6 @@ export class DataService {
   getSearchQuery(): Observable<string> {
     return this.searchQuerySubject.asObservable();
   }
-  
+
 
 }

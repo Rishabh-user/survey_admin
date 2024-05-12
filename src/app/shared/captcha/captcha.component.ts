@@ -22,7 +22,7 @@ export class CaptchaComponent implements OnInit {
     const operators = ['+', '-', '*'];
     this.operator = operators[Math.floor(Math.random() * operators.length)];
   }
-  isValid:boolean=true;
+  isValid: boolean = true;
 
   validateCaptcha() {
     const result = eval(`${this.num1} ${this.operator} ${this.num2}`);
@@ -30,7 +30,6 @@ export class CaptchaComponent implements OnInit {
 
     if (result === userResult) {
       this.isValid = true;
-      console.log('Captcha is correct!');
     } else {
       this.isValid = false;
       this.generateCaptcha();

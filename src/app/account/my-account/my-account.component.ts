@@ -24,7 +24,7 @@ export class MyAccountComponent {
   country: any;
   zip: any;
   centerId: any;
-  centerName : string;
+  centerName: string;
   planName: any;
   planAmount: any;
   plans: any;
@@ -32,7 +32,7 @@ export class MyAccountComponent {
     this.baseUrl = environment.baseURL;
     this.centerName = this.utils.getCenterName();
   }
-  
+
 
   files: File[] = [];
   role: any;
@@ -46,6 +46,7 @@ export class MyAccountComponent {
   oldPassword: any;
   newPassword: any;
   confirmPassword: any;
+  isPaid: any
   baseUrl = '';
 
 
@@ -58,7 +59,6 @@ export class MyAccountComponent {
   }
 
   ngOnInit(): void {
-    //this.role = localStorage.getItem("role")
     this.role = this.util.getRole();
     this.getMyAccount();
     this.signupForm = this.fb.group({
@@ -68,35 +68,39 @@ export class MyAccountComponent {
     }, { validator: this.passwordMatchValidator });
   }
 
+  getCurrentDateTime(): string {
+    const currentDateTime = new Date().toISOString();
+    return currentDateTime.substring(0, currentDateTime.length - 1) + 'Z';
+  }
+
   userId: any;
 
-  
+
   getMyAccount() {
-    //this.userId = localStorage.getItem("userId");
     this.userId = this.util.getUserId();
     this.themeService.GetMyAccount(this.userId).subscribe((data: any) => {
-      console.log("data", data)
-      this.plans = data.plan 
-      console.log("plan", this.plans)
-      console.log("organizationName", this.centerName)
+
+      this.plans = data.plan
       this.firstName = data.firstName;
       this.lastName = data.lastName
       this.id = data.id
       this.email = data.email
       this.contactNo = data.contactNo
       this.roleId = data.roleId
+      this.isPaid = data.isPaid
       this.image = data.image
       this.selectedImage = data.image
-      this.gstNumber = data.center.gstNumber
+      this.gstNumber = data.gstNumber
       this.centerName = this.centerName
       this.address = data.address
       this.city = data.city
       this.state = data.state
       this.country = data.country
       this.zip = data.zip
-       
+
       this.cdr.detectChanges();
     });
+
   }
 
   postData() {
@@ -106,41 +110,68 @@ export class MyAccountComponent {
       return;
     }
 
-    const imageName = this.image.split('\\').pop() || this.image;
+    let imageName = '';
+    if (this.image) {
+      imageName = this.image.split('\\').pop() || this.image;
+    }
+    else {
+      imageName = '';
+    }
     const dataToSend = {
       id: this.id,
       firstName: this.firstName,
       lastName: this.lastName,
-      email: this.email,
+      status: 'ACT',
       contactNo: this.contactNo,
+      createdDate: this.getCurrentDateTime(),
+      modifiedDate: '',
+      email: this.email,
       roleId: this.roleId,
-      // address: this.address,
-      // city: this.city,
-      // state: this.state,
-      // country: this.country,
-      // zip: this.zip,
-      center: {
-        address: this.address,
-        city: this.city,
-        state: this.state,
-        country: this.country,
-        zip: this.zip
-      },
-      imageName: imageName,
-      status: 'ACT'
+      centerId: this.centerId,
+      image: imageName,
+      role: this.role,
+      isPaid: true,
+      address: this.address,
+      city: this.city,
+      state: this.state,
+      country: this.country,
+      zip: this.zip,
+      phone: 0,
+      gstNumber: this.gstNumber,
+      plan: [
+        {
+          id: 0,
+          planId: 0,
+          organizationId: 0,
+          paidAmount: 0,
+          pendingAmount: 0,
+          totalAmount: 0,
+          startDate: this.getCurrentDateTime(),
+          endDate: '',
+          status: '',
+          orderId: ''
+        }
+      ],
+      surveyList: [
+        {
+          vendarSurveyId: 0
+        }
+      ]
+
     };
-    console.log("dataToSend", dataToSend)
     this.themeService.CreateMyAccount(dataToSend).subscribe(
       response => {
-        console.log('Response from server:', response);
-        this.util.showSuccess(response);
-        window.location.reload();
-        // Swal.fire('', response);
-        // Handle response based on the server behavior
+        if (response == '"UpdatedSuccessfully"') {
+          this.util.showSuccess(response);
+          window.location.reload();
+        } else if (response == '"UpdatedFailed"') {
+          this.util.showError("Profile not updated successfully")
+        } else {
+          this.util.showError(response)
+        }
       },
       error => {
         console.error('Error occurred while sending POST request:', error);
-        // Handle error, if needed
       }
     );
   }
@@ -148,10 +179,8 @@ export class MyAccountComponent {
   updatepassword() {
     if (!this.oldPassword || !this.newPassword || !this.confirmPassword) {
       this.util.showError('All fields are required.');
-      // Swal.fire('Error Occurs', 'All fields are required.', 'error');
     }
     else if (this.confirmPassword != this.newPassword) {
-      // Swal.fire('Error Occurs', 'New password and confirm password should be same.', 'error');
       this.util.showError('New password and confirm password should be same.');
     } else {
       const dataToSend2 = {
@@ -160,28 +189,22 @@ export class MyAccountComponent {
         newPassword: this.newPassword,
         confirmPassword: this.confirmPassword,
       };
-      console.log("dataToSend", dataToSend2)
       this.themeService.ChangePassword(dataToSend2).subscribe({
         next: (response) => {
-          console.log('Response from server:', response);
           this.util.showSuccess(response);
           this.authService.logout();
           window.location.reload();
-          // Swal.fire('', response, 'success');
-          // Handle response based on the server behavior
         },
         error: (err) => {
           console.error('Error occurred while sending POST request:', err);
           this.util.showError(err);
 
-          // Handle error, if needed
         }
       });
     }
   }
 
 
-  // Upload Image
 
   selectedImage: string | ArrayBuffer | null = null;
 
@@ -191,7 +214,7 @@ export class MyAccountComponent {
       const reader = new FileReader();
       reader.onload = (e: any) => {
         this.selectedImage = e.target.result;
-        this.onUpload(file); // Trigger upload after selecting the file
+        this.onUpload(file);
       };
       reader.readAsDataURL(file);
     }
@@ -202,15 +225,11 @@ export class MyAccountComponent {
       console.error('No file selected.');
       return;
     }
-    console.log("inside onUpload");
     this.themeService.uploadImage(file, this.userId).subscribe(
       (response) => {
-        console.log('Upload successful:', response);
-        // Handle response from server
       },
       (error) => {
         console.error('Error occurred while uploading:', error);
-        // Handle error
       }
     );
   }
@@ -237,14 +256,6 @@ export class MyAccountComponent {
     this.Contact = !!this.contactNo && this.contactNo.toString().trim().length > 0;
     this.roletype = !!this.role && this.role.trim().length > 0;
     this.emailaddress = !!this.email && this.email.trim().length > 0;
-    this.Useraddress = !!this.address && this.address.trim().length > 0;
-    this.CompanyGstNumber = !!this.gstNumber && this.gstNumber.trim().length > 0;
-    this.Usercity = !!this.city && this.city.trim().length > 0;
-    this.Userstate = !!this.state && this.state.trim().length > 0;
-    this.Usercountry = !!this.country && this.country.trim().length > 0;
-    this.Userzip = !!this.zip && this.zip.trim().length > 0;
-
-    // You might want to return whether all fields are valid
     return (
       this.firstname &&
       this.lastname &&
@@ -256,7 +267,7 @@ export class MyAccountComponent {
       this.Usercity &&
       this.Userstate &&
       this.Usercountry &&
-      this.Userzip 
+      this.Userzip
     );
   }
 
@@ -276,7 +287,6 @@ export class MyAccountComponent {
     this.newPasswordrequires = !!this.newPassword && this.newPassword.trim().length > 0;
     this.confirmPasswordrequires = !!this.confirmPassword && this.confirmPassword.trim().length > 0;
 
-    // You might want to return whether all fields are valid
     return (
       this.oldPasswordrequires &&
       this.newPasswordrequires &&

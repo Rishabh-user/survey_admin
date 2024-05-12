@@ -4,7 +4,6 @@
         <div>
             <div class="infocircle mb-2">
                 <h6 class="mb-0">Add Question</h6>
-                <!-- create-survey.component.html -->
                 <div class="custom-tooltip">
                     <ng-icon name="heroInformationCircle" ngClass="edit-action info-circle"
                         (click)="toggleTooltip('1')"></ng-icon>
@@ -39,8 +38,6 @@
         <div ngClass="generic-ques">
             <div class="infocircle mb-2">
                 <h6 class="mb-0">Add Generic Question</h6>
-                <!-- <ng-icon name="heroInformationCircle" ngClass="edit-action info-circle"
-                    matTooltip="Add Generic Question" matTooltipPosition="above" title="Action Information"></ng-icon> -->
                 <div class="custom-tooltip">
                     <ng-icon name="heroInformationCircle" ngClass="edit-action info-circle"
                         (click)="toggleTooltip('2')"></ng-icon>
@@ -69,16 +66,7 @@
                 </a>
             </div>
 
-            <!-- <ul>
-                <li *ngFor="let item of names">
-                    <a href="javascript:" (click)="onGenericQuestionClick(item.name)">
-                        <figure>
-                            <img src="../../../assets/{{item.image}}" width="35" height="35" />
-                        </figure>
-                        <figcaption>{{ item.name }}</figcaption>
-                    </a>
-                </li>
-            </ul> -->
+
         </div>
         <div ngClass="my-3">
             <div class="infocircle mb-2">
@@ -208,10 +196,10 @@
         <div class="updated-preview">
             <div class="preview">
 
-                <!-- <a [href]="'http://localhost:4201/survey/preview/'  + centername +  '/' + centerId + '/' + surveyId + '?UID='+ userId +'&id='+ token"
-                    target="_blank" rel="noopener noreferrer" class="btn btn-primary w-100">Preview</a> -->
-                <a [href]="'https://mobile.angular.opinionest.com/survey/preview/'  + centername +  '/' + centerId + '/' + surveyId + '?UID='+ userId +'&id='+ token"
+                <a [href]="'http://localhost:4201/survey/preview/'  + centername +  '/' + centerId + '/' + surveyId + '?UID='+ userId +'&id='+ token"
                     target="_blank" rel="noopener noreferrer" class="btn btn-primary w-100">Preview</a>
+                <!-- <a [href]="'https://mobile.angular.opinionest.com/survey/preview/'  + centername +  '/' + centerId + '/' + surveyId + '?UID='+ userId +'&id='+ token"
+                    target="_blank" rel="noopener noreferrer" class="btn btn-primary w-100">Preview</a> -->
 
             </div>
             <div class="last-updated text-center">
@@ -235,13 +223,7 @@
         </div>
         <div ngClass="survey-name">
             <div>
-                <!-- <h4 ngClass="mb-3">
-                    <img matTooltip={{countryName}}
-                        aria-label="Button that displays a tooltip when focused or hovered over" loading="lazy"
-                        [src]="baseUrl + '/assets/images/country-flag/' + countryImage" width="30" height="30"
-                        alt={{countryName}} />
-                    {{surveyName}}
-                </h4> -->
+
                 <div class="d-flex">
                     <h4 ngClass="mb-3">
                         <ng-container *ngIf="countryName !== 'Other Country'">
@@ -288,7 +270,6 @@
                                 role="tab" aria-selected="false">Logics</button>
                         </li>
                     </ul>
-                    <!-- Logic Question -->
                     <div class="tab-content p-4">
                         <div class="tab-pane active" id="randomaisation" role="tabpanel"
                             aria-labelledby="randomaisation-tab">
@@ -304,13 +285,7 @@
                                 <div class="border rounded p-4 mb-2">
                                     <h5>Randomization {{ i + 1 }}</h5>
                                     <div class="d-flex gap-3">
-                                        <!-- <select class="form-select" aria-label="Default select example"
-                                            [(ngModel)]="randomization.fromQuestion">
-                                            <option [value]="null" selected disabled>Select From Question</option>
-                                            <option *ngFor="let option of logicQuestionList" [value]="option.id">{{
-                                                option.item }}</option>
 
-                                        </select> -->
                                         <mat-form-field>
                                             <mat-select [(ngModel)]="randomization.fromQuestion" #selectElement>
                                                 <ng-container *ngFor="let option of logicQuestionListById">
@@ -323,12 +298,7 @@
                                             </mat-select>
                                         </mat-form-field>
 
-                                        <!-- <select class="form-select" aria-label="Default select example"
-                                            [(ngModel)]="randomization.toQuestion">
-                                            <option [value]="null" selected disabled>Select To Question</option>
-                                            <option *ngFor="let option of logicQuestionList" [value]="option.id">{{
-                                                option.item }}</option>
-                                        </select> -->
+
                                         <mat-form-field>
                                             <mat-select [(ngModel)]="randomization.toQuestion" #selectElement>
                                                 <ng-container *ngFor="let option of logicQuestionListById">
@@ -340,12 +310,6 @@
                                                 </ng-container>
                                             </mat-select>
                                         </mat-form-field>
-                                        <!-- <mat-form-field>
-                                            <mat-select #selectElement></mat-select>
-                                            <mat-option *ngFor="let option of logicQuestionList" [value]="option.id">
-                                                {{option.item }}
-                                            </mat-option>
-                                        </mat-form-field> -->
 
                                         <button type="button" class="btn btn-primary btn-sm"
                                             (click)="removeRandomizationSection(i)">Remove</button>
@@ -363,14 +327,7 @@
                             </div>
 
 
-                            <!-- <div class="mb-3 ms-4 form-check checking">
-                                <input class="form-check-input" type="checkbox" [(ngModel)]="isRandomizationChecked"
-                                    id="Randomise" (blur)="validateSurvey()">
-                                <label class="form-check-label" for="Randomise">
-                                    Randomization these question
-                                </label>
-                                
-                            </div> -->
+
                             <div class="row">
                                 <div class="col-12 text-end d-flex justify-content-end">
                                     <button type="button" class="btn btn-primary btn-sm"
@@ -383,19 +340,6 @@
                             <h5 ngClass="mb-4">Autocode</h5>
                             <div ngClass="mb-3 row">
 
-                                <!-- <div class="mb-3">
-                                    <mat-form-field>
-                                        <mat-select [(ngModel)]="selectedAutoCodeOption" #selectElement>
-                                            <mat-option *ngFor="let option of surveylist" [value]="option.surveyId"
-                                                *ngIf="option.surveyId !== surveyId">
-                                                {{ option.name }} ({{option.surveyId}})
-                                            </mat-option>
-                                        </mat-select>
-                                    </mat-form-field>
-
-
-
-                                </div> -->
                                 <div class="mb-3">
                                     <mat-form-field>
                                         <mat-select [(ngModel)]="selectedAutoCodeOption" #selectElement>
@@ -448,26 +392,13 @@
 
                                 <div class="badge text-bg-primary fw-normal me-2 position-relative"
                                     *ngIf="question?.logics.length>0"
-                                    (click)="getQuestionLogic(i,question?.id);getQuestionListBranching(question?.id);toggleLogic(i,question?.id)">
+                                    (click)="getQuestionLogic(i,question?.id);getQuestionListBranching(question?.id);toggleLogic(i,question?.id,'edit')">
                                     <ng-icon class="me-1" name="heroCommandLine"></ng-icon>
                                     <span>logics</span>
-                                    <!-- <span
-                                        class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-                                        9
-                                    </span> -->
+
 
                                 </div>
-                                <!-- <mat-form-field>
-                                    <mat-select #selectElement placeholder="Set to"
-                                        (selectionChange)="onSelectChange($event, question?.sort, question?.id)">
-                                        <mat-option *ngFor="let item of logicQuestionList" [value]="item.sort"
-                                            [attr.selected]="idIsEqual(question.id, item.id) ? 'true' : null"
-                                            [title]="item.item">
-                                            {{ item.item.split(' ').slice(0, 3).join(' ') }}{{item.item.split('
-                                            ').length > 3 ? ' ...' : ''}}
-                                        </mat-option>
-                                    </mat-select>
-                                </mat-form-field> -->
+
                                 <mat-form-field>
                                     <mat-select #selectElement placeholder="Set to"
                                         (selectionChange)="onSelectChange($event, question?.sort, question?.id)">
@@ -494,7 +425,7 @@
                                         </li>
                                         <li *ngIf="question?.logics.length==0">
                                             <a href="javascript:void(0);" class="dropdown-item"
-                                                (click)="toggleLogic(i,question?.id);getQuestionListBranching(question?.id);getOptionsByQuestionIdLogic(question?.id)">
+                                                (click)="toggleLogic(i,question?.id,'add');getQuestionListBranching(question?.id);getOptionsByQuestionIdLogic(question?.id)">
                                                 <ng-icon name="heroCommandLine"></ng-icon>
                                                 Logic
                                             </a>
@@ -530,12 +461,7 @@
                                     </div>
                                 </div>
                                 <div *ngIf="question?.openEndedType !== null && question?.openEndedType !== ''">
-                                    <!-- <div class="ques-radio mb-3">
-                                        <label>
-                                            <input type="radio" name="question_option">
-                                            <span class="checked">&nbsp;</span>
-                                        </label>
-                                    </div> -->
+
 
                                     <div class="ques-radio mb-3" *ngFor="let option of question?.options; let i=index;">
                                         <label>
@@ -586,11 +512,11 @@
                                             </div>
                                         </div>
                                         <ng-icon name="heroXMark" ngClass="edit-action info-circle"
-                                            (click)="toggleLogic(i,question?.id)"></ng-icon>
+                                            (click)="toggleLogic(i,question?.id,'add')"></ng-icon>
                                     </div>
                                     <div ngClass="mb-4">
                                         <div class="logic-tab">
-                                            <!-- Nav tabs -->
+
                                             <ul class="nav flex-column nav-tabs" id="myTab" role="tablist">
                                                 <li class="nav-item" role="presentation">
                                                     <button class="nav-link active d-flex" id="branching-tab"
@@ -611,7 +537,6 @@
                                                         (click)="getLogicQuestionListForCalculation(question?.id,question?.sort);getQuestionListAgeCalculation(question?.id)">Calculations</button>
                                                 </li>
                                             </ul>
-                                            <!-- Logic Question -->
                                             <div class="tab-content p-4">
                                                 <div class="tab-pane active" [id]="'branching' + question.id"
                                                     role="tabpanel" aria-labelledby="branching-tab">
@@ -711,16 +636,7 @@
                                                                     </div>
                                                                     <div class="col-md-4 d-flex"
                                                                         *ngIf="visibleaddandlogic[i][j]">
-                                                                        <!-- <div
-                                                                            class="form-check form-check-inline d-flex align-items-center">
-                                                                            <input class="form-check-input" type="radio"
-                                                                                [name]="'inlineRadioOptions' + i + j"
-                                                                                id="inlineRadio1" value="option1"
-                                                                                [(ngModel)]="logicEntry.isAnd"
-                                                                                [checked]="logicEntry.isAnd ? true : null">
-                                                                            <label class="form-check-label ps-1"
-                                                                                for="inlineRadio1">And</label>
-                                                                        </div> -->
+
                                                                         <div
                                                                             class="form-check form-check-inline d-flex align-items-center">
                                                                             <label class="form-check-label ps-1">
@@ -732,16 +648,7 @@
                                                                                     [(ngModel)]="logicEntry.isAnd">And
                                                                             </label>
                                                                         </div>
-                                                                        <!-- <div
-                                                                            class="form-check form-check-inline d-flex align-items-center">
-                                                                            <input class="form-check-input" type="radio"
-                                                                                [name]="'inlineRadioOptions' + i + j"
-                                                                                id="inlineRadio2" value="option2"
-                                                                                [(ngModel)]="logicEntry.isOr"
-                                                                                [checked]="logicEntry.isOr ? true : null">
-                                                                            <label class="form-check-label ps-1"
-                                                                                for="inlineRadio2">Or</label>
-                                                                        </div> -->
+
                                                                         <div
                                                                             class="form-check form-check-inline d-flex align-items-center">
                                                                             <label class="form-check-label ps-1">
@@ -781,7 +688,7 @@
                                                                                         <div>Value</div>
                                                                                     </div>
                                                                                     <div class="col-md-3">
-                                                                                        <!-- Use unique template reference variables by appending the index -->
+
                                                                                         <select class="form-select"
                                                                                             #ifIdSelect="ngModel"
                                                                                             [(ngModel)]="logicEntry.ifIdAndOr"
@@ -841,8 +748,6 @@
                                                                 <div ngClass="mb-4">
                                                                     <div class="row g-2 align-items-center">
                                                                         <div class="col-md-4">
-                                                                            <!-- <span class="w-100">&nbsp;</span> -->
-                                                                            <!-- Use unique template reference variables by appending the index -->
                                                                             <select class="form-select"
                                                                                 #thanIdSelect="ngModel"
                                                                                 [(ngModel)]="logicEntry.thanId"
@@ -891,7 +796,7 @@
                                                                         </div>
                                                                         <div class="col-md-4"
                                                                             *ngIf="logicEntry.thanId!='3' && logicEntry.thanId!='4' && logicEntry.thanId!='5'">
-                                                                            <!-- Use unique template reference variables by appending the index -->
+
                                                                             <select class="form-select"
                                                                                 #thanExpectedSelect="ngModel"
                                                                                 [(ngModel)]="logicEntry.thanExpected"
@@ -899,18 +804,13 @@
                                                                                 <option value="null">Select Question
                                                                                 </option>
                                                                                 <option
-                                                                                    *ngFor="let item of questionListBranching;let j=index;"
+                                                                                    *ngFor="let item of logicQuestionListById;let j=index;"
                                                                                     [value]="item.item.charAt(0)+'-'+item.id">
                                                                                     {{item.item}}
                                                                                 </option>
                                                                             </select>
                                                                         </div>
 
-                                                                        <!-- <div class="col-md-1">
-                                                                            <a routerLink="javascript:"><ng-icon
-                                                                                    name="heroTrash"
-                                                                                    ngClass="trash-icon"></ng-icon></a>
-                                                                        </div> -->
                                                                         <div class="col-md-1">
                                                                             <button type="button"
                                                                                 class="btn btn-outline-primary btn-sm"
@@ -971,16 +871,16 @@
                                                                                 </label>
                                                                             </div>
                                                                         </div>
+
                                                                         <div class="col-md-4"
                                                                             *ngIf="isElseShow[i][j] && logicEntry.elseId!=5">
-                                                                            <!-- Use unique template reference variables by appending the index -->
                                                                             <select class="form-select"
                                                                                 #thanExpectedSelect="ngModel"
                                                                                 [(ngModel)]="logicEntry.elseExpected">
                                                                                 <option value="null">Select Question
                                                                                 </option>
                                                                                 <option
-                                                                                    *ngFor="let item of questionListBranching;let j=index;"
+                                                                                    *ngFor="let item of logicQuestionListById;let j=index;"
                                                                                     [value]="item.item.charAt(0)+'-'+item.id">
                                                                                     {{item.item}}
                                                                                 </option>
@@ -1005,14 +905,7 @@
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                        <!-- <div class="row">
-                                                            <div class="col-12 text-end d-flex justify-content-between">
-                                                                <button type="button" class="btn btn-primary btn-sm"
-                                                                    (click)="addNewLogicEntry(i,j+1)">Add New Logic</button>
-                                                                <button type="button" class="btn btn-primary btn-sm"
-                                                                    (click)="createLogic(question?.id, logicEntriesPerQuestion[i])">Save</button>
-                                                            </div>
-                                                        </div> -->
+
                                                     </div>
 
                                                     <hr>
@@ -1234,8 +1127,7 @@
                 </li>
             </ul>
         </div>
-        <!-- <pagination-controls *ngIf="questions != null && questions.length>0" class="d-flex justify-content-center"
-            id="server" (pageChange)="onPageChange($event)"></pagination-controls> -->
+
         <div class="custom-pagination d-flex justify-content-between align-items-center mt-5"
             *ngIf="questions.length>pageSize-1 || pageNumber>1">
             <pagination-controls *ngIf="questions != null && questions.length>0" class="d-flex justify-content-center"
@@ -1246,7 +1138,6 @@
                     <option value="10">10</option>
                     <option value="20">20</option>
                     <option value="50">50</option>
-                    <!-- Add more options as needed -->
                 </select>
             </div>
 
@@ -1380,36 +1271,10 @@
                     [ngModelOptions]="{standalone: true}" (blur)="validateSurvey()" />
                 <div *ngIf="!surveyNameCheck" class="text-danger">Survey Name is required.</div>
             </div>
-            <!-- <div class="mb-4">
-                <label class="form-label">Select Your Country</label>
-                <mat-form-field>
-                    <mat-select name="countryString" [(value)]="selectedCountry" placeholder="Country">
-                        <mat-option *ngFor="let item of country" [value]="item.id">
-                            <img [src]="baseUrl + '/assets/images/country-flag/' + item.images"
-                                class="me-2 rounded-circle" style="width: 30px;height: 30px;" />
-                            {{item.name}}</mat-option>
-                        <mat-option *ngFor="let item of country" [value]="item.id">{{item.name}}</mat-option>
-                    </mat-select>
 
-                </mat-form-field>
-            </div> -->
             <div class="mb-4">
                 <label class="form-label">Select Your Country</label>
-                <!-- <mat-form-field>
-                    <mat-select name="countryString" [(value)]="selectedCountry" placeholder="Country">
-                        <mat-select-trigger>
-                            <img *ngIf="selectedCountry"
-                                [src]="baseUrl + '/assets/images/country-flag/' + selectedCountry.images"
-                                class="me-2 rounded-circle" style="width: 30px;height: 30px;" />
-                            {{selectedCountry ? selectedCountry.name : ''}}
-                        </mat-select-trigger>
-                        <mat-option *ngFor="let item of country" [value]="item">
-                            <img [src]="baseUrl + '/assets/images/country-flag/' + item.images"
-                                class="me-2 rounded-circle" style="width: 30px;height: 30px;" />
-                            {{item.name}}
-                        </mat-option>
-                    </mat-select>
-                </mat-form-field> -->
+
                 <mat-form-field>
                     <mat-select name="countryString" [(value)]="selectedCountry" placeholder="Country">
                         <mat-select-trigger>
@@ -1419,7 +1284,6 @@
                             {{selectedCountry ? selectedCountry.name : ''}}
                         </mat-select-trigger>
                         <mat-option *ngFor="let item of country" [value]="item">
-                            <!-- Only display image if the item has images property -->
                             <img *ngIf="item.images" [src]="baseUrl + '/assets/images/country-flag/' + item.images"
                                 class="me-2 rounded-circle" style="width: 30px;height: 30px;" />
                             {{item.name}}

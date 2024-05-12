@@ -11,7 +11,6 @@
                     <select class="form-select" [(ngModel)]="selectedCategory">
                         <option selected value="All Roles">All Roles</option>
                         <option value="Admin">Admin</option>
-                        <!-- <option value="2">Sub Admin</option> -->
                         <option value="SuperAdmin">Super Admin</option>
                         <option value="User">User</option>
                     </select>
@@ -22,9 +21,10 @@
             <table class="table">
                 <thead>
                     <tr>
-                        <th scope="col"><input type="checkbox" ngClass="form-check-input" [(ngModel)]="selectAll"
+                        <!-- <th scope="col"><input type="checkbox" ngClass="form-check-input" [(ngModel)]="selectAll"
                                 (change)="selectAllCheckboxes()" />
-                        </th>
+                        </th> -->
+                        <th scope="col">S.No</th>
                         <th scope="col">Name</th>
                         <th scope="col">Role</th>
                         <th scope="col">Email</th>
@@ -35,14 +35,11 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr *ngFor="let item of UserData"
+                    <tr *ngFor="let item of UserData; let i= index"
                         [hidden]="selectedCategory !== 'All Roles' && getRoleName(item.roleId) !== selectedCategory">
-                        <td><input type="checkbox" ngClass="form-check-input" [(ngModel)]="item.selected" />
-                        </td>
-                        <!-- <td>
-                            <img [src]="item.image" class="me-2 rounded-circle" style="width: 30px;height: 30px;" />
-                            <span>{{ item.firstName }} {{ item.lastName }}</span>
+                        <!-- <td><input type="checkbox" ngClass="form-check-input" [(ngModel)]="item.selected" />
                         </td> -->
+                        <td>{{ i+1 }}</td>
                         <td class="profileimage">
                             <div class="d-flex align-items-center">
                                 <ng-container
@@ -64,25 +61,19 @@
                         <td>{{ item.email }}</td>
                         <td>{{ item.contactNo }}</td>
                         <td>{{ item.createdDate | date:'dd-MM-yyyy | HH:mm' }}</td>
-                        <!-- <td ngClass="done status"><span>{{item.status}}</span></td> -->
                         <td
                             [ngClass]="{'done donestatus': item.status === 'ACT', 'paused status': item.status !== 'ACT'}">
                             <span>{{ item.status === 'ACT' ? 'Active' : 'Deactive' }}</span>
                         </td>
 
-                        <!-- <td [ngClass]="{'done status': item.status === 'ACT', 'paused status': item.status !== 'ACT'}">
-                            <span>{{ item.status === 'ACT' ? 'Active' : 'Deactive' }}</span>
-                        </td> -->
+
 
                         <td ngClass="action" *ngIf="!this.isUser">
-                            <!-- <button type="button" class="btn btn-primary" data-bs-toggle="modal"
-                                data-bs-target="#exampleModal">
-                                Launch demo modal
-                            </button> -->
+
                             <a routerLink="javascript:" data-bs-toggle="modal" data-bs-target="#exampleModal"
                                 (click)="getUserDetails(item.id)" *ngIf="userId !== item.id"><ng-icon name="heroPencil"
                                     ngClass="edit-action"></ng-icon></a>
-                            <!-- <a routerLink="javascript:"><ng-icon name="heroEllipsisVertical"></ng-icon></a> -->
+
                         </td>
                     </tr>
                 </tbody>
@@ -126,7 +117,6 @@
                             <label for="">Phone No.</label>
                             <input type="number" class="form-control" [(ngModel)]="contactNo" name="contactNo"
                                 (blur)="validateSurvey()">
-                            <!-- <div *ngIf="!phone" class="text-danger">Contact is required.</div> -->
                             <div *ngIf="!contactNo || !phoneLengthError" class="text-danger">
                                 <ng-container *ngIf="!contactNo && touched">Phone Number is required.</ng-container>
                                 <ng-container *ngIf="contactNo && !phoneLengthError">Phone Number cannot exceed 10
@@ -148,8 +138,6 @@
                         </div>
                     </div>
                     <div class="form-check form-switch">
-                        <!-- <input class="form-check-input" type="checkbox" role="switch" [(ngModel)]="isChecked"
-                            (change)="onCheckboxChange($event)"> -->
                         <input class="form-check-input" type="checkbox" role="switch" [(ngModel)]="isChecked"
                             name="isChecked" (change)="onCheckboxChange($event)">
 

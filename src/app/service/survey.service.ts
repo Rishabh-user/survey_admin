@@ -52,26 +52,18 @@ export class SurveyService {
     return this.http.get<responseDTO[]>(url);
   }
 
-  // GetSurveyList
-  // GetSurveyList(): Observable<responseDTO[]> {
-  //   const url = `${this.apiUrl}api/admin/${this.userId}/Survey/GetSurveyList`;
-  //   return this.http.get<responseDTO[]>(url);
-  // }
 
-  // Create Survey
   createSurvey(data: any): Observable<any> {
     const url = `${this.apiUrl}api/admin/${this.userId}/Survey/CreateSurvey`;
 
-    // Create a new object without circular references
     const sanitizedData = this.removeCircularReferences(data);
 
-    console.log("posted data", sanitizedData);
     return this.http.post(url, sanitizedData, { responseType: 'text' });
   }
-  //Update Survey
+
   updateSurvey(data: any): Observable<any> {
     const url = `${this.apiUrl}api/admin/${this.userId}/Survey/UpdateSurvey`;
-    console.log("posted data", data);
+
     return this.http.post(url, data, { responseType: 'text' });
   }
 
@@ -91,14 +83,6 @@ export class SurveyService {
   }
 
 
-
-  // GetCategoryId(data: any): Observable<any> {
-  //   var userId = localStorage.getItem("userId")
-  //   const url = `${this.apiUrl}api/admin/${userId}/Survey/CreateSurvey`;
-  //   console.log("posted data", data);
-  //   return this.http.post(url, data, { responseType: 'text' });
-  // }
-  // GetSurveyByID
   GetSurveyById(surveyId: any): Observable<responseDTO[]> {
     const url = `${this.apiUrl}api/admin/${this.userId}/Survey/GetSurveyById?surveyId=${surveyId}`;
     return this.http.get<responseDTO[]>(url);
@@ -121,7 +105,7 @@ export class SurveyService {
   updateSurveyStatus(data: any): Observable<any> {
     const { surveyId, surveyStatus } = data;
     const url = `${this.apiUrl}api/admin/${this.userId}/Survey/UpdateSurveyStatus?surveyId=${encodeURIComponent(surveyId)}&status=${encodeURIComponent(surveyStatus)}`;
-    console.log("posted data", data);
+
     return this.http.post(url, data, { responseType: 'text' });
   }
   // getLogicQuestionList(data: any) {
@@ -224,10 +208,7 @@ export class SurveyService {
     const url = `${this.apiUrl}api/admin/${this.userId}/Survey/RecentCreatedSurvey`;
     return this.http.get<responseDTO[]>(url);
   }
-  // GetSurveyList(): Observable<responseDTO[]> {
-  //   const url = `${this.apiUrl}api/admin/${this.userId}/Survey/GetSurveyList`;
-  //   return this.http.get<responseDTO[]>(url);
-  // }
+
   GetSurveyList(): Observable<responseDTO[]> {
     const url = `${this.apiUrl}api/admin/${this.userId}/Survey/GetSurveyList?pageNumber=1&pageSize=100`;
     return this.http.get<responseDTO[]>(url);
@@ -408,8 +389,13 @@ export class SurveyService {
   }
 
 
+  getSurveyReportBySurvey(pageNumber: number, pageSize: number): Observable<responseDTO[]> {
+    const url = `${this.apiUrl}GetSurveyList?pageNumber=${pageNumber}&pageSize=${pageSize}`;
+    return this.http.get<responseDTO[]>(url);
+  }
+
   getSurveyReportBySurveyId(surveyId: any): Observable<responseDTO[]> {
-    const url = `${this.apiUrl}api/admin/${this.userId}/Report/SurveyReport?surveyId=${surveyId}`;
+    const url = `${this.apiUrl}SurveyReport?surveyId=${surveyId}`;
     return this.http.get<responseDTO[]>(url);
   }
 
@@ -417,4 +403,20 @@ export class SurveyService {
     const url = `${this.apiUrl}api/admin/${this.userId}/Vendar/GetSurveyList?pageNumber=${pageNumber}&pageSize=${pageSize}`;
     return this.http.get<responseDTO[]>(url);
   }
+  deleteRandomizedQuestions(surveyId: any, groupId: any): Observable<any> {
+    const url = `${this.apiUrl}api/admin/${this.userId}/GeneralQuestion/DeleteQuestionRandomize?surveyId=${surveyId}&groupId=${groupId}`;
+    return this.http.post(url, { responseType: 'text' });
+  }
+  getQuotaById(surveyId: any): Observable<responseDTO[]> {
+    const url = `${this.apiUrl}api/admin/${this.userId}/Vendar/GetQuotaBySurveyId?surveyId=${surveyId}`;
+    return this.http.get<responseDTO[]>(url);
+  }
+  getReportBySurvey(year: any, month?: number | null): Observable<responseDTO[]> {
+    let url = `${this.apiUrl}api/admin/${this.userId}/Survey/ReportBySurvey?byYear=${year}`;
+    if (month) {
+      url += `&byMonth=${month}`;
+    }
+    return this.http.get<responseDTO[]>(url);
+  }
+
 }

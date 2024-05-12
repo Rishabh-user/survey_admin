@@ -18,14 +18,13 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { NgxDropzoneModule } from 'ngx-dropzone';
 import { DecimalPipe, NgFor } from '@angular/common';
-//import { NgbPaginationModule, NgbTypeaheadModule } from '@ng-bootstrap/ng-bootstrap';
 import { MatSelectModule } from '@angular/material/select';
 import { NgxPaginationModule } from 'ngx-pagination';
 
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatButtonModule } from '@angular/material/button';
 
-// Icons
+
 import { heroChevronLeft } from '@ng-icons/heroicons/outline';
 import { heroChevronRight } from '@ng-icons/heroicons/outline';
 import { NgIconsModule, provideNgIconsConfig } from '@ng-icons/core';
@@ -48,16 +47,15 @@ import { ModalModule } from 'ngx-bootstrap/modal';
 import { SharedModule } from '../shared/shared.module';
 import { heroShoppingBag } from '@ng-icons/heroicons/outline';
 import { heroInformationCircle } from '@ng-icons/heroicons/outline';
-//import { ProfileIdPopupComponent } from './popups/profile-id-popup/profile-id-popup.component';
-// Icons
+
 import { heroMinusCircle } from '@ng-icons/heroicons/outline';
 import { heroXMark } from '@ng-icons/heroicons/outline';
 import { VendarSurveyListComponent } from './vendar-survey-list/vendar-survey-list.component';
 
 @NgModule({
   declarations: [
-  
-  
+
+
     VendarSurveyListComponent
   ],
   imports: [
@@ -77,7 +75,6 @@ import { VendarSurveyListComponent } from './vendar-survey-list/vendar-survey-li
     MatSelectModule,
     MatTooltipModule,
     MatButtonModule,
-    //DecimalPipe, NgFor, FormsModule, NgbTypeaheadModule, NgbPaginationModule,
     NgIconsModule.withIcons({
       heroQuestionMarkCircle,
       heroCalendar,

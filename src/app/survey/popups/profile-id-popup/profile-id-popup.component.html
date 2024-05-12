@@ -6,46 +6,7 @@
                 <button type="button" class="btn-close" aria-label="Close" (click)="close()"></button>
             </div>
             <div class="modal-body popup-ques">
-                <!-- <form>
-                    <div class="mb-4">
-                        <label for="surveyname" class="form-label">Enter Your Survey Name</label>
-                        <input id="surveyname" type="text" class="form-control" [(ngModel)]="surveyName"
-                            name="surveyName" (blur)="validateSurvey()" />
-                        <div *ngIf="!surveyNameCheck" class="text-danger">Survey Name is required.</div>
-                    </div>
-                    <div class="mb-4">
-                        <label class="form-label">Select Your Country</label>
-                        <mat-form-field>
-                            <mat-select name="countryString" [(value)]="selectedCountry" placeholder="Country">
-                                <mat-option *ngFor="let item of country" [value]="item.id">
-                                    <img [src]="baseUrl + '/assets/images/country-flag/' + item.images"
-                                        class="me-2 rounded-circle" style="width: 30px;height: 30px;" />
-                                    {{item.name}}</mat-option>
-                            </mat-select>
-                        </mat-form-field>
-                        <div *ngIf="!countryNameCheck" class="text-danger">Country is required.</div>
-                    </div>
-                    <div class="mb-4 search-categories input-icon">
-                        <label class="form-label">Select Survey Categories</label>
-                        <mat-form-field>
-                            <ng-icon name="heroMagnifyingGlass" class=""></ng-icon>
-                            <input type="text" placeholder="Search..." matInput [formControl]="searchControl"
-                                [matAutocomplete]="auto" [(ngModel)]="selectedOption" (blur)="validateSurvey()" />
-                            <mat-autocomplete #auto="matAutocomplete" (optionSelected)="filterOptions($event)">
-                                <mat-option *ngFor="let option of options" [value]="option.id">
-                                    {{ option.name }}
-                                </mat-option>
-                            </mat-autocomplete>
-                        </mat-form-field>
-                        <div *ngIf="!categoryNameCheck" class="text-danger">Category is required.</div>
-                    </div>
-                    <div class="mb-4" *ngIf="selectedOption === 'Others'">
-                        <label for="categoryName" class="form-label">Enter Category Name</label>
-                        <input id="categoryName" type="text" class="form-control" [(ngModel)]="categoryName"
-                            name="categoryName" (blur)="validateSurvey()" />
-                        <div *ngIf="!otherCategoryCheck" class="text-danger">Category Name is required.</div>
-                    </div>
-                </form> -->
+
             </div>
             <div class="modal-footer upload">
                 <button type="button" class="btn close" (click)="close()">Cancel</button>

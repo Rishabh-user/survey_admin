@@ -53,18 +53,15 @@ export class CityPopupComponent {
   constructor(private surveyservice: SurveyService, private route: ActivatedRoute, private crypto: CryptoService, private router: Router, private utility: UtilsService) {
     this.route.paramMap.subscribe(params => {
       let _surveyId = params.get('param1');
-      console.log("param1 Inside Gender Question", params.get('param1'))
       if (_surveyId) {
-        console.log("surveyId Inside City Question First", this.crypto.decryptQueryParam(_surveyId))
         this.surveyId = parseInt(this.crypto.decryptQueryParam(_surveyId));
-        console.log("surveyId Inside City Question", this.surveyId)
       }
     });
   }
 
   show() {
     this.surveyservice.getSurveyDetailsById(1, 1, this.surveyId).subscribe((data: any) => {
-      console.log("Country Id : ", data)
+
       this.countryId = data.countryId
       if (this.countryId == "IN")
         this.isPanIndiaShow = true
@@ -91,7 +88,7 @@ export class CityPopupComponent {
     this.modal.hide();
   }
 
-  //countryId = 'IN';
+
 
 
   countries: any[];
@@ -104,7 +101,6 @@ export class CityPopupComponent {
     });
   }
   selectAllCityOptions(state: StateCity) {
-    // Select all city checkboxes within the state
     state.cities.forEach(city => {
       city.selected = !city.selected;
     });
@@ -133,16 +129,12 @@ export class CityPopupComponent {
 
   onConfirmSelection() {
 
-    // if (!this.isAtLeastOneOptionSelected()) {
-    //   this.utility.showError("Please select at least one option");
-    //   return;
-    // }
+
     const selectedStates = this.getSelectedStates();
     const selectedCities = this.getSelectedCities();
     const selectedPanIndiaStates = this.getSelectedPanIndiaStates();
 
-    console.log('Selected States:', selectedStates);
-    console.log('Selected Cities:', selectedCities);
+
 
     if ((selectedStates.length === 0 && selectedCities.length === 0) || (selectedStates.length > 0 && selectedCities.length > 0)) {
       this.utility.showError("Please select either state or city");
@@ -150,7 +142,6 @@ export class CityPopupComponent {
     }
 
     if (selectedStates.length > 0 && selectedCities.length > 0) {
-      // Swal.fire('', 'Please Select Either State Or City', 'error');
 
       this.utility.showError('Please Select Either State Or City');
     } else if (selectedStates.length > 0 || selectedCities.length) {
@@ -163,7 +154,6 @@ export class CityPopupComponent {
       currentQuestion.genericTypeId = this.typeid;
       currentQuestion.question = this.questionText;
 
-      // Filter selected options for the current question
       currentQuestion.options = currentQuestion.options.filter(option => option.selected);
       currentQuestion.options.forEach(option => {
         option.createdDate = currentDateTime;
@@ -176,7 +166,7 @@ export class CityPopupComponent {
           image: '',
           createdDate: currentDateTime,
           modifiedDate: currentDateTime,
-          keyword: '', // Set other properties accordingly
+          keyword: '',
           status: '',
           isRandomize: false,
           isExcluded: false,
@@ -195,7 +185,7 @@ export class CityPopupComponent {
           image: '',
           createdDate: currentDateTime,
           modifiedDate: currentDateTime,
-          keyword: '', // Set other properties accordingly
+          keyword: '',
           status: '',
           isRandomize: false,
           isExcluded: false,
@@ -209,7 +199,6 @@ export class CityPopupComponent {
         currentQuestion.options = selectedStateOptions
       }
 
-      // Make an API call for each question with its selected options
       this.surveyservice.CreateGeneralQuestion(currentQuestion).subscribe({
         next: (resp: any) => {
           if (resp == '"QuestionAlreadyExits"') {
@@ -225,11 +214,9 @@ export class CityPopupComponent {
         }
       });
     } else {
-      // Swal.fire('', 'Please Select State Or City', 'error');
       this.utility.showError('Please Select State Or City');
     }
 
-    // You can perform further actions with the selected states and cities
   }
   getCurrentDateTime(): string {
     const currentDateTime = new Date().toISOString();
@@ -250,12 +237,9 @@ export class CityPopupComponent {
 
         if (this.questions && this.questions.length > 0) {
           this.questionText = this.questions[0].question;
-          console.log("questionText", this.questionText)
         }
       },
       error: (err) => {
-        console.log("An Error occurred while fetching questions", err);
-        // Handle error - show a message or perform any necessary action
       }
     });
   }

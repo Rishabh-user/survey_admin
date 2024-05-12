@@ -1,11 +1,5 @@
 <div ngClass="survey-question ms-0">
-    <!-- <div ngClass="survey-name">
-        <div>
-            <h4 ngClass="mb-3">Ed-Tech Brand Ranking Surevy</h4>
-            <span>Cosmetics, Personal Care, Toiletries</span>
-        </div>
-        <a routerLink="#"><ng-icon name="heroPencilSquare"></ng-icon></a>
-    </div> -->
+
     <div ngClass="question">
         <div>
             <div class="d-flex">
@@ -37,7 +31,6 @@
             </div>
         </div>
 
-        <!-- <span class="badge text-bg-danger activestatus">{{surveystatus}}</span> -->
 
         <ul>
             <li>
@@ -75,17 +68,7 @@
                                 <div *ngIf="!qusstionaddednext" class="text-danger">Question is required.</div>
                             </div>
                             <div class="col-md-2">
-                                <!-- <mat-form-field>
-                                    <mat-select #selectElement
-                                        (selectionChange)="onSelectChange($event, question.sort, question.id)">
-                                        <mat-option *ngFor="let item of pipeQuestionList;let i=index;" [value]="item.id"
-                                            [attr.selected]="idIsEqual(question.id, item.id) ? 'true' : null"
-                                            [title]="item.item">
-                                            {{ item.item.split(' ').slice(0, 3).join(' ')
-                                            }}{{item.item.split(' ').length > 3 ? ' ...' : ''}}
-                                        </mat-option>
-                                    </mat-select>
-                                </mat-form-field> -->
+
                                 <mat-form-field>
                                     <mat-select (selectionChange)="onSelectChangeByID($event)"
                                         [(ngModel)]="logicquestionid" placeholder="Select Piping">
@@ -98,23 +81,7 @@
                                         </mat-option>
                                     </mat-select>
                                 </mat-form-field>
-                                <!-- <select class="form-select">
-                                    <option *ngFor="let item of pipeQuestionList;let i=index;" value="{{item.id}}"
-                                        title="{{item.item}}">{{ item.item.split(' ').slice(0, 3).join(' ')
-                                        }}{{item.item.split(' ').length > 3 ? ' ...' : ''}}</option>
 
-                                </select> -->
-                                <!-- <mat-form-field>
-                                    <mat-select #selectElement
-                                        (selectionChange)="onSelectChange($event, question?.sort, question?.id)">
-                                        <mat-option *ngFor="let item of pipeQuestionList;let i=index;" [value]="item.id"
-                                            [attr.selected]="idIsEqual(question.id, item.id) ? 'true' : null"
-                                            [title]="item.item">
-                                            {{ item.item.split(' ').slice(0, 3).join(' ')
-                                            }}{{item.item.split(' ').length > 3 ? ' ...' : ''}}
-                                        </mat-option>
-                                    </mat-select>
-                                </mat-form-field> -->
                             </div>
                         </div>
                     </div>
@@ -122,21 +89,7 @@
                         <h5 class="mb-3">Add Media</h5>
                         <ul>
                             <li>
-                                <!-- <a routerLink="javascript:">
-                                    <figure><img src="../../../assets/images/icons/attach-image.png" width="64"
-                                            height="58" /></figure>
-                                    <figcaption>Attach Image</figcaption>
-                                </a> -->
-                                <!-- <ngx-dropzone (change)="onSelect($event)" [ngClass]="'drop-file'">
-                                    <ngx-dropzone-label>
-                                      <img src="../../../assets/images/icons/attach-image.png" />
-                                      <a href="javascript:"><u>Click to upload</u></a> <span> or drag and drop</span>
-                                      <p>Max. File Size: 15MB</p>
-                                    </ngx-dropzone-label>
-                                    <ngx-dropzone-preview *ngFor="let f of files" [removable]="true" (removed)="onRemove(f)">
-                                      <ngx-dropzone-label>{{ f.name }} ({{ f.type }})</ngx-dropzone-label>
-                                    </ngx-dropzone-preview>
-                                </ngx-dropzone> -->
+
 
                                 <ngx-dropzone ngx-dropzone [accept]="'image/*'" (change)="onSelectImage($event)">
                                     <ngx-dropzone-label>
@@ -145,7 +98,7 @@
                                         <figcaption>Attach Image</figcaption>
                                     </ngx-dropzone-label>
                                     <ngx-dropzone-image-preview ngProjectAs="ngx-dropzone-preview"
-                                        *ngFor="let f of filesImage" [file]="f" [removable]="true"
+                                        *ngFor="let f of questionfilesImage" [file]="f" [removable]="true"
                                         (removed)="onRemoveImage(f)">
 
                                     </ngx-dropzone-image-preview>
@@ -181,14 +134,7 @@
                 <div ngClass="border-top p-4">
                     <div ngClass="select-ans-choice mb-5">
                         <h5>Answer Choice</h5>
-                        <!-- <div ngClass="d-flex align-items-center">
-                            <span>Tag/Code(Optional)</span>
-                            <select class="form-select">
-                                <option selected>Select Option Pipeing</option>
-                                <option value="1">Select Pipeing 1</option>
-                                <option value="2">Select Pipeing 2</option>
-                            </select>
-                        </div> -->
+
                     </div>
                     <div ngClass="mb-4" cdkDropList (cdkDropListDropped)="onDropOption($event)">
                         <div class="row g-2 align-items-center mb-3" *ngFor="let option of optionsArr1;let i=index;">
@@ -219,19 +165,6 @@
                             </div>
 
 
-
-                            <!-- <div class="flex-width">
-                                <ngx-dropzone data-bs-toggle="modal" data-bs-target="#imageModal" (click)="openModal(i)"
-                                    class="edit-survey-img" ngx-dropzone [accept]="'image/*'">
-                                    <ngx-dropzone-label>
-                                        <img [src]="baseUrl + '/assets/images/icons/attach-image.png'" />
-                                    </ngx-dropzone-label>
-                                    <ngx-dropzone-image-preview ngProjectAs="ngx-dropzone-preview"
-                                        *ngFor="let f of optionImages[i]" [file]="f" [removable]="true"
-                                        (removed)="onRemoveSelectOptionImage(f,i)">
-                                    </ngx-dropzone-image-preview>
-                                </ngx-dropzone>
-                            </div> -->
                             <div class="flex-2">
                                 <input id="answer" type="text" name="answer" class="form-control"
                                     [(ngModel)]="option.option" (blur)="validateSurvey()" />
@@ -239,19 +172,6 @@
                             </div>
 
 
-
-
-                            <!-- <div *ngFor="let input of inputFields; let i = index" class="flex-2">
-                                <input id="answer{{ i }}" type="text" name="answer" class="form-control"
-                                    [(ngModel)]="input.option" (blur)="validateSurvey(i)" />
-                                <input type="hidden" [(ngModel)]="option.option" />
-                                <div *ngIf="!input.isFilled" class="text-danger">Option is required.</div>
-                            </div> -->
-
-
-                            <!-- <div class="flex-1">
-                                <input type="text" id="" class="form-control" value="Add Keyword">
-                            </div> -->
                             <div class="flex-width text-end" cdkDrag>
                                 <ng-icon name="heroBars3"></ng-icon>
                             </div>
@@ -269,20 +189,7 @@
                                 <input type="text" id="" class="form-control" value="{{optionsArr1.length+1}}"
                                     readonly />
                             </div>
-                            <!-- <div class="flex-width">
-                                <ngx-dropzone class="edit-survey-img" ngx-dropzone [accept]="'image/*'"
-                                    (change)="onSelectOptionImage($event,i)">
-                                    <ngx-dropzone-label>
-                                        <img [src]="baseUrl+'/assets/images/icons/attach-image.png'" />
-                                    </ngx-dropzone-label>
 
-                                    <ngx-dropzone-image-preview ngProjectAs="ngx-dropzone-preview"
-                                        *ngFor="let f of optionFiles[i]" [file]="f" [removable]="true"
-                                        (removed)="onRemove(f)">
-                                    </ngx-dropzone-image-preview>
-
-                                </ngx-dropzone>
-                            </div> -->
                             <div class="flex-width">
                                 <ngx-dropzone class="edit-survey-img" ngx-dropzone [accept]="'image/*'"
                                     (change)="onSelectNewOptionImage($event, i,question.id,option.id)">
@@ -298,12 +205,7 @@
                             <div class="flex-2">
                                 <input type="text" disabled id="" class="form-control" [(ngModel)]="option.option" />
                             </div>
-                            <!-- <div class="flex-1">
-                                <input type="text" id="" class="form-control" value="Add Keyword">
-                            </div> -->
-                            <!-- <div class="flex-width text-end">
-                                <ng-icon name="heroBars3"></ng-icon>
-                            </div> -->
+
                             <div class="flex-width text-end">
                                 <ng-icon name="heroTrash" (click)="onDeleteOption('optionArr2',i)"></ng-icon>
                             </div>
@@ -332,7 +234,6 @@
                         <div class="flex-2 mb-3">
                             <input id="answer" type="number" name="answer" class="form-control" [(ngModel)]="textlimit"
                                 (blur)="validateSurvey()" />
-                            <!-- <div *ngIf="!textlimitation" class="text-danger">Field is required.</div> -->
                         </div>
 
                     </div>
@@ -383,12 +284,6 @@
                             </div>
                         </div>
                     </div>
-                    <!-- <div ngClass="mb-4">
-                        <div class="form-check form-switch">
-                            <input class="form-check-input" type="checkbox" role="switch" id="commentSwitch" checked>
-                            <label class="form-check-label" for="commentSwitch">Add Comment Field</label>
-                        </div>
-                    </div> -->
                 </div>
             </li>
             <li>
@@ -458,28 +353,7 @@
                                     </form>
 
                                 </div>
-                                <!-- <div ngClass="row">
-                                    <div ngClass="col-md-6">
-                                        <div class="form-check form-check-inline">
-                                            <input class="form-check-input" type="checkbox" id="Randamize"
-                                                [(ngModel)]="group.isRandomize"
-                                                (change)="onGroupValueChange('randomize', group.isRandomize, group.id)"
-                                                [value]="group?.isRandomize" [checked]="group?.isRandomize">
-                                            <label class="form-check-label" for="Randamize">Randomize</label>
-                                        </div>
-                                        <div class="form-check form-check-inline">
-                                            <input class="form-check-input" type="checkbox" id="Exclude"
-                                                [(ngModel)]="group.isExcluded"
-                                                (change)="onGroupValueChange('excluded', group.isExcluded, group.id)"
-                                                [value]="group?.isExcluded" [checked]="group?.isExcluded">
-                                            <label class="form-check-label" for="Exclude">Exclude</label>
-                                        </div>
-                                    </div>
-                                    <div ngClass="col-md-6 text-end">
-                                        <button type="button" ngClass="btn btn-primary btn-sm"
-                                            (click)="onDeleteGroup(groupIndex)">Delete</button>
-                                    </div>
-                                </div> -->
+
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="form-check form-check-inline">
@@ -508,12 +382,6 @@
 
                         </div>
 
-                        <!-- <div ngClass="col-md-3 mt-3">
-                            <div class="tag-container new">
-                                <div class="circleicon"><ng-icon name="heroPlusCircle" ngClass=""
-                                        (click)="onCreateGroup()" /></div>
-                            </div>
-                        </div> -->
                     </div>
                 </div>
             </li>
@@ -525,7 +393,7 @@
                     <button type="button" class="btn btn-primary px-5" (click)="onSave()">Save</button>
                 </div>
             </div>
-            <li>
+            <li style="display: none;">
                 <div class="p-4">
                     <div ngClass="ans-group">
                         <div class="infocircle">
@@ -574,12 +442,7 @@
                                         </div>
                                         <div ngClass="d-flex justify-content-between mb-3">
                                             <h6>Redirect to different questions based on user's answer.</h6>
-                                            <!-- <div class="form-check checking">
-                                                <input class="form-check-input" type="checkbox" value="" id="verify">
-                                                <label class="form-check-label" for="verify">
-                                                    Double Verify
-                                                </label>
-                                            </div> -->
+
                                         </div>
                                         <div ngClass="logic-ques">
                                             <div class="input-group flex-nowrap">
@@ -630,19 +493,7 @@
                                                             </mat-autocomplete>
                                                         </mat-form-field>
                                                     </div>
-                                                    <!-- <div class="col-md-1">
-                                                        <a routerLink="javascript:"><ng-icon name="heroPlusCircle"
-                                                                ngClass="plus-circle"></ng-icon></a>
-                                                    </div> -->
-                                                    <!-- <div class="col-md-4 checking">
-                                                        <div class="form-check d-flex justify-content-end">
-                                                            <input class="form-check-input me-2" type="checkbox" value=""
-                                                                id="selectAll">
-                                                            <label class="form-check-label" for="selectAll">
-                                                                Select All
-                                                            </label>
-                                                        </div>
-                                                    </div> -->
+
                                                 </div>
                                             </div>
                                             <div>
@@ -690,24 +541,10 @@
                                                                     (click)="createanswershidethen()"></ng-icon></a>
                                                         </div>
                                                     </div>
-                                                    <!-- <div class="col-md-12">
-                                                        <a routerLink="javascript:" (click)="createanswershidethen()"><ng-icon name="heroTrash"
-                                                                ngClass="trash-icon"></ng-icon></a>
-                                                    </div> -->
+
                                                 </div>
                                             </div>
-                                            <!-- <div class="col-md-1">
-                                                <a routerLink="javascript:"><ng-icon name="heroPlusCircle"
-                                                        ngClass="plus-circle"></ng-icon></a>
-                                            </div> -->
 
-
-                                            <!-- <div ngClass="mb-4" (click)="createansweraddthen()" *ngIf="!thenSection">
-                                                <div class="col-md-12">
-                                                    <a routerLink="javascript:"><ng-icon name="heroPlusCircle"
-                                                            ngClass="trash-icon"></ng-icon></a>
-                                                </div>
-                                            </div> -->
 
                                         </div>
                                     </div>
@@ -812,28 +649,3 @@
         </button>
     </div>
 </ng-template>
-
-<!-- <div class="modal fade" id="imageModal" tabindex="-1" aria-labelledby="imageModal" aria-hidden="true">
-    <div class="modal-dialog modal-lg modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h4 class="modal-title" id="imageModal">Upload Image</h4>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body" cdkDrag>
-                <ngx-dropzone ngx-dropzone [accept]="'image/*'" (change)="onSelectOptionImage($event,imageoption)">
-                    <ngx-dropzone-label>
-                        <figure><img [src]="baseUrl+'/assets/images/icons/attach-image.png'" width="64" height="58" />
-                        </figure>
-                        <figcaption>Attach Image</figcaption>
-                    </ngx-dropzone-label>
-                    <ngx-dropzone-image-preview ngProjectAs="ngx-dropzone-preview" *ngFor="let f of filesImageoption"
-                        [file]="f" [removable]="true" (removed)="onRemoveImage(f)">
-
-                    </ngx-dropzone-image-preview>
-                </ngx-dropzone>
-            </div>
-
-        </div>
-    </div>
-</div> -->

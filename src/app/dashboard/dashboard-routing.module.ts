@@ -7,7 +7,7 @@ import { ViewComponent } from './reports/view/view.component';
 const routes: Routes = [
   { path: '', component: DashboardComponent },
   { path: 'reports', component: ReportsComponent },
-  { path: 'reports/view', component: ViewComponent }
+  { path: 'reports/view/:param1', component: ViewComponent }
 ];
 
 @NgModule({

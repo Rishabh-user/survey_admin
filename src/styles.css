@@ -219,6 +219,15 @@ li.single-sidebar-menu {
 }
 .support .btn-primary{background-color: var(--white);border-color: var(--white);color: var(--primary);}
 .support>div{margin-top: -4rem;margin-bottom: 1rem;}
+.addwidth:not(.hoveraddwidth) .support>div{margin-top: -2rem;}
+.addwidth:not(.hoveraddwidth) .support>div img{width: 40px}
+.addwidth:not(.hoveraddwidth) .support {background: inherit;padding: initial;color: initial;}
+.addwidth:not(.hoveraddwidth) .support .btn-primary {
+    background-color: var(--primary);
+    border-color: var(--primary);
+    color: var(--white);
+}
+.addwidth:not(.hoveraddwidth) .support p{font-size: 0;}
 .sidebar-upgrade {
     padding: 1rem;
     text-align: center;
@@ -362,6 +371,7 @@ li.single-sidebar-menu {
 article {
     margin-left: var(--menu-gap);
     padding: var(--section-gap);
+    padding-bottom: 0px;
 }
 
 .recent-project-list {
@@ -457,7 +467,7 @@ article {
     box-shadow: 0px 20px 16px #d6d4d4;
     position: sticky;
     top: 0;
-    height: 100vh;
+    height: 100%;
     z-index: 1;
 }
 
@@ -1311,6 +1321,12 @@ span.mobile-cross {
     .common-ques a {
         font-size: 14px;
     }
+}
+
+@media (max-width:1680px){
+    .login-form { padding: 2rem;}
+    .user-pages{ height: auto; min-height: inherit;}
+    .container{ width: 96%;}
 }
 
 @media (max-width:1199px) {
@@ -2394,7 +2410,7 @@ span.badge.ng-star-inserted.activestatus.text-bg-danger {
         height: 100%;
         top: 0;
         right: 0;
-        position: fixed;
+        position: fixed;min-width: auto;
     }
 
     .custom-pagination {

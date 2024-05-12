@@ -45,11 +45,6 @@ export class ProfileIdPopupComponent {
     this.baseUrl = environment.baseURL;
 
 
-    // this.filteredOptions = this.searchControl.valueChanges
-    //   .pipe(
-    //     startWith(''),
-    //     map(value => this._filter(value))
-    //   );
 
   }
 
@@ -81,7 +76,7 @@ export class ProfileIdPopupComponent {
     this.surveyservice.getCountries().subscribe(response => {
 
       const result = Object.keys(response).map((key) => response[key]);
-      console.log(result)
+
       const countries: { id: string; name: string; images: string }[] = result.map((value: any) => ({
         id: value['countryId'],
         name: value['name'],
@@ -90,7 +85,6 @@ export class ProfileIdPopupComponent {
       }));
 
       this.country = countries;
-      console.log("country", this.country)
     });
 
   }
@@ -129,20 +123,17 @@ export class ProfileIdPopupComponent {
         countryId: this.selectedCountry
       };
 
-      console.log("dataToSend", dataToSend);
 
       this.surveyservice.createSurvey(dataToSend).subscribe(
         response => {
-          console.log('Response from server:', response);
           if (this.removeQuotes(response) == 'AlreadyExits') {
             this.utility.showError("This Survey Already Created")
             return
           }
           const result = this.convertStringToNumber(this.removeQuotes(response));
-          console.log("result", result)
+
           if (result !== null) {
             this.newsurveyId = result
-            console.log(this.newsurveyId)
             const encryptedId = this.crypto.encryptParam(`${this.newsurveyId}`);
             const url = `/survey/manage-survey/${encryptedId}`;
             this.modal.hide();
@@ -150,24 +141,24 @@ export class ProfileIdPopupComponent {
             if (this.router.url.includes('/manage-survey')) {
               setTimeout(() => {
                 window.location.reload();
-              }, 100); // Adjust the delay as needed
+              }, 100);
             }
           }
         },
         error => {
           console.error('Error occurred while sending POST request:', error);
-          // Swal.fire('', error, 'error');
+
           this.utility.showError(error);
         }
       );
     }
   }
   convertStringToNumber(str: string): number | null {
-    const converted = +str; // Using the unary plus operator to attempt conversion
+    const converted = +str;
     return isNaN(converted) ? null : converted;
   }
   removeQuotes(str: string): string {
-    return str.replace(/"/g, ''); // Replaces all occurrences of double quotes with an empty string
+    return str.replace(/"/g, '');
   }
 
 }

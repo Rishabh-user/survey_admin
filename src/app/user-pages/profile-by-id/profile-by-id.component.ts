@@ -54,7 +54,7 @@ export class ProfileByIdComponent {
     if (this.role) {
       this.role = this.role.toLowerCase();
     }
-    console.log("profile id Role", this.role)
+
     if (this.role == 'client')
       this.isClient = true;
     else if (this.role == 'superadmin')
@@ -75,8 +75,7 @@ export class ProfileByIdComponent {
     this.themeService.GetAllUserProfileById(this.userId, this.centerId).subscribe((data: any) => {
       this.UserData = data;
 
-      console.log("qwerty", this.firstName)
-      console.log("data", data)
+
 
       this.cdr.detectChanges();
     });
@@ -93,13 +92,12 @@ export class ProfileByIdComponent {
 
   userName: any
   lastname: any
-  // contactNo: any
   userroledata: any
   usercreateddate: any
   userstatus: any
 
   getUserDetails(userId: any): void {
-    console.log("userId", userId)
+
     const filteredUser = this.UserData.find((user: any) => user.id === userId);
     if (filteredUser) {
       this.firstName = filteredUser.firstName
@@ -112,22 +110,14 @@ export class ProfileByIdComponent {
       this.userstatus = filteredUser.status
 
 
-      // You can access other properties in a similar manner
-
-      console.log("User Name:", this.userName);
-      console.log("User Name:", this.lastname);
-      console.log("User Email:", this.email);
-      console.log("user contact", this.contactNo)
-      console.log("status", this.userstatus)
-      // Output other details as needed
       this.isChecked = this.userstatus === 'ACT';
-      console.log(this.isChecked)
+
 
     } else {
-      console.log("User not found with ID:", userId);
+
     }
 
-    console.log("Filtered User:", filteredUser);
+
   }
 
   isChecked: boolean = false
@@ -135,7 +125,6 @@ export class ProfileByIdComponent {
 
   onCheckboxChange(event: any) {
     this.isChecked = event.target.checked;
-    console.log("on click checked", this.isChecked)
   }
 
 
@@ -149,7 +138,7 @@ export class ProfileByIdComponent {
 
     let status = this.isChecked ? "ACT" : "DEL";
 
-    console.log(this.firstName);
+
     const dataToSend = {
       id: Id,
       firstName: this.firstName,
@@ -173,7 +162,7 @@ export class ProfileByIdComponent {
 
   }
 
-  // checkbox
+
   selectAll: boolean = false;
 
   selectAllCheckboxes() {
@@ -182,11 +171,10 @@ export class ProfileByIdComponent {
     }
   }
 
-  // filtering
+
 
   selectedCategory: string = 'All Roles';
 
-  //validate
 
   firstNamerequired: boolean = true
   lastNamerequired: boolean = true

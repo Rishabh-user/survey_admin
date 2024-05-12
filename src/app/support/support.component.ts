@@ -29,19 +29,17 @@ export class SupportComponent {
   getMyAccount() {
     this.userId = this.utils.getUserId();
     this.themeService.GetMyAccount(this.userId).subscribe((data: any) => {
-      console.log("data", data)
+
       this.id = data.id;
       this.firstName = data.firstName;
       this.lastName = data.lastName
       this.email = data.email
       this.contactNo = data.contactNo
       this.centerId = data.centerId
-      console.log("centerId", this.centerId)
     });
   }
-  // post data
   submitForm() {
-    
+
     const url = `${this.apiUrl}SubmitQuery`;
     const params = {
       Id: this.id,
@@ -50,22 +48,20 @@ export class SupportComponent {
       Message: this.message,
       ContactNumber: this.contactNo
     };
-    
+
     this.http.post(url, null, { params, responseType: 'text' }).subscribe({
       next: (response: any) => {
-          console.log('Response:', response);
-          if (response.includes('CreatedSuccessfully')) {
-              console.log('Data sent successfully');
-              this.utils.showSuccess('Data sent successfully');
-          } else {
-              console.error('Unexpected response:', response);
-              this.utils.showError('Unexpected response');
-          }
+        if (response.includes('CreatedSuccessfully')) {
+          this.utils.showSuccess('Data sent successfully');
+        } else {
+          console.error('Unexpected response:', response);
+          this.utils.showError('Unexpected response');
+        }
       },
       error: (err: any) => {
-          console.error('Error occurred while sending form data:', err);
-          this.utils.showError(err);
+        console.error('Error occurred while sending form data:', err);
+        this.utils.showError(err);
       }
-  });
+    });
   }
 }

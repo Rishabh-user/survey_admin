@@ -35,7 +35,6 @@ export class GeoLocationPopupComponent {
   getGeoLocation() {
     this.surveyservice.GetGenericQuestionType(this.typeid).subscribe({
       next: (resp: responseDTO[]) => {
-        console.log('Response:', resp);
         this.geolocation = resp.map(item => ({
           question: item.question,
           image: item.image,
@@ -46,7 +45,7 @@ export class GeoLocationPopupComponent {
           }))
         }));
       },
-      error: (err) => console.log("An Error occur while fetching questions", err)
+      error: (err) => { }
     });
   }
 

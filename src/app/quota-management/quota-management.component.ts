@@ -7,6 +7,7 @@ import { ActivatedRoute } from '@angular/router';
 import { environment } from 'src/environments/environment';
 import { UtilsService } from '../service/utils.service';
 import { QuestionDto, QuotaData } from '../types/quota';
+import { CryptoService } from 'src/app/service/crypto.service';
 
 @Component({
   selector: 'app-quota-management',
@@ -27,15 +28,24 @@ export class QuotaManagementComponent {
   countryImage: any;
   categoryName: any;
   centerId: any;
+  quotoid: any
 
   surveyQuotaJson: QuotaData;
   isEditQuota: boolean = false;
   //QuotaData: QuotaData;
 
 
-  constructor(private route: ActivatedRoute, private visibilityService: DataService,
+  constructor(private route: ActivatedRoute, private visibilityService: DataService, private crypto: CryptoService,
     private modalService: NgbModal, private surveyservice: SurveyService, private utils: UtilsService, private utility: UtilsService) {
     this.baseUrl = environment.baseURL;
+    this.route.paramMap.subscribe(params => {
+      let _queryData = params.get('param1');
+      if (_queryData) {
+        let _queryDecodedData = this.crypto.decryptQueryParam(_queryData);
+        let _data = _queryDecodedData.split('_');
+        this.quotoid = _data[0];
+      }
+    })
 
   }
   initializeQuotaData() {
@@ -78,6 +88,7 @@ export class QuotaManagementComponent {
     });
     this.GetSurveyDetails();
     this.getQuotaBySurveyId();
+    this.quotaById();
   }
   showCountError: boolean = false;
 
@@ -506,6 +517,7 @@ export class QuotaManagementComponent {
   questionDto: any;
   quotaid: any
   getQuotaBySurveyId() {
+
     this.surveyservice.getQuotaBySurveyId(this.surveyId).subscribe({
       next: (data: any) => {
         this.isQuotasVisible = true;
@@ -553,6 +565,7 @@ export class QuotaManagementComponent {
         console.log("Error fetching quotas", err);
       }
     });
+
   }
 
 
@@ -560,6 +573,31 @@ export class QuotaManagementComponent {
   showInterlockedQuotas: boolean = false;
   toggleInterlockedQuotas() {
     this.showInterlockedQuotas = !this.showInterlockedQuotas;
+  }
+
+  quotaById() {
+
+    this.surveyservice.getQuotaById(this.quotoid).subscribe({
+      next: (data: any) => {
+        this.isQuotasVisible = true;
+
+        this.surveyQuotaJson = data as QuotaData;
+        this.quotaid = data.quotaId
+        this.surveycount = data.totalUsers;
+
+        console.log("quotabyid json", this.surveyQuotaJson)
+        console.log("quotabyid id", this.quotaid)
+        console.log("Quotas: quotabyid", this.quotas);
+      },
+      error: (err: any) => {
+        this.initializeQuotaData();
+        //#endregion
+
+        console.log("Error fetching quotas quotabyid", err);
+      }
+    });
+
+
   }
 
 

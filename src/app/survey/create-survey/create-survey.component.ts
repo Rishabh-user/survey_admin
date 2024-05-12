@@ -5,7 +5,7 @@ import { FormControl } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { startWith, map } from 'rxjs/operators';
 import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
-import { DataService } from 'src/app/service/data.service'; // Import your DataService
+import { DataService } from 'src/app/service/data.service';
 import { ModalDirective } from 'ngx-bootstrap/modal';
 import { SurveyService } from 'src/app/service/survey.service';
 import { responseDTO } from 'src/app/types/responseDTO';
@@ -186,7 +186,6 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
       let _surveyId = params.get('param1');
       if (_surveyId) {
         this.reloadIfAlreadyOnManageSurvey(_surveyId);
-        console.log("_surveyId : ", this.crypto.decryptQueryParam(_surveyId))
         this.surveyId = parseInt(this.crypto.decryptQueryParam(_surveyId));
       }
     });
@@ -212,7 +211,6 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
 
   ngOnInit() {
 
-    console.log('ngOnInit called');
     this.visibilityService.closeSideBar();
     this.userId = this.utils.getUserId();
 
@@ -401,10 +399,9 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
     //this.countryId="IN"
     this.surveyservice.GetGenericQuestion(this.countryId).subscribe({
       next: (resp: responseDTO[]) => {
-        console.log('Response:', resp);
         this.names = resp.map(item => ({ name: item.name, image: item.image }));
       },
-      error: (err) => console.log("An Error occur while fetching categories", err)
+      error: (err) => { }
     });
   }
 
@@ -413,11 +410,10 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
   getQuestion() {
     this.surveyservice.GetQuestionTypes().subscribe({
       next: (resp: any) => {
-        console.log('Response:', resp);
         // Map the response to the desired format
         this.question = resp;
       },
-      error: (err) => console.log("An Error occurred while fetching question types", err)
+      error: (err) => { }
     });
   }
 
@@ -459,13 +455,8 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
         this.countryId = data.countryId
         this.totalItemsCount = data.totalQuestionCount
         this.categoryId = data.categoryId
-        // this.selectedCountry = this.countryId
-        console.log("countryId : ", this.countryId)
-        console.log("country : ", this.country)
-        console.log("surveyId create", this.surveyId)
-        console.log("survey status", this.status)
         this.selectedCountry = this.country.find(country => country.id === this.countryId) || null;
-        console.log("selectedCountry : ", this.selectedCountry)
+
         this.surveycreateddate = data.createdDate
 
         // Iterate over questions to get genericType
@@ -478,8 +469,6 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
 
         // Iterate over questions
         this.questions.forEach((question: any) => {
-          console.log("genericType:", question.genericType);
-          console.log("Description:", question.description);
 
           // Check if the question is for screening
           if (question.isScreening) {
@@ -496,21 +485,17 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
         //check
 
         const hasAgeQuestion = this.questions.some((question: any) => question.genericType === "Age");
-        console.log("Has age question:", hasAgeQuestion);
+
         this.checkgenerictype = hasAgeQuestion
-        console.log("checkage", this.checkgenerictype)
+
 
         //openended
 
         const hasOpenEndedQuestion = this.questions.some((question: any) => question.genericType === "openended");
-        console.log("Has age question:", hasOpenEndedQuestion);
         this.openendedtype = hasOpenEndedQuestion
-        console.log("checkage", this.openendedtype)
 
         //logics count
         this.questions.forEach((question: any) => {
-          console.log("Question:", question.question);
-          console.log("Number of Logics:", question.logics.length);
           question.logicscount = question.logics.length
         });
 
@@ -521,7 +506,6 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
           this.questions = data.questions;
           this.questions.forEach((question: any) => {
             const isScreening = question.isScreening;
-            console.log("isScreening value for question:", isScreening);
             // Now you can use the isScreening value as needed
           });
         }
@@ -529,7 +513,6 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
       }
 
       this.getNames();
-      console.log("data", data)
 
     });
   }
@@ -538,9 +521,7 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
   getCategoryNames() {
     this.surveyservice.GetCategories().subscribe((response: { [x: string]: any; }) => {
       var result = Object.keys(response).map(e => response[e]);
-      console.log("categoryList", response)
       this.categoryList = response
-      console.log("update", result);
       result.forEach((value: any, index: any) => {
         if (value['id'] == this.readCategoryId)
           this.readCategoryName = value['name']
@@ -565,7 +546,6 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
   }
   //onEditQuestionClick
   onEditQuestionClick(questionId: any) {
-    console.log("modifyQuestionId", questionId)
     let _data = `${this.surveyId}_${this.selectedQuestionType}_modify_${questionId}_${this.selectedQuestionTypeName}`;
     let encryptedText = this.crypto.encryptParam(_data);
     let url = `/survey/manage-question/${encryptedText}`;
@@ -582,12 +562,8 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
         otherCategory: this.otherCategoryName,
         countryId: this.selectedCountryId
       };
-      console.log("dataToSend", dataToSend)
-      console.log("country", this.countryId);
       this.surveyservice.updateSurvey(dataToSend).subscribe(
         response => {
-          console.log('Response from server:', response);
-          //this.surveyId = response;
           this.countryName = this.selectedCountry ? this.selectedCountry.name : null;
           if (this.surveyId) {
             const encryptedId = this.crypto.encryptParam(`${this.surveyId}`);
@@ -614,54 +590,56 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
 
   logicIndex: number;
 
-  toggleLogic(index: number, questionId: any) {
+  toggleLogic(index: number, questionId: any, mode: string) {
     //this.logicIndex = index;
-    console.log("questionId : ", questionId);
-    console.log("index :", index);
-    this.addNewLogicEntry(index);
+    if (mode === "add")
+      this.addNewLogicEntry(index);
+
+    this.questions[index].isLogicShow = !this.questions[index].isLogicShow;
+    /*setTimeout(() => {
+    
+  }, 10000);*/
+
     this.getLogicQuestionList(questionId);
 
-    setTimeout(() => {
-      //debugger;
-      this.questions[index].isLogicShow = !this.questions[index].isLogicShow;
 
-    }, 30000000);
     setTimeout(() => { // Adding a small delay to ensure the section is rendered before scrolling
       const sectionToScroll = this.el.nativeElement.querySelector(`#question-${questionId}`);
 
       if (sectionToScroll) {
         sectionToScroll.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        console.log("section id")
+
       } else {
         console.warn(`Section with ID "question-${questionId}" not found.`);
       }
     }, 100); // Adjust the delay as needed
+
   }
 
   getLogicValues() {
     this.surveyservice.getLogicValues().subscribe((response: { [x: string]: any; }) => {
       var result = Object.keys(response).map(e => response[e]);
-      console.log("logicValues", response)
+
       this.logicValuesList = response
     });
   }
   getLogicThens() {
     this.surveyservice.getLogicThens().subscribe((response: { [x: string]: any; }) => {
       var result = Object.keys(response).map(e => response[e]);
-      console.log("logicThens", response)
+
       this.logicThensList = response
     });
   }
   logicQuestionListById: any
   getLogicQuestionList(questionId: any) {
+    //alert(questionId);
     this.logicQuestionList = [];
     const dataToSend = {
       surveyId: this.surveyId,
-      surveyStatus: questionId
+      questionId: questionId
     };
     this.surveyservice.getLogicQuestionList(dataToSend).subscribe(
       (response: LogicQuestion[]) => {
-        console.log("logicQuestionList", response);
         this.logicQuestionList = response;
       },
       error => {
@@ -671,7 +649,6 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
     this.logicQuestionListById = []; // Assuming logicQuestionListById is of type responseDTO[]
     this.surveyservice.GetQuestionListBySurveyId(this.surveyId).subscribe((response: responseDTO[]) => {
       this.logicQuestionListById = response;
-      console.log("logicQuestionListById", this.logicQuestionListById);
     });
 
   }
@@ -681,8 +658,6 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
     //const target = event.target as HTMLSelectElement;
     const selectedValue = event.value;
     // Use selectedValue as needed
-    console.log('Selected value:', selectedValue);
-    console.log('Question Sort value:', questionSortValue);
 
     let queryParams = null;
     if (questionId != 0) {
@@ -696,12 +671,9 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
     }
     this.surveyservice.changeQuestionPosition(queryParams).subscribe(
       (response: String) => {
-        console.log('Update successful:', response);
         window.location.reload();
       },
       (error) => {
-        console.error('Error occurred while uploading:', error);
-        // Handle error
       }
     );
   }
@@ -709,7 +681,7 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
     return a === b;
   }
   reloadIfAlreadyOnManageSurvey(encryptedId: string) {
-    console.log("reloadIfAlreadyOnManageSurvey")
+
     if (this.router.url.includes('/survey/manage-survey')) {
       const navigationExtras = {
         relativeTo: this.route,
@@ -722,7 +694,7 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
     }
   }
   onPageChange(pageNumber: number) {
-    console.log(pageNumber);
+
     // Handle page change event
     this.pageNumber = pageNumber;
     this.GetSurveyDetails(this.pageSize, this.pageNumber)
@@ -742,7 +714,7 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
     this.surveyservice.getCountries().subscribe(response => {
 
       const result = Object.keys(response).map((key) => response[key]);
-      console.log(result)
+
       const countries: { id: string; name: string, images: string }[] = result.map((value: any) => ({
         id: value['countryId'],
         name: value['name'],
@@ -750,7 +722,7 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
       }));
 
       this.country = countries;
-      console.log("country", this.country)
+
     });
 
   }
@@ -763,7 +735,6 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
   addNewLogicEntry(index: number): void {
     // Initialize an array for the question if not already done
     if (!this.logicEntriesPerQuestion[index]) {
-      console.log("Inside If Condition")
       this.logicEntriesPerQuestion[index] = [];
     }
     let logicIndex = this.logicEntriesPerQuestion.length
@@ -820,9 +791,6 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
     //isElseShowCalculations
 
 
-    console.log("value of visibleaddandlogic: ", this.visibleaddandlogic)
-    console.log('Value of logicEntriesPerQuestion:', this.logicEntriesPerQuestion);
-
     if (!this.selectedOptionsLogic[index]) {
       this.selectedOptionsLogic[index] = [];
     } if (!this.selectedOptionsLogic[index][logicIndex]) {
@@ -840,14 +808,12 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
 
         // Check if entryIdToDelete is defined before proceeding
         if (entryIdToDelete !== undefined) {
-          console.log("entryIdToDelete", entryIdToDelete)
           if (entryIdToDelete == 0)
             this.logicEntriesPerQuestion[questionIndex].splice(logicIndex, 1);
           else {
 
             this.surveyservice.deleteQuestionLogicById(entryIdToDelete).subscribe(
               () => {
-                console.log('Logic deleted successfully.');
                 this.logicEntriesPerQuestion[questionIndex].splice(logicIndex, 1);
               },
               (error) => {
@@ -872,15 +838,17 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
   // Function to save all logic entries
   saveLogicEntries(): void {
     // Implement logic to save all entries
-    console.log("logics", this.logicEntriesPerQuestion);
   }
   getQuestionLogic(index: number, questionId: number): void {
+    //alert('getQuestionLogic')
+
+    this.logicEntriesPerQuestion[index] = []
 
     this.getOptionsByQuestionIdLogic(questionId);
     this.surveyservice.getQuestionLogics(questionId, this.surveyId).subscribe(
       (response) => {
         if (response && response.length > 0) {
-          console.log("response :", response)
+
 
           // Iterate through each logic entry in the response
           response.forEach((logic: any, logicIndex: number) => {
@@ -970,23 +938,23 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
             if (!this.logicEntriesPerQuestion[index]) {
               this.logicEntriesPerQuestion[index] = [];
             }
-            console.log("ifExpected : ", logic.ifExpected)
+
             if (logic.ifExpected != null) {
               let queryParams = {
                 qid: questionId
               };
 
               this.surveyservice.getOptionsByQuestionId(queryParams).subscribe((response: any) => {
-                console.log("response logic option", response);
+
 
                 const optionsArray = JSON.parse(response);
                 if (Array.isArray(optionsArray) && optionsArray.length > 0) {
                   this.selectedOptionsLogic[index][logicIndex] = []
                   const filteredOptions = optionsArray.filter((item: { id: number }) => logic.ifExpected.includes(item.id));
-                  console.log("filteredOptions : ", filteredOptions);
+
 
                   this.selectedOptionsLogic[index][logicIndex].push(...filteredOptions);
-                  console.log("selectedOptionsLogic : ", this.selectedOptionsLogic[index][logicIndex]);
+
 
                 } else {
 
@@ -1002,16 +970,15 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
               };
 
               this.surveyservice.getOptionsByQuestionId(queryParams).subscribe((response: any) => {
-                console.log("response logic option", response);
+
 
                 const optionsArray = JSON.parse(response);
                 if (Array.isArray(optionsArray) && optionsArray.length > 0) {
                   // Assuming the response is an array of objects
                   const filteredOptions = optionsArray.filter((item: { id: number }) => newLogicEntry.ifExpectedAndOr.includes(item.id));
-                  console.log("filteredOptions : ", filteredOptions);
+
                   this.selectedOptions[index][logicIndex] = []
                   this.selectedOptions[index][logicIndex].push(...filteredOptions);
-                  console.log("selectedOptions : ", this.selectedOptions[index][logicIndex]);
 
                 } else {
 
@@ -1052,104 +1019,227 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
             // Push the new logic entry to the array
             this.logicEntriesPerQuestion[index].push(newLogicEntry);
           });
-
-          this.questions[index].isLogicShow = !this.questions[index].isLogicShow;
-          console.log("this.logicEntriesPerQuestion", this.logicEntriesPerQuestion);
+          //alert('First '+this.questions[index].isLogicShow)
+          //this.questions[index].isLogicShow = !this.questions[index].isLogicShow;
+          //alert('Second '+this.questions[index].isLogicShow)
         }
       },
       (error) => {
-        // Handle errors
-        console.error(error);
+
       }
     );
   }
   createLogicCount: number = 0;
+  // createLogic(questionId: any, logicEntries: any[]): void {
+
+  //   for (const logicEntry of logicEntries) {
+  //     this.createLogicCount++;
+  //     console.log(logicEntry)
+  //     const thanTermValue = logicEntry.thanExpected;
+  //     var elseTermValue = logicEntry.elseExpected;
+  //     if (elseTermValue === null)
+  //       elseTermValue = 0
+  //     if (logicEntry.elseExpected !== null && logicEntry.elseExpected !== 0) {
+  //       logicEntry.elseExpected = logicEntry.elseExpected.replace('Q-', '').replace('L-', '');
+  //     } else {
+  //       logicEntry.elseExpected = 0
+  //       console.log("elseExpected : ", logicEntry.elseExpected)
+  //     }
+
+  //     if (logicEntry.thanExpected !== null && logicEntry.thanExpected !== 0) {
+  //       logicEntry.thanExpected = logicEntry.thanExpected.replace(/Q-/g, '').replace(/L-/g, '');
+  //     } else {
+  //       logicEntry.thanExpected = 0
+  //       console.log("thanExpected :", logicEntry.thanExpected)
+  //     }
+
+
+  //     const id = logicEntry.id
+  //     const ifIdValue = logicEntry.ifId;
+  //     const ifExpectedValue = logicEntry.ifExpected;
+  //     const thanIdValue = logicEntry.thanId;
+  //     const thanExpectedValue = logicEntry.thanExpected;
+  //     const elseIdValue = logicEntry.elseId;
+  //     const elseExpectedValue = logicEntry.elseExpected;
+  //     const nameValue = "Logic " + this.createLogicCount;
+  //     var popupTextValue: string = "", isEveryTimeValue: boolean = false, timesPeriodValue: number = 0;
+  //     if (thanIdValue == 5) {
+  //       popupTextValue = logicEntry.popupText
+  //       isEveryTimeValue = logicEntry.isEveryTime
+  //       timesPeriodValue = logicEntry.timesPeriod
+  //     }
+  //     if (elseIdValue == 5) {
+  //       popupTextValue = logicEntry.popupTextElse
+  //       isEveryTimeValue = logicEntry.isEveryTimeElse
+  //       timesPeriodValue = logicEntry.timesPeriodElse
+  //     }
+  //     this.questionLogic.id = id
+  //     this.questionLogic.surveyId = this.surveyId;
+  //     this.questionLogic.questionId = questionId;
+  //     this.questionLogic.ifId = ifIdValue;
+  //     this.questionLogic.ifExpected = ifExpectedValue;
+  //     this.questionLogic.thanId = thanIdValue;
+  //     this.questionLogic.thanExpected = thanExpectedValue;
+  //     this.questionLogic.thanTerm = thanTermValue
+  //     this.questionLogic.elseId = elseIdValue
+  //     this.questionLogic.elseExpected = elseExpectedValue
+  //     this.questionLogic.elseTerm = elseTermValue
+  //     this.questionLogic.name = nameValue
+  //     this.questionLogic.popupText = popupTextValue
+  //     this.questionLogic.isEveryTime = isEveryTimeValue
+  //     this.questionLogic.timesPeriod = timesPeriodValue
+  //     if (!this.questionLogic.logicConditions[0]) {
+  //       this.questionLogic.logicConditions[0] = {
+  //         id: 0,
+  //         logicId: 0,
+  //         isAnd: false,
+  //         isOr: false,
+  //         questionId: 0,
+  //         ifId: 0,
+  //         ifExpected: ""
+  //       };
+  //     }
+  //     console.log("isAnd : ", logicEntry.isAnd)
+  //     console.log("isAnd : ", logicEntry.isAnd)
+  //     if (!(logicEntry.isAnd === false && logicEntry.isOr === false)) {
+  //       console.log("In Side And Or If")
+  //       if (!logicEntry.isAnd)
+  //         this.questionLogic.logicConditions[0].isAnd = true
+  //       else
+  //         this.questionLogic.logicConditions[0].isOr = true
+
+  //       this.questionLogic.logicConditions[0].questionId = logicEntry.questionIdAndOr
+  //       this.questionLogic.logicConditions[0].ifId = logicEntry.ifIdAndOr
+  //       this.questionLogic.logicConditions[0].ifExpected = logicEntry.ifExpectedAndOr
+  //     }
+
+  //     console.log("dataToSend", this.questionLogic);
+  //     if (this.questionLogic.id > 0) {
+  //       this.surveyservice.updateLogic(this.questionLogic).subscribe(
+  //         response => {
+  //           console.log('Response from server:', response);
+  //           this.utils.showSuccess('Logic Created Successfully.');
+  //         },
+  //         error => {
+  //           console.error('Error occurred while sending POST request:', error);
+  //           this.utils.showError(error);
+  //         }
+  //       );
+  //     } else {
+  //       this.surveyservice.createLogic(this.questionLogic).subscribe(
+  //         response => {
+  //           console.log('Response from server:', response);
+  //           this.utils.showSuccess('Logic Created Successfully.');
+  //         },
+  //         error => {
+  //           console.error('Error occurred while sending POST request:', error);
+  //           this.utils.showError(error);
+  //         }
+  //       );
+  //     }
+  //   }
+
+  // }
   createLogic(questionId: any, logicEntries: any[]): void {
+    let delayCounter = 0;
 
     for (const logicEntry of logicEntries) {
-      this.createLogicCount++;
-      console.log(logicEntry)
-      const thanTermValue = logicEntry.thanExpected;
-      const elseTermValue = logicEntry.elseExpected;
-      if (logicEntry.elseExpected !== null && logicEntry.elseExpected !== 0) {
-        logicEntry.elseExpected = logicEntry.elseExpected.replace('Q-', '').replace('L-', '');
-      } else {
-        logicEntry.elseExpected = 0
-        console.log("elseExpected : ", logicEntry.elseExpected)
-      }
+      setTimeout(() => {
+        this.createSingleLogicEntry(questionId, logicEntry);
+      }, delayCounter * 1000); // Increase the delay by multiplying with the index
 
-      if (logicEntry.thanExpected !== null && logicEntry.thanExpected !== 0) {
-        logicEntry.thanExpected = logicEntry.thanExpected.replace(/Q-/g, '').replace(/L-/g, '');
-      } else {
-        logicEntry.thanExpected = 0
-        console.log("thanExpected :", logicEntry.thanExpected)
-      }
+      delayCounter++;
+    }
+  }
+
+  createSingleLogicEntry(questionId: any, logicEntry: any): void {
+    this.createLogicCount++;
 
 
-      const id = logicEntry.id
-      const ifIdValue = logicEntry.ifId;
-      const ifExpectedValue = logicEntry.ifExpected;
-      const thanIdValue = logicEntry.thanId;
-      const thanExpectedValue = logicEntry.thanExpected;
-      const elseIdValue = logicEntry.elseId;
-      const elseExpectedValue = logicEntry.elseExpected;
-      const nameValue = "Logic " + this.createLogicCount;
-      var popupTextValue: string = "", isEveryTimeValue: boolean = false, timesPeriodValue: number = 0;
-      if (thanIdValue == 5) {
-        popupTextValue = logicEntry.popupText
-        isEveryTimeValue = logicEntry.isEveryTime
-        timesPeriodValue = logicEntry.timesPeriod
-      }
-      if (elseIdValue == 5) {
-        popupTextValue = logicEntry.popupTextElse
-        isEveryTimeValue = logicEntry.isEveryTimeElse
-        timesPeriodValue = logicEntry.timesPeriodElse
-      }
-      this.questionLogic.id = id
-      this.questionLogic.surveyId = this.surveyId;
-      this.questionLogic.questionId = questionId;
-      this.questionLogic.ifId = ifIdValue;
-      this.questionLogic.ifExpected = ifExpectedValue;
-      this.questionLogic.thanId = thanIdValue;
-      this.questionLogic.thanExpected = thanExpectedValue;
-      this.questionLogic.thanTerm = thanTermValue
-      this.questionLogic.elseId = elseIdValue
-      this.questionLogic.elseExpected = elseExpectedValue
-      this.questionLogic.elseTerm = elseTermValue
-      this.questionLogic.name = nameValue
-      this.questionLogic.popupText = popupTextValue
-      this.questionLogic.isEveryTime = isEveryTimeValue
-      this.questionLogic.timesPeriod = timesPeriodValue
-      if (!this.questionLogic.logicConditions[0]) {
-        this.questionLogic.logicConditions[0] = {
-          id: 0,
-          logicId: 0,
-          isAnd: false,
-          isOr: false,
-          questionId: 0,
-          ifId: 0,
-          ifExpected: ""
-        };
-      }
-      console.log("isAnd : ", logicEntry.isAnd)
-      console.log("isAnd : ", logicEntry.isAnd)
-      if (!(logicEntry.isAnd === false && logicEntry.isOr === false)) {
-        console.log("In Side And Or If")
-        if (!logicEntry.isAnd)
-          this.questionLogic.logicConditions[0].isAnd = true
-        else
-          this.questionLogic.logicConditions[0].isOr = true
+    const thanTermValue = logicEntry.thanExpected !== null ? logicEntry.thanExpected : 0;
+    const elseTermValue = logicEntry.elseExpected !== null ? logicEntry.elseExpected : 0;
 
-        this.questionLogic.logicConditions[0].questionId = logicEntry.questionIdAndOr
-        this.questionLogic.logicConditions[0].ifId = logicEntry.ifIdAndOr
-        this.questionLogic.logicConditions[0].ifExpected = logicEntry.ifExpectedAndOr
-      }
+    if (logicEntry.elseExpected !== null && logicEntry.elseExpected !== 0) {
+      logicEntry.elseExpected = logicEntry.elseExpected.replace('Q-', '').replace('L-', '');
+    } else {
+      logicEntry.elseExpected = 0;
+    }
 
-      console.log("dataToSend", this.questionLogic);
+    if (logicEntry.thanExpected !== null && logicEntry.thanExpected !== 0) {
+      logicEntry.thanExpected = logicEntry.thanExpected.replace(/Q-/g, '').replace(/L-/g, '');
+    } else {
+      logicEntry.thanExpected = 0;
+    }
+
+    const id = logicEntry.id;
+    const ifIdValue = logicEntry.ifId;
+    const ifExpectedValue = logicEntry.ifExpected;
+    const thanIdValue = logicEntry.thanId;
+    const thanExpectedValue = logicEntry.thanExpected !== null ? logicEntry.thanExpected : 0;
+    const elseIdValue = logicEntry.elseId !== null ? logicEntry.elseId : 0;
+    const elseExpectedValue = logicEntry.elseExpected !== null ? logicEntry.elseExpected : 0;
+    const nameValue = "Logic " + this.createLogicCount;
+    let popupTextValue: string = "";
+    let isEveryTimeValue: boolean = false;
+    let timesPeriodValue: number = 0;
+
+    if (thanIdValue == 5) {
+      popupTextValue = logicEntry.popupText;
+      isEveryTimeValue = logicEntry.isEveryTime;
+      timesPeriodValue = logicEntry.timesPeriod;
+    }
+    if (elseIdValue == 5) {
+      popupTextValue = logicEntry.popupTextElse;
+      isEveryTimeValue = logicEntry.isEveryTimeElse;
+      timesPeriodValue = logicEntry.timesPeriodElse;
+    }
+
+    this.questionLogic.id = id;
+    this.questionLogic.surveyId = this.surveyId;
+    this.questionLogic.questionId = questionId;
+    this.questionLogic.ifId = ifIdValue;
+    this.questionLogic.ifExpected = ifExpectedValue;
+    this.questionLogic.thanId = thanIdValue;
+    this.questionLogic.thanExpected = thanExpectedValue;
+    this.questionLogic.thanTerm = thanTermValue;
+    this.questionLogic.elseId = elseIdValue;
+    this.questionLogic.elseExpected = elseExpectedValue;
+    this.questionLogic.elseTerm = elseTermValue;
+    this.questionLogic.name = nameValue;
+    this.questionLogic.popupText = popupTextValue;
+    this.questionLogic.isEveryTime = isEveryTimeValue;
+    this.questionLogic.timesPeriod = timesPeriodValue;
+
+    if (!this.questionLogic.logicConditions[0]) {
+      this.questionLogic.logicConditions[0] = {
+        id: 0,
+        logicId: 0,
+        isAnd: false,
+        isOr: false,
+        questionId: 0,
+        ifId: 0,
+        ifExpected: ""
+      };
+    }
+
+    if (!(logicEntry.isAnd === false && logicEntry.isOr === false)) {
+
+      if (!logicEntry.isAnd)
+        this.questionLogic.logicConditions[0].isAnd = true;
+      else
+        this.questionLogic.logicConditions[0].isOr = true;
+
+      this.questionLogic.logicConditions[0].questionId = logicEntry.questionIdAndOr;
+      this.questionLogic.logicConditions[0].ifId = logicEntry.ifIdAndOr;
+      this.questionLogic.logicConditions[0].ifExpected = logicEntry.ifExpectedAndOr;
+    }
+
+
+    setTimeout(() => {
       if (this.questionLogic.id > 0) {
         this.surveyservice.updateLogic(this.questionLogic).subscribe(
           response => {
-            console.log('Response from server:', response);
+
             this.utils.showSuccess('Logic Created Successfully.');
           },
           error => {
@@ -1160,7 +1250,6 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
       } else {
         this.surveyservice.createLogic(this.questionLogic).subscribe(
           response => {
-            console.log('Response from server:', response);
             this.utils.showSuccess('Logic Created Successfully.');
           },
           error => {
@@ -1169,7 +1258,7 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
           }
         );
       }
-    }
+    }, 1000);
   }
 
   isRandomizationChecked: boolean = false;
@@ -1187,13 +1276,20 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
 
   removeRandomizationSection(index: number) {
     this.randormizeEntries.splice(index, 1);
+    this.surveyservice.deleteRandomizedQuestions(this.surveyId, this.randomizegroupid).subscribe(
+      (data: any) => {
+        this.utils.showSuccess('Question Deleted.');
+        window.location.reload();
+      },
+      (error: any) => {
+        this.utils.showError('Error deleting question.');
+      }
+    );
   }
 
   saveRandomization(): void {
-    debugger
-    console.log("randomize", this.randormizeEntries);
     const anyCheckboxChecked = this.randormizeEntries.some(entry => entry.isRandomizationChecked);
-    console.log(anyCheckboxChecked)
+
 
     const anyUncheckedNewEntries = this.randormizeEntries.slice(-1 * (this.randormizeEntries.length - this.initialLength))
       .some(entry => !entry.isRandomizationChecked);
@@ -1227,15 +1323,11 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
       const fromQuestionId = randomization.fromQuestion;
       const toQuestionId = randomization.toQuestion;
 
-      console.log("fromQuestionId", fromQuestionId)
-      console.log("toQuestionId", toQuestionId)
+
 
       if (fromQuestionId && toQuestionId && randomization.isRandomizationChecked) {
         const filteredQuestions = this.logicQuestionListById.filter((question: { id: number; }) => question.id >= fromQuestionId && question.id <= toQuestionId);
-        // const filteredQuestions = this.randormizeEntries.filter((question: { id: string; }) => {
-        //   const questionId = parseInt(question.id, 10); // Convert question ID to a number
-        //   return questionId >= parseInt(fromQuestionId, 10) && questionId <= parseInt(toQuestionId, 10);
-        // });
+
 
         const formattedQuestions = filteredQuestions.map((question: { id: { toString: () => any; }; }) => {
           return {
@@ -1257,11 +1349,9 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
 
       serviceCall.subscribe(
         response => {
-          console.log('POST request successful', response);
           this.utils.showSuccess('Randomization Created Successfully.');
         },
         error => {
-          console.error('Error in POST request', error);
           this.utils.showError('Please confirm you want to randomize these questions');
         }
       );
@@ -1286,7 +1376,6 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
 
   getAllSurveyList() {
     this.getSurveyLooping();
-    console.log("AutoCode Option", this.selectedAutoCodeOption)
     this.surveyservice.GetSurveyList().subscribe((data: any) => {
       const surveyType: any[] = data.surveyType;
 
@@ -1318,7 +1407,7 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
           createdDate: new Date(item.createdDate)
         }))];
       }
-      console.log("surveyData In Header", this.surveylist);
+
     });
   }
   saveAutoCode(): void {
@@ -1327,11 +1416,9 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
 
     this.surveyservice.surveyLooping(surveyId, dummySurveyId).subscribe(
       response => {
-        // Handle the response here
-        // Swal.fire('', 'Auto Code Created Successfully.', 'success');
         this.utils.showSuccess('Auto Code Created Successfully.');
 
-        console.log('Survey Looping Response:', response);
+
       },
       error => {
         // Handle errors here
@@ -1344,7 +1431,7 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
   getAgeOptionsLogicValues() {
     this.surveyservice.getAgeOptionsLogicValues().subscribe((response: { [x: string]: any; }) => {
       var result = Object.keys(response).map(e => response[e]);
-      console.log("Age OptionLogicValues", response)
+
       this.ageOptionLogicValuesList = response
     });
   }
@@ -1374,17 +1461,15 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
     this.questionCalculation.thanExpected = this.calulationThenValue;
     this.questionCalculation.elseId = this.calulationElseOption
     this.questionCalculation.elseExpected = this.calulationElseValue
-    console.log("dataToSend", this.questionCalculation);
+
 
     this.surveyservice.createCalculation(this.questionCalculation).subscribe(
       response => {
-        console.log('Response from server:', response);
-        // Swal.fire('', 'Calculation Created Successfully.', 'success');
         this.utils.showSuccess('Calculation Created Successfully.');
       },
       error => {
         console.error('Error occurred while sending POST request:', error);
-        // Swal.fire('', error, 'error');
+
         this.utils.showError(error);
       }
     );
@@ -1395,15 +1480,13 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
     this.logicQuestionListForCalculation = '';
     const dataToSend = {
       surveyId: this.surveyId,
-      surveyStatus: questionId
+      questionId: questionId
     };
     this.surveyservice.getLogicQuestionList(dataToSend).subscribe((response: responseDTO) => {
-      console.log("logicQuestionListForCalculation", response);
-      console.log("Question Sort Value", sort);
+
       this.pipeQuestionList = response
       this.logicQuestionListForCalculation = response.filter((item: Question) => item.sort > sort);
 
-      console.log("Filtered logicQuestionList", this.logicQuestionList);
     });
   }
   questionListBranching: QuestionItem[] = [];
@@ -1429,14 +1512,17 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
   //getQuestionListRandomization
   apiResponseRandomization: any[] = [];
   groupedDataRandomization: { [key: string]: any[] } = {};
+  randomizegroupid: any
 
   getRandomization(): void {
 
     this.surveyservice.getRandomizedQuestions(this.surveyId).subscribe(
       (response: any[]) => {
         // Store the API response
-        console.log("randomize", response)
         this.apiResponseRandomization = response;
+        if (response.length > 0) {
+          this.randomizegroupid = response[0].groupNumber;
+        }
 
         // Handle the response from the API
         this.handleApiData();
@@ -1454,7 +1540,7 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
     // Transform data for each groupNumber
     const transformedData = this.transformData();
 
-    console.log('Transformed Data:', transformedData);
+
     this.randormizeEntries = transformedData
     if (this.randormizeEntries.length == 0) {
       this.randormizeEntries.push({
@@ -1552,10 +1638,7 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
 
     this.surveyservice.uploadImageAddScreen(file, this.userId).subscribe(
       (response: String) => {
-        console.log('Upload successful:', response);
         this.screenImage = response
-        // Handle response from the image upload
-        // You may want to retrieve the URL or any other relevant information from the response
       },
       (error) => {
         console.error('Error occurred while uploading:', error);
@@ -1615,7 +1698,7 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
       // If not defined or not a string, set image to an empty string
       this.screenQuestionObj.video = '';
     }
-    console.log("screen image", this.screenQuestionObj.image);
+
     this.screenQuestionObj.isScreening = this.screenRedirectUser
     this.screenQuestionObj.screeningRedirectUrl = this.screenRedirectURL
     this.screenQuestionObj.surveyTypeId = this.surveyId
@@ -1624,8 +1707,7 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
     this.surveyservice.CreateGeneralQuestion(this.screenQuestionObj).subscribe({
       next: (resp: any) => {
 
-        // Swal.fire('', 'Question Generated Sucessfully.', 'success');
-        console.log("addscreen resp", resp)
+
         if (resp == '"QuestionSuccessfullyCreated"') {
           this.utils.showSuccess('Question Generated Sucessfully');
 
@@ -1640,8 +1722,6 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
 
       },
       error: (err: any) => {
-        // Swal.fire('', err.error, 'error');
-        // this.utils.showError(err);
         this.utils.showError('Error');
 
       }
@@ -1676,22 +1756,11 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
   cloneQuestion: Question = new Question();
   cloning(clonQuestionId: any) {
     this.surveyservice.cloneQuestion(clonQuestionId, this.surveyId).subscribe((data: any) => {
-      //console.log("data", data)
+
       this.utils.showSuccess('Question Clone Successfully.');
       this.ngOnInit()
-      console.log(data)
 
-      // this.surveyservice.CreateGeneralQuestion(this.cloneQuestion).subscribe({
-      //   next: (resp: any) => {
-      //     this.utils.showSuccess('Question Generated Successfully.');
-      //     //let url = `/survey/manage-survey/${this.crypto.encryptParam("" + this.surveyId)}`;
-      //     //this.router.navigateByUrl(url);
-      //     this.ngOnInit()
-      //   },
-      //   error: (err: any) => {
-      //     this.utils.showError('error');
-      //   }
-      // });
+
     });
   }
   getCurrentDateTime(): string {
@@ -1701,8 +1770,6 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
 
   deleteQuestion(questionId: any, isdelete: boolean) {
     if (!isdelete) {
-      // Show error message
-      console.log("Associated logic entries found. Cannot delete question.");
       this.utils.showError('Cannot delete question because it has associated logic entries.');
       return; // Exit the method
     }
@@ -1752,17 +1819,15 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
   isThanShow: boolean = true
   getOptionsByQuestionId(selectedQuestion: any, questionIndex: number, logicIndex: number) {
     this.optionListByQuestionId = ''
-    console.log("selectedQuestion", selectedQuestion);
     const selectedValue = selectedQuestion;
     let queryParams = {
       qid: selectedValue
     }
     this.surveyservice.getOptionsByQuestionId(queryParams).subscribe((response: { [x: string]: any; }) => {
       var result = Object.keys(response).map(e => response[e]);
-      console.log("response ", response)
+
 
       this.optionListByQuestionId = response
-      console.log("optionListByQuestionId", this.optionListByQuestionId)
       this.optionListByQuestionId = JSON.parse(this.optionListByQuestionId)
     });
   }
@@ -1789,19 +1854,18 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
     }
   }
   selectedOptionAndOrd(event: MatAutocompleteSelectedEvent, logicEntryAndOrIfId: any, questionIndex: number, logicIndex: number): void {
-    console.log("logicEntryAndOrIfId ", logicEntryAndOrIfId)
-    console.log("selectedOptions.length ", this.selectedOptions.length)
+
     const ifIdNumber = +logicEntryAndOrIfId;
 
-    console.log("inside else")
+
     const selectedOption = event.option.value;
-    console.log("selectedOption : ", selectedOption)
+
     if (!this.selectedOptions[questionIndex][logicIndex].includes(selectedOption)) {
       this.selectedOptions[questionIndex][logicIndex].push(selectedOption);
     }
     const selectedOptionsArray = this.selectedOptions[questionIndex][logicIndex];
     const selectedOptionsString = selectedOptionsArray.map((option: { id: any; }) => option.id).join(', ');
-    console.log("selectedOptionsString:", selectedOptionsString);
+
     this.logicEntriesPerQuestion[questionIndex][logicIndex].ifExpectedAndOr = selectedOptionsString;
 
   }
@@ -1830,7 +1894,7 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
     // Check if the selected value matches the value that should trigger the popup
     if (selectedValue === "Show Popup") {
       this.showPopup = true;
-      console.log(this.showPopup)
+
     } else {
       this.showPopup = false;
     }
@@ -1838,14 +1902,14 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
   selectedOptionsLogic: any[][] = [];
   selectedOptionsIFLogic(event: MatAutocompleteSelectedEvent, logicEntryIfId: any, questionIndex: number, logicIndex: number): void {
     const ifIdNumber = +logicEntryIfId;
-    console.log("inside else")
+
     const selectedOption = event.option.value;
     if (!this.selectedOptionsLogic[questionIndex][logicIndex].includes(selectedOption)) {
       this.selectedOptionsLogic[questionIndex][logicIndex].push(selectedOption);
 
       const selectedOptionsArray = this.selectedOptionsLogic[questionIndex][logicIndex];
       const selectedOptionsString = selectedOptionsArray.map((option: { id: any; }) => option.id).join(', ');
-      console.log("selectedOptionsString:", selectedOptionsString);
+
       this.logicEntriesPerQuestion[questionIndex][logicIndex].ifExpected = selectedOptionsString;
 
     }
@@ -1853,17 +1917,17 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
   optionListByQuestionIdLogic: any
   getOptionsByQuestionIdLogic(selectedQuestion: any) {
     this.optionListByQuestionIdLogic = ''
-    console.log("selectedQuestion", selectedQuestion);
+
     const selectedValue = selectedQuestion;
     let queryParams = {
       qid: selectedValue
     }
     this.surveyservice.getOptionsByQuestionId(queryParams).subscribe((response: { [x: string]: any; }) => {
       var result = Object.keys(response).map(e => response[e]);
-      console.log("response ", response)
+
 
       this.optionListByQuestionIdLogic = response
-      console.log("optionListByQuestionId", this.optionListByQuestionIdLogic)
+
       this.optionListByQuestionIdLogic = JSON.parse(this.optionListByQuestionIdLogic)
     });
   }
@@ -1874,7 +1938,7 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
 
       const selectedOptionsArray = this.selectedOptionsLogic[questionIndex][logicIndex];
       const selectedOptionsString = selectedOptionsArray.map((option: { id: any; }) => option.id).join(', ');
-      console.log("selectedOptionsString:", selectedOptionsString);
+
       this.logicEntriesPerQuestion[questionIndex][logicIndex].ifExpected = selectedOptionsString;
 
     }
@@ -1885,8 +1949,7 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
 
   toggleAndOrVisibility(questionIndex: number, logicIndex: number): void {
     this.visibleaddandlogic[questionIndex][logicIndex] = !this.visibleaddandlogic[questionIndex][logicIndex];
-    console.log(this.visibleaddandlogic);
-    console.log("Logic Index " + logicIndex);
+
     this.showRemoveandlogicArray[questionIndex][logicIndex] = !this.showRemoveandlogicArray[questionIndex][logicIndex];
 
     if (this.showRemoveandlogicArray[questionIndex][logicIndex]) {
@@ -1908,12 +1971,12 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
 
       const selectedOptionsArray = this.selectedOptions[questionIndex][logicIndex];
       const selectedOptionsString = selectedOptionsArray.map((option: { id: any; }) => option.id).join(', ');
-      console.log("selectedOptionsString:", selectedOptionsString);
+
       this.logicEntriesPerQuestion[questionIndex][logicIndex].ifExpectedAndOr = selectedOptionsString;
     }
   }
   addOptionAndOr(event: MatChipInputEvent, questionIndex: number, logicIndex: number): void {
-    console.log("selectedOptions Length", this.selectedOptions.length)
+
     const input = event.input;
     const values = event.value.trim();
 
@@ -1947,9 +2010,8 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
 
     this.surveyservice.getLogicCount(this.surveyId).subscribe({
       next: (resp: any) => {
-        console.log("logic count", resp)
+
         this.logiccount = resp
-        console.log("check count", this.logiccount)
       },
       error: (err: any) => {
       }
@@ -2041,9 +2103,7 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
 
     this.surveyservice.uploadAddScreenVideoQuestion(file, 0).subscribe(
       (response: String) => {
-        console.log('Upload successful:', response);
         this.screenvideo = response
-        console.log("video uploaded", this.screenvideo)
       },
       (error) => {
         console.error('Error occurred while uploading:', error);

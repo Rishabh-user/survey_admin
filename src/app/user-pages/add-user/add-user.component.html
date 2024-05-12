@@ -9,19 +9,7 @@
         <div>
             <form>
                 <div class="row">
-                    <!-- <div class="mb-4">
 
-                        <ngx-dropzone class="upload-user-pic" ngx-dropzone [accept]="'image/*'"
-                            (change)="onSelect($event)">
-                            <ngx-dropzone-label>
-                                <img [src]="baseUrl+'/assets/images/icons/attach-image.png'" />
-                            </ngx-dropzone-label>
-                            <ngx-dropzone-image-preview ngProjectAs="ngx-dropzone-preview" *ngFor="let f of files"
-                                [file]="f" [removable]="true" (removed)="onRemove(f)">
-
-                            </ngx-dropzone-image-preview>
-                        </ngx-dropzone>
-                    </div> -->
                     <div class="col-md-6 mb-3">
                         <label for="">First Name</label>
                         <input type="text" name="firstName" id="" class="form-control" [(ngModel)]="firstName"
@@ -51,7 +39,6 @@
                             <ng-container *ngIf="contactNo && !phoneLengthError">Phone Number cannot exceed 10
                                 digits.</ng-container>
                         </div>
-                        <!-- <div *ngIf="!phone" class="text-danger">Contact is required.</div> -->
                     </div>
                 </div>
                 <div class="row">

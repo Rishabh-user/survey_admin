@@ -1,8 +1,6 @@
-import { Component } from '@angular/core';
-//import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { ChangeDetectorRef, Component } from '@angular/core';
 import { NgModule } from '@angular/core';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { DataService } from 'src/app/service/data.service';
+
 import { SurveyService } from 'src/app/service/survey.service';
 import { environment } from 'src/environments/environment';
 
@@ -12,29 +10,60 @@ import { environment } from 'src/environments/environment';
   styleUrls: ['./reports.component.css']
 })
 export class ReportsComponent {
-  // Tooltip
+
   showTooltip: { [key: string]: boolean } = {};
   userId: any;
+  pageSize: number = 10;
+  pageNumber: number = 1
+  currentPage: number = 1;
+  totalItemsCount: number = 10
+  reportSurvey: any;
+  surveyId: any;
+
   toggleTooltip(identifier: string) {
     this.showTooltip[identifier] = !this.showTooltip[identifier];
   }
   hideTooltip(identifier: string) {
-      this.showTooltip[identifier] = false;
+    this.showTooltip[identifier] = false;
   }
-// Tooltip
+  // Tooltip
 
   baseUrl = '';
-  constructor(private visibilityService: DataService, private modalService: NgbModal, public themeService: SurveyService) {
+  constructor(public themeService: SurveyService, private cdr: ChangeDetectorRef,) {
     this.baseUrl = environment.baseURL;
+
   }
   ngOnInit(): void {
-    this.getSurveyReportBySurveyId();
+    this.getSurveyReportBySurvey(this.pageNumber, this.pageSize);
   }
-  getSurveyReportBySurveyId() {
-    this.themeService.getSurveyReportBySurveyId(this.userId).subscribe((data: any) => {
-      console.log("reports", data)
+
+  getSurveyReportBySurvey(pageNumber: number, pageSize: number) {
+    this.themeService.getSurveyReportBySurvey(pageNumber, pageSize).subscribe((data: any) => {
+
+      this.reportSurvey = data.surveyType;
+      this.totalItemsCount = data.totalCount;
+
+      this.cdr.detectChanges();
     });
   }
+  onPageChange(pageNumber: number) {
 
+    this.pageNumber = pageNumber;
+    this.getSurveyReportBySurvey(this.pageNumber, this.pageSize)
+    this.currentPage = this.pageNumber
+  }
 
+  onPageSizeChange() {
+    this.currentPage = 1; // Reset to first page when page size changes
+    this.getSurveyReportBySurvey(this.currentPage, this.pageSize);
+  }
+
+  jumpToPage() {
+    if (this.currentPage > 0 && this.currentPage <= Math.ceil(this.totalItemsCount / this.pageSize)) {
+      this.getSurveyReportBySurvey(this.currentPage, this.pageSize);
+    }
+  }
+  refresh() {
+    this.getSurveyReportBySurvey(this.pageSize, 1);
+  }
 }

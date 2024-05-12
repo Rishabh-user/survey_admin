@@ -126,16 +126,6 @@
                                     </span>
                                 </a>
                             </li>
-                            <!-- <li class="block pl-4 pr-1 first:pt-4  last:pb-4" *ngIf="this.isSuperAdmin">
-                                <a class="" routerLink="#">
-                                    <span class="d-flex align-items-center text-sm transition-all duration-150">
-                                        <span class="menu-icon">
-                                            <ng-icon name="heroStopCircle"></ng-icon>
-                                        </span>
-                                        <span class="flex-1">Create Role</span>
-                                    </span>
-                                </a>
-                            </li> -->
                         </ul>
                     </div>
                 </div>
@@ -173,15 +163,6 @@
                     </div>
                 </div>
             </li>
-
-            <!-- <li class="single-sidebar-menu" routerLinkActive="menu-item-active">
-                <a class="menu-link" routerLink="/pages/expert-aid">
-                    <span class="menu-icon flex-grow-0">
-                        <ng-icon name="heroUser"></ng-icon>
-                    </span>
-                    <div class="text-box flex-grow-1">Expert Aid</div>
-                </a>
-            </li> -->
             <li class="single-sidebar-menu item-has-children" routerLinkActive="menu-item-active"
                 *ngIf="!this.isvendor">
                 <div class="menu-link collapsed" (click)="toggleSubMenu(4)" routerLinkActive="active">
@@ -247,14 +228,6 @@
                     <div class="text-box flex-grow-1">About Us</div>
                 </a>
             </li>
-            <!-- <li class="single-sidebar-menu" routerLinkActive="menu-item-active" *ngIf="!this.isUser">
-                <a class="menu-link" routerLink="#">
-                    <span class="menu-icon flex-grow-0">
-                        <ng-icon name="heroQuestionMarkCircle"></ng-icon>
-                    </span>
-                    <div class="text-box flex-grow-1">FAQ's</div>
-                </a>
-            </li> -->
             <li class="single-sidebar-menu" routerLinkActive="menu-item-active" *ngIf="!this.isUser && !this.isvendor">
                 <a class="menu-link" routerLink="/pages/terms-condition">
                     <span class="menu-icon flex-grow-0">
@@ -291,14 +264,7 @@
                 </a>
             </li>
         </ul>
-        <div class="support">
-            <div>
-                <img loading="lazy" src="../../../assets/images/support.png" class="img-fluid" alt="" width="100"
-                    height="100">
-            </div>
-            <p>For any query feel free to contact us.</p>
-            <a routerLink="/support" class="btn btn-primary w-100 btn-sm">Support</a>
-        </div>
+        <a class="btn btn-outline-primary btn-sm w-100 mt-4" routerLink="/support">Support</a>
     </div>
     <div class="sidebar-upgrade" *ngIf="!this.isvendor">
         <a class="btn btn-primary btn-sm w-100" routerLink="/payment">Upgrade</a>

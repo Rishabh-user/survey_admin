@@ -21,13 +21,13 @@ export class ExpertAidComponent {
     this.showTooltip[identifier] = !this.showTooltip[identifier];
   }
   hideTooltip(identifier: string) {
-      this.showTooltip[identifier] = false;
+    this.showTooltip[identifier] = false;
   }
 
   expertAid: ExpertAid = new ExpertAid();
   expertAidService: ExpertAidServices[] = [];
   validMessageLength: boolean;
-  constructor(private modalService: NgbModal, private surveyservice: SurveyService, private utillService: UtilsService, private router: Router,) { 
+  constructor(private modalService: NgbModal, private surveyservice: SurveyService, private utillService: UtilsService, private router: Router,) {
     this.baseUrl = environment.baseURL;
   }
 
@@ -38,9 +38,7 @@ export class ExpertAidComponent {
   }
 
   closeModal() {
-    // Check if the modal reference exists
     if (this.modalRef) {
-      // Close the modal using the reference
       this.modalRef.close();
     }
   }
@@ -50,7 +48,6 @@ export class ExpertAidComponent {
       this.selectedItems = this.selectedItems.filter(selectedItem => selectedItem !== item);
     } else {
       this.selectedItems.push(item);
-      console.log(this.selectedItems)
     }
   }
 
@@ -58,7 +55,6 @@ export class ExpertAidComponent {
     return this.selectedItems.includes(item);
   }
   selectedItems1(item: string): boolean {
-    console.log("selected one", this.selectedItems)
     return this.selectedItems.includes(item);
 
   }
@@ -81,15 +77,14 @@ export class ExpertAidComponent {
     const currentDateTime = new Date().toISOString();
     return currentDateTime.substring(0, currentDateTime.length - 1) + 'Z';
   }
-  selectable: boolean = true; // Define the selectable property
-  removable: boolean = true; // Define the removable property
+  selectable: boolean = true;
+  removable: boolean = true;
   toggleService(service: string) {
     const index = this.selectedItems.indexOf(service);
     if (index !== -1) {
-      this.selectedItems.splice(index, 1); // Remove item if already selected
+      this.selectedItems.splice(index, 1);
     } else {
       this.selectedItems.push(service);
-      console.log(this.selectedItems)
     }
   }
   name: string;
@@ -128,16 +123,12 @@ export class ExpertAidComponent {
     this.surveyservice.createExpertAid(this.expertAid).subscribe({
       next: (resp: any) => {
         this.utillService.showSuccess('ExpertAid Generated Sucessfully.');
-        // this.router.navigateByUrl('expert-aid-list');
         this.closeModal()
         let url = '/pages/expert-aid-list';
         this.router.navigateByUrl(url);
-        // Swal.fire('', 'ExpertAid Generated Sucessfully.', 'success');
-        // window.location.reload();
 
       },
       error: (err: any) => {
-        // Swal.fire('', err.error, 'error');
         this.utillService.showError('error');
       }
     });
@@ -151,8 +142,8 @@ export class ExpertAidComponent {
   enddate: boolean = true
   emailaddress: boolean = true
   phone: boolean = true
-  message: boolean = true // Initialize comments
-  messageRequired: boolean = false; // Initialize messageRequired
+  message: boolean = true
+  messageRequired: boolean = false;
   messageLimitExceeded: boolean = false;
   isValidName: boolean = true;
   touched: boolean = false;
@@ -202,7 +193,6 @@ export class ExpertAidComponent {
   }
 
   countWords(text: string): number {
-    // Split the text by spaces and count the number of words
     return text.trim().split(/\s+/).length;
   }
 

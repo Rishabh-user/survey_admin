@@ -33,32 +33,7 @@ export class SidebarComponent {
     private auth: AuthService, private util: UtilsService) {
 
 
-    /*auth.userData.subscribe((user: User) => {
-      debugger
-      //if (user) {
-      let role = localStorage.getItem("role");
-      switch (role) {
-        case 'client': {
-          this.isClient = true;
-          break;
-        }
-        case 'superadmin': {
-          this.isSuperAdmin = true;
-          break;
-        }
-        case 'admin': {
-          this.isAdmin = true;
-          break;
-        }
-        default: {
-          this.isUser = true;
-          break;
-        }
-      }
-      this.role = user.role;
-      this.userId = user.userId;
-      //}
-    });*/
+
   }
   ngOnInit() {
     this.role = this.util.getRole();
@@ -66,7 +41,6 @@ export class SidebarComponent {
     if (this.role) {
       this.role = this.role.toLowerCase();
     }
-    console.log("SideBar Role", this.role)
     if (this.role == 'client')
       this.isClient = true;
     else if (this.role == 'superadmin')

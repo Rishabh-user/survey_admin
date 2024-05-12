@@ -17,71 +17,27 @@
                             <option value="5">Loop</option>
                         </select>
                     </div>
-                    <a href="#" class="btn btn-primary ms-2">Download CSV <ng-icon class="ms-3"
-                            name="heroArrowLongRight"></ng-icon></a>
+                    <a href="javascript:" class="btn btn-primary ms-2" (click)="generateCSV()">Download CSV <ng-icon
+                            class="ms-3" name="heroArrowLongRight"></ng-icon></a>
                 </div>
             </div>
         </div>
 
         <div class="Report-question-list">
             <ol>
-                <li>
-                    <figcaption>
-                        <div class="">
-                            <h4>Q1. Which city do you currently live in?</h4>
-                            <!-- <select class="form-select" (change)="onChartTypeChange($event)">
-                                <option selected>Select Graph Type</option>
-                                <option value="line">Line Chart</option>
-                                <option value="bar">Bar Chart</option>
-                                <option value="doughnut">Doughnut Chart</option>
-                                <option value="radar">Radar</option>
-                            </select> -->
-                        </div>
-                    </figcaption>
-                    <figure>
-                        <div class="graph-gap">
-                            <canvas id="canvas1">{{charts[0]}}</canvas>
-                        </div>
-                    </figure>
-                    <!-- <figure>
-                        <div class="graph-gap">
-                            <canvas id="canvas">{{charts[0]}}</canvas>
-                        </div>
-                    </figure> -->
+                <li *ngFor="let item of surveyReportById; let i = index">
+                  <figcaption>
+                    <div class="">
+                      <h4>Q.{{ i + 1 }} {{item.question}}</h4>
+                    </div>
+                  </figcaption>
+                  <figure>
+                    <div class="graph-gap">
+                      <canvas id="canvas{{i + 1}}"></canvas>
+                    </div>
+                  </figure>
                 </li>
-                <li>
-                    <figcaption>
-                        <h4>Q2. Please select your gender</h4>
-                        <div class="">                            
-                            <!-- my-charts.component.html -->
-                            <div *ngFor="let canvasId of ['canvas', 'canvas1'];let i=index;">
-                                <div>
-                                    <label for="{{canvasId}}-chartType">Select Chart Type:</label>
-                                    <select class="form-select w-100" id="{{canvasId}}-chartType" (change)="onChartTypeChange($event, canvasId)">
-                                        <option selected>Select Graph Type</option>
-                                        <option value="line">Line Chart</option>
-                                        <option value="bar">Bar Chart</option>
-                                        <option value="doughnut">Doughnut Chart</option>
-                                        <option value="radar">Radar</option>
-                                    </select>
-                                </div>
-                                <figure>
-                                    <div class="graph-gap">
-                                        <canvas id="canvas1">{{charts[0]}}</canvas>
-                                    </div>
-                                </figure>
-
-                            </div>
-
-                        </div>
-                    </figcaption>
-                    <figure>
-                        <div class="graph-gap">
-
-                        </div>
-                    </figure>
-                </li>
-            </ol>
+              </ol>
         </div>
 
     </div>

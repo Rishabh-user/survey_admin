@@ -21,25 +21,12 @@ export class AuthService {
 
   }
 
-  /*login(userDetails: any) {
-    return this.http.post(`${this.apiUrl}Login`, userDetails, { responseType: 'text' }).pipe(
-      map((response) => {
-        //debugger;
-        if (response) {
-          localStorage.setItem('authToken', response);
-          this.setUserDetails();
-        }
-        return response;
-      })
-    );
-  }*/
+
   handleError(error: HttpErrorResponse): Observable<never> {
     let errorMessage = 'An error occurred';
     if (error.error instanceof ErrorEvent) {
-      // Client-side error
       errorMessage = `Error: ${error.error.message}`;
     } else {
-      // Server-side error
       errorMessage = `Error Code: ${error.status}\nMessage: ${error.message}`;
     }
     console.error(errorMessage);
@@ -52,7 +39,6 @@ export class AuthService {
       .set('captchertoken', userDetails.captchertoken);
     return this.http.post(`${this.apiUrl}Login?${params.toString()}`, userDetails, { responseType: 'text' }).pipe(
       map((response) => {
-        // debugger;
         if (response) {
           localStorage.setItem('authToken', response);
           this.setUserDetails();
@@ -64,7 +50,6 @@ export class AuthService {
 
 
   setUserDetails() {
-    // debugger;
     this.userData.next(null);
     if (localStorage.getItem('authToken')) {
       const userDetails = new User();
@@ -85,8 +70,6 @@ export class AuthService {
         userDetails.CenterName = _userDetail?.CenterName;
 
         this.userData.next(userDetails);
-        console.log("userid", userDetails.userId)
-        console.log("CenterName", userDetails.CenterName)
       } else {
         this.logout();
       }
@@ -122,7 +105,6 @@ export class AuthService {
         if (response.charAt(0) === '"' && response.charAt(response.length - 1) === '"') {
           response = response.slice(1, -1);
         }
-        //debugger;
         if (response) {
           localStorage.setItem('authToken', response);
           this.setUserDetails();

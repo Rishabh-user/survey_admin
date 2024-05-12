@@ -12,7 +12,6 @@ import { environment } from 'src/environments/environment';
   styleUrls: ['./terms-condition.component.css']
 })
 export class TermsConditionComponent {
-  // Tooltip
   showTooltip: { [key: string]: boolean } = {};
   toggleTooltip(identifier: string) {
     this.showTooltip[identifier] = !this.showTooltip[identifier];
@@ -20,7 +19,6 @@ export class TermsConditionComponent {
   hideTooltip(identifier: string) {
     this.showTooltip[identifier] = false;
   }
-  // Tooltip
   public Editor = ClassicEditor;
   constructor(public themeService: DataService, private cdr: ChangeDetectorRef, private util: UtilsService) {
     this.baseUrl = environment.baseURL;
@@ -33,8 +31,8 @@ export class TermsConditionComponent {
   centerId: any;
   baseUrl = '';
 
-  onRemove(event: any) { // Use 'any' as the event type
-    console.log(event);
+  onRemove(event: any) {
+
     this.files.splice(this.files.indexOf(event), 1);
   }
 
@@ -48,7 +46,7 @@ export class TermsConditionComponent {
   getTermsConditions() {
     this.userId = this.util.getUserId()
     this.themeService.GetTermsConditions(this.userId).subscribe((data: any) => {
-      console.log("data", data)
+
       this.name = data.name;
       this.id = data.id
       this.description = data.description
@@ -66,17 +64,14 @@ export class TermsConditionComponent {
     if (file) {
       this.files.push(file);
       this.uploadImage(file);
-      console.log("uploaded", this.uploadImage(file));
     }
   }
 
   uploadImage(file: File): void {
     this.themeService.uploadImageAboutUs(file, this.userId).subscribe(
       (response: string) => {
-        console.log('Upload successful:', response);
         this.image = response.replace(/"/g, '');
-        this.imageUpdated = true; // Set to true since the image has been updated
-        console.log(this.image);
+        this.imageUpdated = true;
       },
       (error) => {
         console.error('Error occurred while uploading:', error);
@@ -93,7 +88,6 @@ export class TermsConditionComponent {
 
     let imageName = '';
 
-    // Check if image is updated or not
     if (this.imageUpdated) {
       imageName = this.image.split('\\').pop() || this.image;
     }
@@ -109,11 +103,11 @@ export class TermsConditionComponent {
       centerId: this.centerId
     };
 
-    console.log("dataToSend", dataToSend);
+
 
     this.themeService.CreateTermsConditions(dataToSend).subscribe(
       response => {
-        console.log('Response from server:', response);
+
         this.util.showSuccess(response);
         window.location.reload();
       },
@@ -132,7 +126,6 @@ export class TermsConditionComponent {
     this.title = !!this.name && this.name.trim().length > 0;
     this.descriptioninfo = !!this.description && this.description.trim().length > 0;
 
-    // You might want to return whether all fields are valid
     return (
       this.title &&
       this.descriptioninfo

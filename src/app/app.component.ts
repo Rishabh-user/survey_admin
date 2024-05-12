@@ -44,7 +44,7 @@ export class AppComponent {
     this._modalService.openModal$.subscribe(open => {
 
       this.modalOpened = open;
-      if(this.modalOpened){
+      if (this.modalOpened) {
         this.openModalOnLoad();
       }
     });
@@ -62,17 +62,10 @@ export class AppComponent {
   @ViewChild('content') modalContent: any;
   modalOpened = false;
 
-  //Open modal on window load
-  // ngAfterViewInit() {
-  //   if (!this.modalOpened) { 
-  //     this.openModalOnLoad();
-  //     this.modalOpened = true; 
-  //   }
-  // }
-  openModalOnLoad() {    
+  openModalOnLoad() {
     this.modalService.open(this.modalContent, { size: 'lg' });
   }
-  // Open modal on window load
+
 
 
 }
