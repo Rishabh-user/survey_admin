@@ -638,6 +638,7 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
       surveyId: this.surveyId,
       questionId: questionId
     };
+    if(parseInt(questionId)>0){
     this.surveyservice.getLogicQuestionList(dataToSend).subscribe(
       (response: LogicQuestion[]) => {
         this.logicQuestionList = response;
@@ -650,7 +651,7 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
     this.surveyservice.GetQuestionListBySurveyId(this.surveyId).subscribe((response: responseDTO[]) => {
       this.logicQuestionListById = response;
     });
-
+  }
   }
 
   onSelectChange(event: MatSelectChange, questionSortValue: any, questionId: number) {
@@ -1924,10 +1925,9 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
     }
     this.surveyservice.getOptionsByQuestionId(queryParams).subscribe((response: { [x: string]: any; }) => {
       var result = Object.keys(response).map(e => response[e]);
-
-
+      console.log(response)
       this.optionListByQuestionIdLogic = response
-
+      console.log(this.optionListByQuestionIdLogic)
       this.optionListByQuestionIdLogic = JSON.parse(this.optionListByQuestionIdLogic)
     });
   }
