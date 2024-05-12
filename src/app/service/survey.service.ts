@@ -373,6 +373,13 @@ export class SurveyService {
     return this.http.post(url, data, { responseType: 'text' });
   }
 
+  deleteQuota(quotaId: any): Observable<any> {
+
+    const url = `${this.apiUrl}api/admin/${this.userId}/Quota/DeleteQuota?quotaId=${quotaId}`;
+    
+    return this.http.delete(url);
+  }
+
 
 
   getQuotaBySurveyId(surveyId: any): Observable<responseDTO[]> {

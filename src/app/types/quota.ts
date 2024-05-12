@@ -34,7 +34,7 @@ export class QuotaData {
       this.type = '';
       this.isInterlock = false;
       this.isOpenEnded = false;
-      this.optionsDto = [new OptionDto()];
+      this.optionsDto = [];
     }
   }
   

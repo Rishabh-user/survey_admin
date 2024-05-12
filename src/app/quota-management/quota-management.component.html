@@ -37,7 +37,8 @@
                 <p class="mb-0">Quota Operation</p>
             </div>
             <div class="col-md-6 text-end">
-                <button type="button" class="btn btn-primary">Refresh Quota</button>
+                <button type="button" (click)="getQuotaBySurveyId()" class="btn btn-primary">Refresh Quota</button>
+                <button type="button" (click)="onDeleteQuota()" class="ms-2 btn btn-danger">Delete Quota</button>
             </div>
         </div>
     </div>
@@ -66,7 +67,7 @@
             interlock quotas click new interlocked quota below.</p>
 
         <div>
-            {{surveyQuotaJson | json}}
+            <!-- {{surveyQuotaJson | json}} -->
 
             <div *ngFor="let question of surveyQuotaJson?.questionDto; let i = index" class="add-quota">
                 <label class="form-label">Select Question </label>
@@ -76,8 +77,8 @@
                     <option *ngFor="let ques of questionList.questions" [value]="ques.id">{{ ques.question }}</option>
                 </select> -->
                 <mat-form-field>
-                    <mat-select [(ngModel)]="question.questionId" (ngModelChange)="showQuestionQuotas(i);"
-                        #selectElement>
+                    <mat-select [(ngModel)]="question.questionId"
+                        (ngModelChange)="showQuestionQptions(i,question.questionId);" #selectElement>
                         <mat-option [disabled]="true" [value]="0"> Select Question</mat-option>
                         <mat-option *ngFor="let ques of questionList.questions" [value]="ques.id">
                             {{ ques.question }}
@@ -88,6 +89,7 @@
                 <!-- <div class="quotas" *ngIf="question.showQuotasDiv"> -->
                 <div class="quotas" *ngIf="question.questionId != 0">
                     <h5>Add Distribution</h5>
+                    <button type="button" class="btn btn-outline-primary " (click)="onDeleteQuestion(i)">Delete</button>
                     <div class="add-distribution">
                         <div class="question-type">
                             <h6><span>{{getQuestionDetail(question.questionId,
@@ -123,6 +125,7 @@
                             <div class="total-count">
                                 <button type="button" class="btn btn-outline-primary "
                                     (click)="open(contentInterlock)"><ng-icon name="heroLink"></ng-icon></button>
+
                                 <div class="mt-4 d-flex gap-3 align-items-center">
                                     <p class="mb-0"><strong>Total : </strong> <span>
                                             {{getTotalSum(question?.optionsDto)}}</span></p>
