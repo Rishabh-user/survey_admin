@@ -194,26 +194,19 @@ export class ViewComponent {
   }
   // Function to generate CSV data
   generateCSV(): void {
-    // Convert survey report data to CSV format
     const csvContent = this.convertToCSV(this.surveyReportById);
     this.downloadCSV(csvContent, 'survey_report.csv');
   }
-
-  // Function to convert data to CSV format
-  convertToCSV(data: any[]): string {
-    // Define the header fields
+  convertToCSV(data: any[]): string {   
     const headerFields = ['Survey ID', 'Survey Name', 'Question ID', 'Question', 'Option ID', 'Answer', 'Rating ID', 'Survey Attempt ID', 'Count'];
 
-    // Create the CSV content with the header row
     let csvContent = headerFields.join(',') + '\n';
-
-    // Iterate over the data and format each row
     data.forEach(item => {
       const formattedRow = [
         item.surveyId,
-        `"${item.surveyName}"`, // Wrap in double quotes to handle commas in data
+        `"${item.surveyName}"`, 
         item.questionId,
-        `"${item.question}"`, // Wrap in double quotes to handle commas in data
+        `"${item.question}"`, 
         item.optionId,
         item.answer,
         item.ratingId,

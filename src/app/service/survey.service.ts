@@ -409,4 +409,24 @@ export class SurveyService {
     return this.http.get<responseDTO[]>(url);
   }
 
+  generateCsv(csvContent: string, filename: string): void {
+    const blob = new Blob([csvContent], { type: 'text/csv' });
+    if ((navigator as any).msSaveBlob) {
+      // For IE 10+
+      (navigator as any).msSaveBlob(blob, filename);
+    } else {
+      const link = document.createElement('a');
+      if (link.download !== undefined) {
+        // For other browsers that support the HTML5 download attribute
+        const url = URL.createObjectURL(blob);
+        link.setAttribute('href', url);
+        link.setAttribute('download', filename);
+        link.style.visibility = 'hidden';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      }
+    }
+  }
+
 }
