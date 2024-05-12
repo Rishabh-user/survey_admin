@@ -36,6 +36,12 @@ export class DashboardComponent {
   reportSurvey: any;
   surveyReportData: any;
   chart: Chart;
+  delData: number[];
+  holData: number[];
+  actData: number[];
+  isMonthSelected: boolean;
+  uniqueDates: any[];
+  uniqueMonths: string[];
 
   constructor(private visibilityService: DataService, private modalService: NgbModal, public themeService: DataService,
     public surveyservice: SurveyService, private auth: AuthService, private utility: UtilsService, private crypto: CryptoService, private router: Router,
@@ -229,12 +235,11 @@ export class DashboardComponent {
     }
 
     const months: string[] = [
-      '0', 'March', 'April', 'May', 'June',
-      'July', 'August', 'September', 'October', 'November', 'December', 'January', 'February'
+      '0','January', 'February', 'March', 'April', 'May', 'June',
+      'July', 'August', 'September', 'October', 'November', 'December',
     ];
     const isMonthSelected = this.selectedMonth !== 'All';
-    //const uniqueMonths: string[] = Array.from(new Set(this.surveyReportData.map(item => months[item.month - 1])));
-    const uniqueMonths: string[] = [...new Set(months)];
+   const uniqueMonths: string[] = [...new Set(months)];
     const uniqueDates = isMonthSelected
       ? Array.from(new Set(this.surveyReportData.map(item => item.date)))
       : Array.from(new Set(this.surveyReportData.map(item => item.date.split('-')[0])));
@@ -323,10 +328,49 @@ export class DashboardComponent {
         }
       }
     });
+    
+    // const csvContent = this.convertChartDataToCSV(delData, holData, actData, isMonthSelected, uniqueDates, uniqueMonths);
+    // this.downloadCSV(csvContent, 'chart_data.csv');
+    this.delData = delData;
+    this.holData = holData;
+    this.actData = actData;
+    this.isMonthSelected = isMonthSelected;
+    this.uniqueDates = uniqueDates;
+    this.uniqueMonths = uniqueMonths;
   }
   onYearChange(): void {
     this.getReportForSelectedYear();
   }
+  // Download Graph
+  csvContent: string = '';
+  downloadChartData(): void {
+    const csvContent = this.convertChartDataToCSV(this.delData, this.holData, this.actData, this.isMonthSelected, this.uniqueDates, this.uniqueMonths);
+    this.downloadCSV(csvContent, 'Survey_Graph.csv');
+}
+  convertChartDataToCSV(delData: number[], holData: number[], actData: number[], isMonthSelected: boolean, uniqueDates: string[], uniqueMonths: string[]): string {
+    const headerFields = ['Month/Date', 'Inactive', 'Hold', 'Active'];
+    let csvContent = headerFields.join(',') + '\n';
+
+    const data = isMonthSelected ? uniqueDates : uniqueMonths;
+    const totalRows = data.length;
+
+    for (let i = 0; i < totalRows; i++) {
+        const row = [
+            `"${data[i]}"`,
+            delData[i] || 0,
+            holData[i] || 0,
+            actData[i] || 0
+        ].join(',');
+
+        csvContent += row + '\n';
+    }
+
+    return csvContent;
+  }
+  downloadCSV(csvContent: string, filename: string): void {
+    this.csvService.generateCsv(csvContent, filename);
+  }
+  //Download Graph
 
 
   categoryName: any = "";
