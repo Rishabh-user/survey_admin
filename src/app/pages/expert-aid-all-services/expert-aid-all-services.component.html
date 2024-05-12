@@ -74,6 +74,13 @@
                             </div>
                         </td>
                     </tr>
+                    <tr *ngIf="UserData == ''">
+                        <td colspan="9" rowspan="2">
+                            <div class="text-center h-100" style="
+                            height: 500px !important;
+                        ">There is no Expert-aid List now</div>
+                        </td>
+                    </tr>
                 </tbody>
             </table>
         </div>

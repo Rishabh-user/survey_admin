@@ -14,7 +14,7 @@ export class QuotaData {
       this.createdDate = new Date();
       this.centerId = 0;
       this.status = '';
-      this.questionDto = [new QuestionDto()];
+      this.questionDto = [];
     }
   }
   

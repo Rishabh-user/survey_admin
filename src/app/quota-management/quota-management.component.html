@@ -46,7 +46,7 @@
         <label class="form-label">Total Count</label>
         <div class="row g-3 mb-4">
             <div class="col-11">
-                <input type="number" class="form-control" name="surveycount" [(ngModel)]="surveycount"
+                <input type="number" class="form-control" name="surveycount" [(ngModel)]="surveyQuotaJson.totalUsers"
                     (blur)="showQuotas()">
                 <div *ngIf="showCountError" class="text-danger">Please enter a valid survey count.</div>
             </div>
@@ -59,7 +59,7 @@
         <button type="button" class="btn btn-primary" (click)="addQuota()">Add Quota</button>
     </div>
 </div>
-<div class="common-bg" [style.display]="isQuotasVisible ? 'block' : 'none'">
+<div class="common-bg" *ngIf="surveyQuotaJson.questionDto.length>0">
     <div class="quota-management">
         <h4>Quotas </h4>
         <p>Quotas help you split the completes into group of specific age, gender, regions and/or profiling. To
@@ -126,7 +126,7 @@
                                 <div class="mt-4 d-flex gap-3 align-items-center">
                                     <p class="mb-0"><strong>Total : </strong> <span>
                                             {{getTotalSum(question?.optionsDto)}}</span></p>
-                                    <button type="button" class="btn btn-primary " (click)="saveQuota(i)">Save</button>
+                                    <button type="button" class="btn btn-primary " (click)="manageQuota()">Save</button>
                                     <!-- <button type="button" class="btn btn-success" (click)="updateQuota(i)">Update</button> -->
                                 </div>
                             </div>
@@ -140,6 +140,7 @@
 
         <div class="mt-4">
             <button type="button" class="btn btn-primary" (click)="addQuota()">Add Quota</button>
+            <button type="button" class="btn btn-primary ms-3 float-end" (click)="manageQuota()">Save</button>
         </div>
     </div>
 </div>

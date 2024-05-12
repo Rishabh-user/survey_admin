@@ -365,6 +365,16 @@ export class SurveyService {
     return this.http.post(url, data, { responseType: 'text' });
   }
 
+  manageQuota(data: any, isEdit: boolean): Observable<any> {
+
+    const action = (isEdit) ? 'UpdateQuota' : 'CreateQuota';
+    const url = `${this.apiUrl}api/admin/${this.userId}/Quota/${action}`;
+    
+    return this.http.post(url, data, { responseType: 'text' });
+  }
+
+
+
   getQuotaBySurveyId(surveyId: any): Observable<responseDTO[]> {
     const url = `${this.apiUrl}api/admin/${this.userId}/Quota/GetQuotaBySurveyId?surveyId=${surveyId}`;
     return this.http.get<responseDTO[]>(url);
