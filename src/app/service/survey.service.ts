@@ -365,6 +365,23 @@ export class SurveyService {
     return this.http.post(url, data, { responseType: 'text' });
   }
 
+  manageQuota(data: any, isEdit: boolean): Observable<any> {
+
+    const action = (isEdit) ? 'UpdateQuota' : 'CreateQuota';
+    const url = `${this.apiUrl}api/admin/${this.userId}/Quota/${action}`;
+    
+    return this.http.post(url, data, { responseType: 'text' });
+  }
+
+  deleteQuota(quotaId: any): Observable<any> {
+
+    const url = `${this.apiUrl}api/admin/${this.userId}/Quota/DeleteQuota?quotaId=${quotaId}`;
+    
+    return this.http.delete(url);
+  }
+
+
+
   getQuotaBySurveyId(surveyId: any): Observable<responseDTO[]> {
     const url = `${this.apiUrl}api/admin/${this.userId}/Quota/GetQuotaBySurveyId?surveyId=${surveyId}`;
     return this.http.get<responseDTO[]>(url);
@@ -407,6 +424,26 @@ export class SurveyService {
       url += `&byMonth=${month}`;
     }
     return this.http.get<responseDTO[]>(url);
+  }
+
+  generateCsv(csvContent: string, filename: string): void {
+    const blob = new Blob([csvContent], { type: 'text/csv' });
+    if ((navigator as any).msSaveBlob) {
+      // For IE 10+
+      (navigator as any).msSaveBlob(blob, filename);
+    } else {
+      const link = document.createElement('a');
+      if (link.download !== undefined) {
+        // For other browsers that support the HTML5 download attribute
+        const url = URL.createObjectURL(blob);
+        link.setAttribute('href', url);
+        link.setAttribute('download', filename);
+        link.style.visibility = 'hidden';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      }
+    }
   }
 
 }

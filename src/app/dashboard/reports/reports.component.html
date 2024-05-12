@@ -5,15 +5,20 @@
                 <div class="infocircle justify-content-start">
                     <h4>Fetch And Manage Reports of Your Surveys Created with Scrip8</h4>
                     <div class="custom-tooltip ms-2">
-                        <ng-icon name="heroInformationCircle" ngClass="edit-action info-circle" (click)="toggleTooltip('1')"></ng-icon>
+                        <ng-icon name="heroInformationCircle" ngClass="edit-action info-circle"
+                            (click)="toggleTooltip('1')"></ng-icon>
                         <div class="toast show" *ngIf="showTooltip['1']">
                             <div class="toast-header">
-                                <img [src]="baseUrl + '/assets/images/icons/Add-new-question.png'" class="rounded me-2" width="30" height="30" />
+                                <img [src]="baseUrl + '/assets/images/icons/Add-new-question.png'" class="rounded me-2"
+                                    width="30" height="30" />
                                 <h6 class="mb-0 me-auto">Reports Listing (Custom Report Download)</h6>
-                                <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close" (click)="hideTooltip('1')"></button>
+                                <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"
+                                    (click)="hideTooltip('1')"></button>
                             </div>
                             <div class="toast-body">
-                                Download a custom report now and take control of your data! Select a visually appealing format or specify a question to get the insights you need. Don't wait any longer to make informed decisions. Act now!
+                                Download a custom report now and take control of your data! Select a visually appealing
+                                format or specify a question to get the insights you need. Don't wait any longer to make
+                                informed decisions. Act now!
                             </div>
                         </div>
                     </div>
@@ -36,14 +41,15 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr *ngFor="let item of reportSurvey | paginate: { id: 'server', itemsPerPage: pageSize, currentPage: pageNumber, totalItems: totalItemsCount } ; let i = index">                        
+                    <tr
+                        *ngFor="let item of reportSurvey | paginate: { id: 'server', itemsPerPage: pageSize, currentPage: pageNumber, totalItems: totalItemsCount } ; let i = index">
                         <td>{{ (pageNumber - 1) * pageSize + i + 1 }}</td>
                         <td>{{item.name}}</td>
                         <td>{{item.surveyId}}</td>
                         <td *ngIf="item.categoryName !='Others'">{{item.categoryName}}</td>
                         <td *ngIf="item.categoryName =='Others'">{{item.otherCategory}}</td>
                         <td>
-                            
+
                             <div class="d-flex align-items-center">
                                 <ng-container
                                     *ngIf="item.userImage !== 'https://beta.angular.opinionest.com/Files/Images/'">
@@ -71,13 +77,18 @@
                         <td [ngClass]="{'status done': item.status === 'ACT', 'status paused': item.status !== 'ACT'}">
                             <span>{{ item.status === 'ACT' ? 'Ongoing' : 'Pause' }}</span>
                         </td>
-                        
+
                         <td ngClass="action">
-                            <a href="javascript:" [routerLink]="'view/'+ (item.surveyId)" 
-                            
-                            >
+                            <a href="javascript:" [routerLink]="'view/'+ (item.surveyId)">
                                 <ng-icon name="heroPencil" ngClass="edit-action"></ng-icon>
                             </a>
+                        </td>
+                    </tr>
+                    <tr *ngIf="reportSurvey == ''">
+                        <td colspan="9" rowspan="2">
+                            <div class="text-center h-100" style="
+                            height: 500px !important;
+                        ">There is no Report available now</div>
                         </td>
                     </tr>
                 </tbody>

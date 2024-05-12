@@ -37,7 +37,8 @@
                 <p class="mb-0">Quota Operation</p>
             </div>
             <div class="col-md-6 text-end">
-                <button type="button" class="btn btn-primary">Refresh Quota</button>
+                <button type="button" (click)="getQuotaBySurveyId()" class="btn btn-primary">Refresh Quota</button>
+                <button type="button" (click)="onDeleteQuota()" class="ms-2 btn btn-danger">Delete Quota</button>
             </div>
         </div>
     </div>
@@ -46,7 +47,7 @@
         <label class="form-label">Total Count</label>
         <div class="row g-3 mb-4">
             <div class="col-11">
-                <input type="number" class="form-control" name="surveycount" [(ngModel)]="surveycount"
+                <input type="number" class="form-control" name="surveycount" [(ngModel)]="surveyQuotaJson.totalUsers"
                     (blur)="showQuotas()">
                 <div *ngIf="showCountError" class="text-danger">Please enter a valid survey count.</div>
             </div>
@@ -59,14 +60,14 @@
         <button type="button" class="btn btn-primary" (click)="addQuota()">Add Quota</button>
     </div>
 </div>
-<div class="common-bg" [style.display]="isQuotasVisible ? 'block' : 'none'">
+<div class="common-bg" *ngIf="surveyQuotaJson.questionDto.length>0">
     <div class="quota-management">
         <h4>Quotas </h4>
         <p>Quotas help you split the completes into group of specific age, gender, regions and/or profiling. To
             interlock quotas click new interlocked quota below.</p>
 
         <div>
-            {{surveyQuotaJson | json}}
+            <!-- {{surveyQuotaJson | json}} -->
 
             <div *ngFor="let question of surveyQuotaJson?.questionDto; let i = index" class="add-quota">
                 <label class="form-label">Select Question </label>
@@ -76,8 +77,8 @@
                     <option *ngFor="let ques of questionList.questions" [value]="ques.id">{{ ques.question }}</option>
                 </select> -->
                 <mat-form-field>
-                    <mat-select [(ngModel)]="question.questionId" (ngModelChange)="showQuestionQuotas(i);"
-                        #selectElement>
+                    <mat-select [(ngModel)]="question.questionId"
+                        (ngModelChange)="showQuestionQptions(i,question.questionId);" #selectElement>
                         <mat-option [disabled]="true" [value]="0"> Select Question</mat-option>
                         <mat-option *ngFor="let ques of questionList.questions" [value]="ques.id">
                             {{ ques.question }}
@@ -88,6 +89,7 @@
                 <!-- <div class="quotas" *ngIf="question.showQuotasDiv"> -->
                 <div class="quotas" *ngIf="question.questionId != 0">
                     <h5>Add Distribution</h5>
+                    <button type="button" class="btn btn-outline-primary " (click)="onDeleteQuestion(i)">Delete</button>
                     <div class="add-distribution">
                         <div class="question-type">
                             <h6><span>{{getQuestionDetail(question.questionId,
@@ -123,10 +125,11 @@
                             <div class="total-count">
                                 <button type="button" class="btn btn-outline-primary "
                                     (click)="open(contentInterlock)"><ng-icon name="heroLink"></ng-icon></button>
+
                                 <div class="mt-4 d-flex gap-3 align-items-center">
                                     <p class="mb-0"><strong>Total : </strong> <span>
                                             {{getTotalSum(question?.optionsDto)}}</span></p>
-                                    <button type="button" class="btn btn-primary " (click)="saveQuota(i)">Save</button>
+                                    <button type="button" class="btn btn-primary " (click)="manageQuota()">Save</button>
                                     <!-- <button type="button" class="btn btn-success" (click)="updateQuota(i)">Update</button> -->
                                 </div>
                             </div>
@@ -140,6 +143,7 @@
 
         <div class="mt-4">
             <button type="button" class="btn btn-primary" (click)="addQuota()">Add Quota</button>
+            <button type="button" class="btn btn-primary ms-3 float-end" (click)="manageQuota()">Save</button>
         </div>
     </div>
 </div>

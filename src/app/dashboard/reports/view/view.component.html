@@ -1,44 +1,44 @@
 <div class="common-bg">
-    <div class="">
-        <div ngClass="row common-heading g-3">
-            <div class="col-md-6">
-                <h4>ED- Tech Brand Ranking</h4>
-                <span class="view-tags">Cosmetics, Personal Care, Toiletries</span>
-            </div>
-            <div class="col-md-6">
-                <div class="d-flex justify-content-end g-2">
-                    <div class="col input-group flex-nowrap">
-                        <select class="form-select">
-                            <option selected>Select Graph Type</option>
-                            <option value="1">Doughnut</option>
-                            <option value="2">Stacked bar/line</option>
-                            <option value="3">Point Styling</option>
-                            <option value="4">HTML Legend</option>
-                            <option value="5">Loop</option>
-                        </select>
-                    </div>
-                    <a href="javascript:" class="btn btn-primary ms-2" (click)="generateCSV()">Download CSV <ng-icon
-                            class="ms-3" name="heroArrowLongRight"></ng-icon></a>
-                </div>
-            </div>
+  <div class="">
+    <div ngClass="row common-heading g-3">
+      <div class="col-md-6">
+        <h4>ED- Tech Brand Ranking</h4>
+        <span class="view-tags">Cosmetics, Personal Care, Toiletries</span>
+      </div>
+      <div class="col-md-6">
+        <div class="d-flex justify-content-end g-2">
+          <div class="col input-group flex-nowrap">
+            <select class="form-select" (change)="graphType($event)">
+              <option selected>Select Graph Type</option>
+              <option value="1">Doughnut</option>
+              <option value="2">Stacked bar/line</option>
+              <option value="3">Point Styling</option>
+              <option value="4">HTML Legend</option>
+              <option value="5">Loop</option>
+            </select>
+          </div>
+          <a href="javascript:" class="btn btn-primary ms-2" (click)="generateCSV()">Download CSV <ng-icon class="ms-3"
+              name="heroArrowLongRight"></ng-icon></a>
         </div>
-
-        <div class="Report-question-list">
-            <ol>
-                <li *ngFor="let item of surveyReportById; let i = index">
-                  <figcaption>
-                    <div class="">
-                      <h4>Q.{{ i + 1 }} {{item.question}}</h4>
-                    </div>
-                  </figcaption>
-                  <figure>
-                    <div class="graph-gap">
-                      <canvas id="canvas{{i + 1}}"></canvas>
-                    </div>
-                  </figure>
-                </li>
-              </ol>
-        </div>
-
+      </div>
     </div>
+
+    <div class="Report-question-list">
+      <ol>
+        <li *ngFor="let item of surveyReportById; let i = index">
+          <figcaption>
+            <div class="">
+              <h4>Q.{{ i + 1 }} {{item.question}}</h4>
+            </div>
+          </figcaption>
+          <figure>
+            <div class="graph-gap">
+              <canvas id="canvas{{i + 1}}"></canvas>
+            </div>
+          </figure>
+        </li>
+      </ol>
+    </div>
+
+  </div>
 </div>

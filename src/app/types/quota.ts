@@ -14,7 +14,7 @@ export class QuotaData {
       this.createdDate = new Date();
       this.centerId = 0;
       this.status = '';
-      this.questionDto = [new QuestionDto()];
+      this.questionDto = [];
     }
   }
   
@@ -34,7 +34,7 @@ export class QuotaData {
       this.type = '';
       this.isInterlock = false;
       this.isOpenEnded = false;
-      this.optionsDto = [new OptionDto()];
+      this.optionsDto = [];
     }
   }
   
