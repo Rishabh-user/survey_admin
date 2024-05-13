@@ -71,25 +71,26 @@
             <div class="row align-items-center justify-content-between">
                 <div class="col-md-4">
                     <h4 class="mb-2">Sessions Overview</h4>
-                    <!-- <p>25/09/2023 - 25/10/2023</p> -->
                 </div>
                 <div class="col-md-8 text-end">
                     <div class="row">
                         <div class="col">
-                            <select class="form-select" [(ngModel)]="selectedYear"  (change)="getReportForSelectedYear()">
+                            <select class="form-select" [(ngModel)]="selectedYear"
+                                (change)="getReportForSelectedYear()">
                                 <option *ngFor="let year of years" [value]="year">{{year}}</option>
                             </select>
                         </div>
                         <div class="col">
-                            <select class="form-select" [(ngModel)]="selectedMonth" (change)="getReportForSelectedYear()">
+                            <select class="form-select" [(ngModel)]="selectedMonth"
+                                (change)="getReportForSelectedYear()">
                                 <option value="All">All</option>
                                 <option *ngFor="let month of months" [value]="month.value">{{month.name}}</option>
                             </select>
                         </div>
-                        
+
                         <div class="col">
-                            <a href="javascript:" class="btn btn-primary" (click)="downloadChartData()">Download CSV <ng-icon class="ms-3"
-                                name="heroArrowLongRight"></ng-icon></a>
+                            <a href="javascript:" class="btn btn-primary" (click)="downloadChartData()">Download CSV
+                                <ng-icon class="ms-3" name="heroArrowLongRight"></ng-icon></a>
                         </div>
                     </div>
                 </div>

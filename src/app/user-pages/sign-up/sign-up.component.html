@@ -6,7 +6,7 @@
             <div class="col-lg-6 col-md-12">
                 <div class="login-form h-100">
                     <div class="text-center">
-                        <img class="img-responsive" src="./assets/images/logo/logo.png" width="225" height="76"
+                        <img class="img-responsive" src="./assets/images/logo/logo.png" width="225" height="58"
                             priority>
                     </div>
                     <hr>
@@ -121,11 +121,11 @@
                                 <input type="checkbox" id="agree" formControlName="agree" name="agree" required>
                                 <label for="agree" class="ms-2">I agree to the<a class="ms-1"
                                         href="https://mobile.angular.opinionest.com/terms-of-service"
-                                        target="_blank">Terms&Conditions</a>
+                                        target="_blank">Terms & Conditions</a>
                                 </label><br>
                                 <div *ngIf="signupForm.get('agree')?.errors?.required && signupForm.get('agree')?.touched"
                                     class="text-danger" style="float: none;">
-                                    Agree to Terms&Condition
+                                    Agree to Terms & Condition
                                 </div>
                             </div>
                             <div class="">

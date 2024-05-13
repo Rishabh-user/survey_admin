@@ -418,10 +418,10 @@ article {
 /* Main-content */
 
 /* user-pages */
-.user-pages {
+/* .user-pages {
     height: calc(100% - 6rem);
     min-height: calc(100vh - 6rem);
-}
+} */
 
 .login-form {
     background-color: var(--white);
