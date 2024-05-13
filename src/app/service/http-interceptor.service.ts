@@ -29,7 +29,7 @@ export class HttpInterceptorService implements HttpInterceptor {
     return next.handle(request).pipe(
       catchError((err: HttpErrorResponse) => {
         if (err.status === 401 && !isLoginPage) {
-          alert("Session expired.");
+          //alert("Session expired.");
           this.authService.logout();
 
         } else if (err.status === 408) {

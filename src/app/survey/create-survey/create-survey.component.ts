@@ -647,11 +647,12 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
         console.error('Error fetching logic questions', error);
       }
     );
+  }
     this.logicQuestionListById = []; // Assuming logicQuestionListById is of type responseDTO[]
     this.surveyservice.GetQuestionListBySurveyId(this.surveyId).subscribe((response: responseDTO[]) => {
       this.logicQuestionListById = response;
     });
-  }
+  //}
   }
 
   onSelectChange(event: MatSelectChange, questionSortValue: any, questionId: number) {
