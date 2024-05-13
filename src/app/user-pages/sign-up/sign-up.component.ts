@@ -81,6 +81,8 @@ export class SignUpComponent {
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(8)]],
       confirmPassword: ['', Validators.required],
+      agree: ['', Validators.required],
+      privacy: ['', Validators.required],
     }, { validators: this.passwordMatchValidator });
     this.verificationForm = this.fb.group({
       email_otp: ['', Validators.required],
