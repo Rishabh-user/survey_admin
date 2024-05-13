@@ -120,7 +120,8 @@
                             <div class="">
                                 <input type="checkbox" id="agree" formControlName="agree" name="agree" required>
                                 <label for="agree" class="ms-2">I agree to the<a class="ms-1"
-                                        href="https://mobile.angular.opinionest.com/terms-of-service">Terms&Conditions</a>
+                                        href="https://mobile.angular.opinionest.com/terms-of-service"
+                                        target="_blank">Terms&Conditions</a>
                                 </label><br>
                                 <div *ngIf="signupForm.get('agree')?.errors?.required && signupForm.get('agree')?.touched"
                                     class="text-danger" style="float: none;">
@@ -130,7 +131,8 @@
                             <div class="">
                                 <input type="checkbox" id="privacy" formControlName="privacy" name="privacy" required>
                                 <label for="privacy" class="ms-2">I agree to<a class="ms-1"
-                                        href="https://mobile.angular.opinionest.com/privacy-policy">Privacy
+                                        href="https://mobile.angular.opinionest.com/privacy-policy"
+                                        target="_blank">Privacy
                                         Policy</a></label><br>
                                 <div *ngIf="signupForm.get('privacy')?.errors?.required && signupForm.get('privacy')?.touched"
                                     class="text-danger" style="float: none;">
