@@ -206,58 +206,65 @@ export class ViewComponent {
     this.updatechart(this.quesgraphtypevalue[ques], ques)
   }
 
-  updatechart(index: any, ques: number): void {
+  updatechart(chartindex: any, ques: number): void {
+    debugger
 
-    this.surveyReportById.forEach((ques, index) => {
-      const canvasId = `canvas${index + 1}`;
-      const canvas = document.getElementById(canvasId) as HTMLCanvasElement | null;
+    this.surveyReportById.forEach((question, index) => {
 
-      if (!canvas) {
-        console.error(`Canvas element with ID ${canvasId} not found.`);
-        return;
-      }
+      if (question.questionId == ques) {
 
-      const ctx = canvas.getContext('2d');
+        const canvasId = `canvas${chartindex}`;
+        const canvas = document.getElementById(canvasId) as HTMLCanvasElement | null;
+        console.log(chartindex);
+        if (!canvas) {
+          console.error(`Canvas element with ID ${canvasId} not found.`);
+          return;
+        }
 
-      if (!ctx) {
-        console.error(`Failed to get 2D context for canvas element with ID ${canvasId}.`);
-        return;
-      }
+        const ctx = canvas.getContext('2d');
 
+        if (!ctx) {
+          console.error(`Failed to get 2D context for canvas element with ID ${canvasId}.`);
+          return;
+        }
+        console.log("ques", ques)
+        console.log("this.surveyReportById[ques]", this.surveyReportById)
 
-      const datasets = ques.responsOptions
-        .filter(option => option.option !== null)
-        .map(option => ({
-          label: option.option,
-          data: [option.count],
-          backgroundColor: this.getRandomColor(),
+        const datasets = question.responsOptions
+          .filter(option => option.option !== null)
+          .map(option => ({
+            label: option.option,
+            data: [option.count],
+            backgroundColor: this.getRandomColor(),
 
-        }));
+          }));
 
+        debugger
 
-      new Chart(ctx, {
+        new Chart(ctx, {
 
-        type: 'doughnut',
-        data: {
-          labels: ques.responsOptions.map(option => option.option),
-          datasets: datasets
-        },
-        options: {
-          indexAxis: 'x',
-          scales: {
-            x: {
-              display: false, // Display the x-axis
-              title: {
-                display: true,
-                text: 'Question Options' // Add a title to the x-axis if needed
+          type: 'doughnut',
+          data: {
+            labels: question.responsOptions.map(option => option.option),
+            datasets: datasets
+          },
+          options: {
+            indexAxis: 'x',
+            scales: {
+              x: {
+                display: false, // Display the x-axis
+                title: {
+                  display: true,
+                  text: 'Question Options' // Add a title to the x-axis if needed
+                }
+              },
+              y: {
+                beginAtZero: true
               }
-            },
-            y: {
-              beginAtZero: true
             }
           }
-        }
-      });
+        });
+      }
 
     });
   }
