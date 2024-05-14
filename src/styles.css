@@ -211,23 +211,54 @@ li.single-sidebar-menu {
     z-index: 999;
     height: 100%;
 }
+
 .support {
     display: block;
     width: 100%;
     background: var(--primary);
-    border-radius: 1rem;padding: 1rem;text-align: center;margin: auto ;margin-top: 4rem;color: var(--white);
+    border-radius: 1rem;
+    padding: 1rem;
+    text-align: center;
+    margin: auto;
+    margin-top: 4rem;
+    color: var(--white);
 }
-.support .btn-primary{background-color: var(--white);border-color: var(--white);color: var(--primary);}
-.support>div{margin-top: -4rem;margin-bottom: 1rem;}
-.addwidth:not(.hoveraddwidth) .support>div{margin-top: -2rem;}
-.addwidth:not(.hoveraddwidth) .support>div img{width: 40px}
-.addwidth:not(.hoveraddwidth) .support {background: inherit;padding: initial;color: initial;}
+
+.support .btn-primary {
+    background-color: var(--white);
+    border-color: var(--white);
+    color: var(--primary);
+}
+
+.support>div {
+    margin-top: -4rem;
+    margin-bottom: 1rem;
+}
+
+.addwidth:not(.hoveraddwidth) .support>div {
+    margin-top: -2rem;
+}
+
+.addwidth:not(.hoveraddwidth) .support>div img {
+    width: 40px
+}
+
+.addwidth:not(.hoveraddwidth) .support {
+    background: inherit;
+    padding: initial;
+    color: initial;
+}
+
 .addwidth:not(.hoveraddwidth) .support .btn-primary {
     background-color: var(--primary);
     border-color: var(--primary);
     color: var(--white);
 }
-.addwidth:not(.hoveraddwidth) .support p{font-size: 0;}
+
+.addwidth:not(.hoveraddwidth) .support p {
+    font-size: 0;
+}
+
 .sidebar-upgrade {
     padding: 1rem;
     text-align: center;
@@ -1323,10 +1354,19 @@ span.mobile-cross {
     }
 }
 
-@media (max-width:1680px){
-    .login-form { padding: 2rem;}
-    .user-pages{ height: auto; min-height: inherit;}
-    .container{ width: 96%;}
+@media (max-width:1680px) {
+    .login-form {
+        padding: 2rem;
+    }
+
+    .user-pages {
+        height: auto;
+        min-height: inherit;
+    }
+
+    .container {
+        width: 96%;
+    }
 }
 
 @media (max-width:1199px) {
@@ -1555,7 +1595,7 @@ span.mobile-cross {
     .common-ques a figcaption {
         font-size: 12px;
     }
-    
+
 }
 
 @media (max-width:575px) {
@@ -2090,6 +2130,8 @@ table th {
 .donestatus span {
     padding: .3rem 1.5rem;
     border-radius: 1rem;
+    background-color: #ccf8d9;
+    color: #00db43;
 }
 
 
@@ -2412,7 +2454,8 @@ span.badge.ng-star-inserted.activestatus.text-bg-danger {
         height: 100%;
         top: 0;
         right: 0;
-        position: fixed;min-width: auto;
+        position: fixed;
+        min-width: auto;
     }
 
     .custom-pagination {
@@ -2430,7 +2473,14 @@ span.badge.ng-star-inserted.activestatus.text-bg-danger {
 
 
 /* Extra-Rishabh */
-.add-multiple-logic .mat-mdc-standard-chip .mdc-evolution-chip__cell--primary, .add-multiple-logic .mat-mdc-standard-chip .mdc-evolution-chip__action--primary, .add-multiple-logic .mat-mdc-standard-chip .mat-mdc-chip-action-label{ overflow: hidden !important;}
-@media (max-width:767px){
-    .Report-question-list figure{ width: 100%;}
+.add-multiple-logic .mat-mdc-standard-chip .mdc-evolution-chip__cell--primary,
+.add-multiple-logic .mat-mdc-standard-chip .mdc-evolution-chip__action--primary,
+.add-multiple-logic .mat-mdc-standard-chip .mat-mdc-chip-action-label {
+    overflow: hidden !important;
+}
+
+@media (max-width:767px) {
+    .Report-question-list figure {
+        width: 100%;
+    }
 }

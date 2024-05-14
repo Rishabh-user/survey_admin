@@ -161,7 +161,7 @@ export class SecLsmPopupComponent {
         const newOption = new Option();
         newOption.id = previousQuestion.options.length + 1;
         newOption.option = this.newOptionValue;
-        newOption.selected = false;
+        newOption.selected = true;
 
         previousQuestion.options.push(newOption);
 
@@ -177,7 +177,7 @@ export class SecLsmPopupComponent {
     const defaultOption = new Option();
     defaultOption.id = 1;
     defaultOption.option = '';
-    defaultOption.selected = false;
+    defaultOption.selected = true;
 
     newQuestion.options = [defaultOption];
 
@@ -218,7 +218,8 @@ export class SecLsmPopupComponent {
     if (question && question.shouldAddOption) {
       const newOption = new Option();
       newOption.id = question.options.length + 1;
-      newOption.selected = false;
+      // newOption.selected = false;
+      newOption.selected = true;
       question.options.push(newOption);
     }
 

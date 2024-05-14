@@ -2,7 +2,7 @@
   <div class="">
     <div ngClass="row common-heading g-3">
       <div class="col-md-6">
-        <h4>ED- Tech Brand Ranking</h4>
+        <h4>{{surveyname}}</h4>
         <span class="view-tags">Cosmetics, Personal Care, Toiletries</span>
       </div>
       <div class="col-md-6">
@@ -27,9 +27,22 @@
       <ol>
         <li *ngFor="let item of surveyReportById; let i = index">
           <figcaption>
-            <div class="">
-              <h4>Q.{{ i + 1 }} {{item.question}}</h4>
+            <div class="row">
+              <div class="col">
+                <h4>Q.{{ i + 1 }} {{item.question}}</h4>
+              </div>
+              <div class="col input-group flex-nowrap">
+                <select class="form-select" (change)="questiongraphType($event,item.questionId)">
+                  <option selected>Select Graph Type</option>
+                  <option [value]="1">Doughnut</option>
+                  <option [value]="2">Stacked bar/line</option>
+                  <option [value]="3">Point Styling</option>
+                  <option [value]="4">HTML Legend</option>
+                  <option [value]="5">Loop</option>
+                </select>
+              </div>
             </div>
+
           </figcaption>
           <figure>
             <div class="graph-gap">

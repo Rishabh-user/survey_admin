@@ -65,7 +65,6 @@ export class ViewComponent {
   }
 
   createCharts(): void {
-    console.log(this.surveyReportById);
 
     if (this.surveyReportById.length === 0) {
       console.error("Survey report data is empty.");
@@ -87,7 +86,6 @@ export class ViewComponent {
         console.error(`Failed to get 2D context for canvas element with ID ${canvasId}.`);
         return;
       }
-
 
 
       const datasets = item.responsOptions
@@ -133,12 +131,16 @@ export class ViewComponent {
     return color;
   }
 
- 
+  surveyname: any[] = []
   getSurveyReportBySurveyId() {
     if (this.surveyId) {
       this.themeService.getSurveyReportBySurveyId(this.surveyId).subscribe((data: any) => {
         this.surveyReportById = data;
         //this.createCharts(); // Call createCharts() after data is fetched
+
+        this.surveyReportById.forEach((item: any) => {
+          this.surveyname = item.surveyName
+        })
         setTimeout(() => {
           this.createCharts();
         }, 5000); // 5 seconds in milliseconds
@@ -152,7 +154,7 @@ export class ViewComponent {
     const csvContent = this.convertToCSV(this.surveyReportById);
     this.downloadCSV(csvContent, 'Survey_Report.csv');
   }
-  convertToCSV(data: any[]): string {   
+  convertToCSV(data: any[]): string {
     const headerFields = ['Survey ID', 'Survey Name', 'Question ID', 'Question', 'Option', 'Answer', 'Rating', 'Survey Attempt ID', 'Count'];
 
     let csvContent = headerFields.join(',') + '\n';
@@ -160,9 +162,9 @@ export class ViewComponent {
       item.responsOptions.forEach((option: { option: any; answer: any; rating: any; surveyAttemptId: any; count: any; }) => {
         const formattedRow = [
           item.surveyId,
-          `"${item.surveyName}"`, 
+          `"${item.surveyName}"`,
           item.questionId,
-          `"${item.question}"`, 
+          `"${item.question}"`,
           option.option,
           option.answer,
           option.rating || '',
@@ -174,7 +176,7 @@ export class ViewComponent {
     });
 
     return csvContent;
-}
+  }
 
   // Function to trigger file download
   downloadCSV(csvContent: string, filename: string): void {
@@ -193,5 +195,70 @@ export class ViewComponent {
         document.body.removeChild(link);
       }
     }
+  }
+  quesgraphtypevalue: string[] = [];
+  questiongraphType(event: Event, ques: number): void {
+
+    const target = event.target as HTMLInputElement;
+    alert(target.value)
+    this.quesgraphtypevalue[ques] = target.value;
+    console.log("quess", this.quesgraphtypevalue[ques]);
+    this.updatechart(this.quesgraphtypevalue[ques], ques)
+  }
+
+  updatechart(index: any, ques: number): void {
+
+    this.surveyReportById.forEach((ques, index) => {
+      const canvasId = `canvas${index + 1}`;
+      const canvas = document.getElementById(canvasId) as HTMLCanvasElement | null;
+
+      if (!canvas) {
+        console.error(`Canvas element with ID ${canvasId} not found.`);
+        return;
+      }
+
+      const ctx = canvas.getContext('2d');
+
+      if (!ctx) {
+        console.error(`Failed to get 2D context for canvas element with ID ${canvasId}.`);
+        return;
+      }
+
+
+      const datasets = ques.responsOptions
+        .filter(option => option.option !== null)
+        .map(option => ({
+          label: option.option,
+          data: [option.count],
+          backgroundColor: this.getRandomColor(),
+
+        }));
+
+
+      new Chart(ctx, {
+
+        type: 'doughnut',
+        data: {
+          labels: ques.responsOptions.map(option => option.option),
+          datasets: datasets
+        },
+        options: {
+          indexAxis: 'x',
+          scales: {
+            x: {
+              display: false, // Display the x-axis
+              title: {
+                display: true,
+                text: 'Question Options' // Add a title to the x-axis if needed
+              }
+            },
+            y: {
+              beginAtZero: true
+            }
+          }
+        }
+      });
+
+    });
   }
 }
