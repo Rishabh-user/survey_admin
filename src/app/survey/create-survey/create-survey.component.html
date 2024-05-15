@@ -397,6 +397,10 @@
                                     (click)="getQuestionLogic(i,question?.id);getQuestionListBranching(question?.id);toggleLogic(i,question?.id,'edit')">
                                     <ng-icon class="me-1" name="heroCommandLine"></ng-icon>
                                     <span>logics</span>
+                                    <span
+                                        class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                                        {{logiccount}}
+                                    </span>
 
 
                                 </div>

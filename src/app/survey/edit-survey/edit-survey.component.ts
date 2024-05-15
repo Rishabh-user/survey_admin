@@ -682,6 +682,7 @@ export class EditSurveyComponent {
       modifiedOption.isRandomize = option.isRandomize;
       modifiedOption.isSelected = option.isSelected;
       modifiedOption.isVisible = option.isVisible;
+
       modifiedOption.keyword = option.keyword;
       modifiedOption.modifiedDate = option.modifiedDate;
       modifiedOption.option = option.option;
