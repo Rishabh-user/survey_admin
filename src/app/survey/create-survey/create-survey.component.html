@@ -125,7 +125,7 @@
             </div>
 
             <div class="common-ques">
-                <a routerLink="javascript:" (click)="toggleDivVisibility();getRandomization()"
+                <a routerLink="javascript:" (click)="toggleDivVisibility();getRandomization();getSurveyLooping()"
                     [class.active]='isActive || isDivVisible'>
                     <figure><img [src]="baseUrl + '/assets/images/icons/Add-new-logic.png'" width="30" height="30" />
                     </figure>
@@ -608,7 +608,7 @@
                                                                                             #auto="matAutocomplete"
                                                                                             (optionSelected)="selectedOptionsIFLogic($event,logicEntry.ifId,i,j)">
                                                                                             <mat-option
-                                                                                                *ngFor="let option of optionListByQuestionIdLogic"
+                                                                                                *ngFor="let option of valuefilteredOptions"
                                                                                                 [value]="option">
                                                                                                 {{option.option}}
                                                                                             </mat-option>

@@ -29,13 +29,38 @@ import { UtilsService } from 'src/app/service/utils.service';
 export class EditSurveyComponent {
   // Tooltip
   showTooltip: { [key: string]: boolean } = {};
+  currentTooltip: string | null = null;
+  // toggleTooltip(identifier: string) {
+  //   this.showTooltip[identifier] = !this.showTooltip[identifier];
+  // }
+  // hideTooltip(identifier: string) {
+  //   this.showTooltip[identifier] = false;
+  // }
+  // Tooltip
   toggleTooltip(identifier: string) {
+
+    if (this.currentTooltip && this.currentTooltip !== identifier) {
+      this.showTooltip[this.currentTooltip] = false;
+    }
+
     this.showTooltip[identifier] = !this.showTooltip[identifier];
+
+    if (this.showTooltip[identifier]) {
+      this.currentTooltip = identifier;
+    } else {
+      this.currentTooltip = null;
+    }
+
   }
+
   hideTooltip(identifier: string) {
     this.showTooltip[identifier] = false;
+
+    if (this.currentTooltip === identifier) {
+      this.currentTooltip = null;
+    }
+
   }
-  // Tooltip
   @Output() onSaveEvent = new EventEmitter();
 
   separatorKeysCodes: number[] = [ENTER, COMMA];
@@ -70,6 +95,7 @@ export class EditSurveyComponent {
   baseUrl = '';
   optionImage: String;
   imageUpdated: boolean = false;
+  videoupload: any
 
   constructor(public themeService: DataService, private router: Router,
     private route: ActivatedRoute, private surveyservice: SurveyService, private modalService: NgbModal,
@@ -113,6 +139,8 @@ export class EditSurveyComponent {
       this.question.sort = data.sort
       this.question.questionTypeName = data.questionTypeName
       this.youtubeUrl = data.youtubeUrl
+      this.question.image = data.image
+      this.question.video = data.video
       this.question.piping = data.piping
       this.question.isGrouping = data.isGrouping
       this.textlimit = data.textLimit
@@ -620,6 +648,7 @@ export class EditSurveyComponent {
     }
 
     this.question.image = this.questionImage;
+    this.question.video = this.videoupload;
     this.question.youtubeUrl = this.youtubeUrl;
     this.question.options = this.allOptions;
     this.question.piping = this.questionsortvalue
@@ -711,8 +740,6 @@ export class EditSurveyComponent {
       option.sort = index;
     });
 
-
-
     this.allOptions = [];
     this.allOptions.push(...this.optionsArr1, ...this.optionsArr2);
   }
@@ -765,9 +792,31 @@ export class EditSurveyComponent {
     const file = event.addedFiles && event.addedFiles.length > 0 ? event.addedFiles[0] : null;
 
     if (file) {
-      this.questionfilesImage.push(file); // Store the selected file
-      this.uploadImage(file); // Trigger upload after selecting the file
+      this.questionfilesImage.push(file);
+      this.uploadImage(file);
     }
+  }
+
+  uploadImage(file: File): void {
+
+    let queryParams = null;
+    if (this.questionId != 0) {
+      queryParams = {
+        qid: this.questionId
+      };
+    }
+
+    this.surveyservice.uploadImageQuestion(file, queryParams).subscribe(
+      (response: String) => {
+
+        this.questionImage = response
+        this.questionImage = response.replace(/"/g, '');
+      },
+      (error) => {
+        console.error('Error occurred while uploading:', error);
+        // Handle error
+      }
+    );
   }
 
   filesImageoption: File[] = [];
@@ -809,26 +858,7 @@ export class EditSurveyComponent {
 
     this.filesImage.splice(this.files.indexOf(event), 1);
   }
-  uploadImage(file: File): void {
 
-    let queryParams = null;
-    if (this.questionId != 0) {
-      queryParams = {
-        qid: this.questionId
-      };
-    }
-
-    this.surveyservice.uploadImageQuestion(file, queryParams).subscribe(
-      (response: String) => {
-
-        this.questionImage = response
-      },
-      (error) => {
-        console.error('Error occurred while uploading:', error);
-        // Handle error
-      }
-    );
-  }
 
   onSelectVideo(event: any) {
     const file = event.addedFiles && event.addedFiles.length > 0 ? event.addedFiles[0] : null;
@@ -853,7 +883,8 @@ export class EditSurveyComponent {
     this.surveyservice.uploadVideoQuestion(file, queryParams).subscribe(
       (response: String) => {
 
-        this.questionImage = response
+        this.videoupload = response
+        this.videoupload = response.replace(/"/g, '');
       },
       (error) => {
         console.error('Error occurred while uploading:', error);
@@ -942,6 +973,12 @@ export class EditSurveyComponent {
 
   openLgUrl(youtubeUrl: any) {
     this.modalService.open(youtubeUrl, { size: 'lg', centered: true });
+  }
+  openLgImage(questionimage: any) {
+    this.modalService.open(questionimage, { size: 'lg', centered: true });
+  }
+  openLgVideo(questionvideo: any) {
+    this.modalService.open(questionvideo, { size: 'lg', centered: true });
   }
   onLogicSave(): void {
 

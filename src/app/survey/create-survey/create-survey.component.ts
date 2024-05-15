@@ -23,6 +23,7 @@ import { environment } from 'src/environments/environment';
 import { MatChipInputEvent } from '@angular/material/chips';
 import { Option } from 'src/app/models/option';
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
+// import { debug } from 'console';
 
 interface LogicQuestion {
   id: number;
@@ -39,11 +40,36 @@ interface LogicQuestion {
 })
 export class CreateSurveyComponent implements OnInit, AfterViewInit {
   showTooltip: { [key: string]: boolean } = {};
+  currentTooltip: string | null = null;
+  // toggleTooltip(identifier: string) {
+  //   this.showTooltip[identifier] = !this.showTooltip[identifier];
+  // }
+  // hideTooltip(identifier: string) {
+  //   this.showTooltip[identifier] = false;
+  // }
   toggleTooltip(identifier: string) {
+
+    if (this.currentTooltip && this.currentTooltip !== identifier) {
+      this.showTooltip[this.currentTooltip] = false;
+    }
+
     this.showTooltip[identifier] = !this.showTooltip[identifier];
+
+    if (this.showTooltip[identifier]) {
+      this.currentTooltip = identifier;
+    } else {
+      this.currentTooltip = null;
+    }
+
   }
+
   hideTooltip(identifier: string) {
     this.showTooltip[identifier] = false;
+
+    if (this.currentTooltip === identifier) {
+      this.currentTooltip = null;
+    }
+
   }
 
   @ViewChild('logicSection') logicSection: ElementRef;
@@ -229,7 +255,7 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
     this.getRandomization();
     this.getLogicCount();
 
-    //this.getSurveyLooping();
+    this.getSurveyLooping();
   }
   ngAfterViewInit() {
     // Set the default value after the view initialization
@@ -638,21 +664,21 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
       surveyId: this.surveyId,
       questionId: questionId
     };
-    if(parseInt(questionId)>0){
-    this.surveyservice.getLogicQuestionList(dataToSend).subscribe(
-      (response: LogicQuestion[]) => {
-        this.logicQuestionList = response;
-      },
-      error => {
-        console.error('Error fetching logic questions', error);
-      }
-    );
-  }
+    if (parseInt(questionId) > 0) {
+      this.surveyservice.getLogicQuestionList(dataToSend).subscribe(
+        (response: LogicQuestion[]) => {
+          this.logicQuestionList = response;
+        },
+        error => {
+          console.error('Error fetching logic questions', error);
+        }
+      );
+    }
     this.logicQuestionListById = []; // Assuming logicQuestionListById is of type responseDTO[]
     this.surveyservice.GetQuestionListBySurveyId(this.surveyId).subscribe((response: responseDTO[]) => {
       this.logicQuestionListById = response;
     });
-  //}
+    //}
   }
 
   onSelectChange(event: MatSelectChange, questionSortValue: any, questionId: number) {
@@ -1610,8 +1636,13 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
   getSurveyLooping(): void {
     this.surveyservice.getSurveyLooping(this.surveyId).subscribe(
       (response) => {
+        if (response.length > 0) {
+          this.selectedAutoCodeOption = response;
+        }
+
         if (response != '' && response != undefined)
           this.selectedAutoCodeOption = response
+        this.isDivVisible = true;
       },
       (error) => {
         // Handle errors
@@ -1917,6 +1948,7 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
     }
   }
   optionListByQuestionIdLogic: any
+  valuefilteredOptions: any[] = []
   getOptionsByQuestionIdLogic(selectedQuestion: any) {
     this.optionListByQuestionIdLogic = ''
 
@@ -1930,6 +1962,9 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
       this.optionListByQuestionIdLogic = response
       console.log(this.optionListByQuestionIdLogic)
       this.optionListByQuestionIdLogic = JSON.parse(this.optionListByQuestionIdLogic)
+      this.valuefilteredOptions = this.optionListByQuestionIdLogic.filter((option: { status: string; }) => option.status === 'ACT');
+      console.log("optionListByQuestionIdLogic", this.optionListByQuestionIdLogic)
+      console.log("valuefilteredOptions", this.valuefilteredOptions)
     });
   }
   removeOptionLogic(option: any, questionIndex: number, logicIndex: number): void {
@@ -2013,6 +2048,7 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
       next: (resp: any) => {
 
         this.logiccount = resp
+        console.log("logiccount", this.logiccount)
       },
       error: (err: any) => {
       }
