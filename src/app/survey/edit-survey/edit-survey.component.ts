@@ -19,6 +19,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { environment } from 'src/environments/environment';
 import { MatSelect, MatSelectChange } from '@angular/material/select';
 import { UtilsService } from 'src/app/service/utils.service';
+import { serveyOption } from 'src/app/models/serveyOption';
 
 @Component({
   selector: 'app-edit-survey',
@@ -151,7 +152,7 @@ export class EditSurveyComponent {
 
       data.options.forEach((opt: any) => {
 
-        let newOption = new Option();
+        let newOption = new serveyOption();
         newOption.id = opt.id;
         newOption.option = opt.option;
         newOption.image = opt.image;
@@ -163,6 +164,7 @@ export class EditSurveyComponent {
         newOption.isExcluded = opt.isExcluded;
         newOption.group = opt.group;
         newOption.sort = opt.sort;
+        newOption.imageAdded = false;
 
         this.optionimagennew.push(opt.image)
 
@@ -290,6 +292,7 @@ export class EditSurveyComponent {
 
     this.optionsArr1[index].images = [...event.addedFiles];
 
+
     const filesForIndex = this.optionImages[index];
 
     if (filesForIndex && filesForIndex.length > 0) {
@@ -346,11 +349,13 @@ export class EditSurveyComponent {
     this.surveyservice.uploadOptionImage(fileoption, qid, oid).subscribe(
       (response: string) => {
 
-        const optionIndex = this.optionsArr1.findIndex(option => option.id === oid);
+        // const optionIndex = this.optionsArr1.findIndex(option => option.index === oid);
 
-        if (optionIndex !== -1) {
+        if (oid !== -1) {
 
-          this.optionsArr1[optionIndex].image = response.replace(/"/g, "");
+          this.optionsArr1[oid].image = response.replace(/"/g, "");
+          this.optionsArr1[oid].imageAdded = true;
+
 
         } else {
           console.error('Option not found for ID:', oid);
@@ -494,7 +499,7 @@ export class EditSurveyComponent {
   }
 
   hanldeAddOptionClick(type: string | null = null) {
-    let newOption = new Option();
+    let newOption = new serveyOption();
 
     newOption.createdDate = this.getCurrentDateTime();
     newOption.modifiedDate = this.getCurrentDateTime();
@@ -522,6 +527,18 @@ export class EditSurveyComponent {
       newOption.option = "";
       newOption.status = 'ACT'
     }
+
+    let sort = 0;
+
+    if (this.optionsArr1.length > 0) {
+      // Find the maximum sort value in optionsArr1
+      const maxSortValue1 = Math.max(...this.optionsArr1.map(option => option.sort));
+      const maxSortValue2 = Math.max(...this.optionsArr2.map(option => option.sort));
+      sort = (maxSortValue2 > maxSortValue1 ? maxSortValue2 : maxSortValue1) + 1;
+    }
+
+    newOption.sort = sort;
+
 
     // if (type != null) {
     //   this.optionsArr1.push(newOption);
@@ -650,7 +667,32 @@ export class EditSurveyComponent {
     this.question.image = this.questionImage;
     this.question.video = this.videoupload;
     this.question.youtubeUrl = this.youtubeUrl;
-    this.question.options = this.allOptions;
+
+    let modifiedoptions: serveyOption[] = [];
+
+    this.allOptions.forEach((option) => {
+      let modifiedOption = new serveyOption();
+
+      modifiedOption.createdDate = option.createdDate;
+      modifiedOption.group = option.group;
+      modifiedOption.id = option.id;
+      modifiedOption.imageAdded = option.imageAdded;
+      modifiedOption.isExcluded = option.isExcluded;
+      modifiedOption.isFixed = option.isFixed;
+      modifiedOption.isRandomize = option.isRandomize;
+      modifiedOption.isSelected = option.isSelected;
+      modifiedOption.isVisible = option.isVisible;
+      modifiedOption.keyword = option.keyword;
+      modifiedOption.modifiedDate = option.modifiedDate;
+      modifiedOption.option = option.option;
+      modifiedOption.selected = option.selected;
+      modifiedOption.sort = option.sort;
+      modifiedOption.status = option.status;
+      modifiedOption.image = option.imageAdded ? option.image : null;
+      modifiedoptions.push(modifiedOption);
+    });
+
+    this.question.options = modifiedoptions;
     this.question.piping = this.questionsortvalue
 
     // Send the request based on whether it's an update or creation
@@ -676,9 +718,9 @@ export class EditSurveyComponent {
         next: (resp: any) => {
           this.categoryNameCheck = false;
           this.utility.showSuccess('Question Generated Successfully.');
-          let url = `/survey/manage-survey/${this.crypto.encryptParam(this.surveyId)}`;
-          this.router.navigateByUrl(url);
-          this.onSaveEvent.emit();
+          // let url = `/survey/manage-survey/${this.crypto.encryptParam(this.surveyId)}`;
+          // this.router.navigateByUrl(url);
+          // this.onSaveEvent.emit();
         },
         error: (err: any) => {
           this.utility.showError('error');
@@ -695,7 +737,7 @@ export class EditSurveyComponent {
 
   onGroupValueChange(type: string, value: boolean, groupId: number) {
     // Update the specified group directly
-    let groupoption = new Option();
+    let groupoption = new serveyOption();
 
     const groupToUpdate = this.groups.find(group => group.id === groupId);
     if (!groupToUpdate) {
@@ -739,6 +781,7 @@ export class EditSurveyComponent {
     this.optionsArr1.forEach((option, index) => {
       option.sort = index;
     });
+
 
     this.allOptions = [];
     this.allOptions.push(...this.optionsArr1, ...this.optionsArr2);
@@ -1101,7 +1144,7 @@ export class EditSurveyComponent {
     this.dataArray.forEach((line: string) => {
       // Check if line is not empty
       if (line) {
-        let newOption = new Option();
+        let newOption = new serveyOption();
         newOption.option = line.trim();
         newOption.createdDate = this.getCurrentDateTime()
 
@@ -1222,7 +1265,7 @@ export class EditSurveyComponent {
   starRating: any[] = [];
   addStarRating() {
     for (let i = 1; i <= 10; i++) {
-      let startOption = new Option();
+      let startOption = new serveyOption();
       startOption.option = i.toString();
       startOption.id = i;
       startOption.createdDate = this.getCurrentDateTime()
@@ -1236,7 +1279,7 @@ export class EditSurveyComponent {
     const booleanValues = ['True', 'False'];
 
     for (let i = 0; i < booleanValues.length; i++) {
-      let booleanOption = new Option();
+      let booleanOption = new serveyOption();
       booleanOption.option = booleanValues[i];
       booleanOption.id = i + 1;
       booleanOption.createdDate = this.getCurrentDateTime();
@@ -1249,7 +1292,7 @@ export class EditSurveyComponent {
   sliderscale: any[] = [];
   addsliderscale() {
     for (let i = -10; i <= 10; i++) {
-      let startOption = new Option();
+      let startOption = new serveyOption();
       startOption.option = i.toString();
       startOption.id = i;
       startOption.createdDate = this.getCurrentDateTime()

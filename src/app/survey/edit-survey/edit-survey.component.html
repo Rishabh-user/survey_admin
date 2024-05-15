@@ -161,7 +161,7 @@
                             <!-- this -->
                             <div class="flex-width">
                                 <ngx-dropzone class="edit-survey-img" ngx-dropzone [accept]="'image/*'"
-                                    (change)="onSelectOptionImage($event, i,question.id,option.id)">
+                                    (change)="onSelectOptionImage($event, i,question.id, i)">
                                     <ngx-dropzone-label>
                                         <img [src]="baseUrl + '/assets/images/icons/attach-image.png'" />
                                     </ngx-dropzone-label>
