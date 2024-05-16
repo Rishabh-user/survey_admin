@@ -719,9 +719,9 @@ export class EditSurveyComponent {
         next: (resp: any) => {
           this.categoryNameCheck = false;
           this.utility.showSuccess('Question Generated Successfully.');
-          // let url = `/survey/manage-survey/${this.crypto.encryptParam(this.surveyId)}`;
-          // this.router.navigateByUrl(url);
-          // this.onSaveEvent.emit();
+          let url = `/survey/manage-survey/${this.crypto.encryptParam(this.surveyId)}`;
+          this.router.navigateByUrl(url);
+          this.onSaveEvent.emit();
         },
         error: (err: any) => {
           this.utility.showError('error');

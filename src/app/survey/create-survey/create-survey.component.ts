@@ -523,7 +523,9 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
         //logics count
         this.questions.forEach((question: any) => {
           question.logicscount = question.logics.length
+          console.log("question.logicscount", question.logicscount)
         });
+
 
         //screening
         if (Array.isArray(data)) {
@@ -836,12 +838,14 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
 
         // Check if entryIdToDelete is defined before proceeding
         if (entryIdToDelete !== undefined) {
-          if (entryIdToDelete == 0)
+          if (entryIdToDelete == 0) {
             this.logicEntriesPerQuestion[questionIndex].splice(logicIndex, 1);
+          }
           else {
 
             this.surveyservice.deleteQuestionLogicById(entryIdToDelete).subscribe(
               () => {
+
                 this.logicEntriesPerQuestion[questionIndex].splice(logicIndex, 1);
               },
               (error) => {
@@ -1269,6 +1273,7 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
           response => {
 
             this.utils.showSuccess('Logic Created Successfully.');
+            window.location.reload();
           },
           error => {
             console.error('Error occurred while sending POST request:', error);
@@ -1279,6 +1284,7 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
         this.surveyservice.createLogic(this.questionLogic).subscribe(
           response => {
             this.utils.showSuccess('Logic Created Successfully.');
+            window.location.reload();
           },
           error => {
             console.error('Error occurred while sending POST request:', error);

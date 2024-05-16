@@ -26,6 +26,8 @@ interface SurveyQuestion {
   styleUrls: ['./view.component.css']
 })
 export class ViewComponent {
+
+
   surveyId: any;
   reportsurveyid: any
   surveyReport: any;
@@ -119,7 +121,7 @@ export class ViewComponent {
           }
         }
       });
-
+      //this.chart.destroy()
 
     });
   }
@@ -204,6 +206,7 @@ export class ViewComponent {
     alert(target.value)
     this.quesgraphtypevalue[ques] = target.value;
     console.log("quess", this.quesgraphtypevalue[ques]);
+
     this.updatechart(this.quesgraphtypevalue[ques], ques)
   }
 
