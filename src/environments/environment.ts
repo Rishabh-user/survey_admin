@@ -6,7 +6,7 @@ export const environment = {
   recaptcha: {
     siteKey: '6LeBkKoUAAAAAMRcP2yPpPCpbDP-TCEYj7f0IhVd',
   },
-  //baseURL: '/manage'
-  baseURL: ''
+  baseURL: '/manage'
+  //baseURL: ''
 
 }
