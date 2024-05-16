@@ -97,6 +97,7 @@ export class EditSurveyComponent {
   optionImage: String;
   imageUpdated: boolean = false;
   videoupload: any
+  questionSummery: any
 
   constructor(public themeService: DataService, private router: Router,
     private route: ActivatedRoute, private surveyservice: SurveyService, private modalService: NgbModal,
@@ -147,6 +148,7 @@ export class EditSurveyComponent {
       this.textlimit = data.textLimit
       this.numeric = data.isNumeric
       this.alphabet = data.isAlphabet
+      this.questionSummery = data.questionSummery
       this.screeningRedirectUrl = data.screeningRedirectUrl
 
 
@@ -695,6 +697,7 @@ export class EditSurveyComponent {
 
     this.question.options = modifiedoptions;
     this.question.piping = this.questionsortvalue
+    this.question.questionSummery = this.questionSummery
 
     // Send the request based on whether it's an update or creation
     if (parseFloat(this.questionId) > 0) {

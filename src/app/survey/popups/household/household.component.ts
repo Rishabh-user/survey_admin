@@ -44,7 +44,7 @@ export class HouseholdComponent {
 
 
   role: string;
-  typeid = 4;
+  typeid = 5;
 
   selectAllOptions(questionIndex: number) {
     const question = this.questions[questionIndex];

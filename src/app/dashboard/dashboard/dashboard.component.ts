@@ -53,6 +53,7 @@ export class DashboardComponent {
 
     this.auth.userData$.subscribe((user: User) => {
       this.userId = user.userId;
+      console.log("dashboard userId", this.userId)
     });
 
 

@@ -44,7 +44,7 @@ export class MonthlyIncomePopupComponent {
 
 
   role: string;
-  typeid = 5;
+  typeid = 4;
 
   monthlyincome: any[] = [];
 

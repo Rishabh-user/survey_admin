@@ -31,4 +31,5 @@ export class Question {
     public isNumeric: boolean = false
     public isAlphabet: boolean = false
     public textLimit: number = 0
+    public questionSummery: string = ''
 }

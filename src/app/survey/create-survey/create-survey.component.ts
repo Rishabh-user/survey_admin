@@ -1174,19 +1174,22 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
   // }
   createLogic(questionId: any, logicEntries: any[]): void {
     let delayCounter = 0;
+    let sort = 0;
 
     for (const logicEntry of logicEntries) {
       setTimeout(() => {
-        this.createSingleLogicEntry(questionId, logicEntry);
+
+        this.createSingleLogicEntry(questionId, logicEntry, sort);
+        sort = sort + 1;
       }, delayCounter * 1000); // Increase the delay by multiplying with the index
 
       delayCounter++;
     }
   }
 
-  createSingleLogicEntry(questionId: any, logicEntry: any): void {
+  createSingleLogicEntry(questionId: any, logicEntry: any, sort: any): void {
     this.createLogicCount++;
-
+    alert(sort);
 
     const thanTermValue = logicEntry.thanExpected !== null ? logicEntry.thanExpected : 0;
     const elseTermValue = logicEntry.elseExpected !== null ? logicEntry.elseExpected : 0;
@@ -1241,6 +1244,8 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
     this.questionLogic.popupText = popupTextValue;
     this.questionLogic.isEveryTime = isEveryTimeValue;
     this.questionLogic.timesPeriod = timesPeriodValue;
+    this.questionLogic.sort = sort;
+
 
     if (!this.questionLogic.logicConditions[0]) {
       this.questionLogic.logicConditions[0] = {
@@ -1273,7 +1278,7 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
           response => {
 
             this.utils.showSuccess('Logic Created Successfully.');
-            window.location.reload();
+            // window.location.reload();
           },
           error => {
             console.error('Error occurred while sending POST request:', error);
@@ -1284,7 +1289,7 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
         this.surveyservice.createLogic(this.questionLogic).subscribe(
           response => {
             this.utils.showSuccess('Logic Created Successfully.');
-            window.location.reload();
+            // window.location.reload();
           },
           error => {
             console.error('Error occurred while sending POST request:', error);
