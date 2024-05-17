@@ -4,6 +4,7 @@ import { Chart, ChartOptions, ChartType, registerables } from 'chart.js';
 import { CryptoService } from 'src/app/service/crypto.service';
 import { SurveyService } from 'src/app/service/survey.service';
 import { AfterViewInit } from '@angular/core';
+import { UtilsService } from 'src/app/service/utils.service';
 
 interface SurveyQuestion {
   surveyId: number;
@@ -31,8 +32,9 @@ export class ViewComponent {
   surveyId: any;
   reportsurveyid: any
   surveyReport: any;
+  planid: any
   surveyReportById: SurveyQuestion[] = [];
-  constructor(public themeService: SurveyService, private route: ActivatedRoute, private crypto: CryptoService,) {
+  constructor(public themeService: SurveyService, private route: ActivatedRoute, private crypto: CryptoService, private utils: UtilsService) {
     this.route.paramMap.subscribe(params => {
       let _queryData = params.get('param1');
       this.surveyId = _queryData;
@@ -55,6 +57,8 @@ export class ViewComponent {
   charts: Chart[] = [];
 
   ngOnInit(): void {
+    this.planid = this.utils.getPlanId();
+    console.log("planid", this.planid)
     this.getSurveyReportBySurveyId();
 
   }
@@ -272,4 +276,10 @@ export class ViewComponent {
 
     });
   }
+
+  generatePDF() {
+
+  }
+
+
 }

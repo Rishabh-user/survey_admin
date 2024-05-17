@@ -170,6 +170,8 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
   isBranchingElseShow: boolean[][] = [];
   isElseShow: boolean[][] = [];
   status: any
+  notificationmessage: any
+  planid: any
 
   centerId: number = this.utils.getCenterId();
 
@@ -236,6 +238,7 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
   surveyId = 0;
 
   ngOnInit() {
+    this.planid = this.utils.getPlanId();
 
     this.visibilityService.closeSideBar();
     this.userId = this.utils.getUserId();
@@ -619,6 +622,11 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
   logicIndex: number;
 
   toggleLogic(index: number, questionId: any, mode: string) {
+    debugger
+    if (this.planid === '500') {
+      this.questions[index].isLogicShow = true;
+    }
+    debugger
     //this.logicIndex = index;
     if (mode === "add")
       this.addNewLogicEntry(index);

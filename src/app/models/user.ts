@@ -6,4 +6,5 @@ export class User {
   role: string;
   CenterId: string;
   CenterName: string;
+  PlanId: number
 }

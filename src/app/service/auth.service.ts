@@ -68,6 +68,7 @@ export class AuthService {
         userDetails.RoleId = _userDetail?.RoleId;
         userDetails.CenterId = _userDetail?.CenterId;
         userDetails.CenterName = _userDetail?.CenterName;
+        userDetails.PlanId = _userDetail?.PlanId
 
         this.userData.next(userDetails);
       } else {

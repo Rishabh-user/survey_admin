@@ -37,6 +37,7 @@ export class AddUserComponent {
   roleId: number = 0;
   centerId: number = this.utility.getCenterId();
   image: any;
+  planid: any
 
   password: string = '';
 
@@ -177,6 +178,7 @@ export class AddUserComponent {
 
   ngOnInit() {
     this.role = this.utility.getRole();
+    this.planid = this.utility.getPlanId()
     this.getAllSurveyList()
     if (this.role) {
       this.role = this.role.toLowerCase();

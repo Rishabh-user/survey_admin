@@ -7,7 +7,7 @@
       </div>
       <div class="col-md-6">
         <div class="d-flex justify-content-end g-2">
-          <div class="col input-group flex-nowrap">
+          <div class="col input-group flex-nowrap" *ngIf="planid === '1200' || planid === '500'">
             <select class="form-select" (change)="graphType($event)">
               <option selected>Select Graph Type</option>
               <option value="1">Doughnut</option>
@@ -17,9 +17,13 @@
               <option value="5">Loop</option>
             </select>
           </div>
-          <a href="javascript:" class="btn btn-primary ms-2" (click)="generateCSV()">Download CSV <ng-icon class="ms-3"
+          <a href="javascript:" class="btn btn-primary ms-2" (click)="generatePDF()">Download PDF <ng-icon class="ms-3"
               name="heroArrowLongRight"></ng-icon></a>
+          <a *ngIf="planid === '500' || planid === '1200'" href="javascript:" class="btn btn-primary ms-2"
+            (click)="generateCSV()">Download CSV <ng-icon class="ms-3" name="heroArrowLongRight"></ng-icon></a>
+
         </div>
+
       </div>
     </div>
 
@@ -31,7 +35,7 @@
               <div class="col">
                 <h4>Q.{{ i + 1 }} {{item.question}}</h4>
               </div>
-              <div class="col input-group flex-nowrap">
+              <div class="col input-group flex-nowrap" *ngIf="planid === '1200' || planid === '500'">
                 <select class="form-select" (change)="questiongraphType($event,item.questionId)">
                   <option selected>Select Graph Type</option>
                   <option value="1">Doughnut</option>

@@ -13,6 +13,7 @@ export class UtilsService {
   private centerId: any;
   private roleId: any;
   private CenterName: any
+  private PlanId: any
 
 
   constructor(private auth: AuthService, private toastr: ToastrService) {
@@ -24,6 +25,7 @@ export class UtilsService {
           this.centerId = user.CenterId;
           this.roleId = user.RoleId;
           this.CenterName = user.CenterName
+          this.PlanId = user.PlanId
         }
       }
     });
@@ -46,6 +48,9 @@ export class UtilsService {
   }
   getCenterName() {
     return this.CenterName
+  }
+  getPlanId() {
+    return this.PlanId
   }
 
   showSuccess(message: string) {

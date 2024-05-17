@@ -153,6 +153,7 @@ export class SignUpComponent {
   }
 
   verifyEmail(skipClicked: boolean = false) {
+
     Object.keys(this.verificationForm.controls).forEach(field => {
       const control = this.verificationForm.get(field);
       control?.markAsTouched({ onlySelf: true });
@@ -161,6 +162,9 @@ export class SignUpComponent {
     const otp = this.verificationForm.get('email_otp')?.value;
     const captchertoken = this.verificationForm.get('captchertoken')?.value
 
+    console.log("otp", otp)
+    console.log("cap", captchertoken)
+
     if (this.verificationForm.valid) {
       const returnUrl = this.route.snapshot.queryParamMap.get('returnUrl') || '/dashboard';
       const dataToSend = {
@@ -168,13 +172,17 @@ export class SignUpComponent {
         otp: otp,
         captcha: captchertoken
       }
+
+      console.log(dataToSend)
       this.authService.verifyEmail(dataToSend).subscribe(
         (response) => {
-
+          console.log('API Response:', response);
+          const token = response;
+          localStorage.setItem('authToken', token);
           if (skipClicked) {
             const returnUrl = this.route.snapshot.queryParamMap.get('returnUrl') || '/dashboard';
             this.router.navigateByUrl(returnUrl).then(() => {
-
+              window.location.reload()
               this.suurveypurchaseprice = false;
             });
           } else {
@@ -188,7 +196,9 @@ export class SignUpComponent {
 
         }
       );
+
     }
+
   }
 
 

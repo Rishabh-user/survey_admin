@@ -63,7 +63,8 @@
                                 </div>
                             </div>
                         </div>
-                        <select class="form-select" name="roleId" [(ngModel)]="roleId" (blur)="validateSurvey()">
+                        <select class="form-select" name="roleId" [(ngModel)]="roleId" (blur)="validateSurvey()"
+                            [class.disabled-link]="planid == '500'">
                             <option [value]="0" selected>Select Role</option>
                             <option [value]="1" *ngIf="isSuperAdmin">SuperAdmin</option>
                             <option [value]="2" *ngIf="isAdmin">Admin</option>
@@ -71,6 +72,11 @@
                             <option [value]="5" *ngIf="isUser">Vendor</option>
                         </select>
                         <div *ngIf="!roletype" class="text-danger">Role is required.</div>
+                        <div class="" *ngIf="planid == 500 " class="mt-2">
+                            <p>This feature is not available for this plan. please upgrade your plan. <a
+                                    routerLink="/payment">click
+                                    here</a></p>
+                        </div>
 
                     </div>
                     <div class="col-md-6 mb-3 " *ngIf="roleId == 5">

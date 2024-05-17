@@ -93,12 +93,16 @@
                 </div>
             </div>
 
-            <div class="common-ques">
+            <div class="common-ques" [class.disabled-link]="planid == '500'">
                 <a routerLink="javascript:" (click)="openAddScreen(AddScreen)" [class.active]='isActivescreen'>
                     <figure><img [src]="baseUrl + '/assets/images/icons/Add-new-screen.png'" width="30" height="30" />
                     </figure>
                     <figcaption>Add New Screen</figcaption>
                 </a>
+            </div>
+            <div *ngIf="planid == 500" class="mt-2">
+                This feature is not available for this plan. please upgrade your plan. <a routerLink="/payment">click
+                    here</a>
             </div>
         </div>
         <div ngClass="my-3">
@@ -186,7 +190,7 @@
                     </div>
                 </div>
             </div>
-            <div class="common-ques">
+            <div class="common-ques" [class.disabled-link]="planid == '500'">
                 <a [routerLink]="['/survey/quota-management/manage-survey/', (surveyId | encrypt)]"
                     [state]="{ surveyData: { surveyName: surveyName, countryName: countryName, countryImage: countryImage, status: status, categoryName: categoryName, otherCategoryName: otherCategoryName, surveyId: surveyId } }">
                     <figure><img [src]="baseUrl + '/assets/images/icons/Add-new-logic.png'" width="30" height="30" />
@@ -194,14 +198,20 @@
                     <figcaption>Add New Quota</figcaption>
                 </a>
             </div>
+            <div *ngIf="planid == 500" class="mt-2">
+                This feature is not available for this plan. please upgrade your plan. <a routerLink="/payment">click
+                    here</a>
+            </div>
+
+
         </div>
         <div class="updated-preview">
             <div class="preview">
 
-                <!-- <a [href]="'http://localhost:4201/survey/preview/'  + centername +  '/' + centerId + '/' + surveyId + '?UID='+ userId +'&id='+ token"
-                    target="_blank" rel="noopener noreferrer" class="btn btn-primary w-100">Preview</a> -->
-                <a [href]="'https://mobile.angular.opinionest.com/survey/preview/'  + centername +  '/' + centerId + '/' + surveyId + '?UID='+ userId +'&id='+ token"
+                <a [href]="'http://localhost:4201/survey/preview/'  + centername +  '/' + centerId + '/' + surveyId + '?UID='+ userId +'&id='+ token"
                     target="_blank" rel="noopener noreferrer" class="btn btn-primary w-100">Preview</a>
+                <!-- <a [href]="'https://mobile.angular.opinionest.com/survey/preview/'  + centername +  '/' + centerId + '/' + surveyId + '?UID='+ userId +'&id='+ token"
+                    target="_blank" rel="noopener noreferrer" class="btn btn-primary w-100">Preview</a> -->
 
             </div>
             <div class="last-updated text-center">
@@ -492,7 +502,14 @@
 
 
                                 </div>
-                                <div ngClass="pt-4" *ngIf="question.isLogicShow" id="question-{{question.id}}">
+                                <div *ngIf="planid =='500' && question?.isLogicShow">
+                                    <p> This feature is not available for this plan. please upgrade your plan. <a
+                                            routerLink="/payment">click
+                                            here</a></p>
+                                </div>
+                                <div ngClass="pt-4" *ngIf="planid != '500' && question.isLogicShow"
+                                    id="question-{{question.id}}">
+
                                     <div class="infocircle">
                                         <div class="d-flex">
                                             <h5 ngClass="mb-4">Logic</h5>
@@ -520,6 +537,8 @@
                                         <ng-icon name="heroXMark" ngClass="edit-action info-circle"
                                             (click)="toggleLogic(i,question?.id,'add')"></ng-icon>
                                     </div>
+
+
                                     <div ngClass="mb-4">
                                         <div class="logic-tab">
 
