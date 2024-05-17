@@ -1,10 +1,13 @@
-import { Component } from '@angular/core';
+import { Component, ElementRef, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Chart, ChartOptions, ChartType, registerables } from 'chart.js';
 import { CryptoService } from 'src/app/service/crypto.service';
 import { SurveyService } from 'src/app/service/survey.service';
 import { AfterViewInit } from '@angular/core';
 import { UtilsService } from 'src/app/service/utils.service';
+
+import jsPDF from 'jspdf';
+import html2canvas from 'html2canvas';
 
 interface SurveyQuestion {
   surveyId: number;
@@ -28,7 +31,7 @@ interface SurveyQuestion {
 })
 export class ViewComponent {
 
-
+  @ViewChild('content') content: ElementRef;
   surveyId: any;
   reportsurveyid: any
   surveyReport: any;
@@ -277,8 +280,31 @@ export class ViewComponent {
     });
   }
 
-  generatePDF() {
+  generatePDF(): void {
 
+    let content = this.content.nativeElement;
+
+    html2canvas(content).then(canvas => {
+      const imgData = canvas.toDataURL('image/png');
+      const pdf = new jsPDF('p', 'mm', 'a4');
+      const imgWidth = 210;
+      const pageHeight = 295;
+      const imgHeight = canvas.height * imgWidth / canvas.width;
+      let heightLeft = imgHeight;
+      let position = 0;
+
+      pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+      heightLeft -= pageHeight;
+
+      while (heightLeft >= 0) {
+        position = heightLeft - imgHeight;
+        pdf.addPage();
+        pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+        heightLeft -= pageHeight;
+      }
+
+      pdf.save('report.pdf');
+    });
   }
 
 

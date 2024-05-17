@@ -17,8 +17,8 @@
               <option value="5">Loop</option>
             </select>
           </div>
-          <a href="javascript:" class="btn btn-primary ms-2" (click)="generatePDF()">Download PDF <ng-icon class="ms-3"
-              name="heroArrowLongRight"></ng-icon></a>
+          <a *ngIf="planid === '500' || planid === '1200'" href="javascript:" class="btn btn-primary ms-2"
+            (click)="generatePDF()">Download PDF <ng-icon class="ms-3" name="heroArrowLongRight"></ng-icon></a>
           <a *ngIf="planid === '500' || planid === '1200'" href="javascript:" class="btn btn-primary ms-2"
             (click)="generateCSV()">Download CSV <ng-icon class="ms-3" name="heroArrowLongRight"></ng-icon></a>
 
@@ -27,7 +27,7 @@
       </div>
     </div>
 
-    <div class="Report-question-list">
+    <div class="Report-question-list" id="content" #content>
       <ol>
         <li *ngFor="let item of surveyReportById; let i = index">
           <figcaption>
