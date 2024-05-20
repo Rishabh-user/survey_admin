@@ -26,7 +26,7 @@
 
             </div>
 
-            <div class="common-ques">
+            <div class="common-ques" [class.disabled-link]="totalItemsCount == 20 || totalItemsCount == 50">
                 <a href="javascript:void(0);" (click)="openLg(content)">
                     <figure><img [src]="baseUrl + '/assets/images/icons/Add-new-question.png'" width="30" height="30" />
                     </figure>
@@ -58,7 +58,7 @@
                 </div>
             </div>
 
-            <div class="common-ques">
+            <div class="common-ques" [class.disabled-link]="totalItemsCount == 20 || totalItemsCount == 50">
                 <a href="javascript:void(0);" (click)="openGenric(genricQuestion)">
                     <figure><img [src]="baseUrl + '/assets/images/icons/Add-new-question.png'" width="30" height="30" />
                     </figure>
@@ -101,7 +101,7 @@
                 </a>
             </div>
             <div *ngIf="planid == 500" class="mt-2">
-                This feature is not available for this plan. please upgrade your plan. <a routerLink="/payment">click
+                This feature is not available for this plan. please upgrade your plan. <a routerLink="/payment">Click
                     here</a>
             </div>
         </div>
@@ -128,7 +128,7 @@
                 </div>
             </div>
 
-            <div class="common-ques">
+            <div class="common-ques" [class.disabled-link]="totalItemsCount == 20 || totalItemsCount == 50">
                 <a routerLink="javascript:" (click)="toggleDivVisibility();getRandomization();getSurveyLooping()"
                     [class.active]='isActive || isDivVisible'>
                     <figure><img [src]="baseUrl + '/assets/images/icons/Add-new-logic.png'" width="30" height="30" />
@@ -159,7 +159,7 @@
                     </div>
                 </div>
             </div>
-            <div class="common-ques">
+            <div class="common-ques" [class.disabled-link]="totalItemsCount == 20 || totalItemsCount == 50">
                 <a routerLink="javascript:" (click)="onGenericQuestionClick('SECLSM')">
                     <figure><img [src]="baseUrl + '/assets/images/icons/Add-new-logic.png'" width="30" height="30" />
                     </figure>
@@ -199,7 +199,7 @@
                 </a>
             </div>
             <div *ngIf="planid == 500" class="mt-2">
-                This feature is not available for this plan. please upgrade your plan. <a routerLink="/payment">click
+                This feature is not available for this plan. please upgrade your plan. <a routerLink="/payment">Click
                     here</a>
             </div>
 
@@ -502,9 +502,10 @@
 
 
                                 </div>
-                                <div *ngIf="planid =='500' && question?.isLogicShow">
+                                <div *ngIf="planid =='500' && question?.isLogicShow" class="alert alert-danger"
+                                    role="alert">
                                     <p> This feature is not available for this plan. please upgrade your plan. <a
-                                            routerLink="/payment">click
+                                            routerLink="/payment">Click
                                             here</a></p>
                                 </div>
                                 <div ngClass="pt-4" *ngIf="planid != '500' && question.isLogicShow"

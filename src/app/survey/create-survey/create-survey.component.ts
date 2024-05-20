@@ -2170,6 +2170,12 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
     );
   }
 
+  // purchaseQuesLimit(){
+  //   if(this.totalItemsCount === 20 && this.planid == 500){
+  //         this.utils.showError("")
+  //   }
+  // }
+
 
 
 
