@@ -573,8 +573,9 @@
 
                                                     <div ngClass="logic-ques"
                                                         *ngFor="let logicEntry of logicEntriesPerQuestion[i]; let j = index">
-
+                                                    
                                                         <div class="border rounded p-3 mb-4">
+                                                            <!-- <p>{{ logicEntry | json }}</p> -->
                                                             <h5>Logic {{j+1}}</h5>
                                                             <div class="branching-quest-clone" #cloneSection>
                                                                 <div class="">

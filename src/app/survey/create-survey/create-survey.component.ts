@@ -1183,24 +1183,25 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
 
   // }
   createLogic(questionId: any, logicEntries: any[]): void {
+    console.log('logicEntries:', logicEntries);
     let delayCounter = 0;
     let sort = 0;
 
     for (const logicEntry of logicEntries) {
-      setTimeout(() => {
+      console.log('logicEntry',logicEntry);
+      
 
         this.createSingleLogicEntry(questionId, logicEntry, sort);
         sort = sort + 1;
-      }, delayCounter * 1000); // Increase the delay by multiplying with the index
-
+      
       delayCounter++;
     }
   }
 
   createSingleLogicEntry(questionId: any, logicEntry: any, sort: any): void {
     this.createLogicCount++;
-    alert(sort);
-
+    //alert(sort);
+    console.log('Inside logicEntry',logicEntry)
     const thanTermValue = logicEntry.thanExpected !== null ? logicEntry.thanExpected : 0;
     const elseTermValue = logicEntry.elseExpected !== null ? logicEntry.elseExpected : 0;
 
@@ -1282,7 +1283,7 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
     }
 
 
-    setTimeout(() => {
+    //setTimeout(() => {
       if (this.questionLogic.id > 0) {
         this.surveyservice.updateLogic(this.questionLogic).subscribe(
           response => {
@@ -1307,7 +1308,7 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
           }
         );
       }
-    }, 1000);
+    //}, 1000);
   }
 
   isRandomizationChecked: boolean = false;
