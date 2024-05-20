@@ -130,9 +130,9 @@ export class PaymentComponent {
       name: 'Scrip8',
       key: 'rzp_test_Ncll0VDPCO6Ffq',
       prefill: {
-        name: 'testing',
-        email: 'test@gmail.com',
-        phone: '9898989898'
+        // name: 'testing',
+        // email: 'test@gmail.com',
+        // phone: '9898989898'
       },
       theme: {
         color: '#f05e16'
