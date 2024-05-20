@@ -7,6 +7,8 @@ export const environment = {
     siteKey: '6LeBkKoUAAAAAMRcP2yPpPCpbDP-TCEYj7f0IhVd',
   },
   // baseURL: '/manage'
-  baseURL: ''
+  baseURL: '',
+  //mainURL: 'https://mobile.angular.opinionest.com/',
+  mainURL: 'http://localhost:4201/'
 
 }

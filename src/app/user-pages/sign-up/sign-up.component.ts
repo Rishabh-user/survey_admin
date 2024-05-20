@@ -15,7 +15,7 @@ declare var Razorpay: any;
 })
 export class SignUpComponent {
   baseUrl = '';
-
+  mainURL = ''
   showTooltip: { [key: string]: boolean } = {};
   userId: any;
   location: any;
@@ -39,6 +39,7 @@ export class SignUpComponent {
   constructor(private util: UtilsService, private httpClient: HttpClient, private visibilityService: DataService, private fb: FormBuilder, private authService: AuthService, private router: Router, private route: ActivatedRoute, private utility: UtilsService) {
     visibilityService.articleVisible.next(false);
     this.baseUrl = environment.baseURL;
+    this.mainURL = environment.mainURL;
   }
   organizationId: any
 

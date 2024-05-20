@@ -72,7 +72,8 @@ export class ViewComponent {
     console.log("wertyuiop", this.graphtypevalue)
     this.createCharts();
   }
-  chart: any
+  defaultchart: any
+  updatedchat: any
   createCharts(): void {
 
     if (this.surveyReportById.length === 0) {
@@ -106,7 +107,7 @@ export class ViewComponent {
         }));
 
 
-      this.chart = new Chart(ctx, {
+      this.defaultchart = new Chart(ctx, {
         type: 'bar',
         data: {
           labels: item.responsOptions.map(option => option.option), // Set options as labels for x-axis
@@ -219,7 +220,7 @@ export class ViewComponent {
 
 
   updatechart(chartindex: any, ques: number): void {
-
+    this.defaultchart.destroy();
 
     this.surveyReportById.forEach((question, index) => {
 
@@ -252,7 +253,7 @@ export class ViewComponent {
           }));
 
 
-        this.chart = new Chart(ctx, {
+        this.updatedchat = new Chart(ctx, {
 
           type: 'doughnut',
           data: {

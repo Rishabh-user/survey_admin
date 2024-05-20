@@ -185,6 +185,7 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
   checkgenerictype: any
   logicscount: any
   openendedtype: any
+  mainURL = ''
 
   constructor(
     private visibilityService: DataService,
@@ -200,6 +201,7 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
     private utils: UtilsService
   ) {
     this.baseUrl = environment.baseURL;
+    this.mainURL = environment.mainURL
     this.router.events.subscribe((event) => {
       if (event instanceof NavigationEnd) {
         const shouldTriggerToggle = this.route.snapshot.data['triggerToggle'];

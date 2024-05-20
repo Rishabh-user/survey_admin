@@ -145,10 +145,10 @@ export class QuotaManagementComponent {
         option.quotaQuestionId = questionId;
         option.userCount = usercount;
 
-        if(_reminder < (2* option.userCount)){
+        if (_reminder < (2 * option.userCount)) {
           option.userCount = _reminder;
-        }else{
-          _reminder = _reminder -usercount;
+        } else {
+          _reminder = _reminder - usercount;
         }
         this.surveyQuotaJson.questionDto[index].optionsDto.push(option);
       });
@@ -244,10 +244,13 @@ export class QuotaManagementComponent {
   genericlist: any[] = [];
   optionlist: any[] = [];
   questions: any[] = []
-  pageSize: number = 10;
+  pageSize: number = 100;
   pageNumber: number = 1
   surveycount: number;
   totalsum: number[] = [];
+  allquestionList: any
+
+
 
   GetSurveyDetails() {
     this.questionList = '';
@@ -604,7 +607,7 @@ export class QuotaManagementComponent {
     this.manageQuota();
   }
 
-  onDeleteQuota(){
+  onDeleteQuota() {
     this.surveyservice.deleteQuota(this.surveyQuotaJson.quotaId).subscribe({
       next: (response: any) => {
         this.getQuotaBySurveyId();

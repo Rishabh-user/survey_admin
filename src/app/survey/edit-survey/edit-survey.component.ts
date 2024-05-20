@@ -813,6 +813,7 @@ export class EditSurveyComponent {
 
 
   onCreateGroup() {
+    debugger
     let id = 1;
     if (this.groups.length > 0) {
       let lastIndex = this.groups.length - 1;
@@ -828,6 +829,7 @@ export class EditSurveyComponent {
 
     this.groups.push(newGroup);
 
+    debugger
   }
 
   onDeleteGroup(index: number) {
