@@ -163,8 +163,7 @@ export class SignUpComponent {
     const otp = this.verificationForm.get('email_otp')?.value;
     const captchertoken = this.verificationForm.get('captchertoken')?.value
 
-    console.log("otp", otp)
-    console.log("cap", captchertoken)
+
 
     if (this.verificationForm.valid) {
       const returnUrl = this.route.snapshot.queryParamMap.get('returnUrl') || '/dashboard';
@@ -174,10 +173,10 @@ export class SignUpComponent {
         captcha: captchertoken
       }
 
-      console.log(dataToSend)
+
       this.authService.verifyEmail(dataToSend).subscribe(
         (response) => {
-          console.log('API Response:', response);
+
           const token = response;
           localStorage.setItem('authToken', token);
           if (skipClicked) {

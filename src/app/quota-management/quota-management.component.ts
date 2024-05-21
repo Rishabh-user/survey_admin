@@ -86,14 +86,18 @@ export class QuotaManagementComponent {
         console.log('Survey data is undefined or null.');
       }
     });
+
+    console.log("step1", this.questionList)
     this.GetSurveyDetails();
+    console.log("step2", this.questionList)
     this.getQuotaBySurveyId();
+    console.log("step3", this.questionList)
     this.quotaById();
   }
   showCountError: boolean = false;
 
   showQuotas() {
-    if (this.surveycount <= 0 || isNaN(this.surveycount)) {
+    if (this.surveyQuotaJson.totalUsers < 0 || isNaN(this.surveyQuotaJson.totalUsers)) {
       this.showCountError = true;
       return;
     }
@@ -130,7 +134,9 @@ export class QuotaManagementComponent {
 
 
   showQuestionQptions(index: number, questionId: any) {
+
     const question = this.questionList.questions.filter((x: any) => x.id == questionId)[0];
+
     if (question) {
       this.surveyQuotaJson.questionDto[index].optionsDto = [];
       //debugger;
@@ -231,16 +237,25 @@ export class QuotaManagementComponent {
   }
   // Show and hide Census/Custom dive
   activeIndex: number = 0; // Initially set to 0 for the first item
-  items: string[] = ['Gender', 'Age', 'Region']; // Array of dynamic items
+  items: string[] = []; // Array of dynamic items
+  activeIndices: number[] = [];
   toggleActive(index: number) {
-    this.activeIndex = index;
+    // this.activeIndex = index;
+    const i = this.activeIndices.indexOf(index);
+    if (i > -1) {
+      // If the index is already in the array, remove it (deselect)
+      this.activeIndices.splice(i, 1);
+    } else {
+      // If the index is not in the array, add it (select)
+      this.activeIndices.push(index);
+    }
   }
 
 
 
   // question api
 
-  questionList: any;
+  questionList: any = '';
   genericlist: any[] = [];
   optionlist: any[] = [];
   questions: any[] = []
@@ -253,10 +268,10 @@ export class QuotaManagementComponent {
 
 
   GetSurveyDetails() {
-    this.questionList = '';
+
     this.surveyservice.getSurveyDetailsById(this.pageNumber, this.pageSize, this.surveyId).subscribe((data: any) => {
       this.questionList = data;
-      console.log("questionList", this.questionList);
+      console.log("gg  questionList", this.questionList);
 
       this.questionList.questions.forEach((question: any) => {
         if (question.genericType) {
@@ -264,7 +279,9 @@ export class QuotaManagementComponent {
         }
         console.log("qwerty", this.genericlist)
       });
+      this.questionList.questions.forEach((question: any) => {
 
+      });
       if (this.questionList && Array.isArray(this.questionList.questions)) {
         this.questionList.questions.forEach((question: any) => {
           if (question.options && Array.isArray(question.options)) {
@@ -275,6 +292,8 @@ export class QuotaManagementComponent {
         });
         console.log("optioneee", this.optionlist);
       }
+
+      this.getQuotaBySurveyId();
 
     });
   }
@@ -526,13 +545,37 @@ export class QuotaManagementComponent {
   totalUsers: any;
   questionDto: any;
   quotaid: any
+  allFilteredQuestions = [];
+  questionjson: QuestionDto
   getQuotaBySurveyId() {
-
+    console.log("hh", this.questionList);
     this.surveyservice.getQuotaBySurveyId(this.surveyId).subscribe({
       next: (data: any) => {
         this.isQuotasVisible = true;
 
         this.surveyQuotaJson = data as QuotaData;
+
+        data.questionDto.forEach((quesid: any) => {
+          let selectedquesid = new QuestionDto();
+          selectedquesid.questionId = quesid.questionId;
+
+          console.log("aa", selectedquesid.questionId)
+
+          let filteredQuestions = []
+
+          filteredQuestions = this.questionList.questions.filter((question: any) =>
+            question.id == selectedquesid.questionId
+          );
+
+          console.log("Filtered Questiongg:", filteredQuestions);
+
+          filteredQuestions.forEach((filteredQuestion: any) => {
+
+            console.log("Filtered Question:", filteredQuestion.question);
+            this.items.push(filteredQuestion.question);
+          });
+        });
+
         this.quotaid = data.quotaId
         console.log("Quotas:", this.quotas);
       },
@@ -617,5 +660,9 @@ export class QuotaManagementComponent {
       }
     });
 
+  }
+
+  reset() {
+    this.surveyQuotaJson.totalUsers = 0
   }
 }

@@ -92,6 +92,7 @@ export class PaymentComponent {
   apiUrl = environment.apiUrl;
 
   submitForm(): void {
+
     if (!this.validateSurvey()) {
       this.util.showError('Please fill all required fields.');
       return;
@@ -115,6 +116,7 @@ export class PaymentComponent {
     }, error => {
       console.error('Error occurred:', error);
     });
+
   }
 
   postAmount(formData: any) {

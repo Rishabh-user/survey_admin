@@ -52,7 +52,7 @@
                 <div *ngIf="showCountError" class="text-danger">Please enter a valid survey count.</div>
             </div>
             <div class="col-1 text-end">
-                <button type="button" class="btn btn-primary w-100">Reset</button>
+                <button type="button" class="btn btn-primary w-100" (click)="reset()">Reset</button>
             </div>
         </div>
     </div>
@@ -80,8 +80,8 @@
                     <mat-select [(ngModel)]="question.questionId"
                         (ngModelChange)="showQuestionQptions(i,question.questionId);" #selectElement>
                         <mat-option [disabled]="true" [value]="0"> Select Question</mat-option>
-                        <mat-option *ngFor="let ques of questionList.questions" [value]="ques.id">
-                            {{ ques.question }}
+                        <mat-option *ngFor="let ques of questionList.questions;let i=index" [value]="ques.id">
+                            Q-{{i+1}} {{ ques.question }}
                         </mat-option>
                     </mat-select>
                 </mat-form-field>
@@ -89,10 +89,11 @@
                 <!-- <div class="quotas" *ngIf="question.showQuotasDiv"> -->
                 <div class="quotas" *ngIf="question.questionId != 0">
                     <h5>Add Distribution</h5>
-                    <button type="button" class="btn btn-outline-primary " (click)="onDeleteQuestion(i)">Delete</button>
+
                     <div class="add-distribution">
                         <div class="question-type">
-                            <h6><span>{{getQuestionDetail(question.questionId,
+                            <h6 *ngIf="getQuestionDetail(question.questionId,
+                            questionList.questions)?.genericType"><span>{{getQuestionDetail(question.questionId,
                                     questionList.questions)?.genericType}}</span></h6>
                             <div class="implement-quota">
                                 <!-- <span [class.active]="!censusActive[i] && !customActive[i]"
@@ -115,13 +116,20 @@
                         <div class="display:none;" *ngIf="question.type =='census' || question.type =='custom'">
                             <ul class="question-options">
                                 <li *ngFor="let options of question?.optionsDto; let j = index">
-                                    <span>{{
-                                        getOptionDetail(options?.optionId,question.questionId,questionList.questions)?.option
-                                        }}</span>
-                                    <input type="number" min="0" class="form-control" [(ngModel)]="options.userCount"
-                                        [disabled]="question.type !='custom'">
+                                    <ng-container
+                                        *ngIf="getOptionDetail(options?.optionId,question.questionId,questionList.questions)?.option; else noOption">
+                                        <span>{{
+                                            getOptionDetail(options?.optionId,question.questionId,questionList.questions)?.option
+                                            }}</span>
+                                        <input type="number" min="0" class="form-control"
+                                            [(ngModel)]="options.userCount" [disabled]="question.type !='custom'">
+                                    </ng-container>
+
                                 </li>
                             </ul>
+                            <ng-template #noOption>
+                                <p>Option not available.</p>
+                            </ng-template>
                             <div class="total-count">
                                 <button type="button" class="btn btn-outline-primary "
                                     (click)="open(contentInterlock)"><ng-icon name="heroLink"></ng-icon></button>
@@ -129,6 +137,8 @@
                                 <div class="mt-4 d-flex gap-3 align-items-center">
                                     <p class="mb-0"><strong>Total : </strong> <span>
                                             {{getTotalSum(question?.optionsDto)}}</span></p>
+                                    <button type="button" class="btn btn-outline-primary "
+                                        (click)="onDeleteQuestion(i)">Delete</button>
                                     <button type="button" class="btn btn-primary " (click)="manageQuota()">Save</button>
                                     <!-- <button type="button" class="btn btn-success" (click)="updateQuota(i)">Update</button> -->
                                 </div>
@@ -185,7 +195,8 @@
     </div>
     <div class="modal-body">
         <ul class="interlock-quota">
-            <li *ngFor="let item of items; let i = index" [class.active]="activeIndex === i" (click)="toggleActive(i)">
+            <li *ngFor="let item of items; let i = index" [class.active]="activeIndices.includes(i)"
+                (click)="toggleActive(i)">
                 {{ item }}</li>
         </ul>
     </div>

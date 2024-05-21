@@ -141,10 +141,10 @@ export class HeaderComponent {
       this.surveyService.getNotification().subscribe({
         next: (resp: any) => {
           this.notificationdata = resp;
-          console.log("noti", resp)
+
           this.notificationdata.forEach((item: any) => {
             this.notificationmessage = item.massage;
-            console.log("notificationmessage", this.notificationmessage)
+
           })
 
           let count = 0;

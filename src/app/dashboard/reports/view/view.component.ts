@@ -33,11 +33,19 @@ export class ViewComponent {
 
   @ViewChild('content') content: ElementRef;
   surveyId: any;
-  reportsurveyid: any
+  reportsurveyid: any;
   surveyReport: any;
-  planid: any
+  planid: any;
   surveyReportById: SurveyQuestion[] = [];
-  constructor(public themeService: SurveyService, private route: ActivatedRoute, private crypto: CryptoService, private utils: UtilsService) {
+  defaultchart: any[] = [];
+  graphtypevalue: any;
+
+  constructor(
+    public themeService: SurveyService,
+    private route: ActivatedRoute,
+    private crypto: CryptoService,
+    private utils: UtilsService
+  ) {
     this.route.paramMap.subscribe(params => {
       let _queryData = params.get('param1');
       this.surveyId = _queryData;
@@ -49,33 +57,20 @@ export class ViewComponent {
     })
     Chart.register(...registerables);
   }
-  chartType: string = 'line';
-  validChartTypes: { [key: string]: ChartType } = {
-    line: 'line',
-    bar: 'bar',
-    doughnut: 'doughnut',
-    radar: 'radar',
-  };
-
-  charts: Chart[] = [];
 
   ngOnInit(): void {
     this.planid = this.utils.getPlanId();
     console.log("planid", this.planid)
     this.getSurveyReportBySurveyId();
-
   }
 
-  graphtypevalue: any
   graphType(event: any) {
     this.graphtypevalue = event.target.value;
-    console.log("wertyuiop", this.graphtypevalue)
+    console.log("graphtypevalue", this.graphtypevalue)
     this.createCharts();
   }
-  defaultchart: any
-  updatedchat: any
-  createCharts(): void {
 
+  createCharts(): void {
     if (this.surveyReportById.length === 0) {
       console.error("Survey report data is empty.");
       return;
@@ -85,32 +80,44 @@ export class ViewComponent {
       const canvasId = `canvas${index + 1}`;
       const canvas = document.getElementById(canvasId) as HTMLCanvasElement | null;
 
+      if (this.defaultchart[index]) {
+        this.defaultchart[index].destroy();
+      }
+
       if (!canvas) {
         console.error(`Canvas element with ID ${canvasId} not found.`);
         return;
       }
 
       const ctx = canvas.getContext('2d');
-
       if (!ctx) {
         console.error(`Failed to get 2D context for canvas element with ID ${canvasId}.`);
         return;
       }
 
-
       const datasets = item.responsOptions
-        .filter(option => option.option !== null) // Remove options with null values
+        .filter(option => option.option !== null)
         .map(option => ({
           label: option.option,
-          data: [option.count], // Use count as the data for the bar chart
-          backgroundColor: this.getRandomColor() // Generate a random color for each bar
+          data: [option.count],
+          backgroundColor: this.getRandomColor()
         }));
 
+      let chartType: ChartType = 'bar';
+      if (this.graphtypevalue == 1) {
+        chartType = 'doughnut';
+      } else if (this.graphtypevalue == 2) {
+        chartType = 'bar';
+      } else if (this.graphtypevalue == 3) {
+        chartType = 'line';
+      } else if (this.graphtypevalue == 4) {
+        chartType = 'radar';
+      }
 
-      this.defaultchart = new Chart(ctx, {
-        type: 'bar',
+      this.defaultchart[index] = new Chart(ctx, {
+        type: chartType,
         data: {
-          labels: item.responsOptions.map(option => option.option), // Set options as labels for x-axis
+          labels: item.responsOptions.map(option => option.option),
           datasets: datasets
         },
         options: {
@@ -129,10 +136,9 @@ export class ViewComponent {
           }
         }
       });
-      //this.chart.destroy()
-
     });
   }
+
   getRandomColor(): string {
     const letters = '0123456789ABCDEF';
     let color = '#';
@@ -142,13 +148,11 @@ export class ViewComponent {
     return color;
   }
 
-  surveyname: any[] = []
+  surveyname: any[] = [];
   getSurveyReportBySurveyId() {
     if (this.surveyId) {
       this.themeService.getSurveyReportBySurveyId(this.surveyId).subscribe((data: any) => {
         this.surveyReportById = data;
-        //this.createCharts(); // Call createCharts() after data is fetched
-
         this.surveyReportById.forEach((item: any) => {
           this.surveyname = item.surveyName
         })
@@ -160,14 +164,15 @@ export class ViewComponent {
       console.error("Survey ID is null or undefined.");
     }
   }
+
   // Function to generate CSV data
   generateCSV(): void {
     const csvContent = this.convertToCSV(this.surveyReportById);
     this.downloadCSV(csvContent, 'Survey_Report.csv');
   }
+
   convertToCSV(data: any[]): string {
     const headerFields = ['Survey ID', 'Survey Name', 'Question ID', 'Question', 'Option', 'Answer', 'Rating', 'Survey Attempt ID', 'Count'];
-
     let csvContent = headerFields.join(',') + '\n';
     data.forEach(item => {
       item.responsOptions.forEach((option: { option: any; answer: any; rating: any; surveyAttemptId: any; count: any; }) => {
@@ -185,7 +190,6 @@ export class ViewComponent {
         csvContent += formattedRow + '\n';
       });
     });
-
     return csvContent;
   }
 
@@ -207,84 +211,18 @@ export class ViewComponent {
       }
     }
   }
+
   quesgraphtypevalue: string[] = [];
   questiongraphType(event: Event, ques: number): void {
-
     const target = event.target as HTMLInputElement;
     alert(target.value)
     this.quesgraphtypevalue[ques] = target.value;
-    console.log("quess", this.quesgraphtypevalue[ques]);
-
-    this.updatechart(this.quesgraphtypevalue[ques], ques)
-  }
-
-
-  updatechart(chartindex: any, ques: number): void {
-    this.defaultchart.destroy();
-
-    this.surveyReportById.forEach((question, index) => {
-
-      if (question.questionId == ques) {
-
-        const canvasId = `canvas${chartindex}`;
-        const canvas = document.getElementById(canvasId) as HTMLCanvasElement | null;
-        console.log(chartindex);
-        if (!canvas) {
-          console.error(`Canvas element with ID ${canvasId} not found.`);
-          return;
-        }
-
-        const ctx = canvas.getContext('2d');
-
-        if (!ctx) {
-          console.error(`Failed to get 2D context for canvas element with ID ${canvasId}.`);
-          return;
-        }
-        console.log("ques", ques)
-        console.log("this.surveyReportById[ques]", this.surveyReportById)
-
-        const datasets = question.responsOptions
-          .filter(option => option.option !== null)
-          .map(option => ({
-            label: option.option,
-            data: [option.count],
-            backgroundColor: this.getRandomColor(),
-
-          }));
-
-
-        this.updatedchat = new Chart(ctx, {
-
-          type: 'doughnut',
-          data: {
-            labels: question.responsOptions.map(option => option.option),
-            datasets: datasets
-          },
-          options: {
-            indexAxis: 'x',
-            scales: {
-              x: {
-                display: false, // Display the x-axis
-                title: {
-                  display: true,
-                  text: 'Question Options' // Add a title to the x-axis if needed
-                }
-              },
-              y: {
-                beginAtZero: true
-              }
-            }
-          }
-        });
-      }
-
-    });
+    console.log("quesgraphtypevalue", this.quesgraphtypevalue[ques]);
+    // this.updatechart(this.quesgraphtypevalue[ques], ques)
   }
 
   generatePDF(): void {
-
     let content = this.content.nativeElement;
-
     html2canvas(content).then(canvas => {
       const imgData = canvas.toDataURL('image/png');
       const pdf = new jsPDF('p', 'mm', 'a4');
@@ -308,5 +246,65 @@ export class ViewComponent {
     });
   }
 
+  // updatechart(chartindex: any, ques: number): void {
+  //   this.defaultchart.destroy();
 
+  //   this.surveyReportById.forEach((question, index) => {
+
+  //     if (question.questionId == ques) {
+
+  //       const canvasId = `canvas${chartindex}`;
+  //       const canvas = document.getElementById(canvasId) as HTMLCanvasElement | null;
+  //       console.log(chartindex);
+  //       if (!canvas) {
+  //         console.error(`Canvas element with ID ${canvasId} not found.`);
+  //         return;
+  //       }
+
+  //       const ctx = canvas.getContext('2d');
+
+  //       if (!ctx) {
+  //         console.error(`Failed to get 2D context for canvas element with ID ${canvasId}.`);
+  //         return;
+  //       }
+  //       console.log("ques", ques)
+  //       console.log("this.surveyReportById[ques]", this.surveyReportById)
+
+  //       const datasets = question.responsOptions
+  //         .filter(option => option.option !== null)
+  //         .map(option => ({
+  //           label: option.option,
+  //           data: [option.count],
+  //           backgroundColor: this.getRandomColor(),
+
+  //         }));
+
+
+  //       this.updatedchat = new Chart(ctx, {
+
+  //         type: 'doughnut',
+  //         data: {
+  //           labels: question.responsOptions.map(option => option.option),
+  //           datasets: datasets
+  //         },
+  //         options: {
+  //           indexAxis: 'x',
+  //           scales: {
+  //             x: {
+  //               display: false, // Display the x-axis
+  //               title: {
+  //                 display: true,
+  //                 text: 'Question Options' // Add a title to the x-axis if needed
+  //               }
+  //             },
+  //             y: {
+  //               beginAtZero: true
+  //             }
+  //           }
+  //         }
+  //       });
+  //     }
+
+  //   });
+  // }
 }

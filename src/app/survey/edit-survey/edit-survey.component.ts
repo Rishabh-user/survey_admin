@@ -1054,9 +1054,12 @@ export class EditSurveyComponent {
 
   onQuestionTypeClickchoice(ques: any) {
     // this.question.question = `${ques.type}`;
+
     this.question.questionTypeName = `${ques.type}`;
     this.questionTypeId = ques.id;
+    this.question.questionTypeId = ques.id
     this.optionsArr1 = [];
+
 
     if (this.question.questionTypeName !== 'Rating Scale' && this.question.questionTypeName !== 'Boolean' && this.question.questionTypeName !== 'Image Selection' && this.question.questionTypeName !== 'NPS' && this.question.questionTypeName !== 'Open Ended' && this.question.questionTypeName !== 'Slider Scale') {
       this.hanldeAddOptionClick();

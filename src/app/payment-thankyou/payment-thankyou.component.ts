@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-payment-thankyou',
@@ -6,5 +7,11 @@ import { Component } from '@angular/core';
   styleUrls: ['./payment-thankyou.component.css']
 })
 export class PaymentThankyouComponent {
+
+  baseUrl = '';
+
+  constructor() {
+    this.baseUrl = environment.baseURL
+  }
 
 }

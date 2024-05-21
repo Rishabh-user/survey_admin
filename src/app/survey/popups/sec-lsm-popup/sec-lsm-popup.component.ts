@@ -112,14 +112,14 @@ export class SecLsmPopupComponent {
       currentQuestion.genericTypeId = this.typeid;
 
       currentQuestion.options = currentQuestion.options.filter(option => option.selected);
-      console.log("currentQuestion.options", currentQuestion.options)
+
       currentQuestion.options.forEach(option => {
         option.createdDate = currentDateTime;
         option.modifiedDate = currentDateTime;
       });
 
       const selectedOptions = currentQuestion.options.filter(option => option.selected);
-      console.log("selectedOptions", selectedOptions)
+
 
       const isAnyOptionNonUnique = (new Set(selectedOptions.map(option => option.option.trim()))).size !== selectedOptions.length;
       if (isAnyOptionNonUnique) {

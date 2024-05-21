@@ -53,7 +53,6 @@ export class DashboardComponent {
 
     this.auth.userData$.subscribe((user: User) => {
       this.userId = user.userId;
-      console.log("dashboard userId", this.userId)
     });
 
 
@@ -101,7 +100,6 @@ export class DashboardComponent {
         this.isPaid = data.isPaid;
         this.orgCreatedDate = new Date(data.orgCreatedDate);
         if (isNaN(this.orgCreatedDate.getTime())) {
-          console.error("Invalid orgCreatedDate:", data.orgCreatedDate);
           return;
         }
         const trialPeriodDays = 7;
