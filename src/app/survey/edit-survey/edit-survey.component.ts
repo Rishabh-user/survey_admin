@@ -524,6 +524,10 @@ export class EditSurveyComponent {
       newOption.option = "Other (Please specify)";
       newOption.isFixed = true
       this.question.openEndedType = "text"
+    } else if (type == 'prefernottoanswer') {
+      newOption.option = "Prefer not to Answer";
+      newOption.isFixed = true
+      this.question.openEndedType = "text"
     }
     else {
       newOption.option = "";
