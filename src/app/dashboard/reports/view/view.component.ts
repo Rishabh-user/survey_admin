@@ -60,7 +60,6 @@ export class ViewComponent {
 
   ngOnInit(): void {
     this.planid = this.utils.getPlanId();
-    console.log("planid", this.planid)
     this.getSurveyReportBySurveyId();
   }
 

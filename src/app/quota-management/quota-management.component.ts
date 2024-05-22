@@ -105,8 +105,10 @@ export class QuotaManagementComponent {
     this.showCountError = false;
     this.isQuotasVisible = true;
   }
-  open(contentInterlock: any) {
-    this.modalService.open(contentInterlock)
+  open(contentInterlock: any, index: number) {
+    // this.modalService.open(contentInterlock)
+    const modalRef = this.modalService.open(contentInterlock);
+    modalRef.componentInstance.itemindex = index;
   }
   // Show add quotas
   quotas: any[] = [{ selectedQuestion: 'Select Question', showQuotasDiv: false }];
@@ -237,7 +239,7 @@ export class QuotaManagementComponent {
   }
   // Show and hide Census/Custom dive
   activeIndex: number = 0; // Initially set to 0 for the first item
-  items: string[] = []; // Array of dynamic items
+  items: string[] = [];
   activeIndices: number[] = [];
   toggleActive(index: number) {
     // this.activeIndex = index;
@@ -573,6 +575,7 @@ export class QuotaManagementComponent {
 
             console.log("Filtered Question:", filteredQuestion.question);
             this.items.push(filteredQuestion.question);
+            console.log("items", this.items)
           });
         });
 

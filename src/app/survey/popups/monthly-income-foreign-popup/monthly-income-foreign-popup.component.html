@@ -1,0 +1,47 @@
+<div class="modal right-aligned-modal fade" bsModal #MonthlyIncomeModalforeign="bs-modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-fullscreen">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Please select your Monthly Income</h4>
+                <button type="button" class="btn-close" (click)="close()"></button>
+            </div>
+            <div class="modal-body">
+                <form *ngIf="questions && questions.length > 0">
+                    <div *ngFor="let question of questions; let i = index; trackBy: trackByFn">
+                        <div class="mb-4">
+                            <label for="surveyname" class="form-label">Enter Your Question</label>
+                            <div class="input-group">
+                                <input type="text" class="form-control" [ngModel]="question.question"
+                                    (ngModelChange)="question.question = $event" id="{{ 'question_' + i }}"
+                                    name="{{ 'question_' + i }}" readonly />
+                            </div>
+                        </div>
+
+                        <div class="mb-4">
+                            <div class="select-options">
+                                <h5>Select Options</h5>
+                                <a href="javascript:" (click)="selectAllOptions(i)">Select All</a>
+                            </div>
+                            <div class="nccs-option">
+                                <ul>
+                                    <li *ngFor="let option of question.options" class="mb-2">
+                                        <input class="form-check-input me-2" type="checkbox"
+                                            id="{{ 'checkbox_' + question.id + '_' + option.id }}"
+                                            [(ngModel)]="option.selected" [ngModelOptions]="{ standalone: true }"
+                                            aria-label="..." />
+                                        <label class="form-check-label"
+                                            for="{{ 'checkbox_' + question.id + '_' + option.id }}">{{ option.option
+                                            }}</label>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" (click)="continueClicked()" class="btn btn-primary w-100">Continue</button>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1059,6 +1059,7 @@ export class EditSurveyComponent {
     this.questionTypeId = ques.id;
     this.question.questionTypeId = ques.id
     this.optionsArr1 = [];
+    this.optionsArr2 = []
 
 
     if (this.question.questionTypeName !== 'Rating Scale' && this.question.questionTypeName !== 'Boolean' && this.question.questionTypeName !== 'Image Selection' && this.question.questionTypeName !== 'NPS' && this.question.questionTypeName !== 'Open Ended' && this.question.questionTypeName !== 'Slider Scale') {

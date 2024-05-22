@@ -23,6 +23,7 @@ import { environment } from 'src/environments/environment';
 import { MatChipInputEvent } from '@angular/material/chips';
 import { Option } from 'src/app/models/option';
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
+import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 // import { debug } from 'console';
 
 interface LogicQuestion {
@@ -117,6 +118,7 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
   @ViewChild('thanExpectedSelect') thanExpectedSelect: ElementRef;
   @ViewChild('SecLsmModal', { static: true }) secLsmModal!: ModalDirective;
   @ViewChild('OccupationModal', { static: true }) occupationModal!: ModalDirective;
+  @ViewChild('MonthlyIncomeModalforeign', { static: true }) monthlyincomeforeignModal!: ModalDirective;
 
 
   @Output() onSaveEvent = new EventEmitter();
@@ -198,7 +200,8 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
     public themeService: DataService,
     private surveyservice: SurveyService,
     private crypto: CryptoService,
-    private utils: UtilsService
+    private utils: UtilsService,
+    private sanitizer: DomSanitizer
   ) {
     this.baseUrl = environment.baseURL;
     this.mainURL = environment.mainURL
@@ -273,6 +276,8 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
       this.ageModal.show();
     } else if (type === "NCCS") {
       this.nccsModal.show();
+    } else if (type === "Monthly Income") {
+      this.monthlyincomeforeignModal.show();
     } else if (type === "Monthly Income") {
       this.monthlyincomeModal.show();
     } else if (type === "Household Income") {
@@ -1188,12 +1193,12 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
     let sort = 0;
 
     for (const logicEntry of logicEntries) {
-      console.log('logicEntry',logicEntry);
-      
+      console.log('logicEntry', logicEntry);
 
-        this.createSingleLogicEntry(questionId, logicEntry, sort);
-        sort = sort + 1;
-      
+
+      this.createSingleLogicEntry(questionId, logicEntry, sort);
+      sort = sort + 1;
+
       delayCounter++;
     }
   }
@@ -1201,7 +1206,7 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
   createSingleLogicEntry(questionId: any, logicEntry: any, sort: any): void {
     this.createLogicCount++;
     //alert(sort);
-    console.log('Inside logicEntry',logicEntry)
+    console.log('Inside logicEntry', logicEntry)
     const thanTermValue = logicEntry.thanExpected !== null ? logicEntry.thanExpected : 0;
     const elseTermValue = logicEntry.elseExpected !== null ? logicEntry.elseExpected : 0;
 
@@ -1284,30 +1289,30 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
 
 
     //setTimeout(() => {
-      if (this.questionLogic.id > 0) {
-        this.surveyservice.updateLogic(this.questionLogic).subscribe(
-          response => {
+    if (this.questionLogic.id > 0) {
+      this.surveyservice.updateLogic(this.questionLogic).subscribe(
+        response => {
 
-            this.utils.showSuccess('Logic Created Successfully.');
-            // window.location.reload();
-          },
-          error => {
-            console.error('Error occurred while sending POST request:', error);
-            this.utils.showError(error);
-          }
-        );
-      } else {
-        this.surveyservice.createLogic(this.questionLogic).subscribe(
-          response => {
-            this.utils.showSuccess('Logic Created Successfully.');
-            // window.location.reload();
-          },
-          error => {
-            console.error('Error occurred while sending POST request:', error);
-            this.utils.showError(error);
-          }
-        );
-      }
+          this.utils.showSuccess('Logic Created Successfully.');
+          // window.location.reload();
+        },
+        error => {
+          console.error('Error occurred while sending POST request:', error);
+          this.utils.showError(error);
+        }
+      );
+    } else {
+      this.surveyservice.createLogic(this.questionLogic).subscribe(
+        response => {
+          this.utils.showSuccess('Logic Created Successfully.');
+          // window.location.reload();
+        },
+        error => {
+          console.error('Error occurred while sending POST request:', error);
+          this.utils.showError(error);
+        }
+      );
+    }
     //}, 1000);
   }
 
@@ -2169,6 +2174,10 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
 
       }
     );
+  }
+
+  sanitizeHtml(html: string): SafeHtml {
+    return this.sanitizer.bypassSecurityTrustHtml(html);
   }
 
   // purchaseQuesLimit(){

@@ -92,9 +92,11 @@
 
                     <div class="add-distribution">
                         <div class="question-type">
-                            <h6 *ngIf="getQuestionDetail(question.questionId,
+                            <div>
+                                <h6 *ngIf="getQuestionDetail(question.questionId,
                             questionList.questions)?.genericType"><span>{{getQuestionDetail(question.questionId,
-                                    questionList.questions)?.genericType}}</span></h6>
+                                        questionList.questions)?.genericType}}</span></h6>
+                            </div>
                             <div class="implement-quota">
                                 <!-- <span [class.active]="!censusActive[i] && !customActive[i]"
                                     (click)="toggleNone(i)">None</span>
@@ -117,22 +119,18 @@
                             <ul class="question-options">
                                 <li *ngFor="let options of question?.optionsDto; let j = index">
                                     <ng-container
-                                        *ngIf="getOptionDetail(options?.optionId,question.questionId,questionList.questions)?.option; else noOption">
+                                        *ngIf="getOptionDetail(options?.optionId,question.questionId,questionList.questions)?.option">
                                         <span>{{
                                             getOptionDetail(options?.optionId,question.questionId,questionList.questions)?.option
                                             }}</span>
                                         <input type="number" min="0" class="form-control"
                                             [(ngModel)]="options.userCount" [disabled]="question.type !='custom'">
                                     </ng-container>
-
                                 </li>
                             </ul>
-                            <ng-template #noOption>
-                                <p>Option not available.</p>
-                            </ng-template>
                             <div class="total-count">
                                 <button type="button" class="btn btn-outline-primary "
-                                    (click)="open(contentInterlock)"><ng-icon name="heroLink"></ng-icon></button>
+                                    (click)="open(contentInterlock,i)"><ng-icon name="heroLink"></ng-icon></button>
 
                                 <div class="mt-4 d-flex gap-3 align-items-center">
                                     <p class="mb-0"><strong>Total : </strong> <span>
@@ -190,7 +188,7 @@
 </div>
 <ng-template #contentInterlock let-modal>
     <div class="modal-header">
-        <h4 class="modal-title" id="modal-basic-title">Interlock Quota</h4>
+        <h4 class="modal-title" id="modal-basic-title">Interlock Quota </h4>
         <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
     </div>
     <div class="modal-body">
@@ -198,6 +196,7 @@
             <li *ngFor="let item of items; let i = index" [class.active]="activeIndices.includes(i)"
                 (click)="toggleActive(i)">
                 {{ item }}</li>
+
         </ul>
     </div>
     <div class="modal-footer">

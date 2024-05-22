@@ -26,7 +26,8 @@
 
             </div>
 
-            <div class="common-ques" [class.disabled-link]="totalItemsCount == 20 || totalItemsCount == 50">
+            <div class="common-ques"
+                [class.disabled-link]="(totalItemsCount == 20 && planid == '500') || (totalItemsCount == 50 && planid == '1200')">
                 <a href="javascript:void(0);" (click)="openLg(content)">
                     <figure><img [src]="baseUrl + '/assets/images/icons/Add-new-question.png'" width="30" height="30" />
                     </figure>
@@ -58,7 +59,8 @@
                 </div>
             </div>
 
-            <div class="common-ques" [class.disabled-link]="totalItemsCount == 20 || totalItemsCount == 50">
+            <div class="common-ques"
+                [class.disabled-link]="(totalItemsCount == 20 && planid == '500') || (totalItemsCount == 50 && planid == '1200')">
                 <a href="javascript:void(0);" (click)="openGenric(genricQuestion)">
                     <figure><img [src]="baseUrl + '/assets/images/icons/Add-new-question.png'" width="30" height="30" />
                     </figure>
@@ -128,7 +130,8 @@
                 </div>
             </div>
 
-            <div class="common-ques" [class.disabled-link]="totalItemsCount == 20 || totalItemsCount == 50">
+            <div class="common-ques"
+                [class.disabled-link]="(totalItemsCount == 20 && planid == '500') || (totalItemsCount == 50 && planid == '1200')">
                 <a routerLink="javascript:" (click)="toggleDivVisibility();getRandomization();getSurveyLooping()"
                     [class.active]='isActive || isDivVisible'>
                     <figure><img [src]="baseUrl + '/assets/images/icons/Add-new-logic.png'" width="30" height="30" />
@@ -159,7 +162,8 @@
                     </div>
                 </div>
             </div>
-            <div class="common-ques" [class.disabled-link]="totalItemsCount == 20 || totalItemsCount == 50">
+            <div class="common-ques"
+                [class.disabled-link]="(totalItemsCount == 20 && planid == '500') || (totalItemsCount == 50 && planid == '1200')">
                 <a routerLink="javascript:" (click)="onGenericQuestionClick('SECLSM')">
                     <figure><img [src]="baseUrl + '/assets/images/icons/Add-new-logic.png'" width="30" height="30" />
                     </figure>
@@ -390,7 +394,11 @@
                     *ngFor="let question of questions | paginate: { id: 'server', itemsPerPage: pageSize, currentPage: pageNumber, totalItems: totalItemsCount } ;let i=index;">
                     <div class="drag-item">
                         <div [ngClass]="{'ques-header': true, 'screening': question.isScreening}">
-                            <h5 ngClass="mb-0">Q-{{question?.sort}} {{question?.question}}</h5>
+                            <h5 [ngClass]="'mb-0'">
+                                Q-{{question?.sort}}
+                                <div [innerHTML]="sanitizeHtml(question?.question)"></div>
+                            </h5>
+
                             <div class="d-flex align-items-center justify-content-end">
                                 <div class="badge text-bg-primary fw-normal me-2" *ngIf="question?.genericTypeId>0">
                                     <ng-icon class="me-1" name="heroQuestionMarkCircle"></ng-icon>
@@ -573,7 +581,7 @@
 
                                                     <div ngClass="logic-ques"
                                                         *ngFor="let logicEntry of logicEntriesPerQuestion[i]; let j = index">
-                                                    
+
                                                         <div class="border rounded p-3 mb-4">
                                                             <!-- <p>{{ logicEntry | json }}</p> -->
                                                             <h5>Logic {{j+1}}</h5>
@@ -1572,6 +1580,8 @@
 <app-age-popup #AgeModal (onSaveEvent)="refresh()"></app-age-popup>
 <app-nccs-popup #NccsModal (onSaveEvent)="refresh()"></app-nccs-popup>
 <app-monthly-income-popup #MonthlyIncomeModal (onSaveEvent)="refresh()"></app-monthly-income-popup>
+<app-monthly-income-foreign-popup #MonthlyIncomeModalforeign
+    (onSaveEvent)="refresh()"></app-monthly-income-foreign-popup>
 <app-household #HouseholdModal (onSaveEvent)="refresh()"></app-household>
 <app-family-member-popup #FamilyMemberModal (onSaveEvent)="refresh()"></app-family-member-popup>
 <app-no-of-child-popup #NumberOfChildModal (onSaveEvent)="refresh()"></app-no-of-child-popup>
