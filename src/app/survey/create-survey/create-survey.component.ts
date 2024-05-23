@@ -572,6 +572,7 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
     });
   }
 
+
   onQuestionTypeClick(id: any, name: any) {
     this.selectedQuestionType = id;
     this.selectedQuestionTypeName = name;

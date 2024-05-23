@@ -58,6 +58,18 @@ export class ViewComponent {
     Chart.register(...registerables);
   }
 
+  chartType: string = 'line';
+  validChartTypes: { [key: string]: ChartType } = {
+    line: 'line',
+    bar: 'bar',
+    doughnut: 'doughnut',
+    radar: 'radar',
+  };
+
+  charts: Chart[] = [];
+
+
+
   ngOnInit(): void {
     this.planid = this.utils.getPlanId();
     this.getSurveyReportBySurveyId();

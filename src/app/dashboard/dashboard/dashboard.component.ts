@@ -34,7 +34,8 @@ export class DashboardComponent {
   modalRef: NgbModalRef;
   byYear: any;
   reportSurvey: any;
-  surveyReportData: any;
+  // surveyReportData: any;
+  surveyReportData: any[] = [];
   chart: Chart;
   delData: number[];
   holData: number[];
