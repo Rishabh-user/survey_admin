@@ -276,7 +276,7 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
       this.ageModal.show();
     } else if (type === "NCCS") {
       this.nccsModal.show();
-    } else if (type === "Monthly Income") {
+    } else if (type === "Monthly-Income") {
       this.monthlyincomeforeignModal.show();
     } else if (type === "Monthly Income") {
       this.monthlyincomeModal.show();

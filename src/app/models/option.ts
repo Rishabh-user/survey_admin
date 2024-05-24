@@ -18,3 +18,15 @@ export class Option {
 
     ) { }
 }
+
+export class MatrixHeader {
+    constructor( 
+    public id: number=0,
+    public header: string='',
+    public status: string='',
+    public questionId: number = 0,
+    public sort: number=0,
+    public createdDate: string = '',
+    public modifiedDate: string = '',
+    ){}
+}

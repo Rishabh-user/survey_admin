@@ -1,5 +1,5 @@
 import { Logic } from "./logic";
-import { Option } from "./option";
+import { MatrixHeader, Option } from "./option";
 
 export class Question {
     public id: number = 0;
@@ -32,4 +32,5 @@ export class Question {
     public isAlphabet: boolean = false
     public textLimit: number = 0
     public questionSummery: string = ''
+    public matrixHeader: MatrixHeader[]=[]
 }

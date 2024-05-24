@@ -313,6 +313,80 @@
                 </div>
             </li>
             <li>
+                <div ngClass="border-top p-4">
+                    <div ngClass="select-ans-choice mb-5">
+                        <h5>Answer Choice</h5>
+
+                    </div>
+                    <div ngClass="mb-4" cdkDropList (cdkDropListDropped)="onDropOption($event)">
+                        <div class="row g-2 align-items-center mb-3" *ngFor="let option of optionsArr1;let i=index;">
+                            <div class="flex-width">
+                                <input type="text" id="" class="form-control" value="{{i+1}}" readonly />
+                            </div>
+
+
+                            <!-- this -->
+                            
+
+                            <div class="flex-2">
+                                <input id="answer" type="text" name="answer" class="form-control"
+                                    [(ngModel)]="option.option" (blur)="validateSurvey()" />
+                                <div *ngIf="!option.option.trim()" class="text-danger">Option is required.</div>
+                            </div>
+
+
+                            <div class="flex-width text-end" cdkDrag>
+                                <ng-icon name="heroBars3"></ng-icon>
+                            </div>
+                            <div class="flex-width text-end">
+                                <a href="javascript:void(0);" (click)="onDeleteOption('optionArr1',i)">
+                                    <ng-icon name="heroTrash"></ng-icon>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <hr *ngIf="optionsArr2.length>0" />
+                    <div ngClass="mb-4">
+                        <div class="row g-2 align-items-center mb-3" *ngFor="let option of optionsArr2;let i=index;">
+                            <div class="flex-width">
+                                <input type="text" id="" class="form-control" value="{{optionsArr1.length+1}}"
+                                    readonly />
+                            </div>
+
+                            
+                            <div class="flex-2">
+                                <input type="text" disabled id="" class="form-control" [(ngModel)]="option.option" />
+                            </div>
+
+                            <div class="flex-width text-end">
+                                <ng-icon name="heroTrash" (click)="onDeleteOption('optionArr2',i)"></ng-icon>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div ngClass="mb-4">
+                        <div class="row g-2 align-items-center">
+                           
+                            <div class="col-auto">
+                                <div ngClass="new-options">
+                                    <a herf="javascript:void(0);" (click)="hanldeAddOptionClick('other')"><ng-icon
+                                            name="heroPlusCircle"></ng-icon> Other
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="col-auto">
+                                <div ngClass="new-options">
+                                    <a herf="javascript:void(0);" (click)="hanldeAddOptionClick('Optional')"><ng-icon
+                                            name="heroPlusCircle"></ng-icon> Add "No Opinion"
+                                        Option</a>
+                                </div>
+                            </div>
+                            
+                        </div>
+                    </div>
+                </div>
+            </li>
+            <li>
                 <div ngClass="p-4">
                     <div ngClass="ans-group mb-4">
                         <div class="infocircle">
