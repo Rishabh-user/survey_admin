@@ -395,8 +395,8 @@
                     <div class="drag-item">
                         <div [ngClass]="{'ques-header': true, 'screening': question.isScreening}">
                             <h5 [ngClass]="'mb-0'">
-                                Q-{{question?.sort}}
-                                <div [innerHTML]="sanitizeHtml(question?.question)"></div>
+                                Q-{{question?.sort}} {{(question?.question)}}
+                                <!-- <div [innerHTML]="sanitizeHtml(question?.question)"></div> -->
                             </h5>
 
                             <div class="d-flex align-items-center justify-content-end">
