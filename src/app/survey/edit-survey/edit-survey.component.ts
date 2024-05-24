@@ -13,7 +13,7 @@ import { SurveyService } from 'src/app/service/survey.service';
 import { responseDTO } from 'src/app/types/responseDTO';
 import { CryptoService } from 'src/app/service/crypto.service';
 import { Question } from 'src/app/models/question';
-import { Option } from 'src/app/models/option';
+import { MatrixHeader, Option } from 'src/app/models/option';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { environment } from 'src/environments/environment';
@@ -74,6 +74,7 @@ export class EditSurveyComponent {
 
   optionsArr1: any[] = [];
   optionsArr2: any[] = [];
+  optionsArr3: any[]=[];
   filteredOptions: any[] = [];
   allOptions: any[] = [];
   groups: any[] = [];
@@ -191,6 +192,27 @@ export class EditSurveyComponent {
         }
 
       });
+      // data.matrixHeader.forEach((opt: any) => {
+
+      //   let headerOption = new MatrixHeader();
+      //   headerOption.id = opt.id;
+      //   headerOption.header = opt.headerOption
+      //   headerOption.createdDate = opt.createdDate;
+      //   headerOption.modifiedDate = opt.modifiedDate;
+      //   headerOption.status = opt.status;
+      //   headerOption.sort = opt.sort;
+
+      //   this.optionimagennew.push(opt.image)
+
+      //   if (opt.status == 'ACT') {
+      //     if (opt.isFixed)
+      //       this.optionsArr2.push(headerOption);
+      //     else
+      //       this.optionsArr1.push(headerOption);
+
+      //   }
+
+      // });
       this.logicquestionid = 190
 
       // const selectedQuestionsort = this.logicQuestionListById.find((item: { sort: any; }) => item.sort === this.question.piping);
