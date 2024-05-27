@@ -74,9 +74,14 @@ export class EditSurveyComponent {
 
   optionsArr1: any[] = [];
   optionsArr2: any[] = [];
-  optionsArr3: any[]=[];
+  optionsArr3: any[]=[]
+  matrixOptions: any[]=[];
   filteredOptions: any[] = [];
   allOptions: any[] = [];
+
+  matrixFilteredOptions: any[] = [];
+  matrixAllOptions: any[] = [];
+
   groups: any[] = [];
   questionImage: any
   filesImage: File[] = [];
@@ -192,27 +197,19 @@ export class EditSurveyComponent {
         }
 
       });
-      // data.matrixHeader.forEach((opt: any) => {
+      data.matrixHeader.forEach((opt: any) => {
 
-      //   let headerOption = new MatrixHeader();
-      //   headerOption.id = opt.id;
-      //   headerOption.header = opt.headerOption
-      //   headerOption.createdDate = opt.createdDate;
-      //   headerOption.modifiedDate = opt.modifiedDate;
-      //   headerOption.status = opt.status;
-      //   headerOption.sort = opt.sort;
+        let headerOption = new MatrixHeader();
+        headerOption.id = opt.id;
+        headerOption.header = opt.header
+        headerOption.createdDate = opt.createdDate;
+        headerOption.modifiedDate = opt.modifiedDate;
+        headerOption.status = opt.status;
+        headerOption.sort = opt.sort;
 
-      //   this.optionimagennew.push(opt.image)
+        this.matrixOptions.push(headerOption)
 
-      //   if (opt.status == 'ACT') {
-      //     if (opt.isFixed)
-      //       this.optionsArr2.push(headerOption);
-      //     else
-      //       this.optionsArr1.push(headerOption);
-
-      //   }
-
-      // });
+      });
       this.logicquestionid = 190
 
       // const selectedQuestionsort = this.logicQuestionListById.find((item: { sort: any; }) => item.sort === this.question.piping);
@@ -271,6 +268,10 @@ export class EditSurveyComponent {
         this.hanldeAddOptionClick();
         this.hanldeAddOptionClick();
         this.hanldeAddOptionClick();
+        this.hanldeAddOptionClickMatrix();
+        this.hanldeAddOptionClickMatrix();
+        this.hanldeAddOptionClickMatrix();
+
       }
       if (this.question.questionTypeName === 'Rating Scale') {
         this.addStarRating();
@@ -586,6 +587,8 @@ export class EditSurveyComponent {
     this.allOptions = [];
     this.allOptions.push(...this.optionsArr1, ...this.optionsArr2);
 
+    console.log("add fixed",this.allOptions)
+
 
     // this.question.options.push(newOption);
   }
@@ -602,6 +605,7 @@ export class EditSurveyComponent {
   validateSurvey(): boolean {
     this.initializeCategoryNameChecks();
     // Validate each field individually
+    debugger
     this.questionadded = !!this.question && !!this.question.question && this.question.question.trim().length > 0;
     this.qusstionaddednext = !!this.question && !!this.question.questionTypeName && this.question.questionTypeName.trim().length > 0;
     this.questionadded = !!this.question && !!this.question.question && this.question.question.trim().length > 0;
@@ -633,7 +637,7 @@ export class EditSurveyComponent {
     // Check if the answer input field is empty
 
     const isAnyOptionEmpty = this.allOptions.some(option => !option.option || option.option.trim() === '');
-    // const isAnyOptionNonUnique = (new Set(this.allOptions.map(option => option.option.trim()))).size !== this.allOptions.length;
+    //const isAnyOptionNonUnique = (new Set(this.allOptions.map(option => option.option.trim()))).size !== this.allOptions.length;
     // if (isAnyOptionNonUnique) {
     //   this.utility.showError('Duplicate option value.');
     // }
@@ -646,9 +650,10 @@ export class EditSurveyComponent {
     // }
 
     // Update the validity state of the survey
-    this.isValidSurvey = this.questionadded && this.qusstionaddednext && this.categoryNameCheck && !isAnyOptionEmpty;
-
+    this.isValidSurvey = this.questionadded && this.qusstionaddednext && this.categoryNameCheck && !isAnyOptionEmpty ;
+    debugger
     return this.isValidSurvey; // Return the validation result
+    
   }
 
   textlimit: any
@@ -664,6 +669,7 @@ export class EditSurveyComponent {
       this.utility.showError('Duplicate option value.');
       return;
     }
+    debugger
     const isSurveyValid = this.validateSurvey();
 
     if (!isSurveyValid) {
@@ -671,6 +677,7 @@ export class EditSurveyComponent {
       this.utility.showError('Please fill all required fields.');
       return;
     }
+    debugger
 
     // Prepare data to send
     const dataToSend = {
@@ -697,6 +704,21 @@ export class EditSurveyComponent {
     this.question.youtubeUrl = this.youtubeUrl;
 
     let modifiedoptions: serveyOption[] = [];
+    let matrixoption: MatrixHeader[]=[]
+
+    this.matrixAllOptions.forEach((option: any) => {
+
+      let headerOption = new MatrixHeader();
+      headerOption.id = option.id;
+      headerOption.header = option.header
+      headerOption.createdDate = option.createdDate;
+      headerOption.modifiedDate = option.modifiedDate;
+      headerOption.status = option.status;
+      headerOption.sort = option.sort;
+
+      matrixoption.push(headerOption)
+
+    });
 
     this.allOptions.forEach((option) => {
       let modifiedOption = new serveyOption();
@@ -722,6 +744,7 @@ export class EditSurveyComponent {
     });
 
     this.question.options = modifiedoptions;
+    this.question.matrixHeader= matrixoption;
     this.question.piping = this.questionsortvalue
     this.question.questionSummery = this.questionSummery
 
@@ -825,10 +848,15 @@ export class EditSurveyComponent {
 
       this.optionsArr1.splice(index, 1);
 
+      console.log("delete opt1",this.optionsArr1)
+
     } else {
 
       this.newoptionImages.splice(index, 1)
       this.optionsArr2.splice(index, 1);
+      
+      console.log("delete opt2",this.optionsArr2)
+
       // this.optionsArr2 = [];
 
     }
@@ -1384,6 +1412,73 @@ export class EditSurveyComponent {
 
       this.surveystatus = filteredSurveys.map(survey => survey.status)
     });
+  }
+  hanldeAddOptionClickMatrix(type: string | null = null) {
+  
+    let newOption = new MatrixHeader();
+
+    newOption.createdDate = this.getCurrentDateTime();
+    newOption.modifiedDate = this.getCurrentDateTime();
+
+
+    if (type == 'other') {
+      newOption.header = "Other";
+    
+
+    }
+    else if (type == 'NoOpinion') {
+      newOption.header = "No Opinion";
+    
+    }
+
+    let sort = 0;
+
+    if (this.matrixOptions.length > 0) {
+      // Find the maximum sort value in optionsArr1
+      const maxSortValue1 = Math.max(...this.matrixOptions.map(option => option.sort));
+      const maxSortValue2 = Math.max(...this.matrixOptions.map(option => option.sort));
+      sort = (maxSortValue2 > maxSortValue1 ? maxSortValue2 : maxSortValue1) + 1;
+    }
+
+    newOption.sort = sort;
+
+
+    // if (type != null) {
+    //   this.optionsArr1.push(newOption);
+    // } else {
+    //   this.optionsArr1.push(newOption);
+    // }
+    this.matrixOptions.push(newOption);
+
+
+    this.newoptionImages = [];
+
+    this.matrixFilteredOptions = [];
+    this.matrixFilteredOptions.push(...this.matrixOptions, ...this.optionsArr3);
+
+
+
+    this.matrixAllOptions = [];
+    this.matrixAllOptions.push(...this.matrixOptions, ...this.optionsArr3);
+
+    // this.question.options.push(newOption);
+  }
+
+  onDeleteMatrixOption(type: string, index: any) {
+
+    if (type == 'optionmatrix') {
+
+
+      this.matrixOptions.splice(index, 1);
+
+    } else {
+      this.optionsArr3.splice(index, 1);
+      // this.optionsArr2 = [];
+
+    }
+    this.matrixAllOptions = [];
+
+    this.matrixAllOptions.push(...this.matrixOptions, ...this.optionsArr3);
   }
 
 
