@@ -32,6 +32,8 @@ export class QuotaManagementComponent {
 
   surveyQuotaJson: QuotaData;
   isEditQuota: boolean = false;
+  itemindex: number;
+  selectedQuestionIds: number[] = [];
   //QuotaData: QuotaData;
 
 
@@ -93,6 +95,9 @@ export class QuotaManagementComponent {
     this.getQuotaBySurveyId();
     console.log("step3", this.questionList)
     this.quotaById();
+
+    
+    
   }
   showCountError: boolean = false;
 
@@ -107,8 +112,10 @@ export class QuotaManagementComponent {
   }
   open(contentInterlock: any, index: number) {
     // this.modalService.open(contentInterlock)
+    this.itemindex = index;
     const modalRef = this.modalService.open(contentInterlock);
     modalRef.componentInstance.itemindex = index;
+    
   }
   // Show add quotas
   quotas: any[] = [{ selectedQuestion: 'Select Question', showQuotasDiv: false }];
@@ -240,18 +247,34 @@ export class QuotaManagementComponent {
   // Show and hide Census/Custom dive
   activeIndex: number = 0; // Initially set to 0 for the first item
   items: string[] = [];
-  activeIndices: number[] = [];
-  toggleActive(index: number) {
-    // this.activeIndex = index;
-    const i = this.activeIndices.indexOf(index);
-    if (i > -1) {
-      // If the index is already in the array, remove it (deselect)
-      this.activeIndices.splice(i, 1);
-    } else {
-      // If the index is not in the array, add it (select)
-      this.activeIndices.push(index);
-    }
+
+
+// Initialize activeIndices as an object
+activeIndices: number[][] = [];
+
+toggleActive(index: number, interlockindex: number) {
+  // Initialize the array for the interlockindex if it doesn't exist
+  if (!this.activeIndices[interlockindex]) {
+    this.activeIndices[interlockindex] = [];
   }
+
+  const indices = this.activeIndices[interlockindex];
+  const i = indices.indexOf(index);
+
+  if (i > -1) {
+    // If the index is already in the array, remove it (deselect)
+    indices.splice(i, 1);
+  } else {
+    // If the index is not in the array, add it (select)
+    indices.push(index);
+  }
+}
+
+// Function to get active indices for a given interlockindex
+activeIndicesForInterlock(interlockindex: number): number[] {
+  return this.activeIndices[interlockindex] || [];
+}
+
 
 
 
@@ -549,6 +572,7 @@ export class QuotaManagementComponent {
   quotaid: any
   allFilteredQuestions = [];
   questionjson: QuestionDto
+  selectedques:any[]=[]
   getQuotaBySurveyId() {
     console.log("hh", this.questionList);
     this.surveyservice.getQuotaBySurveyId(this.surveyId).subscribe({
@@ -562,6 +586,8 @@ export class QuotaManagementComponent {
           selectedquesid.questionId = quesid.questionId;
 
           console.log("aa", selectedquesid.questionId)
+          this.selectedques.push(selectedquesid.questionId)
+          console.log("selectedques",this.selectedques)
 
           let filteredQuestions = []
 
@@ -667,5 +693,28 @@ export class QuotaManagementComponent {
 
   reset() {
     this.surveyQuotaJson.totalUsers = 0
+  }
+
+  // removeselectedques(index:number,quesid:number){
+  //   this.questionList.questions = this.questionList.questions.filter((question: any) => question.id !== quesid);
+  // }
+
+ 
+
+  removeselectedques(index: number, quesid: number) {
+    const indexInSelected = this.selectedQuestionIds.indexOf(quesid);
+    if (indexInSelected === -1) {
+        this.selectedQuestionIds.push(quesid);
+    } else {
+        this.selectedQuestionIds.splice(indexInSelected, 1);
+    }
+    this.selectedQuestionIds.push(...this.selectedques);
+
+
+  }
+
+
+  isQuestionSelected(quesid: number): boolean {
+      return this.selectedQuestionIds.includes(quesid);
   }
 }

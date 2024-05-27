@@ -9,6 +9,7 @@
                 </ng-container>
                 {{surveyData.surveyName}}
             </h4>
+
             <div class="ms-2">
                 <span *ngIf="surveyData && surveyData.status === 'ACT'"
                     class="badge text-bg-success activestatus">Active</span>
@@ -78,9 +79,9 @@
                 </select> -->
                 <mat-form-field>
                     <mat-select [(ngModel)]="question.questionId"
-                        (ngModelChange)="showQuestionQptions(i,question.questionId);" #selectElement>
+                        (ngModelChange)="showQuestionQptions(i,question.questionId);removeselectedques(i,question.questionId)"  #selectElement>
                         <mat-option [disabled]="true" [value]="0"> Select Question</mat-option>
-                        <mat-option *ngFor="let ques of questionList.questions;let i=index" [value]="ques.id">
+                        <mat-option *ngFor="let ques of questionList.questions;let i=index" [value]="ques.id" [disabled]="isQuestionSelected(ques.id)">
                             Q-{{i+1}} {{ ques.question }}
                         </mat-option>
                     </mat-select>
@@ -130,7 +131,7 @@
                             </ul>
                             <div class="total-count">
                                 <button type="button" class="btn btn-outline-primary "
-                                    (click)="open(contentInterlock,i)"><ng-icon name="heroLink"></ng-icon></button>
+                                    (click)="open(contentInterlock, i)"><ng-icon name="heroLink"></ng-icon></button>
 
                                 <div class="mt-4 d-flex gap-3 align-items-center">
                                     <p class="mb-0"><strong>Total : </strong> <span>
@@ -158,7 +159,8 @@
 
 <div class="common-bg">
     <h4>Interlocked Quotas</h4>
-    <div class="interlocked-quotas" [style.display]="showInterlockedQuotas ? 'block' : 'none'">
+    <!-- <div class="interlocked-quotas" [style.display]="showInterlockedQuotas ? 'block' : 'none'"> -->
+    <div class="interlocked-quotas" >
         <ul>
             <li *ngFor="let generictype of genericlist; let i= index ">
                 <span>{{generictype}}</span>
@@ -188,18 +190,20 @@
 </div>
 <ng-template #contentInterlock let-modal>
     <div class="modal-header">
-        <h4 class="modal-title" id="modal-basic-title">Interlock Quota </h4>
-        <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+      <h4 class="modal-title" id="modal-basic-title">Interlock Quota for Item {{ itemindex }} </h4>
+      <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
     </div>
     <div class="modal-body">
-        <ul class="interlock-quota">
-            <li *ngFor="let item of items; let i = index" [class.active]="activeIndices.includes(i)"
-                (click)="toggleActive(i)">
-                {{ item }}</li>
-
-        </ul>
+      <ul class="interlock-quota">
+        <li *ngFor="let item of items; let i = index" [class.active]="activeIndicesForInterlock(itemindex).includes(i)"
+            (click)="toggleActive(i, itemindex)">
+          {{ item }}
+        </li>
+      </ul>
     </div>
     <div class="modal-footer">
-        <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">Update</button>
+      <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">Update</button>
     </div>
-</ng-template>
+  </ng-template>
+
+  

@@ -120,9 +120,9 @@ export class ViewComponent {
       } else if (this.graphtypevalue == 2) {
         chartType = 'bar';
       } else if (this.graphtypevalue == 3) {
-        chartType = 'line';
+        chartType = 'polarArea';
       } else if (this.graphtypevalue == 4) {
-        chartType = 'radar';
+        chartType = 'line';
       }
 
       this.defaultchart[index] = new Chart(ctx, {

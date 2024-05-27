@@ -569,13 +569,15 @@ export class EditSurveyComponent {
     newOption.sort = sort;
 
 
-    // if (type != null) {
-    //   this.optionsArr1.push(newOption);
-    // } else {
-    //   this.optionsArr1.push(newOption);
-    // }
-    this.optionsArr1.push(newOption);
+    if (type != null) {
+      this.optionsArr2.push(newOption);
+    } else {
+      this.optionsArr1.push(newOption);
+    }
+    // this.optionsArr1.push(newOption);
 
+    console.log("hal1",this.optionsArr1)
+    console.log("hal2",this.optionsArr2)
 
     this.newoptionImages = [];
 
