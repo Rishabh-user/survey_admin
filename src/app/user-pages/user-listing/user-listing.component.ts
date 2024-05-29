@@ -12,8 +12,10 @@ export class UserListingComponent {
   UserData: any;
   image: any;
   baseUrl = '';
+  imageurl:any
   constructor(public themeService: DataService, private cdr: ChangeDetectorRef, private utility: UtilsService) {
     this.baseUrl = environment.baseURL;
+    this.imageurl = environment.apiUrl
   }
   files: File[] = [];
   role: any;
@@ -24,6 +26,7 @@ export class UserListingComponent {
   contactNo: number;
   createdDate: any;
   roleId: number = 0;
+  
   centerId: number = this.utility.getCenterId();
 
 

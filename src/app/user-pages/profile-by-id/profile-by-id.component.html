@@ -43,12 +43,12 @@
                         <td class="profileimage">
                             <div class="d-flex align-items-center">
                                 <ng-container
-                                    *ngIf="item.image !== 'https://beta.angular.opinionest.com/Files/Images/'">
+                                    *ngIf="item.image !== (imageurl + 'Files/Images/')">
                                     <img [src]="item.image" class="me-2 rounded-circle"
                                         style="width: 30px; height: 30px;" />
                                 </ng-container>
                                 <ng-container
-                                    *ngIf="item.image === 'https://beta.angular.opinionest.com/Files/Images/'">
+                                    *ngIf="item.image === (imageurl + 'Files/Images/')">
                                     <div class="me-2 rounded-circle defaultprofile">
                                         {{ (item.firstName ? item.firstName.charAt(0) : '') + (item.lastName ?
                                         item.lastName.charAt(0) : '') }}

@@ -34,6 +34,8 @@ export class QuotaManagementComponent {
   isEditQuota: boolean = false;
   itemindex: number;
   selectedQuestionIds: number[] = [];
+  filteredQuestions:[]
+  itemques:any[]=[]
   //QuotaData: QuotaData;
 
 
@@ -99,6 +101,8 @@ export class QuotaManagementComponent {
     
     
   }
+
+ 
   showCountError: boolean = false;
 
   showQuotas() {
@@ -110,11 +114,14 @@ export class QuotaManagementComponent {
     this.showCountError = false;
     this.isQuotasVisible = true;
   }
-  open(contentInterlock: any, index: number) {
+  open(contentInterlock: any, index: number,quesid:number) {
     // this.modalService.open(contentInterlock)
     this.itemindex = index;
     const modalRef = this.modalService.open(contentInterlock);
+    console.log("dd",quesid)
+    this.toggleActive(index,this.itemindex,quesid)
     modalRef.componentInstance.itemindex = index;
+   
     
   }
   // Show add quotas
@@ -134,6 +141,11 @@ export class QuotaManagementComponent {
       else if (lastItem.questionId == 0) {
         alert("Please select question.");
       }
+
+      this.surveyQuotaJson.questionDto.forEach((question, i) => {
+        this.removeselectedques(i, question.questionId);
+      });
+
     }
     else {
       this.showCountError = true;
@@ -251,9 +263,21 @@ export class QuotaManagementComponent {
 
 // Initialize activeIndices as an object
 activeIndices: number[][] = [];
+selectedinterlockid:any[]=[]
 
-toggleActive(index: number, interlockindex: number) {
-  // Initialize the array for the interlockindex if it doesn't exist
+toggleActive(index: number, interlockindex: number, itemid: number) {
+  const itemId = itemid;
+  console.log("itemId", itemId);
+
+  // Ensure selectedinterlockid is initialized properly
+  if (!this.selectedinterlockid[interlockindex]) {
+    this.selectedinterlockid[interlockindex] = [];
+  }
+
+  // Push itemId to the specific interlock index array
+  this.selectedinterlockid[interlockindex].push(itemId);
+  console.log("selectedinterlockid", this.selectedinterlockid);
+
   if (!this.activeIndices[interlockindex]) {
     this.activeIndices[interlockindex] = [];
   }
@@ -262,13 +286,16 @@ toggleActive(index: number, interlockindex: number) {
   const i = indices.indexOf(index);
 
   if (i > -1) {
-    // If the index is already in the array, remove it (deselect)
     indices.splice(i, 1);
   } else {
-    // If the index is not in the array, add it (select)
     indices.push(index);
   }
+  if (this.selectedinterlockid.some(innerArray => innerArray.length > 1)) {
+    this.selectedInterlockQues(this.selectedinterlockid);
+  }
+  
 }
+
 
 // Function to get active indices for a given interlockindex
 activeIndicesForInterlock(interlockindex: number): number[] {
@@ -589,15 +616,21 @@ activeIndicesForInterlock(interlockindex: number): number[] {
           this.selectedques.push(selectedquesid.questionId)
           console.log("selectedques",this.selectedques)
 
-          let filteredQuestions = []
+          // let filteredQuestions = []
 
-          filteredQuestions = this.questionList.questions.filter((question: any) =>
+          this.filteredQuestions = this.questionList.questions.filter((question: any) =>
             question.id == selectedquesid.questionId
           );
 
-          console.log("Filtered Questiongg:", filteredQuestions);
+          console.log("Filtered Questiongg:", this.filteredQuestions);
+            
 
-          filteredQuestions.forEach((filteredQuestion: any) => {
+          this.itemques.push(...this.filteredQuestions)
+
+          console.log("qwertygshd",this.itemques)
+
+
+          this.filteredQuestions.forEach((filteredQuestion: any) => {
 
             console.log("Filtered Question:", filteredQuestion.question);
             this.items.push(filteredQuestion.question);
@@ -717,4 +750,45 @@ activeIndicesForInterlock(interlockindex: number): number[] {
   isQuestionSelected(quesid: number): boolean {
       return this.selectedQuestionIds.includes(quesid);
   }
+
+  selectedInterlockQues(interlockid: any[]) {
+    debugger
+    alert("work")
+    const matchingQuestions = this.surveyQuotaJson.questionDto.filter((question: any) =>
+      interlockid.includes(question.questionId)
+    );
+  
+    alert("work1")
+    matchingQuestions.forEach((question: any) => {
+      const options = question.optionsDto;
+      // Generate all possible combinations of options
+      const combinations = this.getCombinations(options);
+      console.log(`Combinations for questionId ${question.questionId}:`, combinations);
+    });
+    debugger
+  }
+  
+  // Function to generate combinations
+  getCombinations(options: any[], k: number = options.length): any[][] {
+    alert("work4")
+    const combinations: any[][] = [];
+  
+    const comb = (prefix: any[], options: any[], k: number) => {
+      if (k === 0) {
+        combinations.push(prefix);
+        console.log("combinations",combinations)
+        return;
+      }
+  
+      for (let i = 0; i < options.length; i++) {
+        comb([...prefix, options[i]], options.slice(i + 1), k - 1);
+      }
+    };
+  
+    comb([], options, k);
+    console.log("final combinations",combinations)
+    return combinations;
+  }
+  
+ 
 }

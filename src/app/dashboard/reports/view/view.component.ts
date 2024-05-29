@@ -14,6 +14,7 @@ interface SurveyQuestion {
   surveyName: string;
   questionId: number;
   question: string;
+  userType:any
   sort: number;
   responsOptions: {
     option: string;
@@ -39,6 +40,7 @@ export class ViewComponent {
   surveyReportById: SurveyQuestion[] = [];
   defaultchart: any[] = [];
   graphtypevalue: any;
+  selectedusertype: string = 'Select';
 
   constructor(
     public themeService: SurveyService,
@@ -67,6 +69,8 @@ export class ViewComponent {
   };
 
   charts: Chart[] = [];
+
+ usertype:any[]=['preview','live','universal','test']
 
 
 

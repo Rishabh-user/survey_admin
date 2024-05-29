@@ -261,6 +261,8 @@ export class EditSurveyComponent {
     this.themeService.closeSideBar();
     this.getQuestionListBySurveyId();
     this.getQuestionTypes();
+    this.getAllSurveyList();
+    this.getOptionLogics();
 
     if (this.mode != 'modify') {
       this.intializeDefaultValue();
@@ -287,7 +289,7 @@ export class EditSurveyComponent {
       }
 
     }
-    this.getAllSurveyList();
+   
 
 
 
@@ -308,7 +310,7 @@ export class EditSurveyComponent {
   }
 
   onSelectOptionImage(event: any, index: number, qid: number, oid: number): void {
-    debugger
+
     if (!this.optionImages[index]) {
       this.optionImages[index] = [];
     }
@@ -368,7 +370,6 @@ export class EditSurveyComponent {
 
 
   uploadOptionImage(fileoption: File, qid: number, oid: number): void {
-    debugger
 
 
     this.surveyservice.uploadOptionImage(fileoption, qid, oid).subscribe(
@@ -390,7 +391,6 @@ export class EditSurveyComponent {
         console.error('Error occurred while uploading:', error);
       }
     );
-    debugger
   }
 
 
@@ -524,6 +524,7 @@ export class EditSurveyComponent {
   }
 
   hanldeAddOptionClick(type: string | null = null) {
+
     let newOption = new serveyOption();
 
     newOption.createdDate = this.getCurrentDateTime();
@@ -569,12 +570,12 @@ export class EditSurveyComponent {
     newOption.sort = sort;
 
 
-    if (type != null) {
-      this.optionsArr2.push(newOption);
-    } else {
-      this.optionsArr1.push(newOption);
-    }
-    // this.optionsArr1.push(newOption);
+    // if (type != null) {
+    //   this.optionsArr2.push(newOption);
+    // } else {
+    //   this.optionsArr1.push(newOption);
+    // }
+    this.optionsArr1.push(newOption);
 
     console.log("hal1",this.optionsArr1)
     console.log("hal2",this.optionsArr2)
@@ -591,7 +592,6 @@ export class EditSurveyComponent {
 
     console.log("add fixed",this.allOptions)
 
-
     // this.question.options.push(newOption);
   }
 
@@ -607,7 +607,6 @@ export class EditSurveyComponent {
   validateSurvey(): boolean {
     this.initializeCategoryNameChecks();
     // Validate each field individually
-    debugger
     this.questionadded = !!this.question && !!this.question.question && this.question.question.trim().length > 0;
     this.qusstionaddednext = !!this.question && !!this.question.questionTypeName && this.question.questionTypeName.trim().length > 0;
     this.questionadded = !!this.question && !!this.question.question && this.question.question.trim().length > 0;
@@ -653,7 +652,7 @@ export class EditSurveyComponent {
 
     // Update the validity state of the survey
     this.isValidSurvey = this.questionadded && this.qusstionaddednext && this.categoryNameCheck && !isAnyOptionEmpty ;
-    debugger
+
     return this.isValidSurvey; // Return the validation result
     
   }
@@ -671,7 +670,7 @@ export class EditSurveyComponent {
       this.utility.showError('Duplicate option value.');
       return;
     }
-    debugger
+    
     const isSurveyValid = this.validateSurvey();
 
     if (!isSurveyValid) {
@@ -679,7 +678,6 @@ export class EditSurveyComponent {
       this.utility.showError('Please fill all required fields.');
       return;
     }
-    debugger
 
     // Prepare data to send
     const dataToSend = {
@@ -869,7 +867,6 @@ export class EditSurveyComponent {
 
 
   onCreateGroup() {
-    debugger
     let id = 1;
     if (this.groups.length > 0) {
       let lastIndex = this.groups.length - 1;
@@ -885,7 +882,6 @@ export class EditSurveyComponent {
 
     this.groups.push(newGroup);
 
-    debugger
   }
 
   onDeleteGroup(index: number) {
@@ -1085,9 +1081,9 @@ export class EditSurveyComponent {
   openLgVideo(questionvideo: any) {
     this.modalService.open(questionvideo, { size: 'lg', centered: true });
   }
-  onLogicSave(): void {
+  // onLogicSave(): void {
 
-  }
+  // }
 
 
   //validation
@@ -1319,14 +1315,24 @@ export class EditSurveyComponent {
   }
 
 
-
+  filteredQuestionList:any[]=[]
 
   getQuestionListBySurveyId() {
     this.logicQuestionListById = []; // Assuming logicQuestionListById is of type responseDTO[]
     this.surveyservice.GetQuestionListBySurveyId(this.surveyId).subscribe((response: responseDTO[]) => {
       this.logicQuestionListById = response;
+      this.filterQuestionsBeforeId(this.questionId);
 
     });
+  }
+
+  filterQuestionsBeforeId(id: number): void {
+    for (let item of this.logicQuestionListById) {
+      console.log("qw",this.filteredQuestionList.length)
+      if (item.id == id) break;
+      this.filteredQuestionList.push(item);
+      
+    }
   }
   starRating: any[] = [];
   addStarRating() {
@@ -1401,18 +1407,19 @@ export class EditSurveyComponent {
     this.surveyservice.GetSurveyList().subscribe((data: any) => {
       this.surveyData = data.surveyType;
 
-      const specificSurveyId = this.surveyId
 
-
-      const filteredSurveys = this.surveyData.filter(survey => survey.surveyId === specificSurveyId);
+      const filteredSurveys = this.surveyData.filter(survey => survey.surveyId == this.surveyId);
 
       this.filteredSurveyNames = filteredSurveys.map(survey => survey.name);
+
 
       this.filteredCountryNames = filteredSurveys.map(survey => survey.countryImage);
 
       this.filteredcategoryName = filteredSurveys.map(survey => survey.categoryName);
 
       this.surveystatus = filteredSurveys.map(survey => survey.status)
+
+      console.log(this.filteredCountryNames,this.filteredSurveyNames,this.filteredCountryNames,this.filteredCountryNames)
     });
   }
   hanldeAddOptionClickMatrix(type: string | null = null) {
@@ -1482,6 +1489,65 @@ export class EditSurveyComponent {
 
     this.matrixAllOptions.push(...this.matrixOptions, ...this.optionsArr3);
   }
+ 
+  optionlogicquesid:any;
+  optionlogicifid:any
+  optionlogicifexpected:any;
+  optionlogicthanid:any;
+  optionlogicthanexpectedid:any;
+  optionlogicelseid:any;
+  optionlogicelseexpected:any;
+
+
+  onLogicSave(): void {
+    const datatosend={
+      
+        questionId: this.optionlogicquesid,
+        ifId: 1,
+        ifExpected: "22",
+        thanId: 2,
+        thanExpected: "24",
+        elseId: 4,
+        elseExpected: "76",
+        sort: 1,
+        onLogicQuestionId: this.questionId,
+        surveyId: this.surveyId
+    }
+
+    this.surveyservice.optionLogics(datatosend).subscribe({
+      next: (resp: any) => {
+        if(resp == '"UpdatedSuccessfully"'){
+        this.utility.showSuccess('Updated Sucessfully');
+        }
+      },
+      error: (err: any) => {
+        this.utility.showError("Not created")
+      }
+    });
+  }
+
+  getOptionLogics(): void {
+    this.surveyservice.GetOptionLogic(this.questionId, this.surveyId).subscribe((data: any[]) => {
+      debugger
+      if (data && data.length > 0) {
+        const response = data[0]; // Access the first element of the array
+        console.log("data", response);
+        this.optionlogicquesid = response.questionId;
+        this.optionlogicifid = response.ifId;
+        this.optionlogicifexpected = response.ifExpected;
+        this.optionlogicthanid = response.thanId;
+        this.optionlogicthanexpectedid = response.thanExpected;
+        this.optionlogicelseid = response.elseId;
+        this.optionlogicelseexpected = response.elseExpected;
+        debugger
+      } else {
+        // Handle empty response or error
+      }
+      
+    });
+  }
+  
+  
 
 
 

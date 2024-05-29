@@ -78,8 +78,8 @@
                     <option *ngFor="let ques of questionList.questions" [value]="ques.id">{{ ques.question }}</option>
                 </select> -->
                 <mat-form-field>
-                    <mat-select [(ngModel)]="question.questionId"
-                        (ngModelChange)="showQuestionQptions(i,question.questionId);removeselectedques(i,question.questionId)"  #selectElement>
+                    <mat-select [(ngModel)]="question.questionId" 
+                        (ngModelChange)="showQuestionQptions(i,question.questionId);"  #selectElement>
                         <mat-option [disabled]="true" [value]="0"> Select Question</mat-option>
                         <mat-option *ngFor="let ques of questionList.questions;let i=index" [value]="ques.id" [disabled]="isQuestionSelected(ques.id)">
                             Q-{{i+1}} {{ ques.question }}
@@ -94,8 +94,10 @@
                     <div class="add-distribution">
                         <div class="question-type">
                             <div>
-                                <h6 *ngIf="getQuestionDetail(question.questionId,
-                            questionList.questions)?.genericType"><span>{{getQuestionDetail(question.questionId,
+                                <h6 >
+                                    {{ getQuestionDetail(question.questionId, questionList.questions)?.genericType 
+                                        ? getQuestionDetail(question.questionId, questionList.questions)?.genericType 
+                                        : getQuestionDetail(question.questionId, questionList.questions)?.questionType }}<span>{{getQuestionDetail(question.questionId,
                                         questionList.questions)?.genericType}}</span></h6>
                             </div>
                             <div class="implement-quota">
@@ -131,7 +133,7 @@
                             </ul>
                             <div class="total-count">
                                 <button type="button" class="btn btn-outline-primary "
-                                    (click)="open(contentInterlock, i)"><ng-icon name="heroLink"></ng-icon></button>
+                                    (click)="open(contentInterlock, i,question.questionId)"><ng-icon name="heroLink"></ng-icon></button>
 
                                 <div class="mt-4 d-flex gap-3 align-items-center">
                                     <p class="mb-0"><strong>Total : </strong> <span>
@@ -162,10 +164,12 @@
     <!-- <div class="interlocked-quotas" [style.display]="showInterlockedQuotas ? 'block' : 'none'"> -->
     <div class="interlocked-quotas" >
         <ul>
+            <ng-container *ngFor="let question of surveyQuotaJson?.questionDto; let i = index">
             <li *ngFor="let generictype of genericlist; let i= index ">
                 <span>{{generictype}}</span>
                 <p class="mb-0" *ngFor="let options of selectedoptions">{{options.option}}</p>
-            </li>
+            </li></ng-container>
+            
         </ul>
         <table class="table table-bordered mt-5">
             <tbody>
@@ -188,6 +192,7 @@
         <ng-icon name="heroPlus" style="font-size: .875rem;"></ng-icon><span>Interlock Quotas</span>
     </div>
 </div>
+
 <ng-template #contentInterlock let-modal>
     <div class="modal-header">
       <h4 class="modal-title" id="modal-basic-title">Interlock Quota for Item {{ itemindex }} </h4>
@@ -195,15 +200,15 @@
     </div>
     <div class="modal-body">
       <ul class="interlock-quota">
-        <li *ngFor="let item of items; let i = index" [class.active]="activeIndicesForInterlock(itemindex).includes(i)"
-            (click)="toggleActive(i, itemindex)">
-          {{ item }}
+        <li *ngFor="let item of itemques; let i = index" [class.active]="activeIndicesForInterlock(itemindex).includes(i)" [ngClass]="{'active':(i == itemindex)}"
+            (click)="toggleActive(i, itemindex,item.id)">
+              {{item.id}}{{ item.question}}
         </li>
       </ul>
     </div>
     <div class="modal-footer">
       <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">Update</button>
     </div>
-  </ng-template>
+</ng-template>
 
   

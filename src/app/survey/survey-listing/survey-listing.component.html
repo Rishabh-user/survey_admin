@@ -10,6 +10,7 @@
                 <mat-form-field>
                     <mat-select [(ngModel)]="selectedCategory">
                         <mat-option selected value="All Categories">All Categories</mat-option>
+                        
                         <mat-option *ngFor="let item of categoryList" [value]="item.name">{{item.name}}</mat-option>
                     </mat-select>
                 </mat-form-field>
@@ -77,12 +78,12 @@
                         <td class="profileimage">
                             <div class="d-flex align-items-center">
                                 <ng-container
-                                    *ngIf="item.userImage !== 'https://beta.angular.opinionest.com/Files/Images/'">
+                                    *ngIf="item.userImage !== (imageurl + 'Files/Images/')">
                                     <img [src]="item.userImage" class="me-2 rounded-circle"
                                         style="width: 30px; height: 30px;" />
                                 </ng-container>
                                 <ng-container
-                                    *ngIf="item.userImage === 'https://beta.angular.opinionest.com/Files/Images/'">
+                                    *ngIf="item.userImage === (imageurl + 'Files/Images/')">
                                     <div class="me-2 rounded-circle defaultprofile">
                                         {{ item.userName ? (item.userName.charAt(0) + (item.userName.split(' ')[1] ?
                                         item.userName.split(' ')[1].charAt(0) : '')) : '' }}

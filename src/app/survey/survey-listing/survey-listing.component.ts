@@ -29,8 +29,10 @@ export class SurveyListingComponent {
   surveyData: any = "";
   categoryList: any;
   selectedCategory: string = 'All Categories';
+  imageurl:any
   constructor(private visibilityService: DataService, private util: UtilsService, private modalService: NgbModal, public themeService: SurveyService, private utility: UtilsService, private cdr: ChangeDetectorRef) {
     this.baseUrl = environment.baseURL;
+    this.imageurl = environment.apiUrl
     visibilityService.closeSideBar();
   }
   files: File[] = [];

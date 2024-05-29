@@ -19,6 +19,7 @@ export class ReportsComponent {
   totalItemsCount: number = 10
   reportSurvey: any;
   surveyId: any;
+  imageurl:any
 
   toggleTooltip(identifier: string) {
     this.showTooltip[identifier] = !this.showTooltip[identifier];
@@ -31,6 +32,7 @@ export class ReportsComponent {
   baseUrl = '';
   constructor(public themeService: SurveyService, private cdr: ChangeDetectorRef,) {
     this.baseUrl = environment.baseURL;
+    this.imageurl = environment.apiUrl
 
   }
   ngOnInit(): void {

@@ -19,9 +19,11 @@ export class ProfileByIdComponent {
   UserData: any[] = [];
   image: any;
   baseUrl = '';
+  imageurl:any
 
   constructor(public themeService: DataService, private cdr: ChangeDetectorRef, private utility: UtilsService, private modalService: NgbModal, private surveyservice: SurveyService,) {
     this.baseUrl = environment.baseURL;
+    this.imageurl = environment.apiUrl
   }
   files: File[] = [];
   role: any;

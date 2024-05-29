@@ -500,11 +500,11 @@
                                 <div *ngIf="question.isScreening">
                                     <p>{{question.description}}</p>
                                     <img class="img-fluid"
-                                        *ngIf="question.image !== 'https://beta.angular.opinionest.com/Files/Images/'"
+                                        *ngIf="question.image !== (imageurl + 'Files/Images/')"
                                         [src]="question.image" />
                                     <p>{{question.youtubeUrl}}</p>
                                     <ng-container
-                                        *ngIf="question.video !== 'https://beta.angular.opinionest.com/Files/Video/'">
+                                        *ngIf="question.video !== (imageurl + 'Files/Images/')">
                                         <p>{{question.video}}</p>
                                     </ng-container>
 
@@ -839,7 +839,7 @@
                                                                                 <option value="null">Select Question
                                                                                 </option>
                                                                                 <option
-                                                                                    *ngFor="let item of logicQuestionListById;let j=index;"
+                                                                                    *ngFor="let item of logicQuestionList;let j=index;"
                                                                                     [value]="item.item.charAt(0)+'-'+item.id">
                                                                                     {{item.item}}
                                                                                 </option>

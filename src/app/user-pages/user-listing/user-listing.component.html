@@ -41,8 +41,7 @@
                         <td>{{ i+1 }}</td>
                         <td>
                             <div class="d-flex gap-2">
-                                <ng-container
-                                    *ngIf="item.image === 'https://beta.angular.opinionest.com/Files/Images/'; else elseBlock">
+                                <ng-container *ngIf="item.image === (imageurl + 'Files/Images/'); else elseBlock">
                                     <div class="me-2 rounded-circle defaultprofile">
                                         {{ (item.firstName ? item.firstName.charAt(0) : '') + (item.lastName ?
                                         item.lastName.charAt(0) : '') }}

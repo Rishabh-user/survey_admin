@@ -174,6 +174,7 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
   status: any
   notificationmessage: any
   planid: any
+  imageurl:any
 
   centerId: number = this.utils.getCenterId();
 
@@ -204,7 +205,8 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
     private sanitizer: DomSanitizer
   ) {
     this.baseUrl = environment.baseURL;
-    this.mainURL = environment.mainURL
+    this.mainURL = environment.mainURL;
+    this.imageurl = environment.apiUrl
     this.router.events.subscribe((event) => {
       if (event instanceof NavigationEnd) {
         const shouldTriggerToggle = this.route.snapshot.data['triggerToggle'];

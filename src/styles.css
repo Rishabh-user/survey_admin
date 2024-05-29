@@ -2492,3 +2492,7 @@ span.badge.ng-star-inserted.activestatus.text-bg-danger {
     pointer-events: none;
     opacity: 0.5;
 }
+
+.usertype{
+    text-transform: capitalize;
+}

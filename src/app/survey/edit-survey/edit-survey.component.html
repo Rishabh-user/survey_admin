@@ -493,7 +493,7 @@
                     <button type="button" class="btn btn-primary px-5" (click)="onSave()">Save</button>
                 </div>
             </div>
-            <li style="display: none;">
+            <li>
                 <div class="p-4">
                     <div ngClass="ans-group">
                         <div class="infocircle">
@@ -544,12 +544,16 @@
                                             <h6>Redirect to different questions based on user's answer.</h6>
 
                                         </div>
-                                        <div ngClass="logic-ques">
+                                        <div class="alert alert-danger"
+                                        role="alert" *ngIf="filteredQuestionList.length == 0">
+                                          <p>Option Logic can not apply to this Question</p>
+                                        </div>
+                                        <div ngClass="logic-ques" *ngIf="filteredQuestionList.length > 0">
                                             <div class="input-group flex-nowrap">
                                                 <span class="input-group-text" id="addon-wrapping">In</span>
-                                                <select class="form-select" #selectedQuestion
+                                                <select class="form-select" [(ngModel)]="optionlogicquesid" #selectedQuestion
                                                     (change)="getOptionsByQuestionId(selectedQuestion.value)">
-                                                    <option *ngFor="let item of logicQuestionList;let i=index;"
+                                                    <option *ngFor="let item of filteredQuestionList;let i=index;"
                                                         value="{{item.id}}">{{item.item}}</option>
                                                 </select>
                                             </div>
@@ -562,7 +566,7 @@
                                                         <div>Value</div>
                                                     </div>
                                                     <div class="col-md-3">
-                                                        <select class="form-select" #ifIdSelect>
+                                                        <select class="form-select" [(ngModel)]="optionlogicifid" #ifIdSelect>
                                                             <option *ngFor="let item of logicValuesList;let i=index;"
                                                                 value="{{item.id}}">{{item.name}}</option>
                                                         </select>
@@ -584,10 +588,10 @@
                                                                     (matChipInputTokenEnd)="addOption($event)">
                                                             </mat-chip-grid>
                                                             <mat-autocomplete #auto="matAutocomplete"
-                                                                (optionSelected)="selectedOption($event)">
+                                                                (optionSelected)="selectedOption($event)" [(ngModel)]="optionlogicthanexpectedid">
                                                                 <mat-option
                                                                     *ngFor="let option of optionListByQuestionId"
-                                                                    [value]="option">
+                                                                    [value]="option.id">
                                                                     {{option.option}}
                                                                 </mat-option>
                                                             </mat-autocomplete>
@@ -603,19 +607,20 @@
                                                 <div ngClass="mb-4">
                                                     <div class="row g-2 align-items-center">
                                                         <div class="col-md-4">
-                                                            <select class="form-select" #thanIdSelect>
+                                                            <select class="form-select" [(ngModel)]="optionlogicthanid" #thanIdSelect>
                                                                 <option
                                                                     *ngFor="let item of optionLogicValuesList;let i=index;"
                                                                     value="{{item.id}}">{{item.name}}</option>
                                                             </select>
                                                         </div>
                                                         <div class="col-md-4">
-                                                            <select class="form-select" #thanExpectedSelect>
+                                                            <select class="form-select"  [(ngModel)]="optionlogicthanexpectedid" #thanExpectedSelect>
                                                                 <option *ngFor="let item of optionsArr1;let i=index;"
                                                                     value="{{item.id}}">{{item.option}}</option>
                                                             </select>
                                                         </div>
                                                         <div class="col-md-1">
+
                                                             <button type="button" class="btn btn-outline-primary btn-sm"
                                                                 (click)="createansweraddthen()">Else</button>
                                                         </div>
@@ -629,10 +634,16 @@
                                                 <div ngClass="mb-4">
                                                     <div class="row g-2 align-items-center">
                                                         <div class="col-md-4">
-                                                            <select class="form-select" #thanIdSelect>
+                                                            <select class="form-select" [(ngModel)]="optionlogicelseid" #thanIdSelect>
                                                                 <option
                                                                     *ngFor="let item of optionLogicValuesList;let i=index;"
                                                                     value="{{item.id}}">{{item.name}}</option>
+                                                            </select>
+                                                        </div>
+                                                        <div class="col-md-4">
+                                                            <select class="form-select"  [(ngModel)]="optionlogicelseexpected" #elseExpectedSelect>
+                                                                <option *ngFor="let item of optionsArr1;let i=index;"
+                                                                    value="{{item.id}}">{{item.option}}</option>
                                                             </select>
                                                         </div>
                                                         <div class="col-md-8">
@@ -644,8 +655,6 @@
 
                                                 </div>
                                             </div>
-
-
                                         </div>
                                     </div>
 

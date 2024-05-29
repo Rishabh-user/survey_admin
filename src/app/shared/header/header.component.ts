@@ -26,11 +26,13 @@ export class HeaderComponent {
 
   surveyData: any = [];
   filteredSurveys: any = [];
+  imageurl:any
   surveyControl = new FormControl();
   @ViewChild('popupTemplate') popupTemplate: TemplateRef<any>;
   modalRef: NgbModalRef;
   public constructor(private modalService: NgbModal, public themeService: DataService, private auth: AuthService, private util: UtilsService, public surveyService: SurveyService, private crypto: CryptoService, private router: Router) {
     this.baseUrl = environment.baseURL;
+    this.imageurl = environment.apiUrl
 
   }
   ngOnInit(): void {

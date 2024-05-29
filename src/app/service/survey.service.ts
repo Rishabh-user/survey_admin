@@ -446,4 +446,14 @@ export class SurveyService {
     }
   }
 
+  optionLogics(data: any): Observable<any> {
+    const url = `${this.apiUrl}api/admin/${this.userId}/GeneralQuestion/OptionLogics`;
+    return this.http.post(url, data, { responseType: 'text' });
+  }
+
+  GetOptionLogic(qid: any,sid:any): Observable<responseDTO[]> {
+    const url = `${this.apiUrl}api/admin/${this.userId}/GeneralQuestion/GetOptionLogics?qid=${qid}&sid=${sid}`;
+    return this.http.get<responseDTO[]>(url);
+  }
+
 }
