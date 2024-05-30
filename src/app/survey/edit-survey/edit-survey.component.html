@@ -582,16 +582,18 @@
                                                                         <mat-icon>cancel</mat-icon>
                                                                     </button>
                                                                 </mat-chip-row>
-                                                                <input #citiesInput [matChipInputFor]="chipGrid"
+                                                                <input 
+                                                                    [matChipInputFor]="chipGrid"
+                                                                    [(ngModel)]="optionlogicifexpectedid"
                                                                     [matAutocomplete]="auto"
                                                                     [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
                                                                     (matChipInputTokenEnd)="addOption($event)">
                                                             </mat-chip-grid>
-                                                            <mat-autocomplete #auto="matAutocomplete"
-                                                                (optionSelected)="selectedOption($event)" [(ngModel)]="optionlogicthanexpectedid">
+                                                            <mat-autocomplete #auto="matAutocomplete"  
+                                                                (optionSelected)="selectedOption($event)">
                                                                 <mat-option
                                                                     *ngFor="let option of optionListByQuestionId"
-                                                                    [value]="option.id">
+                                                                    [value]="option">
                                                                     {{option.option}}
                                                                 </mat-option>
                                                             </mat-autocomplete>
@@ -641,6 +643,7 @@
                                                             </select>
                                                         </div>
                                                         <div class="col-md-4">
+                                                            {{optionlogicelseexpected}}qwertyu
                                                             <select class="form-select"  [(ngModel)]="optionlogicelseexpected" #elseExpectedSelect>
                                                                 <option *ngFor="let item of optionsArr1;let i=index;"
                                                                     value="{{item.id}}">{{item.option}}</option>

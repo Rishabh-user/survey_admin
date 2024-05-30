@@ -104,6 +104,7 @@ export class EditSurveyComponent {
   imageUpdated: boolean = false;
   videoupload: any
   questionSummery: any
+  selectedifexpected:any
 
   constructor(public themeService: DataService, private router: Router,
     private route: ActivatedRoute, private surveyservice: SurveyService, private modalService: NgbModal,
@@ -1062,10 +1063,15 @@ export class EditSurveyComponent {
   }
 
   selectedOption(event: MatAutocompleteSelectedEvent): void {
+    debugger
     const selectedOption = event.option.value;
     if (!this.selectedOptions.includes(selectedOption)) {
       this.selectedOptions.push(selectedOption);
     }
+    console.log("selectedOptions",this.selectedOptions)
+    this.selectedifexpected = this.selectedOptions.map((option: { id: any }) => option.id).join(', ');
+
+    debugger
   }
 
   openLg(content: any) {
@@ -1492,7 +1498,7 @@ export class EditSurveyComponent {
  
   optionlogicquesid:any;
   optionlogicifid:any
-  optionlogicifexpected:any;
+  optionlogicifexpectedid:any;
   optionlogicthanid:any;
   optionlogicthanexpectedid:any;
   optionlogicelseid:any;
@@ -1503,12 +1509,12 @@ export class EditSurveyComponent {
     const datatosend={
       
         questionId: this.optionlogicquesid,
-        ifId: 1,
-        ifExpected: "22",
-        thanId: 2,
-        thanExpected: "24",
-        elseId: 4,
-        elseExpected: "76",
+        ifId: this.optionlogicifid,
+        ifExpected: this.selectedifexpected,
+        thanId: this.optionlogicthanid,
+        thanExpected: this.optionlogicthanexpectedid,
+        elseId: this.optionlogicelseid,
+        elseExpected: this.optionlogicelseexpected,
         sort: 1,
         onLogicQuestionId: this.questionId,
         surveyId: this.surveyId
@@ -1534,7 +1540,7 @@ export class EditSurveyComponent {
         console.log("data", response);
         this.optionlogicquesid = response.questionId;
         this.optionlogicifid = response.ifId;
-        this.optionlogicifexpected = response.ifExpected;
+        this.optionlogicifexpectedid = response.ifExpected;
         this.optionlogicthanid = response.thanId;
         this.optionlogicthanexpectedid = response.thanExpected;
         this.optionlogicelseid = response.elseId;

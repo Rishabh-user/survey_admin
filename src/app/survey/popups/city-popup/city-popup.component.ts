@@ -45,7 +45,7 @@ export class CityPopupComponent {
   state: StateCity[] = [];
   isPanIndiaShow: boolean = false;
   questions: Question[] = [];
-  questionTypeId = 8;
+  questionTypeId = 7;
   typeid = 9
   surveyId: any
   questionText: any
