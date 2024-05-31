@@ -1,4 +1,4 @@
-import { COMMA, ENTER } from '@angular/cdk/keycodes';
+import { COMMA, ENTER, L } from '@angular/cdk/keycodes';
 import { Component, ElementRef, ViewChild, inject, EventEmitter, Output } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
@@ -158,7 +158,6 @@ export class EditSurveyComponent {
       this.questionSummery = data.questionSummery
       this.screeningRedirectUrl = data.screeningRedirectUrl
 
-
       data.options.forEach((opt: any) => {
 
         let newOption = new serveyOption();
@@ -169,6 +168,7 @@ export class EditSurveyComponent {
         newOption.modifiedDate = opt.modifiedDate;
         newOption.keyword = opt.keyword;
         newOption.status = opt.status;
+        newOption.isFixed = opt.isFixed
         newOption.isRandomize = opt.isRandomize;
         newOption.isExcluded = opt.isExcluded;
         newOption.group = opt.group;
@@ -228,8 +228,8 @@ export class EditSurveyComponent {
       this.filteredOptions.push(...this.optionsArr1, ...this.optionsArr2);
       this.allOptions.push(...this.optionsArr1, ...this.optionsArr2);
       this.getGroupValue();
-
-
+      console.log("get opt1",this.optionsArr1)
+      console.log("get opt2",this.optionsArr2)
     });
 
   }
@@ -605,12 +605,14 @@ export class EditSurveyComponent {
   optionFieldIsValid: boolean = true
   surveySubmitted: boolean = false;
   textlimitation: boolean = false
+  matrixoptionvalidate: boolean = false
   validateSurvey(): boolean {
     this.initializeCategoryNameChecks();
     // Validate each field individually
     this.questionadded = !!this.question && !!this.question.question && this.question.question.trim().length > 0;
     this.qusstionaddednext = !!this.question && !!this.question.questionTypeName && this.question.questionTypeName.trim().length > 0;
     this.questionadded = !!this.question && !!this.question.question && this.question.question.trim().length > 0;
+    
 
 
 

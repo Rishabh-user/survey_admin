@@ -71,7 +71,6 @@
                             <option [value]="3" *ngIf="isUser">User</option>
                             <option [value]="5" *ngIf="isUser">Vendor</option>
                         </select>
-                        <div *ngIf="!roletype" class="text-danger">Role is required.</div>
                         <div class="" *ngIf="planid == 500 " class="mt-2">
                             <p>This feature is not available for this plan. please upgrade your plan. <a
                                     routerLink="/payment">click

@@ -43,6 +43,8 @@ export class ProfileByIdComponent {
     { id: 3, name: 'User' }
   ];
 
+  userroles: string[] = ['SuperAdmin', 'Admin', 'User'];
+
   isSuperAdmin = false;
   isAdmin = false;
   isUser = false;
@@ -101,6 +103,7 @@ export class ProfileByIdComponent {
   getUserDetails(userId: any): void {
 
     const filteredUser = this.UserData.find((user: any) => user.id === userId);
+    debugger
     if (filteredUser) {
       this.firstName = filteredUser.firstName
       this.lastname = filteredUser.lastName
@@ -117,7 +120,8 @@ export class ProfileByIdComponent {
 
     } else {
 
-    }
+    
+    debugger}
 
 
   }
@@ -127,6 +131,10 @@ export class ProfileByIdComponent {
 
   onCheckboxChange(event: any) {
     this.isChecked = event.target.checked;
+  }
+
+  userrole(event: any){
+    this.userroledata = event.target.value
   }
 
 
@@ -148,14 +156,15 @@ export class ProfileByIdComponent {
       contactNo: this.contactNo,
       createdDate: this.createdDate,
       email: this.email,
-      role: this.role,
+      role: this.userroledata,
       status: status
     };
+    console.log("datatoosend",dataToSend)
 
     this.surveyservice.updateProfile(dataToSend).subscribe({
       next: (resp: any) => {
         this.utility.showSuccess('Updated.');
-        window.location.reload();
+        // window.location.reload();
       },
       error: (err: any) => {
         this.utility.showError('error');

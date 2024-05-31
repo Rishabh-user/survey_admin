@@ -127,8 +127,11 @@
                     <div class="row">
                         <div class="col-md-6 mb-3">
                             <label for="">Role</label>
-                            <input type="text" name="role" id="" class="form-control" [(ngModel)]="userroledata"
-                                (blur)="validateSurvey()">
+                            <!-- <input type="text" name="role" id="" class="form-control" [(ngModel)]="userroledata"
+                                (blur)="validateSurvey()"> -->
+                                <select class="form-select" [(ngModel)]="userroledata" (change)="userrole($event)">
+                                    <option *ngFor="let role of userroles" [value]="role">{{role}}</option>
+                                </select>
                             <div *ngIf="!roletype" class="text-danger">Role is required.</div>
                         </div>
                         <div class="col-md-6 mb-3">
@@ -137,12 +140,14 @@
                                 [(ngModel)]="usercreateddate" />
                         </div>
                     </div>
-                    <div class="form-check form-switch">
-                        <input class="form-check-input" type="checkbox" role="switch" [(ngModel)]="isChecked"
-                            name="isChecked" (change)="onCheckboxChange($event)">
-
-
+                    <div class="d-flex lign-items-center gap-2">
+                        <label for="">Status</label>
+                        <div class="form-check form-switch">
+                            <input class="form-check-input" type="checkbox" role="switch" [(ngModel)]="isChecked"
+                                name="isChecked" (change)="onCheckboxChange($event)">
+                        </div>
                     </div>
+                    
                     <div class="text-end">
                         <button type="button" class="btn btn-primary" (click)="updateProfile(id)">Save <ng-icon
                                 name="heroArrowLongRight" class="ms-5"></ng-icon></button>
