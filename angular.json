@@ -69,13 +69,13 @@
               "namedChunks": true,
               "fileReplacements": [
                 {
-                  "replace": "src/environments/environment.ts",
+                  "replace": "src/environments/environment.prod.ts",
                   "with": "src/environments/environment.ts"
                 }
               ]
             }
-          },
-          "defaultConfiguration": "production"
+          }
+          
         },
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",

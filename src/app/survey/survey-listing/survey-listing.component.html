@@ -124,7 +124,7 @@
                                         [routerLink]="'/survey/manage-survey/'+ (item.surveyId |  encrypt)">
                                         <ng-icon name="heroPencil" ngClass="edit-action"></ng-icon></a>
                                 </div>
-                                <ng-container *ngIf="role !== 'user'">
+                                <ng-container *ngIf="role !== 'user' && (item.status !== 'ACT' && item.status !== 'HOL')">
                                     <a href="javascript:" (click)="openLg(sidecontent,item.surveyId,item.name)"><ng-icon
                                             name="heroTrash" ngClass="edit-action delete-trash"></ng-icon></a>
                                 </ng-container>

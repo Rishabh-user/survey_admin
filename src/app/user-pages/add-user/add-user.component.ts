@@ -68,7 +68,8 @@ export class AddUserComponent {
     const currentDateTime = new Date().toISOString();
     return currentDateTime.substring(0, currentDateTime.length - 1) + 'Z';
   }
-
+  
+  roleid= this.utility.getRoleId()
   AddUser() {
 
     if (!this.validateSurvey()) {
@@ -86,7 +87,7 @@ export class AddUserComponent {
       createdDate: this.getCurrentDateTime(),
       modifiedDate: '',
       email: this.email,
-      roleId: this.roleId,
+      roleId: this.roleid,
       centerId: this.centerId,
       image: this.image,
       role: this.role,
@@ -155,7 +156,7 @@ export class AddUserComponent {
     this.lastNamerequired = !!this.lastName && this.lastName.trim().length > 0;
     this.phone = !!this.contactNo && this.contactNo.toString().trim().length > 0;
     this.phoneLengthError = !!this.contactNo && this.contactNo.toString().trim().length < 11;
-    this.roletype = !!this.roleId && this.roleId.toString().trim().length > 0;
+    //this.roletype = !!this.roleId && this.roleId.toString().trim().length > 0;
     this.emailaddress = !!this.email && this.email.trim().length > 0;
     this.passwordtype = !!this.password && this.password.trim().length > 0;
     this.touched = true;

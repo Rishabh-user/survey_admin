@@ -103,7 +103,7 @@ export class ProfileByIdComponent {
   getUserDetails(userId: any): void {
 
     const filteredUser = this.UserData.find((user: any) => user.id === userId);
-    debugger
+    
     if (filteredUser) {
       this.firstName = filteredUser.firstName
       this.lastname = filteredUser.lastName
@@ -121,7 +121,7 @@ export class ProfileByIdComponent {
     } else {
 
     
-    debugger}
+    }
 
 
   }
@@ -138,6 +138,11 @@ export class ProfileByIdComponent {
   }
 
 
+  getCurrentDateTime(): string {
+    const currentDateTime = new Date().toISOString();
+    return currentDateTime.substring(0, currentDateTime.length - 1) + 'Z';
+  }
+
 
   updateProfile(Id: any) {
 
@@ -147,18 +152,62 @@ export class ProfileByIdComponent {
     }
 
     let status = this.isChecked ? "ACT" : "DEL";
-
-
+   
     const dataToSend = {
       id: Id,
+      image: "",
       firstName: this.firstName,
-      lastname: this.lastname,
-      contactNo: this.contactNo,
+      lastName: this.lastname,
       createdDate: this.createdDate,
+      modifiedDate: this.getCurrentDateTime(),
+      status: "ACT",
+      password: "",
+      contactNo: this.contactNo,
       email: this.email,
+      roleId: 0,
       role: this.userroledata,
-      status: status
-    };
+      centerId: 0,
+      orgCreatedDate: this.getCurrentDateTime(),
+      isPaid: true,
+      address: "",
+      city: "",
+      state: "",
+      country: "",
+      zip: "",
+      phone: "",
+      gstNumber: "",
+      plan: [
+        {
+          id: 0,
+          planId: 0,
+          organizationId: 0,
+          paidAmount: 0,
+          pendingAmount: 0,
+          totalAmount: 0,
+          startDate: this.getCurrentDateTime(),
+          endDate: this.getCurrentDateTime(),
+          status: "",
+          orderId: ""
+        }
+      ],
+      surveyList: [
+        {
+          vendarSurveyId: 0
+        }
+      ]
+    }
+
+
+    // const dataToSend = {
+    //   id: Id,
+    //   firstName: this.firstName,
+    //   lastname: this.lastname,
+    //   contactNo: this.contactNo,
+    //   createdDate: this.createdDate,
+    //   email: this.email,
+    //   role: this.userroledata,
+    //   status: status
+    // };
     console.log("datatoosend",dataToSend)
 
     this.surveyservice.updateProfile(dataToSend).subscribe({

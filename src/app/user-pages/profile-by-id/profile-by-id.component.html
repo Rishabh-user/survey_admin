@@ -129,8 +129,12 @@
                             <label for="">Role</label>
                             <!-- <input type="text" name="role" id="" class="form-control" [(ngModel)]="userroledata"
                                 (blur)="validateSurvey()"> -->
+                                <!-- <select class="form-select"  [(ngModel)]="optionlogicthanexpectedid" #thanExpectedSelect>
+                                    <option *ngFor="let item of optionsArr1;let i=index;"
+                                        value="{{item.id}}">{{item.option}}</option>
+                                </select> -->
                                 <select class="form-select" [(ngModel)]="userroledata" (change)="userrole($event)">
-                                    <option *ngFor="let role of userroles" [value]="role">{{role}}</option>
+                                    <option *ngFor="let role of userroles" value="{{role}}">{{role}}</option>
                                 </select>
                             <div *ngIf="!roletype" class="text-danger">Role is required.</div>
                         </div>
