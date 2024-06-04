@@ -1,20 +1,15 @@
 export const environment = {
   production: true,
-  //apiUrl: 'https://beta.angular.opinionest.com/',
-  apiUrl: 'https://scrip8api.opinionest.com/',
+  apiUrl: 'https://beta.angular.opinionest.com/',
   CryptoKey: 'SurveyAdmin@2023',
 
   recaptcha: {
     siteKey: '6LeBkKoUAAAAAMRcP2yPpPCpbDP-TCEYj7f0IhVd',
   },
-  // recaptcha: {
-  //   siteKey: '6Ld7L-opAAAAAF__s_8mdxiRQteF4G17uy0nxOdF',
-  // },
-  // baseURL: '/manage',
-  // mainURL: 'https://mobile.angular.opinionest.com/',
-  //mainURL: 'https://scrip8.trackopinion.com/',
+  baseURL: '/manage',
+  mainURL: 'https://mobile.angular.opinionest.com/',
 
-  baseURL: '',
-  mainURL: 'http://localhost:4201/'
+  // baseURL: '',
+  // mainURL: 'http://localhost:4201/'
 
 }
