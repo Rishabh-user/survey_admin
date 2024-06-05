@@ -9,6 +9,6 @@ export const environment = {
     recaptcha: {
         siteKey: '6Ld7L-opAAAAAF__s_8mdxiRQteF4G17uy0nxOdF',
     },
-    // baseURL: '/manage',
+    baseURL: '/manage',
     mainURL: 'https://scrip8.trackopinion.com/',
 }
