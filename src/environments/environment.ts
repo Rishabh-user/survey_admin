@@ -1,16 +1,13 @@
 export const environment = {
   production: true,
   apiUrl: 'https://beta.angular.opinionest.com/',
-  
   CryptoKey: 'SurveyAdmin@2023',
 
   recaptcha: {
     siteKey: '6LeBkKoUAAAAAMRcP2yPpPCpbDP-TCEYj7f0IhVd',
   },
-  // baseURL: '/manage',
-  // mainURL: 'https://mobile.angular.opinionest.com/',
-
-  baseURL: '',
-  mainURL: 'http://localhost:4201/'
-
+  baseURL: '/manage',
+  mainURL: 'https://mobile.angular.opinionest.com/',
+  // baseURL: '',
+  // mainURL: 'http://localhost:4201/'
 }
