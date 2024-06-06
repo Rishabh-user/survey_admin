@@ -161,8 +161,8 @@
 
 <div class="common-bg">
     <h4>Interlocked Quotas</h4>
-    <!-- <div class="interlocked-quotas" [style.display]="showInterlockedQuotas ? 'block' : 'none'"> -->
-    <div class="interlocked-quotas" >
+    <div class="interlocked-quotas" [style.display]="showInterlockedQuotas ? 'block' : 'none'">
+    <!-- <div class="interlocked-quotas" > -->
         <ul>
             <ng-container *ngFor="let question of surveyQuotaJson?.questionDto; let i = index">
             <li *ngFor="let generictype of genericlist; let i= index ">

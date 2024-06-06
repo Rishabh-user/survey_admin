@@ -43,7 +43,7 @@ export class ProfileByIdComponent {
     { id: 3, name: 'User' }
   ];
 
-  userroles: string[] = ['SuperAdmin', 'Admin', 'User'];
+  userroles: string[] = ['superadmin', 'Admin', 'User'];
 
   isSuperAdmin = false;
   isAdmin = false;
