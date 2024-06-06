@@ -41,8 +41,9 @@ interface SurveyQuestionreport {
   sort: number;
   status: string; // Assuming status is a string
   startDate: string; // Assuming startDate is a string
-  endDate: string; // Assuming endDate is a string
-  ip: string; // Assuming ip is a string
+  endDate: string;
+  options:any 
+  ip: string; 
   responsOptions: {
     questionId: any;
     id: number;
@@ -270,20 +271,16 @@ export class ViewComponent {
         item.ip
       ];
   
-      const optionValues: { [questionId: number]: string } = {};
+      const optionValues: { [key: number]: string } = {};
+    optionValues[item.questionId] = item.options;
   
-      // if (item.responsOptions) {
-      //   item.responsOptions.forEach(option => {
-      //     optionValues[option.questionId] = option.option;
-      //   });
-      // } else if (item.options) {
-      //   optionValues[item.questionId] = item.options;
-      // }
+    // Add the option values to the row based on questionId
+    Object.keys(questions).forEach(questionId => {
+      row.push(optionValues[parseInt(questionId)] || '');
+    });
   
-      // Object.keys(questions).forEach(questionId => {
-      //   row.push(optionValues[parseInt(questionId)] || '');
-      // });
-  
+    csvContent += row.join(',') + '\n';
+    
       csvContent += row.join(',') + '\n';
     });
   
