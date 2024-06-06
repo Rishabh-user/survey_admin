@@ -243,45 +243,60 @@ export class ViewComponent {
   
 
   convertToCSV(data: SurveyQuestionreport[]): string {
-    const headerFields = ['Column','Survey ID', 'Survey Name', 'Survey Attempt ID', 'Start Date', 'End Date', 'Status','Link Type', 'IP Address'];
+    const headerFields = ['Column', 'Survey ID', 'Survey Name', 'Survey Attempt ID', 'Start Date', 'End Date', 'Status', 'Link Type', 'IP Address'];
   
+    // Collect unique questions and add them to the header
     const questions: { [questionId: number]: string } = {};
     data.forEach(item => {
       questions[item.questionId] = item.question;
     });
-  
     Object.values(questions).forEach(question => {
       headerFields.push(question);
     });
   
-    // let csvContent = headerFields.join(',') + '\n';
+    // Add BOM for UTF-8 encoding
     let csvContent = '\uFEFF' + headerFields.join(',') + '\n';
   
-    // Iterate over each survey response item to build the rows
+    // Group data by surveyAttemptId
+    const groupedData: { [attemptId: string]: any } = {};
     data.forEach(item => {
-      const row = [
-        item.sort,
-        item.surveyId,
-        item.surveyName,
-        item.surveyAttemptId,
-        item.startDate,
-        item.endDate || '',
-        item.status,
-        item.userType,
-        item.ip
-      ];
-  
-      const optionValues: { [key: number]: string } = {};
-    optionValues[item.questionId] = item.options;
-  
-    // Add the option values to the row based on questionId
-    Object.keys(questions).forEach(questionId => {
-      row.push(optionValues[parseInt(questionId)] || '');
+      if (!groupedData[item.surveyAttemptId]) {
+        groupedData[item.surveyAttemptId] = {
+          sort: item.sort,
+          surveyId: item.surveyId,
+          surveyName: item.surveyName,
+          surveyAttemptId: item.surveyAttemptId,
+          startDate: item.startDate,
+          endDate: item.endDate || '',
+          status: item.status,
+          userType: item.userType,
+          ip: item.ip,
+          responses: {}
+        };
+      }
+      groupedData[item.surveyAttemptId].responses[item.questionId] = item.options;
     });
   
-    // csvContent += row.join(',') + '\n';
-    csvContent += row.map(value => `"${value}"`).join(',') + '\n';
-    
+    // Build the rows from the grouped data
+    Object.values(groupedData).forEach(attempt => {
+      const row = [
+        attempt.sort,
+        attempt.surveyId,
+        attempt.surveyName,
+        attempt.surveyAttemptId,
+        attempt.startDate,
+        attempt.endDate,
+        attempt.status,
+        attempt.userType,
+        attempt.ip
+      ];
+  
+      Object.keys(questions).forEach(questionId => {
+        row.push(attempt.responses[questionId] || '');
+      });
+  
+      // Wrap fields in double quotes to handle special characters and commas
+      csvContent += row.map(value => `"${value}"`).join(',') + '\n';
     });
   
     return csvContent;
