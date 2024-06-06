@@ -243,31 +243,31 @@ export class ViewComponent {
   
 
   convertToCSV(data: SurveyQuestionreport[]): string {
-    // Initialize the header fields with the common columns
-    const headerFields = ['Survey ID', 'Survey Name', 'Survey Attempt ID', 'Start Date', 'End Date', 'Status', 'IP Address'];
+    const headerFields = ['Column','Survey ID', 'Survey Name', 'Survey Attempt ID', 'Start Date', 'End Date', 'Status','Link Type', 'IP Address'];
   
-    // Iterate over the data to collect unique questions and add them to the header
     const questions: { [questionId: number]: string } = {};
     data.forEach(item => {
       questions[item.questionId] = item.question;
     });
   
-    // Add question headers to the headerFields
     Object.values(questions).forEach(question => {
       headerFields.push(question);
     });
   
-    let csvContent = headerFields.join(',') + '\n';
+    // let csvContent = headerFields.join(',') + '\n';
+    let csvContent = '\uFEFF' + headerFields.join(',') + '\n';
   
     // Iterate over each survey response item to build the rows
     data.forEach(item => {
       const row = [
+        item.sort,
         item.surveyId,
         item.surveyName,
         item.surveyAttemptId,
         item.startDate,
         item.endDate || '',
         item.status,
+        item.userType,
         item.ip
       ];
   
@@ -279,9 +279,9 @@ export class ViewComponent {
       row.push(optionValues[parseInt(questionId)] || '');
     });
   
-    csvContent += row.join(',') + '\n';
+    // csvContent += row.join(',') + '\n';
+    csvContent += row.map(value => `"${value}"`).join(',') + '\n';
     
-      csvContent += row.join(',') + '\n';
     });
   
     return csvContent;
