@@ -8,7 +8,6 @@ import { UtilsService } from 'src/app/service/utils.service';
 
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
-import { zipWith } from 'rxjs';
 
 interface SurveyQuestion {
   surveyId: number;
@@ -31,6 +30,28 @@ interface SurveyQuestion {
     rating: number | null;
     count: number;
   }[];
+}
+interface SurveyQuestionreport {
+  surveyId: number;
+  surveyName: string;
+  questionId: number;
+  surveyAttemptId:any
+  question: string;
+  userType: string; // Assuming userType is a string
+  sort: number;
+  status: string; // Assuming status is a string
+  startDate: string; // Assuming startDate is a string
+  endDate: string; // Assuming endDate is a string
+  ip: string; // Assuming ip is a string
+  responsOptions: {
+    questionId: any;
+    id: number;
+    option: string;
+    optionId: number | null; // Assuming optionId can be null
+    answer: string | null; // Assuming answer can be null
+    rating: number | null;
+    count: number;
+  }[]| null;
 }
 
 @Component({
@@ -220,16 +241,14 @@ export class ViewComponent {
   // Function to trigger file download
   
 
-  convertToCSV(data: SurveyQuestion[]): string {
+  convertToCSV(data: SurveyQuestionreport[]): string {
     // Initialize the header fields with the common columns
     const headerFields = ['Survey ID', 'Survey Name', 'Survey Attempt ID', 'Start Date', 'End Date', 'Status', 'IP Address'];
   
     // Iterate over the data to collect unique questions and add them to the header
     const questions: { [questionId: number]: string } = {};
     data.forEach(item => {
-      item.responsOptions.forEach(option => {
-        questions[item.questionId] = item.question;
-      });
+      questions[item.questionId] = item.question;
     });
   
     // Add question headers to the headerFields
@@ -246,20 +265,24 @@ export class ViewComponent {
         item.surveyName,
         item.surveyAttemptId,
         item.startDate,
-        item.endDate,
+        item.endDate || '',
         item.status,
         item.ip
       ];
   
       const optionValues: { [questionId: number]: string } = {};
   
-      item.responsOptions.forEach(option => {
-        optionValues[option.questionId] = option.option;
-      });
+      // if (item.responsOptions) {
+      //   item.responsOptions.forEach(option => {
+      //     optionValues[option.questionId] = option.option;
+      //   });
+      // } else if (item.options) {
+      //   optionValues[item.questionId] = item.options;
+      // }
   
-      Object.keys(questions).forEach(questionId => {
-        row.push(optionValues[parseInt(questionId)] || ''); 
-      });
+      // Object.keys(questions).forEach(questionId => {
+      //   row.push(optionValues[parseInt(questionId)] || '');
+      // });
   
       csvContent += row.join(',') + '\n';
     });
@@ -320,7 +343,7 @@ export class ViewComponent {
     });
   }
 
-  surveyreport:SurveyQuestion[] = [];
+  surveyreport:SurveyQuestionreport[] = [];
   getSurveyReport() {
     if (this.surveyId) {
       this.themeService.getReport(this.surveyId).subscribe((data: any) => {
