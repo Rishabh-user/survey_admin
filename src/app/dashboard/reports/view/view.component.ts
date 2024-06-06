@@ -243,7 +243,7 @@ export class ViewComponent {
   
 
   convertToCSV(data: SurveyQuestionreport[]): string {
-    const headerFields = ['Column', 'Survey ID', 'Survey Name', 'Survey Attempt ID', 'Start Date', 'End Date', 'Status', 'Link Type', 'IP Address'];
+    const headerFields = ['S.No', 'Survey ID', 'Survey Name', 'Survey Attempt ID', 'Start Date', 'End Date', 'Status', 'Link Type', 'IP Address'];
   
     // Collect unique questions and add them to the header
     const questions: { [questionId: number]: string } = {};
