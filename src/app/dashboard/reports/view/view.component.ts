@@ -8,18 +8,26 @@ import { UtilsService } from 'src/app/service/utils.service';
 
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
+import { zipWith } from 'rxjs';
 
 interface SurveyQuestion {
   surveyId: number;
   surveyName: string;
   questionId: number;
+  surveyAttemptId:any
   question: string;
-  userType:any
+  userType: string; // Assuming userType is a string
   sort: number;
+  status: string; // Assuming status is a string
+  startDate: string; // Assuming startDate is a string
+  endDate: string; // Assuming endDate is a string
+  ip: string; // Assuming ip is a string
   responsOptions: {
+    questionId: any;
+    id: number;
     option: string;
-    optionId: number;
-    answer: string;
+    optionId: number | null; // Assuming optionId can be null
+    answer: string | null; // Assuming answer can be null
     rating: number | null;
     count: number;
   }[];
@@ -77,6 +85,7 @@ export class ViewComponent {
   ngOnInit(): void {
     this.planid = this.utils.getPlanId();
     this.getSurveyReportBySurveyId();
+    this.getSurveyReport()
   }
 
   graphType(event: any) {
@@ -182,33 +191,83 @@ export class ViewComponent {
 
   // Function to generate CSV data
   generateCSV(): void {
-    const csvContent = this.convertToCSV(this.surveyReportById);
+    const csvContent = this.convertToCSV(this.surveyreport);
     this.downloadCSV(csvContent, 'Survey_Report.csv');
   }
 
-  convertToCSV(data: any[]): string {
-    const headerFields = ['Survey ID', 'Survey Name', 'Question ID', 'Question', 'Option', 'Answer', 'Rating', 'Survey Attempt ID', 'Count'];
-    let csvContent = headerFields.join(',') + '\n';
-    data.forEach(item => {
-      item.responsOptions.forEach((option: { option: any; answer: any; rating: any; surveyAttemptId: any; count: any; }) => {
-        const formattedRow = [
-          item.surveyId,
-          `"${item.surveyName}"`,
-          item.questionId,
-          `"${item.question}"`,
-          option.option,
-          option.answer,
-          option.rating || '',
-          option.surveyAttemptId || '',
-          option.count
-        ].join(',');
-        csvContent += formattedRow + '\n';
-      });
-    });
-    return csvContent;
-  }
+  // convertToCSV(data: any[]): string {
+  //   const headerFields = ['Column','Survey ID','Survey Attempt ID' ,'Survey Name', 'startDate','endDate','status','link type','ip address','Question ID', 'Question'];
+  //   let csvContent = headerFields.join(',') + '\n';
+  //   data.forEach(item => {
+  //     item.responsOptions.forEach((option: { option: any; answer: any; rating: any; surveyAttemptId: any; count: any; }) => {
+  //       const formattedRow = [
+  //         item.surveyId,
+  //         `"${item.surveyName}"`,
+  //         item.questionId,
+  //         `"${item.question}"`,
+  //         option.option,
+  //         option.answer,
+  //         option.rating || '',
+  //         option.surveyAttemptId || '',
+  //         option.count
+  //       ].join(',');
+  //       csvContent += formattedRow + '\n';
+  //     });
+  //   });
+  //   return csvContent;
+  // }
 
   // Function to trigger file download
+  
+
+  convertToCSV(data: SurveyQuestion[]): string {
+    // Initialize the header fields with the common columns
+    const headerFields = ['Survey ID', 'Survey Name', 'Survey Attempt ID', 'Start Date', 'End Date', 'Status', 'IP Address'];
+  
+    // Iterate over the data to collect unique questions and add them to the header
+    const questions: { [questionId: number]: string } = {};
+    data.forEach(item => {
+      item.responsOptions.forEach(option => {
+        questions[item.questionId] = item.question;
+      });
+    });
+  
+    // Add question headers to the headerFields
+    Object.values(questions).forEach(question => {
+      headerFields.push(question);
+    });
+  
+    let csvContent = headerFields.join(',') + '\n';
+  
+    // Iterate over each survey response item to build the rows
+    data.forEach(item => {
+      const row = [
+        item.surveyId,
+        item.surveyName,
+        item.surveyAttemptId,
+        item.startDate,
+        item.endDate,
+        item.status,
+        item.ip
+      ];
+  
+      const optionValues: { [questionId: number]: string } = {};
+  
+      item.responsOptions.forEach(option => {
+        optionValues[option.questionId] = option.option;
+      });
+  
+      Object.keys(questions).forEach(questionId => {
+        row.push(optionValues[parseInt(questionId)] || ''); 
+      });
+  
+      csvContent += row.join(',') + '\n';
+    });
+  
+    return csvContent;
+  }
+  
+  
   downloadCSV(csvContent: string, filename: string): void {
     const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
     if ((navigator as any).msSaveBlob) { // IE 10+
@@ -259,6 +318,17 @@ export class ViewComponent {
 
       pdf.save('report.pdf');
     });
+  }
+
+  surveyreport:SurveyQuestion[] = [];
+  getSurveyReport() {
+    if (this.surveyId) {
+      this.themeService.getReport(this.surveyId).subscribe((data: any) => {
+        this.surveyreport = data;
+      });
+    } else {
+      console.error("Survey ID is null or undefined.");
+    }
   }
 
   // updatechart(chartindex: any, ques: number): void {

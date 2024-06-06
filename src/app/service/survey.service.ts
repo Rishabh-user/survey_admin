@@ -397,12 +397,12 @@ export class SurveyService {
 
 
   getSurveyReportBySurvey(pageNumber: number, pageSize: number): Observable<responseDTO[]> {
-    const url = `${this.apiUrl}GetSurveyList?pageNumber=${pageNumber}&pageSize=${pageSize}`;
+    const url = `${this.apiUrl}api/admin/${this.userId}/Report/GetSurveyList?pageNumber=${pageNumber}&pageSize=${pageSize}`;
     return this.http.get<responseDTO[]>(url);
   }
 
   getSurveyReportBySurveyId(surveyId: any): Observable<responseDTO[]> {
-    const url = `${this.apiUrl}SurveyReport?surveyId=${surveyId}`;
+    const url = `${this.apiUrl}api/admin/1/Report/SurveyReport?surveyId=${surveyId}`;
     return this.http.get<responseDTO[]>(url);
   }
 
@@ -453,6 +453,11 @@ export class SurveyService {
 
   GetOptionLogic(qid: any,sid:any): Observable<responseDTO[]> {
     const url = `${this.apiUrl}api/admin/${this.userId}/GeneralQuestion/GetOptionLogics?qid=${qid}&sid=${sid}`;
+    return this.http.get<responseDTO[]>(url);
+  }
+
+  getReport(surveyId: any): Observable<responseDTO[]> {
+    const url = `${this.apiUrl}api/admin/1/Report/RowSurveyReportById?surveyId=${surveyId}`;
     return this.http.get<responseDTO[]>(url);
   }
 
