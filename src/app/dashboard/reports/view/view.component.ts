@@ -32,6 +32,7 @@ interface SurveyQuestion {
   }[];
 }
 interface SurveyQuestionreport {
+  sno: number
   surveyId: number;
   surveyName: string;
   questionId: number;
@@ -63,6 +64,7 @@ interface SurveyQuestionreport {
 export class ViewComponent {
 
   @ViewChild('content') content: ElementRef;
+  showForPDF: boolean = false;
   surveyId: any;
   reportsurveyid: any;
   surveyReport: any;
@@ -217,90 +219,137 @@ export class ViewComponent {
     this.downloadCSV(csvContent, 'Survey_Report.csv');
   }
 
-  // convertToCSV(data: any[]): string {
-  //   const headerFields = ['Column','Survey ID','Survey Attempt ID' ,'Survey Name', 'startDate','endDate','status','link type','ip address','Question ID', 'Question'];
-  //   let csvContent = headerFields.join(',') + '\n';
+  // convertToCSV(data: SurveyQuestionreport[]): string {
+  //   const headerFields = ['S.No', 'Survey ID', 'Survey Name', 'Survey Attempt ID', 'Start Date', 'End Date', 'Status', 'Link Type', 'IP Address'];
+  
+  //   // Collect unique questions and add them to the header
+  //   const questions: { [questionId: number]: string } = {};
   //   data.forEach(item => {
-  //     item.responsOptions.forEach((option: { option: any; answer: any; rating: any; surveyAttemptId: any; count: any; }) => {
-  //       const formattedRow = [
-  //         item.surveyId,
-  //         `"${item.surveyName}"`,
-  //         item.questionId,
-  //         `"${item.question}"`,
-  //         option.option,
-  //         option.answer,
-  //         option.rating || '',
-  //         option.surveyAttemptId || '',
-  //         option.count
-  //       ].join(',');
-  //       csvContent += formattedRow + '\n';
-  //     });
+  //     questions[item.questionId] = item.question;
   //   });
+  //   Object.values(questions).forEach(question => {
+  //     headerFields.push(question);
+  //   });
+  
+  //   // Add BOM for UTF-8 encoding
+  //   let csvContent = '\uFEFF' + headerFields.join(',') + '\n';
+  
+  //   // Group data by surveyAttemptId
+  //   const groupedData: { [attemptId: string]: any } = {};
+  //   data.forEach(item => {
+  //     if (!groupedData[item.surveyAttemptId]) {
+  //       groupedData[item.surveyAttemptId] = {
+  //         sort: item.sort,
+  //         surveyId: item.surveyId,
+  //         surveyName: item.surveyName,
+  //         surveyAttemptId: item.surveyAttemptId,
+  //         startDate: item.startDate,
+  //         endDate: item.endDate || '',
+  //         status: item.status,
+  //         userType: item.userType,
+  //         ip: item.ip,
+  //         responses: {}
+  //       };
+  //     }
+  //     groupedData[item.surveyAttemptId].responses[item.questionId] = item.options;
+  //   });
+  
+  //   // Build the rows from the grouped data
+  //   Object.values(groupedData).forEach(attempt => {
+  //     const row = [
+  //       attempt.sort,
+  //       attempt.surveyId,
+  //       attempt.surveyName,
+  //       attempt.surveyAttemptId,
+  //       attempt.startDate,
+  //       attempt.endDate,
+  //       attempt.status,
+  //       attempt.userType,
+  //       attempt.ip
+  //     ];
+  
+  //     Object.keys(questions).forEach(questionId => {
+  //       row.push(attempt.responses[questionId] || '');
+  //     });
+  
+  //     // Wrap fields in double quotes to handle special characters and commas
+  //     csvContent += row.map(value => `"${value}"`).join(',') + '\n';
+  //   });
+  
   //   return csvContent;
   // }
 
-  // Function to trigger file download
-  
 
-  convertToCSV(data: SurveyQuestionreport[]): string {
-    const headerFields = ['S.No', 'Survey ID', 'Survey Name', 'Survey Attempt ID', 'Start Date', 'End Date', 'Status', 'Link Type', 'IP Address'];
-  
-    // Collect unique questions and add them to the header
-    const questions: { [questionId: number]: string } = {};
-    data.forEach(item => {
-      questions[item.questionId] = item.question;
+ convertToCSV(data: SurveyQuestionreport[]): string {
+  const headerFields = [
+    'S.No',
+    'Survey ID',
+    'Survey Name',
+    'Survey Attempt ID',
+    'Start Date',
+    'End Date',
+    'Status',
+    'Link Type',
+    'IP Address'
+  ];
+
+  // Collect unique questions and add them to the header
+  const questions: { [questionId: number]: string } = {};
+  data.forEach(item => {
+    questions[item.questionId] = item.sort + '.' + item.question.replace(/<[^>]+>/g, '');
+  });
+  Object.values(questions).forEach(question => {
+    headerFields.push(question);
+  });
+
+  // Add BOM for UTF-8 encoding
+  let csvContent = '\uFEFF' + headerFields.map(value => `"${value}"`).join(',') + '\n';
+
+  // Group data by surveyAttemptId
+  let sno = 1;
+  const groupedData: { [attemptId: string]: any } = {};
+  data.forEach(item => {
+    if (!groupedData[item.surveyAttemptId]) {
+      groupedData[item.surveyAttemptId] = {
+        surveyId: item.surveyId,
+        surveyName: item.surveyName,
+        surveyAttemptId: item.surveyAttemptId,
+        startDate: item.startDate,
+        endDate: item.endDate || '',
+        status: item.status,
+        userType: item.userType,
+        ip: item.ip,
+        responses: {}
+      };
+    }
+    groupedData[item.surveyAttemptId].responses[item.questionId] = item.options;
+  });
+
+  // Build the rows from the grouped data
+  Object.values(groupedData).forEach(attempt => {
+    const row = [
+      sno++,
+      attempt.surveyId,
+      attempt.surveyName,
+      attempt.surveyAttemptId,
+      attempt.startDate,
+      attempt.endDate,
+      attempt.status,
+      attempt.userType,
+      attempt.ip
+    ];
+
+    Object.keys(questions).forEach(questionId => {
+      row.push(attempt.responses[questionId] || '');
     });
-    Object.values(questions).forEach(question => {
-      headerFields.push(question);
-    });
-  
-    // Add BOM for UTF-8 encoding
-    let csvContent = '\uFEFF' + headerFields.join(',') + '\n';
-  
-    // Group data by surveyAttemptId
-    const groupedData: { [attemptId: string]: any } = {};
-    data.forEach(item => {
-      if (!groupedData[item.surveyAttemptId]) {
-        groupedData[item.surveyAttemptId] = {
-          sort: item.sort,
-          surveyId: item.surveyId,
-          surveyName: item.surveyName,
-          surveyAttemptId: item.surveyAttemptId,
-          startDate: item.startDate,
-          endDate: item.endDate || '',
-          status: item.status,
-          userType: item.userType,
-          ip: item.ip,
-          responses: {}
-        };
-      }
-      groupedData[item.surveyAttemptId].responses[item.questionId] = item.options;
-    });
-  
-    // Build the rows from the grouped data
-    Object.values(groupedData).forEach(attempt => {
-      const row = [
-        attempt.sort,
-        attempt.surveyId,
-        attempt.surveyName,
-        attempt.surveyAttemptId,
-        attempt.startDate,
-        attempt.endDate,
-        attempt.status,
-        attempt.userType,
-        attempt.ip
-      ];
-  
-      Object.keys(questions).forEach(questionId => {
-        row.push(attempt.responses[questionId] || '');
-      });
-  
-      // Wrap fields in double quotes to handle special characters and commas
-      csvContent += row.map(value => `"${value}"`).join(',') + '\n';
-    });
-  
-    return csvContent;
-  }
+
+    // Wrap fields in double quotes to handle special characters and commas
+    csvContent += row.map(value => `"${value}"`).join(',') + '\n';
+  });
+
+  return csvContent;
+}
+
   
   
   downloadCSV(csvContent: string, filename: string): void {
@@ -330,30 +379,78 @@ export class ViewComponent {
     // this.updatechart(this.quesgraphtypevalue[ques], ques)
   }
 
+  // generatePDF(): void {
+  //   this.showForPDF = true;
+  //   setTimeout(() => {
+  //     let content = this.content.nativeElement;
+  //     html2canvas(content).then(canvas => {
+  //         const imgData = canvas.toDataURL('image/png');
+  //         const pdf = new jsPDF('p', 'mm', 'a4');
+  //         const imgWidth = 210;
+  //         const pageHeight = 295;
+  //         const imgHeight = canvas.height * imgWidth / canvas.width;
+  //         let heightLeft = imgHeight;
+  //         let position = 0;
+
+  //         // Calculate the horizontal center position
+  //         const xCenter = (pdf.internal.pageSize.getWidth() - imgWidth) / 2;
+
+  //         pdf.addImage(imgData, 'PNG', xCenter, position, imgWidth, imgHeight);
+  //         heightLeft -= pageHeight;
+
+  //         while (heightLeft >= 0) {
+  //             position = heightLeft - imgHeight;
+  //             pdf.addPage();
+  //             pdf.addImage(imgData, 'PNG', xCenter, position, imgWidth, imgHeight);
+  //             heightLeft -= pageHeight;
+  //         }
+
+  //         pdf.save('report.pdf');
+  //         this.showForPDF = false;
+  //     });
+  //   },200);
+    
+  // }
+
+
   generatePDF(): void {
-    let content = this.content.nativeElement;
-    html2canvas(content).then(canvas => {
-      const imgData = canvas.toDataURL('image/png');
-      const pdf = new jsPDF('p', 'mm', 'a4');
-      const imgWidth = 210;
-      const pageHeight = 295;
-      const imgHeight = canvas.height * imgWidth / canvas.width;
-      let heightLeft = imgHeight;
-      let position = 0;
+    this.showForPDF = true;
+    setTimeout(() => {
+      let content = this.content.nativeElement;
+      html2canvas(content).then(canvas => {
+          const imgData = canvas.toDataURL('image/png');
+          const pdf = new jsPDF('p', 'mm', 'a4');
+          const imgWidth = 210;
+          const pageHeight = 295;
+          const imgHeight = canvas.height * imgWidth / canvas.width;
+          let heightLeft = imgHeight;
+          let position = 0;
 
-      pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
-      heightLeft -= pageHeight;
+          // Calculate the horizontal center position
+          const xCenter = (pdf.internal.pageSize.getWidth() - imgWidth) / 2;
 
-      while (heightLeft >= 0) {
-        position = heightLeft - imgHeight;
-        pdf.addPage();
-        pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
-        heightLeft -= pageHeight;
-      }
+          while (heightLeft >= 0) {
+              if (position + imgHeight > pageHeight) {
+                  // If not enough space left, add a new page
+                  pdf.addPage();
+                  position = 0; // Start from top of the new page
+              }
+              const spaceLeftOnPage = pageHeight - position;
+              const heightToDraw = Math.min(spaceLeftOnPage, imgHeight);
+              pdf.addImage(imgData, 'PNG', xCenter, position, imgWidth, heightToDraw);
+              position += heightToDraw;
+              heightLeft -= heightToDraw;
+          }
 
-      pdf.save('report.pdf');
-    });
-  }
+          pdf.save('report.pdf');
+          this.showForPDF = false;
+      });
+    },200);
+    
+} 
+
+
+
 
   surveyreport:SurveyQuestionreport[] = [];
   getSurveyReport() {

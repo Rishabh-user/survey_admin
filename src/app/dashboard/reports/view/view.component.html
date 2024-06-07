@@ -31,7 +31,9 @@
       </div>
     </div>
 
-    <div class="Report-question-list" id="content" #content>
+    <!-- <div  [ngClass]="{'content': showForPDF, 'Report-question-list': !showForPDF}"   #content></div> -->
+    <div class="Report-question-list" id="content"  #content>
+      <h4 [hidden]="!showForPDF">{{surveyname}}</h4>
       <ol>
         <li *ngFor="let item of surveyReportById; let i = index"
         [hidden]="selectedusertype !== 'Select' && item.userType !== selectedusertype">
