@@ -571,6 +571,7 @@
                                                         </select>
                                                     </div>
                                                     <div class="col-md-3">
+                                                        {{optionlogicifexpectedid}}
                                                         <mat-form-field class="example-chip-list">
                                                             <mat-chip-grid #chipGrid aria-label="City selection">
                                                                 <mat-chip-row
@@ -582,8 +583,8 @@
                                                                     </button>
                                                                 </mat-chip-row>
                                                                 <input 
-                                                                    [matChipInputFor]="chipGrid"
                                                                     [(ngModel)]="optionlogicifexpectedid"
+                                                                    [matChipInputFor]="chipGrid"
                                                                     [matAutocomplete]="auto"
                                                                     [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
                                                                     (matChipInputTokenEnd)="addOption($event)">

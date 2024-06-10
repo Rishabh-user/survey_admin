@@ -65,7 +65,7 @@ export class EditSurveyComponent {
   @Output() onSaveEvent = new EventEmitter();
 
   separatorKeysCodes: number[] = [ENTER, COMMA];
-
+  optionlogicifexpectedid:any;
   surveyId: any;
   questionTypeId: any;
   question: Question = new Question();
@@ -290,7 +290,7 @@ export class EditSurveyComponent {
       }
 
     }
-   
+    
 
 
 
@@ -1056,6 +1056,7 @@ export class EditSurveyComponent {
     if (input) {
       input.value = '';
     }
+    this.optionlogicifexpectedid = '';
   }
   removeOption(option: any): void {
     const index = this.selectedOptions.indexOf(option);
@@ -1065,15 +1066,14 @@ export class EditSurveyComponent {
   }
 
   selectedOption(event: MatAutocompleteSelectedEvent): void {
-    debugger
     const selectedOption = event.option.value;
     if (!this.selectedOptions.includes(selectedOption)) {
       this.selectedOptions.push(selectedOption);
     }
     console.log("selectedOptions",this.selectedOptions)
     this.selectedifexpected = this.selectedOptions.map((option: { id: any }) => option.id).join(', ');
+    this.optionlogicifexpectedid = selectedOption.option;
 
-    debugger
   }
 
   openLg(content: any) {
@@ -1500,7 +1500,7 @@ export class EditSurveyComponent {
  
   optionlogicquesid:any;
   optionlogicifid:any
-  optionlogicifexpectedid:any;
+ 
   optionlogicthanid:any;
   optionlogicthanexpectedid:any;
   optionlogicelseid:any;
@@ -1534,11 +1534,14 @@ export class EditSurveyComponent {
     });
   }
 
+  getoptionlogic:any[]=[]
   getOptionLogics(): void {
     this.surveyservice.GetOptionLogic(this.questionId, this.surveyId).subscribe((data: any[]) => {
       debugger
       if (data && data.length > 0) {
-        const response = data[0]; // Access the first element of the array
+        const response = data[0];
+        this.getoptionlogic = data[0] 
+        this.visibleanslogic = true// Access the first element of the array
         console.log("data", response);
         this.optionlogicquesid = response.questionId;
         this.optionlogicifid = response.ifId;

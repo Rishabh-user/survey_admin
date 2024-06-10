@@ -393,37 +393,77 @@ export class ViewComponent {
     // this.updatechart(this.quesgraphtypevalue[ques], ques)
   }
 
+  showpdf:boolean= false
+
+  // generatePDF(): void {
+  //   this.showForPDF = true;
+  //   this.showpdf = !this.showpdf;
+  //   setTimeout(() => {
+  //     let content = this.content.nativeElement;
+  //     html2canvas(content).then(canvas => {
+  //         const imgData = canvas.toDataURL('image/png');
+  //         const pdf = new jsPDF('p', 'mm', 'a4');
+  //         const imgWidth = 210;
+  //         const pageHeight = 295;
+  //         const imgHeight = canvas.height * imgWidth / canvas.width;
+  //         let heightLeft = imgHeight;
+  //         let position = 0;
+
+  //         // Calculate the horizontal center position
+  //         const xCenter = (pdf.internal.pageSize.getWidth() - imgWidth) / 2;
+
+  //         pdf.addImage(imgData, 'PNG', xCenter, position, imgWidth, imgHeight);
+  //         heightLeft -= pageHeight;
+
+  //         while (heightLeft >= 0) {
+  //             position = heightLeft - imgHeight;
+  //             pdf.addPage();
+  //             pdf.addImage(imgData, 'PNG', xCenter, position, imgWidth, imgHeight);
+  //             heightLeft -= pageHeight;
+  //         }
+
+  //         pdf.save('report.pdf');
+  //         this.showForPDF = false;
+  //         this.showpdf = this.showpdf;
+  //     });
+  //   },200);
+    
+  // }
+
+
   generatePDF(): void {
     this.showForPDF = true;
+    this.showpdf = !this.showpdf;
+
     setTimeout(() => {
-      let content = this.content.nativeElement;
+      const content = this.content.nativeElement;
       html2canvas(content).then(canvas => {
-          const imgData = canvas.toDataURL('image/png');
-          const pdf = new jsPDF('p', 'mm', 'a4');
-          const imgWidth = 210;
-          const pageHeight = 295;
-          const imgHeight = canvas.height * imgWidth / canvas.width;
-          let heightLeft = imgHeight;
-          let position = 0;
+        const imgData = canvas.toDataURL('image/png');
+        const pdf = new jsPDF('p', 'mm', 'a4');
+        const imgWidth = 210;
+        const pageHeight = 295;
+        const imgHeight = canvas.height * imgWidth / canvas.width;
+        let heightLeft = imgHeight;
+        let position = 0;
 
-          // Calculate the horizontal center position
-          const xCenter = (pdf.internal.pageSize.getWidth() - imgWidth) / 2;
+        // Calculate the horizontal center position
+        const xCenter = (pdf.internal.pageSize.getWidth() - imgWidth) / 2;
 
+        // Loop over and add images to the PDF
+        while (heightLeft > 0) {
           pdf.addImage(imgData, 'PNG', xCenter, position, imgWidth, imgHeight);
           heightLeft -= pageHeight;
-
-          while (heightLeft >= 0) {
-              position = heightLeft - imgHeight;
-              pdf.addPage();
-              pdf.addImage(imgData, 'PNG', xCenter, position, imgWidth, imgHeight);
-              heightLeft -= pageHeight;
+          if (heightLeft > 0) {
+            position = heightLeft - imgHeight;
+            pdf.addPage();
           }
+        }
 
-          pdf.save('report.pdf');
-          this.showForPDF = false;
+        pdf.save('report.pdf');
+        this.showForPDF = false;
+        this.showpdf = this.showpdf;
       });
-    },200);
-    
+    });
   }
 
 
@@ -434,6 +474,7 @@ export class ViewComponent {
     if (this.surveyId) {
       this.themeService.getReport(this.surveyId).subscribe((data: any) => {
         this.surveyreport = data;
+        console.log("this",this.surveyreport)
       });
     } else {
       console.error("Survey ID is null or undefined.");

@@ -32,28 +32,17 @@
     </div>
 
     <!-- <div  [ngClass]="{'content': showForPDF, 'Report-question-list': !showForPDF}"   #content></div> -->
-    <div class="Report-question-list" id="content"  #content>
+    <div class="Report-question-list" id="content"  [class.active]="showpdf"  #content>
       <h4 [hidden]="!showForPDF">{{surveyname}}</h4>
-      <ol>
-        <li *ngFor="let item of surveyReportById; let i = index"
+      <ol >
+        <li  *ngFor="let item of surveyReportById; let i = index"
         [hidden]="selectedusertype !== 'Select' && item.userType !== selectedusertype">
           <figcaption>
             <div class="row">
               <div class="col">
                 <h4>Q.{{ i + 1 }} {{item.question}}</h4>
               </div>
-              <!-- <div class="col input-group flex-nowrap">
-                <select class="form-select" (change)="questiongraphType($event,item.questionId)">
-                  <option selected>Select Graph Type</option>
-                  <option value="1">Doughnut</option>
-                  <option value="2">Stacked bar/line</option>
-                  <option value="3">Point Styling</option>
-                  <option value="4">HTML Legend</option>
-                  <option value="5">Loop</option>
-                </select>
-              </div> -->
             </div>
-
           </figcaption>
           <figure>
             <div class="graph-gap">
