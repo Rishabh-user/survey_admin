@@ -104,6 +104,21 @@ export class ViewComponent {
 
  usertype:any[]=['preview','live','universal','test']
 
+ csv:any[]=['CSV(ques)','CSV(count)','CSV(optioncount)']
+
+ onSelectChangegraph(event: Event): void {
+  const selectedValue = (event.target as HTMLSelectElement).value;
+  if (selectedValue === '1') {
+    this.generateCSV();
+  }
+  if (selectedValue === '2') {
+    this.generateCountCSV();
+  }
+  if (selectedValue === '3') {
+    this.generateOptionCountCSV();
+  }
+}
+
 
 
   ngOnInit(): void {
@@ -282,85 +297,98 @@ export class ViewComponent {
 
   convertToCSV(data: SurveyQuestionreport[]): string {
     const headerFields = [
-      'S.No',
-      'Survey ID',
-      'Survey Name',
-      'Survey Attempt ID',
-      'Start Date',
-      'End Date',
-      'Status',
-      'Link Type',
-      'IP Address'
+        'S.No',
+        'Survey ID',
+        'Survey Name',
+        'Survey Attempt ID',
+        'Start Date',
+        'End Date',
+        'Status',
+        'Link Type',
+        'IP Address'
     ];
-  
+
     // Collect unique questions in the order they appear in 'data'
     const questions: { [questionId: number]: string } = {};
     const orderedQuestions: string[] = [];
-  
+
     data.forEach(item => {
-      if (!questions[item.questionId]) {
-        questions[item.questionId] = item.sort + '.' + item.question.replace(/<[^>]+>/g, '');
-        orderedQuestions.push(questions[item.questionId]);
-      }
+        if (!questions[item.questionId]) {
+            questions[item.questionId] = item.sort + '.' + item.question.replace(/<[^>]+>/g, '');
+            orderedQuestions.push(questions[item.questionId]);
+        }
     });
-  
+
     // Add the ordered questions to the header
     orderedQuestions.forEach(question => {
-      headerFields.push(question);
+        headerFields.push(question);
     });
-  
+
     // Add BOM for UTF-8 encoding
     let csvContent = '\uFEFF' + headerFields.map(value => `"${value}"`).join(',') + '\n';
-  
+
     // Group data by surveyAttemptId
     let sno = 1;
     const groupedData: { [attemptId: string]: any } = {};
     data.forEach(item => {
-      if (!groupedData[item.surveyAttemptId]) {
-        groupedData[item.surveyAttemptId] = {
-          surveyId: item.surveyId,
-          surveyName: item.surveyName,
-          surveyAttemptId: item.surveyAttemptId,
-          startDate: item.startDate,
-          endDate: item.endDate || '',
-          status: item.status,
-          userType: item.userType,
-          ip: item.ip,
-          responses: {}
-        };
-      }
-      groupedData[item.surveyAttemptId].responses[item.questionId] = item.options;
+        if (!groupedData[item.surveyAttemptId]) {
+            groupedData[item.surveyAttemptId] = {
+                surveyId: item.surveyId,
+                surveyName: item.surveyName,
+                surveyAttemptId: item.surveyAttemptId,
+                startDate: item.startDate,
+                endDate: item.endDate || '',
+                status: item.status,
+                userType: item.userType,
+                ip: item.ip,
+                responses: {}
+            };
+        }
+        groupedData[item.surveyAttemptId].responses[item.questionId] = item.options;
     });
-  
+
+    // Helper function to format date and time
+    const formatDateTime = (dateString: string): string => {
+        if (!dateString) return '';
+        const date = new Date(dateString);
+        const day = String(date.getDate()).padStart(2, '0');
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        const year = date.getFullYear();
+        const hours = String(date.getHours()).padStart(2, '0');
+        const minutes = String(date.getMinutes()).padStart(2, '0');
+        return `${day}/${month}/${year} ${hours}:${minutes}`;
+    };
+
     // Build the rows from the grouped data
     Object.values(groupedData).forEach(attempt => {
-      const row: (string | number)[] = [
-        sno++,
-        attempt.surveyId,
-        attempt.surveyName,
-        attempt.surveyAttemptId,
-        attempt.startDate,
-        attempt.endDate,
-        attempt.status,
-        attempt.userType,
-        attempt.ip
-      ];
-  
-      orderedQuestions.forEach(question => {
-        const questionId = Object.keys(questions).find(key => questions[+key] === question);
-        if (questionId !== undefined) {
-          row.push(attempt.responses[+questionId] || '');
-        } else {
-          row.push('');
-        }
-      });
-  
-      // Wrap fields in double quotes to handle special characters and commas
-      csvContent += row.map(value => `"${value}"`).join(',') + '\n';
+        const row: (string | number)[] = [
+            sno++,
+            attempt.surveyId,
+            attempt.surveyName,
+            attempt.surveyAttemptId,
+            formatDateTime(attempt.startDate),
+            formatDateTime(attempt.endDate),
+            attempt.status,
+            attempt.userType,
+            attempt.ip
+        ];
+
+        orderedQuestions.forEach(question => {
+            const questionId = Object.keys(questions).find(key => questions[+key] === question);
+            if (questionId !== undefined) {
+                row.push(attempt.responses[+questionId] || '');
+            } else {
+                row.push('');
+            }
+        });
+
+        // Wrap fields in double quotes to handle special characters and commas
+        csvContent += row.map(value => `"${value}"`).join(',') + '\n';
     });
-  
+
     return csvContent;
-  }
+}
+
   
   
 
@@ -431,43 +459,40 @@ export class ViewComponent {
   // }
 
 
-  generatePDF(): void {
-    this.showForPDF = true;
-    this.showpdf = !this.showpdf;
+  // generatePDF(): void {
+  //   this.showForPDF = true;
+  //   this.showpdf = !this.showpdf;
 
-    setTimeout(() => {
-      const content = this.content.nativeElement;
-      html2canvas(content).then(canvas => {
-        const imgData = canvas.toDataURL('image/png');
-        const pdf = new jsPDF('p', 'mm', 'a4');
-        const imgWidth = 210;
-        const pageHeight = 295;
-        const imgHeight = canvas.height * imgWidth / canvas.width;
-        let heightLeft = imgHeight;
-        let position = 0;
+  //   setTimeout(() => {
+  //     const content = this.content.nativeElement;
+  //     html2canvas(content).then(canvas => {
+  //       const imgData = canvas.toDataURL('image/png');
+  //       const pdf = new jsPDF('p', 'mm', 'a4');
+  //       const imgWidth = 210;
+  //       const pageHeight = 295;
+  //       const imgHeight = canvas.height * imgWidth / canvas.width;
+  //       let heightLeft = imgHeight;
+  //       let position = 0;
 
-        // Calculate the horizontal center position
-        const xCenter = (pdf.internal.pageSize.getWidth() - imgWidth) / 2;
+  //       // Calculate the horizontal center position
+  //       const xCenter = (pdf.internal.pageSize.getWidth() - imgWidth) / 2;
 
-        // Loop over and add images to the PDF
-        while (heightLeft > 0) {
-          pdf.addImage(imgData, 'PNG', xCenter, position, imgWidth, imgHeight);
-          heightLeft -= pageHeight;
-          if (heightLeft > 0) {
-            position = heightLeft - imgHeight;
-            pdf.addPage();
-          }
-        }
+  //       // Loop over and add images to the PDF
+  //       while (heightLeft > 0) {
+  //         pdf.addImage(imgData, 'PNG', xCenter, position, imgWidth, imgHeight);
+  //         heightLeft -= pageHeight;
+  //         if (heightLeft > 0) {
+  //           position = heightLeft - imgHeight;
+  //           pdf.addPage();
+  //         }
+  //       }
 
-        pdf.save('report.pdf');
-        this.showForPDF = false;
-        this.showpdf = this.showpdf;
-      });
-    });
-  }
-
-
-
+  //       pdf.save('report.pdf');
+  //       this.showForPDF = false;
+  //       this.showpdf = this.showpdf;
+  //     });
+  //   });
+  // }
 
   surveyreport:SurveyQuestionreport[] = [];
   getSurveyReport() {
@@ -480,6 +505,294 @@ export class ViewComponent {
       console.error("Survey ID is null or undefined.");
     }
   }
+
+
+  generatePDF(): void {
+    this.showForPDF = true;
+    this.showpdf = !this.showpdf;
+
+    setTimeout(() => {
+        const content = this.content.nativeElement;
+        const items = content.querySelectorAll('ol > li');
+        const pdf = new jsPDF('p', 'mm', 'a4');
+        const pageHeight = 295;
+        const imgWidth = 210;
+        const margin = 10;
+        const graphPerPage = 3;
+        const lineHeight = 10; // Adjust based on your content's font size
+        let currentYPosition = margin + lineHeight; // Leave space for the survey name
+
+        const addSurveyNameToPDF = () => {
+            pdf.setFontSize(16);
+            pdf.text(this.surveyname, pdf.internal.pageSize.getWidth() / 2, margin, { align: 'center' });
+            currentYPosition += lineHeight;
+        };
+
+        const addItemToPDF = (item:any, position:any, callback:any) => {
+            html2canvas(item).then(canvas => {
+                const imgData = canvas.toDataURL('image/png');
+                const imgHeight = canvas.height * imgWidth / canvas.width;
+
+                if (position + imgHeight > pageHeight) {
+                    pdf.addPage();
+                    addSurveyNameToPDF();
+                    position = currentYPosition;
+                }
+
+                const xCenter = (pdf.internal.pageSize.getWidth() - imgWidth) / 2;
+                pdf.addImage(imgData, 'PNG', xCenter, position, imgWidth, imgHeight);
+                currentYPosition = position + imgHeight + margin;
+
+                callback();
+            });
+        };
+
+        const processNextItem = () => {
+            if (currentGraphIndex < items.length) {
+                const item = items[currentGraphIndex];
+                addItemToPDF(item, currentYPosition, () => {
+                    currentGraphIndex++;
+                    if (currentGraphIndex % graphPerPage === 0) {
+                        pdf.addPage();
+                        addSurveyNameToPDF();
+                        currentYPosition = margin + lineHeight;
+                    }
+                    processNextItem();
+                });
+            } else {
+                pdf.save('report.pdf');
+                this.showForPDF = false;
+                this.showpdf = !this.showpdf;
+            }
+        };
+
+        let currentGraphIndex = 0;
+        addSurveyNameToPDF();
+        processNextItem();
+    }, 1000); // Adjust timeout to ensure content is fully rendered
+}
+
+
+
+
+  generateOptionCountCSV(): void {
+    const csvContent = this.optionCountConvertToCSV(this.surveyreport);
+    this.downloadCSV(csvContent, 'Survey_Report_Option_Count.csv');
+  }
+
+  optionCountConvertToCSV(data: any[]): string {
+    // Initialize header fields with basic information
+    const headerFields = [
+        'S.No',
+        'Survey ID',
+        'Survey Name',
+        'Survey Attempt ID',
+        'Start Date',
+        'End Date',
+        'Status',
+        'Link Type',
+        'IP Address'
+    ];
+
+    // Create a map to store questions and their options
+    const questionsWithOptionsMap: Map<string, string[]> = new Map();
+
+    // Iterate over the data and populate the map
+    data.forEach(item => {
+        const key = `${item.questionId}_${item.question}`;
+        if (!questionsWithOptionsMap.has(key)) {
+            questionsWithOptionsMap.set(key, []);
+        }
+        const options = item.responsOptions.map((option: { option: string }) => option.option);
+        const existingOptions = questionsWithOptionsMap.get(key) || []; // Handle undefined case
+        questionsWithOptionsMap.set(key, Array.from(new Set([...existingOptions, ...options])));
+    });
+
+    // Add questions to header
+    questionsWithOptionsMap.forEach((options, question) => {
+        headerFields.push(question);
+        options.forEach(option => {
+            headerFields.push(option);
+        });
+    });
+
+    // Prepare CSV content
+    let csvContent = '\uFEFF' + headerFields.map(value => `"${value}"`).join(',') + '\n';
+    let sno = 1;
+
+    // Iterate over the data to generate CSV rows
+    data.forEach(item => {
+        const row = [
+            sno++,
+            item.surveyId,
+            item.surveyName,
+            item.surveyAttemptId,
+            item.startDate,
+            item.endDate || '',
+            item.status,
+            item.userType,
+            item.ip
+        ];
+
+        // Initialize an object to hold the counts for each option
+        const optionCounts: { [option: string]: number } = {};
+
+        // Populate the optionCounts with counts for each option
+        questionsWithOptionsMap.forEach((options, question) => {
+            const questionId = question.split('_')[0];
+            const responses = item.responsOptions.find((response: { questionId: string }) => response.questionId === questionId);
+            options.forEach(option => {
+                const count = responses ? responses.filter((response: { option: string }) => response.option === option).length : 0;
+                optionCounts[option] = count;
+            });
+        });
+
+        // Add counts for each option to the row
+        questionsWithOptionsMap.forEach((options, _) => {
+            options.forEach(option => {
+                row.push(optionCounts[option]);
+            });
+        });
+
+        csvContent += row.map(value => `"${value}"`).join(',') + '\n';
+    });
+
+    return csvContent;
+}
+
+
+
+
+
+
+
+  // opitonCountConvertToCSV(data: any[]): string {
+  //   const headerFields = [
+  //     'S.No',
+  //     'Survey ID',
+  //     'Survey Name',
+  //     'Survey Attempt ID',
+  //     'Start Date',
+  //     'End Date',
+  //     'Status',
+  //     'Link Type',
+  //     'IP Address'
+  //   ];
+  
+  //   // Collect unique questions with their options in the order they appear in 'data'
+  //   const questionsWithOptions: { questionId: number; question: string; options: string[] }[] = [];
+  
+  //   data.forEach(item => {
+  //     if (!questionsWithOptions.some(q => q.questionId === item.questionId)) {
+  //       const questionOptions = item.responsOptions.map((option: { option: string }) => option.option);
+  //       questionsWithOptions.push({
+  //         questionId: item.questionId,
+  //         question: `${item.sort}. ${item.question.replace(/<[^>]+>/g, '')}`,
+  //         options: questionOptions
+  //       });
+  //     }
+  //   });
+  
+  //   // Add the ordered questions and their options to the header
+  //   questionsWithOptions.forEach((questionWithOptions, qIndex) => {
+  //     headerFields.push(questionWithOptions.question);
+  //     questionWithOptions.options.forEach((option, oIndex) => {
+  //       headerFields.push(`${qIndex + 1}${String.fromCharCode(97 + oIndex)}. ${option}`);
+  //     });
+  //   });
+  
+  //   // Add BOM for UTF-8 encoding
+  //   let csvContent = '\uFEFF' + headerFields.map(value => `"${value}"`).join(',') + '\n';
+  
+  //   // Group data by surveyAttemptId
+  //   let sno = 1;
+  //   const groupedData: { [attemptId: string]: any } = {};
+  //   data.forEach(item => {
+  //     if (!groupedData[item.surveyAttemptId]) {
+  //       groupedData[item.surveyAttemptId] = {
+  //         surveyId: item.surveyId,
+  //         surveyName: item.surveyName,
+  //         surveyAttemptId: item.surveyAttemptId,
+  //         startDate: item.startDate,
+  //         endDate: item.endDate || '',
+  //         status: item.status,
+  //         userType: item.userType,
+  //         ip: item.ip,
+  //         responses: {}
+  //       };
+  //     }
+  //     groupedData[item.surveyAttemptId].responses[item.questionId] = item.responsOptions;
+  //   });
+  
+  //   // Create rows for each survey attempt
+  //   for (const attemptId in groupedData) {
+  //     const item = groupedData[attemptId];
+  //     const row = [
+  //       sno++,
+  //       item.surveyId,
+  //       item.surveyName,
+  //       item.surveyAttemptId,
+  //       item.startDate,
+  //       item.endDate,
+  //       item.status,
+  //       item.userType,
+  //       item.ip
+  //     ];
+  
+  //     questionsWithOptions.forEach(questionWithOptions => {
+  //       const responses = item.responses[questionWithOptions.questionId];
+  //       if (responses) {
+  //         row.push(''); // Placeholder for the question itself, if needed
+  //         questionWithOptions.options.forEach(option => {
+  //           const responseOption = responses.find((o: any) => o.option === option);
+  //           row.push(responseOption ? responseOption.count : 0);
+  //         });
+  //       } else {
+  //         row.push('');
+  //         questionWithOptions.options.forEach(() => row.push(0));
+  //       }
+  //     });
+  
+  //     csvContent += row.map(value => `"${value}"`).join(',') + '\n';
+  //   }
+  
+  //   return csvContent;
+  // }
+  
+
+
+
+
+
+  generateCountCSV(): void {
+    const csvContent = this.countConvertToCSV(this.surveyReportById);
+    this.downloadCSV(csvContent, 'Survey_Report_Count.csv');
+  }
+
+  countConvertToCSV(data: any[]): string {
+    const headerFields = ['Survey ID', 'Survey Name', 'Question ID', 'Question', 'Option', 'Answer', 'Rating', 'Survey Attempt ID', 'Count'];
+    let csvContent = headerFields.join(',') + '\n';
+    data.forEach(item => {
+      item.responsOptions.forEach((option: { option: any; answer: any; rating: any; surveyAttemptId: any; count: any; }) => {
+        const formattedRow = [
+          item.surveyId,
+          `"${item.surveyName}"`,
+          item.questionId,
+          `"${item.question}"`,
+          option.option,
+          option.answer,
+          option.rating || '',
+          option.surveyAttemptId || '',
+          option.count
+        ].join(',');
+        csvContent += formattedRow + '\n';
+      });
+    });
+    return csvContent;
+  }
+
+
+  
 
   // updatechart(chartindex: any, ques: number): void {
   //   this.defaultchart.destroy();

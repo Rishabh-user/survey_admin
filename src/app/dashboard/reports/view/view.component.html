@@ -23,19 +23,28 @@
               <option *ngFor="let item of usertype" [value]="item">{{item}}</option>
             </select>
           </div>
+          <div class="col input-group flex-nowrap ps-3">
+            <select class="form-select usertype" (change)="onSelectChangegraph($event)">
+              <option selected value="Select CSV">Select</option>
+              <option value="1" *ngIf="planid != 500">CSV(ques)</option>
+              <option value="2">CSV(count)</option>
+              <option value="3" >CSV(optioncount)</option>
+            </select>
+          </div>
           <a *ngIf="planid != 500" href="javascript:" class="btn btn-primary ms-2"
             (click)="generatePDF()">Download PDF <ng-icon class="ms-3" name="heroArrowLongRight"></ng-icon></a>
-          <a *ngIf="planid != 500" href="javascript:" class="btn btn-primary ms-2" (click)="generateCSV()">Download
-            CSV <ng-icon class="ms-3" name="heroArrowLongRight"></ng-icon></a>
+          <!-- <a *ngIf="planid != 500" href="javascript:" class="btn btn-primary ms-2" (click)="generateCSV()">Download
+            CSV <ng-icon class="ms-3" name="heroArrowLongRight"></ng-icon></a> -->
+          
         </div>
       </div>
     </div>
 
     <!-- <div  [ngClass]="{'content': showForPDF, 'Report-question-list': !showForPDF}"   #content></div> -->
-    <div class="Report-question-list" id="content"  [class.active]="showpdf"  #content>
+    <div class="Report-question-list" id="content"   #content>
       <h4 [hidden]="!showForPDF">{{surveyname}}</h4>
-      <ol >
-        <li  *ngFor="let item of surveyReportById; let i = index"
+      <ol>
+        <li  [class.active]="showpdf" *ngFor="let item of surveyReportById; let i = index"
         [hidden]="selectedusertype !== 'Select' && item.userType !== selectedusertype">
           <figcaption>
             <div class="row">
