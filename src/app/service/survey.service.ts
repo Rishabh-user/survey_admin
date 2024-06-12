@@ -456,6 +456,11 @@ export class SurveyService {
     return this.http.get<responseDTO[]>(url);
   }
 
+  deleteOptionLogicById(logicId:any): Observable<any> {
+    const url = `${this.apiUrl}api/admin/${this.userId}/GeneralQuestion/DeleteOptionLogicById?logicId=${logicId}`;
+    return this.http.delete(url, { responseType: 'text' });
+  }
+
   getReport(surveyId: any): Observable<responseDTO[]> {
     const url = `${this.apiUrl}api/admin/1/Report/RowSurveyReportById?surveyId=${surveyId}`;
     return this.http.get<responseDTO[]>(url);

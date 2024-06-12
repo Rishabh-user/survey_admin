@@ -1499,8 +1499,8 @@ export class EditSurveyComponent {
   }
  
   optionlogicquesid:any;
-  optionlogicifid:any
- 
+  optionlogicifid:any;
+  optionlogicid:any;
   optionlogicthanid:any;
   optionlogicthanexpectedid:any;
   optionlogicelseid:any;
@@ -1526,6 +1526,7 @@ export class EditSurveyComponent {
       next: (resp: any) => {
         if(resp == '"UpdatedSuccessfully"'){
         this.utility.showSuccess('Updated Sucessfully');
+        window.location.reload()
         }
       },
       error: (err: any) => {
@@ -1543,6 +1544,7 @@ export class EditSurveyComponent {
         this.getoptionlogic = data[0] 
         this.visibleanslogic = true// Access the first element of the array
         console.log("data", response);
+        this.optionlogicid = response.id
         this.optionlogicquesid = response.questionId;
         this.optionlogicifid = response.ifId;
         this.optionlogicifexpectedid = response.ifExpected;
@@ -1557,10 +1559,23 @@ export class EditSurveyComponent {
       
     });
   }
+
+  deleteOptionLogics(): void {
+    this.surveyservice.deleteOptionLogicById(this.optionlogicid).subscribe({
+      next: (resp:any) => {
+
+        if(resp === '"DeletedSuccessfully"'){
+          this.utility.showSuccess("Deleted Successfully");
+          window.location.reload();
+        }
+
+      },
+      error:(err:any) => {
+        this.utility.showError("Error")
+      }
+      
+    });
+  }
   
-  
-
-
-
 
 }

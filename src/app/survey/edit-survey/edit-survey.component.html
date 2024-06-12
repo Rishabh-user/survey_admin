@@ -572,6 +572,14 @@
                                                     </div>
                                                     <div class="col-md-3">
                                                         {{optionlogicifexpectedid}}
+                                                        <!-- <mat-select [(ngModel)]="optionlogicifexpectedid" [value]="optionlogicifexpectedid" multiple>
+                                                            <mat-option *ngFor="let option of optionListByQuestionId" [value]="option.id">
+                                                                {{ option.option }}
+                                                            </mat-option>
+                                                        </mat-select> -->
+
+                                                        
+                                                       
                                                         <mat-form-field class="example-chip-list">
                                                             <mat-chip-grid #chipGrid aria-label="City selection">
                                                                 <mat-chip-row
@@ -591,15 +599,15 @@
                                                             </mat-chip-grid>
                                                             <mat-autocomplete #auto="matAutocomplete"  
                                                                 (optionSelected)="selectedOption($event)">
-                                                                <mat-option
-                                                                    *ngFor="let option of optionListByQuestionId"
+                                                                <mat-option [value]="9685"
+                                                                    *ngFor="let option of optionListByQuestionId"                                                                   
                                                                     [value]="option">
                                                                     {{option.option}}
+                                                                    
                                                                 </mat-option>
                                                             </mat-autocomplete>
                                                         </mat-form-field>
                                                     </div>
-
                                                 </div>
                                             </div>
                                             <div>
@@ -643,7 +651,7 @@
                                                             </select>
                                                         </div>
                                                         <div class="col-md-4">
-                                                            {{optionlogicelseexpected}}qwertyu
+                                                            {{optionlogicelseexpected}}
                                                             <select class="form-select"  [(ngModel)]="optionlogicelseexpected" #elseExpectedSelect>
                                                                 <option *ngFor="let item of optionsArr1;let i=index;"
                                                                     value="{{item.id}}">{{item.option}}</option>
@@ -668,6 +676,7 @@
                                 <div class="col-12 text-end">
                                     <button type="button" class="btn btn-primary px-5" (click)="onLogicSave()">Save
                                         Logic</button>
+                                    <button type="button" class="btn trash-icon px-5 ms-4" (click)="deleteOptionLogics()">Delete</button>
                                 </div>
                             </div>
                         </div>
