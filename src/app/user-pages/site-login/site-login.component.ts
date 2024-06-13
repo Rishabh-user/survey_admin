@@ -27,16 +27,36 @@ export class SiteLoginComponent {
       if (this.token) {
         localStorage.setItem('authToken', this.token);
 
-        // Delay the redirection by 2 seconds (2000 milliseconds)
-        setTimeout(() => {
-          const url = `/dashboard`;
-          this.router.navigateByUrl(url);
-        }, 2000);
+        // Check the refresh count
+        const refreshCount = parseInt(localStorage.getItem('refreshCount') || '0', 10);
+
+        if (refreshCount < 2) {
+          // Increment the refresh count and store it
+          localStorage.setItem('refreshCount', (refreshCount + 1).toString());
+
+          // Delay the page refresh by 2 seconds (2000 milliseconds)
+          setTimeout(() => {
+            location.reload();
+          }, 2000);
+        } else {
+          // Reset the refresh count and navigate to the dashboard
+          localStorage.setItem('refreshCount', '0');
+
+          // Delay the redirection by 2 seconds (2000 milliseconds)
+          setTimeout(() => {
+            const url = `/dashboard`;
+            this.router.navigateByUrl(url);
+          }, 2000);
+        }
 
       } else {
         console.error('Token is not defined.');
       }
+    } else {
+      // If the authToken is already present, reset the refresh count
+      localStorage.setItem('refreshCount', '0');
     }
+
 
     //debugger
     // Call getMyAccount() regardless of localStorage state
