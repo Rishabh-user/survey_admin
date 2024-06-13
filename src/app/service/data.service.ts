@@ -71,6 +71,8 @@ export class DataService {
     this.breadcrumbVisibleSubject.next(visible);
   }
 
+   token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJzY3JpcDgiLCJpc3MiOiJzY3JpcDgiLCJqdGkiOiIzNzhiZjJlMi1lYWZhLTQ3ODEtYWQ2MC01ODYwNGZkOTczNjIiLCJ1c2VyIjoie1wiSWRcIjoxMTYsXCJOYW1lXCI6XCJpc2h1MiBxd2VydHlsXCIsXCJFbWFpbFwiOlwicXdlcnR5MUB5b3BtYWlsLmNvbVwiLFwiUm9sZUlkXCI6MyxcIlJvbGVcIjpcIlVzZXJcIixcIkVycm9yXCI6bnVsbCxcIkNlbnRlcklkXCI6MSxcIkNlbnRlck5hbWVcIjpcInRyYWNrb3BpbmlvblwiLFwiUGFpZFwiOnRydWUsXCJQbGFuSWRcIjoyNTAwLFwiQ2VudGVyRGF0ZVwiOlwiMjAyNC0wMS0wOVQxNzoxMDozMS42NjNcIn0iLCJleHAiOjE3MTkxMjU5MjR9.SbiFXiETf0S2FC72ATi2-6tdbCyXcSzSgwS038vOmcA';
+  
 
   apiUrl = environment.apiUrl;
   constructor(private http: HttpClient, private util: UtilsService) {
@@ -116,7 +118,7 @@ export class DataService {
 
   GetMyAccount(userId: any): Observable<responseDTO[]> {
     const headers = new HttpHeaders({
-      'Custom-Header': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJzY3JpcDgiLCJpc3MiOiJzY3JpcDgiLCJqdGkiOiJhYWMwMDRkZi04OTA4LTQ4OTctOTIxZi0zOTVhZTNkNWZhNWUiLCJ1c2VyIjoie1wiSWRcIjoyNTYsXCJOYW1lXCI6XCJSaXNoYWJoIFJhd2F0XCIsXCJFbWFpbFwiOlwicmlzaGFiaC52ZW5kZXJAeW9wbWFpbC5jb21cIixcIlJvbGVJZFwiOjUsXCJSb2xlXCI6XCJWZW5kb3JcIixcIkVycm9yXCI6bnVsbCxcIkNlbnRlcklkXCI6MSxcIkNlbnRlck5hbWVcIjpcInRyYWNrb3BpbmlvblwiLFwiUGFpZFwiOnRydWUsXCJQbGFuSWRcIjoyNTAwLFwiQ2VudGVyRGF0ZVwiOlwiMjAyNC0wMS0wOVQxNzoxMDozMS42NjNcIn0iLCJleHAiOjE3MTkwNjIxOTd9.IfHWB5Zo03z5tXmyb8wWOP2c-YXf8-55_1HhOqlUWq0'
+      'Custom-Header': this.token
     });
     const url = `${this.apiUrl}api/admin/${userId}/Profile/GetProfileById?usetId=${userId}`;
     return this.http.get<responseDTO[]>(url, { headers });
