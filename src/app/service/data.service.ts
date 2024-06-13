@@ -71,7 +71,9 @@ export class DataService {
     this.breadcrumbVisibleSubject.next(visible);
   }
 
-  token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJzY3JpcDgiLCJpc3MiOiJzY3JpcDgiLCJqdGkiOiJmN2U5MzdmNi1iZGVhLTQ3MDEtYjc0MS1kNWI5Y2EyMWVhZjYiLCJ1c2VyIjoie1wiSWRcIjoxLFwiTmFtZVwiOlwiVmlqYXkgS3VtYXJcIixcIkVtYWlsXCI6XCJ2ai52aWpheUBnbWFpbC5jb21cIixcIlJvbGVJZFwiOjEsXCJSb2xlXCI6XCJTdXBlckFkbWluXCIsXCJFcnJvclwiOm51bGwsXCJDZW50ZXJJZFwiOjEsXCJDZW50ZXJOYW1lXCI6XCJ0cmFja29waW5pb25cIixcIlBhaWRcIjp0cnVlLFwiUGxhbklkXCI6MjUwMCxcIkNlbnRlckRhdGVcIjpcIjIwMjQtMDEtMDlUMTc6MTA6MzEuNjYzXCJ9IiwiZXhwIjoxNzE5MTM0MjE3fQ.s7ExdCRy0ng1BAlEW1YCRab3jdWDh_PUdkaEBatxYH8';
+  token = '';
+
+  sitetoken=localStorage.getItem('sitetoken')
 
 
   apiUrl = environment.apiUrl;
@@ -117,8 +119,9 @@ export class DataService {
 
 
   GetMyAccount(userId: any): Observable<responseDTO[]> {
+    
     const headers = new HttpHeaders({
-      'Custom-Header': this.token
+      'Custom-Header': this.sitetoken || ''
     });
     const url = `${this.apiUrl}api/admin/${userId}/Profile/GetProfileById?usetId=${userId}`;
     return this.http.get<responseDTO[]>(url, { headers });

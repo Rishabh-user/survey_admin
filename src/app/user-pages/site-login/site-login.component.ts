@@ -16,16 +16,20 @@ export class SiteLoginComponent {
     private route: ActivatedRoute,) {
   }
 
-  token = this.themeService.token
+  // token = this.themeService.token
   sitetoken:any
 
 
   ngOnInit(): void {
+    debugger
+    this.sitetoken = this.route.snapshot.queryParamMap.get('token');
+    localStorage.setItem('sitetoken',this.sitetoken)
+    console.log("sitetoken",this.sitetoken)
 
     if (!localStorage.getItem('authToken')) {
-      if (this.token) {
+      if (this.sitetoken) {
         localStorage.removeItem('authToken');
-        localStorage.setItem('authToken', this.token);
+        localStorage.setItem('authToken', this.sitetoken);
 
         const refreshCount = parseInt(localStorage.getItem('refreshCount') || '0', 10);
 
@@ -50,9 +54,10 @@ export class SiteLoginComponent {
     } else {
       localStorage.setItem('refreshCount', '0');
     }
+    debugger
 
-    this.sitetoken = this.route.snapshot.queryParamMap.get('token');
-    console.log("sitetoken",this.sitetoken)
+    // this.sitetoken = this.route.snapshot.queryParamMap.get('token');
+    // console.log("sitetoken",this.sitetoken)
 
     this.getMyAccount();
   }
