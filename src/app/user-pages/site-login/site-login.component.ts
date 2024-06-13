@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { SurveyService } from 'src/app/service/survey.service';
 import { DataService } from 'src/app/service/data.service';
 import { UtilsService } from 'src/app/service/utils.service';
-import { Router,ActivatedRoute } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-site-login',
@@ -10,34 +10,39 @@ import { Router,ActivatedRoute } from '@angular/router';
   styleUrls: ['./site-login.component.css']
 })
 export class SiteLoginComponent {
-  userId:any;
+  userId: any;
 
-  constructor(private utils: UtilsService, public themeService: DataService, private surveyservice:SurveyService,private router: Router,
+  constructor(private utils: UtilsService, public themeService: DataService, private surveyservice: SurveyService, private router: Router,
     private route: ActivatedRoute,) {
   }
 
   token = this.themeService.token
-  
+
 
   ngOnInit(): void {
-    debugger
-    console.log("token", this.token); 
-  
+    //debugger
+    //console.log("token", this.token); 
+
     if (!localStorage.getItem('authToken')) {
       if (this.token) {
-        localStorage.setItem('authToken', this.token); 
-        const url = `/dashboard`;
-        this.router.navigateByUrl(url);
+        localStorage.setItem('authToken', this.token);
+
+        // Delay the redirection by 2 seconds (2000 milliseconds)
+        setTimeout(() => {
+          const url = `/dashboard`;
+          this.router.navigateByUrl(url);
+        }, 2000);
+
       } else {
         console.error('Token is not defined.');
       }
     }
-  
-    debugger
+
+    //debugger
     // Call getMyAccount() regardless of localStorage state
     this.getMyAccount();
   }
-  
+
 
 
   getMyAccount() {
