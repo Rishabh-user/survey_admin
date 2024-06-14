@@ -17,6 +17,7 @@ import { UtilsService } from 'src/app/service/utils.service';
 })
 export class GenderPopupComponent {
   @ViewChild('GenderModal', { static: true }) modal!: ModalDirective;
+  
 
   @Output() onSaveEvent = new EventEmitter();
 

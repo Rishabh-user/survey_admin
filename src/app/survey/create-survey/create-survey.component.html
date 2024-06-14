@@ -3,6 +3,35 @@
 
         <div>
             <div class="infocircle mb-2">
+                <h6 class="mb-0">Add Elementry Screen</h6>
+                <div class="custom-tooltip">
+                    <ng-icon name="heroInformationCircle" ngClass="edit-action info-circle"
+                        (click)="toggleTooltip('7')"></ng-icon>
+                    <div class="toast show" *ngIf="showTooltip['7']">
+                        <div class="toast-header">
+                            <img [src]="baseUrl + '/assets/images/icons/Add-new-question.png'" class="rounded me-2"
+                                width="30" height="30" />
+                            <h6 class="mb-0 me-auto">Add Elementry Screen</h6>
+                            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"
+                                (click)="hideTooltip('7')"></button>
+                        </div>
+                        <div class="toast-body">
+                            Add Elementry Screen
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="common-ques"
+            [class.disabled-link]="(totalItemsCount == 20 && planid == '500') || (totalItemsCount == 50 && planid == '1200')">
+            <a href="javascript:void(0);" (click)="onGenericQuestionClick('DESC')">
+                <figure><img [src]="baseUrl + '/assets/images/icons/Add-new-question.png'" width="30" height="30" />
+                </figure>
+                <figcaption>Add Elementry Screen
+                </figcaption>
+            </a>
+        </div>
+            <div class="infocircle mb-2">
                 <h6 class="mb-0">Add Question</h6>
                 <div class="custom-tooltip">
                     <ng-icon name="heroInformationCircle" ngClass="edit-action info-circle"
@@ -1623,4 +1652,5 @@
     (onSaveEvent)="refresh()"></app-audio-gender-detection-popup>
 <app-state-popup #StateModal (onSaveEvent)="refresh()"></app-state-popup>
 <app-sec-lsm-popup #SecLsmModal (onSaveEvent)="refresh()"></app-sec-lsm-popup>
+<app-description-screen #DescriptionScreenModal (onSaveEvent)="refresh()"></app-description-screen>
 <app-occupation-popup #OccupationModal (onSaveEvent)="refresh()"></app-occupation-popup>

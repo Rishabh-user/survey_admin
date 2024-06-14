@@ -119,7 +119,7 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
   @ViewChild('SecLsmModal', { static: true }) secLsmModal!: ModalDirective;
   @ViewChild('OccupationModal', { static: true }) occupationModal!: ModalDirective;
   @ViewChild('MonthlyIncomeModalforeign', { static: true }) monthlyincomeforeignModal!: ModalDirective;
-
+  @ViewChild('DescriptionScreenModal', { static: true }) DescriptionScreenModal!: ModalDirective;
 
   @Output() onSaveEvent = new EventEmitter();
   isActive: boolean = false;
@@ -350,6 +350,8 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
       this.flsmModal.show();
     } else if (type === "SECLSM") {
       this.secLsmModal.show();
+    } else if (type === "DESC") {
+      this.DescriptionScreenModal.show();
     } else if (type === "Occupation") {
       this.occupationModal.show();
     }

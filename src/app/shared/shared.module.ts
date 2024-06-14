@@ -69,6 +69,7 @@ import { LanguageYouKnowPopupComponent } from '../survey/popups/language-you-kno
 import { ForeignCountryTravelledPopupComponent } from '../survey/popups/foreign-country-travelled-popup/foreign-country-travelled-popup.component';
 import { CreateSurveyPopupComponent } from '../survey/popups/create-survey-popup/create-survey-popup.component';
 import { MonthlyIncomeForeignPopupComponent } from '../survey/popups/monthly-income-foreign-popup/monthly-income-foreign-popup.component';
+import { DescriptionScreenComponent } from '../survey/popups/description-screen/description-screen.component';
 @NgModule({
   declarations: [
     ConvertToUrlPipe,
@@ -117,6 +118,7 @@ import { MonthlyIncomeForeignPopupComponent } from '../survey/popups/monthly-inc
     FlsmPopupComponent,
     SecLsmPopupComponent,
     OccupationPopupComponent,
+    DescriptionScreenComponent,
 
   ],
   imports: [

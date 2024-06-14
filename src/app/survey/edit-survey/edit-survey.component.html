@@ -62,12 +62,12 @@
                             </div>
                             <div class="col-md-8">
                                 <input id="question" type="text" [(ngModel)]="question.question" class="form-control"
-                                    name="question" (blur)="validateSurvey()" />
+                                    name="question" (blur)="validateSurvey()"  />
                                 <div *ngIf="!questionadded" class="text-danger">Question is required.</div>
                             </div>
                             <div class="col-md-2">
                                 <input id="addquestion" type="text" [(ngModel)]="question.questionTypeName"
-                                    class="form-control" name="addquestion" (blur)="validateSurvey()">
+                                    class="form-control"  [style.color]="colorCode" name="addquestion" (blur)="validateSurvey()">
                                 <div *ngIf="!qusstionaddednext" class="text-danger">Question is required.</div>
                             </div>
                             <div class="col-md-2">

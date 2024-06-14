@@ -53,6 +53,7 @@ import { heroInformationCircle } from '@ng-icons/heroicons/outline';
 import { heroMinusCircle } from '@ng-icons/heroicons/outline';
 import { heroXMark } from '@ng-icons/heroicons/outline';
 import { VendarSurveyListComponent } from './vendar-survey-list/vendar-survey-list.component';
+// import { DescriptionScreenComponent } from './popups/description-screen/description-screen.component';
 //import { MonthlyIncomeForeignPopupComponent } from './popups/monthly-income-foreign-popup/monthly-income-foreign-popup.component';
 
 @NgModule({

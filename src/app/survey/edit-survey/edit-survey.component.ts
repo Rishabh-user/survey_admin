@@ -20,6 +20,7 @@ import { environment } from 'src/environments/environment';
 import { MatSelect, MatSelectChange } from '@angular/material/select';
 import { UtilsService } from 'src/app/service/utils.service';
 import { serveyOption } from 'src/app/models/serveyOption';
+import { DomSanitizer,SafeHtml } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-edit-survey',
@@ -110,7 +111,7 @@ export class EditSurveyComponent {
 
   constructor(public themeService: DataService, private router: Router,
     private route: ActivatedRoute, private surveyservice: SurveyService, private modalService: NgbModal,
-    private crypto: CryptoService, private utility: UtilsService) {
+    private crypto: CryptoService, private utility: UtilsService,private sanitizer: DomSanitizer) {
     this.baseUrl = environment.baseURL;
     this.route.paramMap.subscribe(params => {
       let _queryData = params.get('param1');
@@ -1545,7 +1546,7 @@ export class EditSurveyComponent {
   getoptionlogic:any[]=[]
   getOptionLogics(): void {
     this.surveyservice.GetOptionLogic(this.questionId, this.surveyId).subscribe((data: any[]) => {
-      debugger
+
       if (data && data.length > 0) {
         const response = data[0];
         this.getoptionlogic = data[0] 
@@ -1559,7 +1560,6 @@ export class EditSurveyComponent {
         this.optionlogicthanexpectedid = response.thanExpected;
         this.optionlogicelseid = response.elseId;
         this.optionlogicelseexpected = response.elseExpected;
-        debugger
       } else {
         // Handle empty response or error
       }
@@ -1582,6 +1582,20 @@ export class EditSurveyComponent {
       }
       
     });
+  }
+
+
+  // color code 
+  applyColors(text: string): SafeHtml {
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(text, 'text/html');
+    const spans = doc.querySelectorAll('span');
+
+    spans.forEach(span => {
+      span.style.color = this.colorCode;
+    });
+
+    return this.sanitizer.bypassSecurityTrustHtml(doc.body.innerHTML);
   }
   
 
