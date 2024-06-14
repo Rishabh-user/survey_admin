@@ -106,6 +106,7 @@ export class EditSurveyComponent {
   questionSummery: any
   selectedifexpected:any;
   colorCode:any
+  qNo:any
 
   constructor(public themeService: DataService, private router: Router,
     private route: ActivatedRoute, private surveyservice: SurveyService, private modalService: NgbModal,
@@ -160,6 +161,7 @@ export class EditSurveyComponent {
       this.screeningRedirectUrl = data.screeningRedirectUrl
       this.colorCode = data.colorCode
       this.question.isRequired = data.isRequired
+      this.qNo = data.qNo
 
       data.options.forEach((opt: any) => {
 
@@ -709,6 +711,7 @@ export class EditSurveyComponent {
     this.question.video = this.videoupload;
     this.question.youtubeUrl = this.youtubeUrl;
     this.question.colorCode = this.colorCode
+    this.question.qNo = this.qNo
 
     let modifiedoptions: serveyOption[] = [];
     let matrixoption: MatrixHeader[]=[]

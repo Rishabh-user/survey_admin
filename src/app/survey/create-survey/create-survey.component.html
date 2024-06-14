@@ -389,13 +389,18 @@
             </div>
         </div>
         <div ngClass="question">
+
             <ul cdkDropList (cdkDropListDropped)="onItemDrop($event)">
                 <li
                     *ngFor="let question of questions | paginate: { id: 'server', itemsPerPage: pageSize, currentPage: pageNumber, totalItems: totalItemsCount } ;let i=index;">
                     <div class="drag-item">
                         <div [ngClass]="{'ques-header': true, 'screening': question.isScreening}">
-                            <h5 [ngClass]="'mb-0'">
+                            <h5 [ngClass]="'mb-0'" *ngIf="question?.isRequired === false">
                                 Q-{{question?.sort}} {{(question?.question)}}
+                                <!-- <div [innerHTML]="sanitizeHtml(question?.question)"></div> -->
+                            </h5>
+                            <h5 [ngClass]="'mb-0'" *ngIf="question?.isRequired === true">
+                                Q-{{question?.qNo}} {{(question?.question)}}
                                 <!-- <div [innerHTML]="sanitizeHtml(question?.question)"></div> -->
                             </h5>
 
