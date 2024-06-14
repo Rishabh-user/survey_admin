@@ -3,7 +3,7 @@
 
         <div>
             <div class="infocircle mb-2">
-                <h6 class="mb-0">Add Elementry Screen</h6>
+                <h6 class="mb-0">Add Description Screen</h6>
                 <div class="custom-tooltip">
                     <ng-icon name="heroInformationCircle" ngClass="edit-action info-circle"
                         (click)="toggleTooltip('7')"></ng-icon>
@@ -11,23 +11,23 @@
                         <div class="toast-header">
                             <img [src]="baseUrl + '/assets/images/icons/Add-new-question.png'" class="rounded me-2"
                                 width="30" height="30" />
-                            <h6 class="mb-0 me-auto">Add Elementry Screen</h6>
+                            <h6 class="mb-0 me-auto">Add Description Screen</h6>
                             <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"
                                 (click)="hideTooltip('7')"></button>
                         </div>
                         <div class="toast-body">
-                            Add Elementry Screen
+                            Add Description Screen
                         </div>
                     </div>
                 </div>
 
             </div>
-            <div class="common-ques"
+            <div class="common-ques mb-3"
             [class.disabled-link]="(totalItemsCount == 20 && planid == '500') || (totalItemsCount == 50 && planid == '1200')">
             <a href="javascript:void(0);" (click)="onGenericQuestionClick('DESC')">
                 <figure><img [src]="baseUrl + '/assets/images/icons/Add-new-question.png'" width="30" height="30" />
                 </figure>
-                <figcaption>Add Elementry Screen
+                <figcaption>Add Description Screen
                 </figcaption>
             </a>
         </div>
@@ -424,7 +424,7 @@
                     *ngFor="let question of questions | paginate: { id: 'server', itemsPerPage: pageSize, currentPage: pageNumber, totalItems: totalItemsCount } ;let i=index;">
                     <div class="drag-item">
                         <div [ngClass]="{'ques-header': true, 'screening': question.isScreening}">
-                            <h5 [ngClass]="'mb-0'" *ngIf="question?.isRequired === false">
+                            <h5 [ngClass]="'mb-0'" >
                                 Q-{{question?.sort}} {{(question?.question)}}
                                 <!-- <div [innerHTML]="sanitizeHtml(question?.question)"></div> -->
                             </h5>
