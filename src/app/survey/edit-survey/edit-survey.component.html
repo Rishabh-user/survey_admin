@@ -57,7 +57,7 @@
                         <h5 class="mb-3" *ngIf="mode =='modify'">Update Your Question</h5>
                         <h5 class="mb-3" *ngIf="mode !='modify'">Add Your Question</h5>
                         <div class="row g-3 align-items-center">
-                            <div class="flex-width" *ngIf="question.isRequired === false ">
+                            <div class="flex-width" *ngIf="question.isRequired === true ">
                                 <input type="text" id="" class="form-control"  [(ngModel)]="qNo" />
                             </div>
                             <div class="col-md-8">
