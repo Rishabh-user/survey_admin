@@ -20,44 +20,64 @@ export class SiteLoginComponent {
   sitetoken:any
 
 
+  // ngOnInit(): void {
+  //   this.sitetoken = this.route.snapshot.queryParamMap.get('token');
+  //   localStorage.setItem('sitetoken',this.sitetoken)
+  //   console.log("sitetoken",this.sitetoken)
+
+  //     if (this.sitetoken) {
+  //       //localStorage.removeItem('authToken');
+
+  //       localStorage.setItem('authToken', this.sitetoken);
+
+  //       const refreshCount = parseInt(localStorage.getItem('refreshCount') || '0', 10);
+
+  //       if (refreshCount < 2) {
+  //         localStorage.setItem('refreshCount', (refreshCount + 1).toString());
+
+  //         setTimeout(() => {
+  //           location.reload();
+  //         }, 2000);
+  //       } else {
+  //         localStorage.setItem('refreshCount', '0');
+
+  //         setTimeout(() => {
+  //           const url = `/dashboard`;
+  //           this.router.navigateByUrl(url);
+  //         }, 2000);
+  //       }
+
+  //     } else {
+  //       console.error('Token is not defined.');
+  //     }
+  
+
+  //   this.getMyAccount();
+  // }
+
   ngOnInit(): void {
-    debugger
     this.sitetoken = this.route.snapshot.queryParamMap.get('token');
-    localStorage.setItem('sitetoken',this.sitetoken)
-    console.log("sitetoken",this.sitetoken)
+    console.log("sitetoken", this.sitetoken);
 
-    if (!localStorage.getItem('authToken')) {
-      if (this.sitetoken) {
-        localStorage.removeItem('authToken');
-        localStorage.setItem('authToken', this.sitetoken);
+    if (this.sitetoken) {
+      localStorage.setItem('sitetoken', this.sitetoken);
+      localStorage.setItem('authToken', this.sitetoken);
 
-        const refreshCount = parseInt(localStorage.getItem('refreshCount') || '0', 10);
-
-        if (refreshCount < 2) {
-          localStorage.setItem('refreshCount', (refreshCount + 1).toString());
-
-          setTimeout(() => {
-            location.reload();
-          }, 2000);
-        } else {
-          localStorage.setItem('refreshCount', '0');
-
-          setTimeout(() => {
-            const url = `/dashboard`;
-            this.router.navigateByUrl(url);
-          }, 2000);
-        }
-
+      if (!localStorage.getItem('refreshed')) {
+        localStorage.setItem('refreshed', 'true');
+        setTimeout(() => {
+          location.reload();
+        }, 2000);
+        return;
       } else {
-        console.error('Token is not defined.');
+        localStorage.removeItem('refreshed');
+        this.router.navigateByUrl('/dashboard');
       }
     } else {
-      localStorage.setItem('refreshCount', '0');
+      console.error('Token is not defined.');
+      this.router.navigateByUrl('/dashboard');
+      return;
     }
-    debugger
-
-    // this.sitetoken = this.route.snapshot.queryParamMap.get('token');
-    // console.log("sitetoken",this.sitetoken)
 
     this.getMyAccount();
   }
@@ -66,6 +86,11 @@ export class SiteLoginComponent {
 
   getMyAccount() {
     this.userId = this.utils.getUserId();
+    if (!this.userId) {
+      console.error('User ID is not defined.');
+      this.router.navigateByUrl('/error');
+      return;
+    }
     this.themeService.GetMyAccount(this.userId).subscribe((data: any) => {
 
     });

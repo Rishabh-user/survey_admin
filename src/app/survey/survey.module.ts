@@ -5,6 +5,7 @@ import { SurveyRoutingModule } from './survey-routing.module';
 
 import { EditSurveyComponent } from './edit-survey/edit-survey.component';
 import { SurveyListingComponent } from './survey-listing/survey-listing.component';
+import { CreateSurveyPopupComponent } from './popups/create-survey-popup/create-survey-popup.component';
 
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { DragDropModule } from '@angular/cdk/drag-drop';
@@ -23,6 +24,7 @@ import { NgxPaginationModule } from 'ngx-pagination';
 
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatButtonModule } from '@angular/material/button';
+import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
 
 
 import { heroChevronLeft } from '@ng-icons/heroicons/outline';
@@ -56,7 +58,7 @@ import { VendarSurveyListComponent } from './vendar-survey-list/vendar-survey-li
 @NgModule({
   declarations: [
 
-
+    
     VendarSurveyListComponent,
   ],
   imports: [
@@ -76,6 +78,7 @@ import { VendarSurveyListComponent } from './vendar-survey-list/vendar-survey-li
     MatSelectModule,
     MatTooltipModule,
     MatButtonModule,
+    CKEditorModule,
     NgIconsModule.withIcons({
       heroQuestionMarkCircle,
       heroCalendar,

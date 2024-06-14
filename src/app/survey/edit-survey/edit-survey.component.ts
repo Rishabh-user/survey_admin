@@ -104,7 +104,8 @@ export class EditSurveyComponent {
   imageUpdated: boolean = false;
   videoupload: any
   questionSummery: any
-  selectedifexpected:any
+  selectedifexpected:any;
+  colorCode:any
 
   constructor(public themeService: DataService, private router: Router,
     private route: ActivatedRoute, private surveyservice: SurveyService, private modalService: NgbModal,
@@ -157,6 +158,8 @@ export class EditSurveyComponent {
       this.alphabet = data.isAlphabet
       this.questionSummery = data.questionSummery
       this.screeningRedirectUrl = data.screeningRedirectUrl
+      this.colorCode = data.colorCode
+      this.question.isRequired = data.isRequired
 
       data.options.forEach((opt: any) => {
 
@@ -705,6 +708,7 @@ export class EditSurveyComponent {
     this.question.image = this.questionImage;
     this.question.video = this.videoupload;
     this.question.youtubeUrl = this.youtubeUrl;
+    this.question.colorCode = this.colorCode
 
     let modifiedoptions: serveyOption[] = [];
     let matrixoption: MatrixHeader[]=[]

@@ -57,6 +57,9 @@
                         <h5 class="mb-3" *ngIf="mode =='modify'">Update Your Question</h5>
                         <h5 class="mb-3" *ngIf="mode !='modify'">Add Your Question</h5>
                         <div class="row g-3 align-items-center">
+                            <div class="flex-width" *ngIf="question.isRequired === true ">
+                                <input type="text" id="" class="form-control" readonly />
+                            </div>
                             <div class="col-md-8">
                                 <input id="question" type="text" [(ngModel)]="question.question" class="form-control"
                                     name="question" (blur)="validateSurvey()" />
@@ -88,6 +91,14 @@
                             <label class="mb-2">Description</label>
                             <textarea class="form-control" [(ngModel)]="questionSummery" rows="5"></textarea>
                         </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="exampleColorInput" class="form-label">Color picker</label>
+                        <div class="d-flex gap-2">                            
+                            <input type="color" class="form-control form-control-color" id="exampleColorInput" value="#563d7c" title="Choose your color" [(ngModel)]="colorCode">
+                            <input type="text" class="form-control" [(ngModel)]="colorCode">
+                        </div>
+
                     </div>
                     <div ngClass="update-ques-type add-media generic-ques mt-0 mb-5">
                         <h5 class="mb-3">Add Media</h5>

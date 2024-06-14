@@ -10,6 +10,7 @@ import { User } from 'src/app/models/user';
 import { ModalDirective } from 'ngx-bootstrap/modal';
 import { UtilsService } from 'src/app/service/utils.service';
 import { environment } from 'src/environments/environment';
+import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 
 @Component({
   selector: 'app-create-survey-popup',
@@ -20,12 +21,14 @@ export class CreateSurveyPopupComponent {
 
   @ViewChild('CreateSurveyModal', { static: true }) modal!: ModalDirective;
   baseUrl = '';
+  
 
   categoryName: any = "";
   surveyName: any;
   categoryId: number;
   newsurveyId: number;
   selectedOption: any;
+  displayId: boolean = false
   searchControl = new FormControl();
   options: { id: number, name: string }[] = [];
   country: { id: string, name: string, images: string }[] = [];
@@ -59,6 +62,11 @@ export class CreateSurveyPopupComponent {
 
   close() {
     this.modal.hide();
+  }
+
+  onCheckboxChange(event: any) {
+    this.displayId = event.target.checked;
+    console.log("displayId",this.displayId)
   }
 
   getNames() {
@@ -124,7 +132,8 @@ export class CreateSurveyPopupComponent {
         name: this.surveyName,
         categoryId: this.categoryId,
         otherCategory: this.categoryName,
-        countryId: this.selectedCountryId
+        countryId: this.selectedCountryId,
+        displayId: this.displayId
       };
 
 
