@@ -21,6 +21,10 @@ export class DescriptionScreenComponent {
   
 
   @Output() onSaveEvent = new EventEmitter();
+  questions: Question = new Question();
+  descques:any
+  descdescription:any
+  descbutton:any
 
 
   constructor(private surveyservice: SurveyService, private route: ActivatedRoute, private crypto: CryptoService, private router: Router, private utility: UtilsService) {
@@ -33,6 +37,37 @@ export class DescriptionScreenComponent {
 
   close() {
     this.modal.hide();
+  }
+
+  getCurrentDateTime(): string {
+    const currentDateTime = new Date().toISOString();
+    return currentDateTime.substring(0, currentDateTime.length - 1) + 'Z';
+  }
+
+  continueClicked(){
+    const currentQuestion = this.questions;
+    currentQuestion.question = this.descques
+    currentQuestion.description = this.descdescription
+    currentQuestion.isRequired = true
+    currentQuestion.createdDate = this.getCurrentDateTime()
+    currentQuestion.modifiedDate = this.getCurrentDateTime();
+
+    this.surveyservice.CreateGeneralQuestion(currentQuestion).subscribe({
+      next: (resp: any) => {
+
+          if (resp == '"QuestionAlreadyExits"') {
+            this.utility.showError("This Question Already Created ");
+          } else {
+            this.utility.showSuccess('Question Generated Successfully.');
+            this.close();
+            this.onSaveEvent.emit();
+          }
+        
+      },
+      error: (err: any) => {
+        console.error( err);
+      }
+    });
   }
 
 }

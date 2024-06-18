@@ -92,13 +92,13 @@
                             <textarea class="form-control" [(ngModel)]="questionSummery" rows="5"></textarea>
                         </div>
                     </div>
-                    <div class="mb-3">
+                    <!-- <div class="mb-3">
                         <label for="exampleColorInput" class="form-label">Color picker</label>
                         <div class="d-flex gap-2">                            
                             <input type="color" class="form-control form-control-color" id="exampleColorInput" value="#563d7c" title="Choose your color" [(ngModel)]="colorCode">
                             <input type="text" class="form-control" [(ngModel)]="colorCode">
                         </div>
-                    </div>
+                    </div> -->
                     <div ngClass="update-ques-type add-media generic-ques mt-0 mb-5">
                         <h5 class="mb-3">Add Media</h5>
                         <ul>
@@ -118,15 +118,57 @@
                             </li> -->
                             <li (click)="openLgImage(questionimage)">
                                 <div class="youtubeurl">
-                                    <div class="videourl">
+                                    <div class="videourl" >
                                         <figure><img [src]="baseUrl+'/assets/images/icons/attach-image.png'" width="64"
                                                 height="58" /></figure>
                                         <figcaption>Attach Image</figcaption>
                                     </div>
+                                    <!-- <div class="videourl" *ngIf="question.image == (imageurl + 'Files/Images/') || !questionImage ||  questionfilesImage.length == 0 ">
+                                        
+                                            <figure><img [src]="baseUrl+'/assets/images/icons/attach-image.png'" width="64"
+                                                height="58" /></figure>
+                                            <figcaption>Attach Image</figcaption>
+                                        
+                                    </div>
+                                    <div *ngIf="question.image && question.image !== (imageurl + 'Files/Images/')" class="videourl">
+                                        <figure>
+                                            <img [src]="question.image" width="64" height="58" />
+                                        </figure>
+                                    </div>
+                                    <div>
+                                        <ng-container *ngFor="let f of questionfilesImage">
+                                            <div *ngIf="questionImage">
+                                              <figure>
+                                                <img [src]="imageurl + 'Files/Images/' + questionImage" width="64" height="58" />
+                                                <figcaption>
+                                                  <button  (removed)="onRemoveImage(f)">Remove</button>
+                                                </figcaption>
+                                              </figure>
+                                                <ngx-dropzone ngx-dropzone>
+                                                    
+                                                    <ngx-dropzone-image-preview ngProjectAs="ngx-dropzone-preview" *ngFor="let f of questionfilesImage"
+                                                        [file]="f" [removable]="true" (removed)="onRemoveImage(f)">
+                                                    </ngx-dropzone-image-preview>
+                                                </ngx-dropzone>
+                                            </div>
+
+                                          </ng-container>
+                                    
+                                    </div> -->
+                                    <!-- <ng-container *ngFor="let f of questionfilesImage">
+                                        <div *ngIf="questionImage">
+                                          <figure>
+                                            <img [src]="imageurl + 'Files/Images/' + questionImage" width="64" height="58" />
+                                            <figcaption>
+                                              <button (click)="onRemoveImage(f)">Remove</button>
+                                            </figcaption>
+                                          </figure>
+                                        </div>
+                                      </ng-container> -->
                                 </div>
                             </li>
                             <li (click)="openLgVideo(questionvideo)">
-                                <div class="youtubeurl">
+                                <div class="youtubeurl" >
                                     <div class="videourl">
                                         <figure><img [src]="baseUrl+'/assets/images/icons/attach-video.png'" width="64"
                                                 height="58" /></figure>
@@ -375,6 +417,14 @@
                     
                     <div ngClass="mb-4">
                         <div class="row g-2 align-items-center">
+
+                            <div class="col-auto">
+                                <div ngClass="new-options">
+                                    <a herf="javascript:void(0);" (click)="hanldeAddOptionClickMatrix()"><ng-icon
+                                            name="heroPlusCircle"></ng-icon> Add Option
+                                    </a>
+                                </div>
+                            </div>
                            
                             <div class="col-auto">
                                 <div ngClass="new-options">
@@ -784,10 +834,12 @@
     <div class="modal-header">
         <h4 class="modal-title">Attach Image</h4>
         <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+        
     </div>
     <div class="modal-body popup-ques">
         <div class="row">
             <div class="col-md-12">
+                <span class="note">Image Format should be in png and jpeg</span>
                 <ngx-dropzone ngx-dropzone [accept]="'image/*'" (change)="onSelectImage($event)">
                     <ngx-dropzone-label>
                         <figure><img [src]="baseUrl+'/assets/images/icons/attach-image.png'" width="64" height="58" />
@@ -796,13 +848,19 @@
                     </ngx-dropzone-label>
                     <ngx-dropzone-image-preview ngProjectAs="ngx-dropzone-preview" *ngFor="let f of questionfilesImage"
                         [file]="f" [removable]="true" (removed)="onRemoveImage(f)">
-
                     </ngx-dropzone-image-preview>
                 </ngx-dropzone>
+
             </div>
             <div class="mt-3">
-                <img [src]="question.image" width="50%" />
-            </div>
+                
+                  <img [src]="question.image" width="50%" />
+                
+                <!-- <ng-container *ngIf="question.image && question.image !== (imageurl + 'Files/Images/')">
+                    <img [src]="question.image" width="50%" />
+                  </ng-container> -->
+              </div>
+              
         </div>
     </div>
     <div class="modal-footer upload">
@@ -844,9 +902,14 @@
                 </ngx-dropzone>
             </div> -->
             <div class="mt-3" *ngIf="question.video !== null">
-                <video width="100%" height="200" controls>
+                <!-- <video width="100%" height="200" controls>
                     <source [src]="question.video" type="video/mp4">
-                </video>
+                </video> -->
+                <ng-container *ngIf="question.video && question.video !== (imageurl + 'Files/Video/')">
+                    <video width="100%" height="200" controls>
+                        <source [src]="question.video" type="video/mp4">
+                    </video>
+                  </ng-container>
             </div>
         </div>
     </div>

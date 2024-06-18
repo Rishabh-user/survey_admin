@@ -6,9 +6,21 @@
                 <button type="button" class="btn-close" (click)="close()"></button>
             </div>
             <div class="modal-body">
+                <div class="mb-4">
+                        <p>Enter the Question</p>
+                        <input type="text" class="form-control" [(ngModel)]="descques" />
+                </div>
+                <div class="mb-4">
+                    <p>Enter the Description</p>
+                    <textarea class="form-control" rows="10"  cols="20" [(ngModel)]="descdescription" ></textarea>
+                </div>
+                <div class="mb-4">
+                    <p>Enter the Button Name</p>
+                    <input type="text" class="form-control" [(ngModel)]="descbutton"/>
+                </div>
             </div>
             <div class="modal-footer">
-                
+                <button type="button" (click)="continueClicked()" class="btn btn-primary w-100">Continue</button>
             </div>
         </div>
     </div>

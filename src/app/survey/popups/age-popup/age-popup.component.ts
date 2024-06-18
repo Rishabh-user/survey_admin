@@ -66,7 +66,7 @@ export class AgePopupComponent {
     return currentDateTime.substring(0, currentDateTime.length - 1) + 'Z';
   }
   continueClicked() {
-
+    
     const currentDateTime = this.getCurrentDateTime();
 
     let successfulAPICalls = 0;

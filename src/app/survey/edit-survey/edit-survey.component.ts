@@ -108,11 +108,15 @@ export class EditSurveyComponent {
   selectedifexpected:any;
   colorCode:any
   qNo:any
+  imageurl:any
+  numeric: boolean = false; // Initial state
+  alphabet: boolean = false; // Initial state
 
   constructor(public themeService: DataService, private router: Router,
     private route: ActivatedRoute, private surveyservice: SurveyService, private modalService: NgbModal,
     private crypto: CryptoService, private utility: UtilsService,private sanitizer: DomSanitizer) {
     this.baseUrl = environment.baseURL;
+    this.imageurl = environment.apiUrl
     this.route.paramMap.subscribe(params => {
       let _queryData = params.get('param1');
       if (_queryData) {
@@ -270,6 +274,7 @@ export class EditSurveyComponent {
     this.getQuestionTypes();
     this.getAllSurveyList();
     this.getOptionLogics();
+    this.openEndedValue();
 
     if (this.mode != 'modify') {
       this.intializeDefaultValue();
@@ -294,6 +299,11 @@ export class EditSurveyComponent {
       if (this.question.questionTypeName === 'Slider Scale') {
         this.addsliderscale();
       }
+      
+      
+
+      this.question.isNumeric = this.numeric;
+      this.question.isAlphabet = this.alphabet;
 
     }
     
@@ -667,8 +677,6 @@ export class EditSurveyComponent {
   }
 
   textlimit: any
-  numeric: boolean
-  alphabet: boolean
 
   onSave() {
 
@@ -713,6 +721,8 @@ export class EditSurveyComponent {
     this.question.youtubeUrl = this.youtubeUrl;
     this.question.colorCode = this.colorCode
     this.question.qNo = this.qNo
+    this.question.isNumeric =  this.numeric
+    this.question.isAlphabet = this.alphabet
 
     let modifiedoptions: serveyOption[] = [];
     let matrixoption: MatrixHeader[]=[]
@@ -906,6 +916,7 @@ export class EditSurveyComponent {
     if (file) {
       this.questionfilesImage.push(file);
       this.uploadImage(file);
+      console.log(this.questionfilesImage)
     }
   }
 
@@ -966,19 +977,29 @@ export class EditSurveyComponent {
   }
 
 
-  onRemoveImage(event: any) { // Use 'any' as the event type
+  // onRemoveImage(event: any) { // Use 'any' as the event type
 
-    this.filesImage.splice(this.files.indexOf(event), 1);
+  //   this.questionfilesImage.splice(this.files.indexOf(event), 1);
+  // }
+
+  onRemoveImage(event: any) {
+    const index = this.questionfilesImage.indexOf(event);
+    if (index > -1) {
+      this.questionfilesImage.splice(index, 1);
+    }
   }
+  
 
 
   onSelectVideo(event: any) {
+    debugger
     const file = event.addedFiles && event.addedFiles.length > 0 ? event.addedFiles[0] : null;
 
     if (file) {
-      this.filesVideo.push(file); // Store the selected file
-      this.uploadVideo(file); // Trigger upload after selecting the file
+      this.filesVideo.push(file); 
+      this.uploadVideo(file); 
     }
+    debugger
   }
   onRemoveVideo(event: any) { // Use 'any' as the event type
 
@@ -1147,6 +1168,11 @@ export class EditSurveyComponent {
     if (this.question.questionTypeName === 'Slider Scale') {
       this.addsliderscale();
     }
+    if (this.question.questionTypeName === 'Open Ended'){
+      this.openEndedValue();
+    }
+    this.question.isNumeric = this.numeric;
+    this.question.isAlphabet = this.alphabet;
 
 
   }
@@ -1393,7 +1419,7 @@ export class EditSurveyComponent {
   openendedtype: any
   pattern: any
   openEndedValue() {
-
+   debugger
     if (this.numeric && this.alphabet) {
       this.openendedtype = 'text';
     }
@@ -1405,6 +1431,7 @@ export class EditSurveyComponent {
     }
     this.question.isNumeric = this.numeric;
     this.question.isAlphabet = this.alphabet;
+     debugger
   }
 
 
@@ -1454,6 +1481,8 @@ export class EditSurveyComponent {
     else if (type == 'NoOpinion') {
       newOption.header = "No Opinion";
     
+    }  else {
+      newOption.header = "";
     }
 
     let sort = 0;

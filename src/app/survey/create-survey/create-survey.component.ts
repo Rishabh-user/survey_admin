@@ -284,7 +284,7 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
       this.monthlyincomeModal.show();
     } else if (type === "Household Income") {
       this.householdModal.show();
-    } else if (type === "Family Member") {
+    } else if (type === "Family Type") {
       this.familymenberModal.show();
     } else if (type === "No. of Child") {
       this.numberofchildModal.show();
@@ -308,7 +308,7 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
       this.languageModal.show();
     } else if (type === "Geo Location") {
       this.geolocationModal.show();
-    } else if (type === "Marital Status New") {
+    } else if (type === "Marital status") {
       this.martialStatusModal.show();
     } else if (type === "Industry Respondant") {
       this.industryrespondantModal.show();

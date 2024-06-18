@@ -20,13 +20,13 @@
         <div *ngIf="!amountSelected && amountError" class="text-danger" class="text-danger">Select your package.</div>
         <div class="row mt-4">
           <div class="col-md-6 mb-4">
-            <label for="name" class="form-label">First Name</label>
+            <label for="name" class="form-label">First Name*</label>
             <input type="text" class="form-control" [(ngModel)]="firstName" name="firstName" aria-label="First name"
               (blur)="validateSurvey()">
             <div *ngIf="!firstname" class="text-danger">First Name is required.</div>
           </div>
           <div class="col-md-6 mb-4">
-            <label for="contactNo" class="form-label">Contact No</label>
+            <label for="contactNo" class="form-label">Contact No*</label>
             <input type="number" class="form-control" [(ngModel)]="contactNo" name="contactNo" (blur)="validateSurvey()"
               minlength="10" maxlength="10">
             <div *ngIf="!Contact" class="text-danger">Contact is required.</div>
@@ -34,7 +34,7 @@
         </div>
         <div class="row">
           <div class="col-md-6 mb-4">
-            <label for="email" class="form-label">Email Address</label>
+            <label for="email" class="form-label">Email Address*</label>
             <input type="email" class="form-control" [(ngModel)]="email" name="email" disabled
               (blur)="validateSurvey()">
             <div *ngIf="!emailaddress" class="text-danger">Email is required.</div>
@@ -70,7 +70,7 @@
             <input type="text" class="form-control" id="zip" [(ngModel)]="zip" name="zip">
           </div>
           <div class="col-md-6 mb-4">
-            <label for="centerId" class="form-label">GST Number</label>
+            <label for="centerId" class="form-label">GST Number(Optional)</label>
             <input type="text" class="form-control" id="gstNumber" [(ngModel)]="gstNumber" name="gstNumber">
           </div>
         </div>

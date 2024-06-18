@@ -126,11 +126,11 @@ export class PaymentComponent {
 
   payNow(orderData: any, orderId: string): void {
     const razorpayOptions = {
-      description: 'Sample Razorpay demo',
+      description: 'Razorpay',
       currency: 'INR',
       amount: orderData.amount * 100,
       name: 'Scrip8',
-      key: 'rzp_test_Ncll0VDPCO6Ffq',
+      key: 'rzp_live_MCaO8pF7KZUV9F',
       prefill: {
         // name: 'testing',
         // email: 'test@gmail.com',
