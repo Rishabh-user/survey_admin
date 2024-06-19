@@ -109,8 +109,13 @@ export class EditSurveyComponent {
   colorCode:any
   qNo:any
   imageurl:any
-  numeric: boolean = false; // Initial state
-  alphabet: boolean = false; // Initial state
+  showCaption = false
+  showCaptionvideo = false
+  showiframeCaption = false
+  numeric: boolean = false;
+  alphabet: boolean = false; 
+
+  
 
   constructor(public themeService: DataService, private router: Router,
     private route: ActivatedRoute, private surveyservice: SurveyService, private modalService: NgbModal,
@@ -300,10 +305,6 @@ export class EditSurveyComponent {
         this.addsliderscale();
       }
       
-      
-
-      this.question.isNumeric = this.numeric;
-      this.question.isAlphabet = this.alphabet;
 
     }
     
@@ -716,6 +717,8 @@ export class EditSurveyComponent {
 
     }
 
+
+   debugger
     this.question.image = this.questionImage;
     this.question.video = this.videoupload;
     this.question.youtubeUrl = this.youtubeUrl;
@@ -768,6 +771,7 @@ export class EditSurveyComponent {
     this.question.matrixHeader= matrixoption;
     this.question.piping = this.questionsortvalue
     this.question.questionSummery = this.questionSummery
+    debugger
 
     // Send the request based on whether it's an update or creation
     if (parseFloat(this.questionId) > 0) {
@@ -777,8 +781,10 @@ export class EditSurveyComponent {
           this.categoryNameCheck = false;
           if (resp == '"QuestionSuccessfullyUpdated"') {
             this.utility.showSuccess('Question Updated Successfully.');
+            // window.location.reload()
             let url = `/survey/manage-survey/${this.crypto.encryptParam(this.surveyId)}`;
             this.router.navigateByUrl(url);
+            
           } else {
             this.utility.showError(resp)
           }
@@ -910,15 +916,7 @@ export class EditSurveyComponent {
     this.categoryNameCheck = false;
   }
 
-  onSelectImage(event: any) {
-    const file = event.addedFiles && event.addedFiles.length > 0 ? event.addedFiles[0] : null;
-
-    if (file) {
-      this.questionfilesImage.push(file);
-      this.uploadImage(file);
-      console.log(this.questionfilesImage)
-    }
-  }
+ 
 
   uploadImage(file: File): void {
 
@@ -934,8 +932,11 @@ export class EditSurveyComponent {
 
         this.questionImage = response
         this.questionImage = response.replace(/"/g, '');
+        this.utility.showSuccess("uploaded succesfully");
+
       },
       (error) => {
+        this.utility.showError("Image should in png anf jpeg")
         console.error('Error occurred while uploading:', error);
         // Handle error
       }
@@ -982,28 +983,40 @@ export class EditSurveyComponent {
   //   this.questionfilesImage.splice(this.files.indexOf(event), 1);
   // }
 
+  onSelectImage(event: any) {
+    const file = event.addedFiles && event.addedFiles.length > 0 ? event.addedFiles[0] : null;
+
+    if (file) {
+      // this.questionfilesImage.push(file);
+      this.questionfilesImage = [file];
+      this.uploadImage(file);
+      console.log(this.questionfilesImage)
+    }
+  }
+
   onRemoveImage(event: any) {
     const index = this.questionfilesImage.indexOf(event);
     if (index > -1) {
       this.questionfilesImage.splice(index, 1);
     }
+    console.log("eee",this.questionfilesImage)
+    this.questionImage = ''
   }
   
 
 
   onSelectVideo(event: any) {
-    debugger
     const file = event.addedFiles && event.addedFiles.length > 0 ? event.addedFiles[0] : null;
 
     if (file) {
       this.filesVideo.push(file); 
       this.uploadVideo(file); 
     }
-    debugger
   }
   onRemoveVideo(event: any) { // Use 'any' as the event type
 
     this.filesVideo.splice(this.files.indexOf(event), 1);
+    this.videoupload =''
   }
   uploadVideo(file: File): void {
 
@@ -1018,8 +1031,10 @@ export class EditSurveyComponent {
 
         this.videoupload = response
         this.videoupload = response.replace(/"/g, '');
+        this.utility.showSuccess("Uploaded Succesfully")
       },
       (error) => {
+        this.utility.showError("Video not uploaded")
         console.error('Error occurred while uploading:', error);
         // Handle error
       }
@@ -1419,7 +1434,6 @@ export class EditSurveyComponent {
   openendedtype: any
   pattern: any
   openEndedValue() {
-   debugger
     if (this.numeric && this.alphabet) {
       this.openendedtype = 'text';
     }
@@ -1431,7 +1445,6 @@ export class EditSurveyComponent {
     }
     this.question.isNumeric = this.numeric;
     this.question.isAlphabet = this.alphabet;
-     debugger
   }
 
 
@@ -1613,19 +1626,29 @@ export class EditSurveyComponent {
     });
   }
 
-
-  // color code 
-  applyColors(text: string): SafeHtml {
-    const parser = new DOMParser();
-    const doc = parser.parseFromString(text, 'text/html');
-    const spans = doc.querySelectorAll('span');
-
-    spans.forEach(span => {
-      span.style.color = this.colorCode;
-    });
-
-    return this.sanitizer.bypassSecurityTrustHtml(doc.body.innerHTML);
+  removeAttachImage(){
+    this.question.image = ''
+    this.questionImage = ''
   }
+
+
+  // // color code 
+  // applyColors(text: string): SafeHtml {
+  //   const parser = new DOMParser();
+  //   const doc = parser.parseFromString(text, 'text/html');
+  //   const spans = doc.querySelectorAll('span');
+
+  //   spans.forEach(span => {
+  //     span.style.color = this.colorCode;
+  //   });
+
+  //   return this.sanitizer.bypassSecurityTrustHtml(doc.body.innerHTML);
+  // }
+
+ 
+
+
+  
   
 
 }

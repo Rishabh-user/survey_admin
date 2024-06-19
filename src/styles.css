@@ -2189,6 +2189,7 @@ table th {
     border-radius: 5px;
     font-size: 16px;
     margin: 0;
+    cursor: pointer;
 }
 
 .generic-ques .videourl {
@@ -2518,4 +2519,19 @@ span.badge.ng-star-inserted.activestatus.text-bg-danger {
     margin: 0 auto;
     width: 80%; 
   } */
+
+
+figure.image-figure {
+    margin: 0;
+}
   
+
+.image-upload-preview ngx-dropzone{     height: auto; border: 0px;}
+.image-upload-preview .upload-preview{ margin: 0px !important; }
+.image-upload-preview .upload-preview img{ width: 100%;}
+.image-upload-preview{ height: 100%;}
+
+.onhover-text{ height: 100%;}
+
+.youtubeurl .onhover-text{ position: relative; display: flex; align-items: center; }
+.youtubeurl .onhover-text figcaption{ position: absolute; top: 0px; left: 0px; width: 100%; height: 100%; display: flex; background-color: rgba(0,0,0,0.5); color: #fff; text-align: center; align-items: center; justify-content: center; }

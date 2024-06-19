@@ -87,7 +87,7 @@ export class AddUserComponent {
       createdDate: this.getCurrentDateTime(),
       modifiedDate: '',
       email: this.email,
-      roleId: this.roleid,
+      roleId: this.roleId,
       centerId: this.centerId,
       image: this.image,
       role: this.role,
