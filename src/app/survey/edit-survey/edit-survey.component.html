@@ -58,11 +58,11 @@
                         <h5 class="mb-3" *ngIf="mode !='modify'">Add Your Question</h5>
                         <div class="row g-3 align-items-center">
                             <div class="flex-width" *ngIf="isQNumberRequired === true ">
-                                <input type="text" id="" class="form-control"  [(ngModel)]="qNo" />
+                                <input type="text" id="" class="form-control"  [(ngModel)]="qNo" placeholder="S.No"/>
                             </div>
                             <div class="col-md-7">
                                 <input id="question" type="text" [(ngModel)]="question.question" class="form-control"
-                                    name="question" (blur)="validateSurvey()"  />
+                                    name="question" (blur)="validateSurvey()"  placeholder="Enter question"/>
                                 <div *ngIf="!questionadded" class="text-danger">Question is required.</div>
                             </div>
                             <div class="col-md-2">

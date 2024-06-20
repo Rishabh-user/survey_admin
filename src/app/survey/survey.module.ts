@@ -24,8 +24,6 @@ import { NgxPaginationModule } from 'ngx-pagination';
 
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatButtonModule } from '@angular/material/button';
-import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
-
 
 import { heroChevronLeft } from '@ng-icons/heroicons/outline';
 import { heroChevronRight } from '@ng-icons/heroicons/outline';
@@ -79,7 +77,6 @@ import { VendarSurveyListComponent } from './vendar-survey-list/vendar-survey-li
     MatSelectModule,
     MatTooltipModule,
     MatButtonModule,
-    CKEditorModule,
     NgIconsModule.withIcons({
       heroQuestionMarkCircle,
       heroCalendar,

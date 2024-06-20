@@ -70,6 +70,7 @@ import { ForeignCountryTravelledPopupComponent } from '../survey/popups/foreign-
 import { CreateSurveyPopupComponent } from '../survey/popups/create-survey-popup/create-survey-popup.component';
 import { MonthlyIncomeForeignPopupComponent } from '../survey/popups/monthly-income-foreign-popup/monthly-income-foreign-popup.component';
 import { DescriptionScreenComponent } from '../survey/popups/description-screen/description-screen.component';
+import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
 @NgModule({
   declarations: [
     ConvertToUrlPipe,
@@ -144,6 +145,7 @@ import { DescriptionScreenComponent } from '../survey/popups/description-screen/
       heroMagnifyingGlass,
     }),
     NgxPaginationModule,
+    CKEditorModule
   ],
   exports: [
     ConvertToUrlPipe,
