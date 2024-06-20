@@ -16,7 +16,7 @@ export class Question {
     public createdDate: string = '';
     public modifiedDate: string = '';
     public colorCode: string ='';
-    public isRequired: boolean = false
+    public isRequired: boolean = true
     public qNo: string =''
     public genericTypeId: number = 0
     public isGrouping: boolean = false;

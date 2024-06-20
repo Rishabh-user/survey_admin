@@ -114,6 +114,7 @@ export class EditSurveyComponent {
   showiframeCaption = false
   numeric: boolean = false;
   alphabet: boolean = false; 
+  isQNumberRequired:any
 
   
 
@@ -172,6 +173,7 @@ export class EditSurveyComponent {
       this.colorCode = data.colorCode
       this.question.isRequired = data.isRequired
       this.qNo = data.qNo
+      this.isQNumberRequired = data.isQNumberRequired
 
       data.options.forEach((opt: any) => {
 
@@ -242,6 +244,7 @@ export class EditSurveyComponent {
       //console.log('length:', Object.keys(this.groupedOptions).length);
       this.filteredOptions.push(...this.optionsArr1, ...this.optionsArr2);
       this.allOptions.push(...this.optionsArr1, ...this.optionsArr2);
+      this.matrixAllOptions.push(...this.matrixOptions,...this.optionsArr3)
       this.getGroupValue();
       console.log("get opt1",this.optionsArr1)
       console.log("get opt2",this.optionsArr2)
@@ -718,7 +721,6 @@ export class EditSurveyComponent {
     }
 
 
-   debugger
     this.question.image = this.questionImage;
     this.question.video = this.videoupload;
     this.question.youtubeUrl = this.youtubeUrl;
@@ -771,7 +773,6 @@ export class EditSurveyComponent {
     this.question.matrixHeader= matrixoption;
     this.question.piping = this.questionsortvalue
     this.question.questionSummery = this.questionSummery
-    debugger
 
     // Send the request based on whether it's an update or creation
     if (parseFloat(this.questionId) > 0) {
@@ -1267,7 +1268,12 @@ export class EditSurveyComponent {
         newOption.option = line.trim();
         newOption.createdDate = this.getCurrentDateTime()
 
+        
         this.optionsArr1.push(newOption);
+        
+        this.optionsArr1.forEach((option,index) => {
+          option.sort = index
+        })
       }
     });
 
@@ -1465,6 +1471,13 @@ export class EditSurveyComponent {
 
 
       const filteredSurveys = this.surveyData.filter(survey => survey.surveyId == this.surveyId);
+
+      console.log("filteredSurveys",filteredSurveys)
+
+      filteredSurveys.forEach((survey) => {
+        this.isQNumberRequired = survey.isQNumberRequired;
+      });
+      
 
       this.filteredSurveyNames = filteredSurveys.map(survey => survey.name);
 

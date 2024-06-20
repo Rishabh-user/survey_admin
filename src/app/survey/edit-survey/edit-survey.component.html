@@ -57,17 +57,17 @@
                         <h5 class="mb-3" *ngIf="mode =='modify'">Update Your Question</h5>
                         <h5 class="mb-3" *ngIf="mode !='modify'">Add Your Question</h5>
                         <div class="row g-3 align-items-center">
-                            <div class="flex-width" *ngIf="question.isRequired === true ">
+                            <div class="flex-width" *ngIf="isQNumberRequired === true ">
                                 <input type="text" id="" class="form-control"  [(ngModel)]="qNo" />
                             </div>
-                            <div class="col-md-8">
+                            <div class="col-md-7">
                                 <input id="question" type="text" [(ngModel)]="question.question" class="form-control"
                                     name="question" (blur)="validateSurvey()"  />
                                 <div *ngIf="!questionadded" class="text-danger">Question is required.</div>
                             </div>
                             <div class="col-md-2">
                                 <input id="addquestion" type="text" [(ngModel)]="question.questionTypeName"
-                                    class="form-control"  [style.color]="colorCode" name="addquestion" (blur)="validateSurvey()">
+                                    class="form-control" name="addquestion" (blur)="validateSurvey()">
                                 <div *ngIf="!qusstionaddednext" class="text-danger">Question is required.</div>
                             </div>
                             <div class="col-md-2">
@@ -92,13 +92,13 @@
                             <textarea class="form-control" [(ngModel)]="questionSummery" rows="5"></textarea>
                         </div>
                     </div>
-                    <!-- <div class="mb-3">
+                    <div class="mb-3">
                         <label for="exampleColorInput" class="form-label">Color picker</label>
                         <div class="d-flex gap-2">                            
                             <input type="color" class="form-control form-control-color" id="exampleColorInput" value="#563d7c" title="Choose your color" [(ngModel)]="colorCode">
                             <input type="text" class="form-control" [(ngModel)]="colorCode">
                         </div>
-                    </div> -->
+                    </div>
                     <div ngClass="update-ques-type add-media generic-ques mt-0 mb-5">
                         <h5 class="mb-3">Add Media</h5>
                         <ul>
@@ -233,7 +233,7 @@
                     </div>
                 </div>
                 <div ngClass="border-top p-4">
-                    <div ngClass="select-ans-choice mb-5">
+                    <div ngClass="select-ans-choice mb-3">
                         <h5>Answer Choice</h5>
 
                     </div>

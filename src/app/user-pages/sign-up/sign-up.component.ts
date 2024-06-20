@@ -34,6 +34,7 @@ export class SignUpComponent {
   themeService: any;
   signupForm: FormGroup;
   verificationForm: FormGroup;
+  email:any
   purchaseprice: any;
   verifyemail: any;
   constructor(private util: UtilsService, private httpClient: HttpClient, private visibilityService: DataService, private fb: FormBuilder, private authService: AuthService, private router: Router, private route: ActivatedRoute, private utility: UtilsService) {
@@ -94,6 +95,12 @@ export class SignUpComponent {
     this.route.queryParams.subscribe((data) => {
       this.purchaseprice = data['price'];
       this.amount = this.purchaseprice;
+    });
+    this.route.queryParams.subscribe((data) => {
+      if (data['email']) {
+        this.signupForm.patchValue({ email: data['email'] });
+        console.log("email", data['email']);
+      }
     });
     this.userId = this.util.getUserId();
 

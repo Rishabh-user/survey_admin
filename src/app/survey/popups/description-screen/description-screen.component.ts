@@ -9,6 +9,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { CryptoService } from 'src/app/service/crypto.service';
 import { environment } from 'src/environments/environment';
 import { UtilsService } from 'src/app/service/utils.service';
+import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 
 @Component({
   selector: 'app-description-screen',
@@ -21,13 +22,22 @@ export class DescriptionScreenComponent {
   
 
   @Output() onSaveEvent = new EventEmitter();
+  public Editor = ClassicEditor;
   questions: Question = new Question();
   descques:any
   descdescription:any
   descbutton:any
+  surveyId:any
+  questionTypeId = 21
 
 
   constructor(private surveyservice: SurveyService, private route: ActivatedRoute, private crypto: CryptoService, private router: Router, private utility: UtilsService) {
+    this.route.paramMap.subscribe(params => {
+      let _surveyId = params.get('param1');
+      if (_surveyId) {
+        this.surveyId = parseInt(this.crypto.decryptQueryParam(_surveyId));
+      }
+    });
     
   }
 
@@ -48,9 +58,12 @@ export class DescriptionScreenComponent {
     const currentQuestion = this.questions;
     currentQuestion.question = this.descques
     currentQuestion.description = this.descdescription
-    currentQuestion.isRequired = true
+    currentQuestion.surveyTypeId = this.surveyId
+    currentQuestion.questionTypeId = this.questionTypeId
+    currentQuestion.isRequired = false
     currentQuestion.createdDate = this.getCurrentDateTime()
     currentQuestion.modifiedDate = this.getCurrentDateTime();
+    currentQuestion.status = 'ACT'
 
     this.surveyservice.CreateGeneralQuestion(currentQuestion).subscribe({
       next: (resp: any) => {

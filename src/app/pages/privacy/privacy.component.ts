@@ -15,6 +15,7 @@ export class PrivacyComponent {
   showTooltip: { [key: string]: boolean } = {};
   toggleTooltip(identifier: string) {
     this.showTooltip[identifier] = !this.showTooltip[identifier];
+    
   }
   hideTooltip(identifier: string) {
     this.showTooltip[identifier] = false;

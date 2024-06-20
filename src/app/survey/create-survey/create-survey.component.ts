@@ -465,6 +465,7 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
   countryImage: any
   totalItemsCount: number
   surveycreateddate: any
+  isQNumberRequired:any
   GetSurveyDetails(pageSize: number, pageNumber: number) {
 
     this.surveyservice.getSurveyDetailsById(pageNumber, pageSize, this.surveyId).subscribe((data: any) => {
@@ -495,6 +496,7 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
         this.countryId = data.countryId
         this.totalItemsCount = data.totalQuestionCount
         this.categoryId = data.categoryId
+        this.isQNumberRequired = data.isQNumberRequired
         this.selectedCountry = this.country.find(country => country.id === this.countryId) || null;
 
         this.surveycreateddate = data.createdDate

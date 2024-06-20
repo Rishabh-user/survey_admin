@@ -34,6 +34,7 @@
                 </ckeditor>
                 <div *ngIf="!descriptioninfo" class="text-danger">Description is required.</div>
             </div>
+            
             <div class="mb-4">
                 <label for="text" class="form-label">Upload Image</label>
                 <ngx-dropzone (change)="onSelect($event)" [ngClass]="'drop-file'">

@@ -2,7 +2,7 @@
     <div [ngClass]="{'add-ques-sidebar': true, 'toggle-sidebar': toggleClass}">
 
         <div>
-            <!-- <div class="infocircle mb-2">
+            <div class="infocircle mb-2">
                 <h6 class="mb-0">Add Description Screen</h6>
                 <div class="custom-tooltip">
                     <ng-icon name="heroInformationCircle" ngClass="edit-action info-circle"
@@ -30,7 +30,7 @@
                 <figcaption>Add Description Screen
                 </figcaption>
             </a>
-            </div> -->
+            </div>
             
         
             <div class="infocircle mb-2">
@@ -426,12 +426,13 @@
                     *ngFor="let question of questions | paginate: { id: 'server', itemsPerPage: pageSize, currentPage: pageNumber, totalItems: totalItemsCount } ;let i=index;">
                     <div class="drag-item">
                         <div [ngClass]="{'ques-header': true, 'screening': question.isScreening}">
-                            <h5 [ngClass]="'mb-0'" >
+                           
+                            <h5 [ngClass]="'mb-0'" *ngIf="isQNumberRequired !== true" >
                                 Q-{{question?.sort}} {{(question?.question)}}
                                 <!-- <div [innerHTML]="sanitizeHtml(question?.question)"></div> -->
                             </h5>
-                            <h5 [ngClass]="'mb-0'" *ngIf="question?.isRequired === true">
-                                Q-{{question?.qNo}} {{(question?.question)}}
+                            <h5 [ngClass]="'mb-0'" *ngIf="isQNumberRequired === true">
+                                {{question?.qNo}} {{(question?.question)}}
                                 <!-- <div [innerHTML]="sanitizeHtml(question?.question)"></div> -->
                             </h5>
 
@@ -476,14 +477,21 @@
                                         <ng-icon name="heroEllipsisVertical"></ng-icon>
                                     </a>
                                     <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                                        <li>
+                                        <li *ngIf="question?.isRequired">
                                             <a href="javascript:void(0);" class="dropdown-item"
                                                 (click)="onEditQuestionClick(question?.id)">
                                                 <ng-icon name="heroPencil"></ng-icon>
                                                 Edit
                                             </a>
                                         </li>
-                                        <li *ngIf="question?.logics.length==0">
+                                        <li *ngIf="!question?.isRequired">
+                                            <a href="javascript:void(0);" class="dropdown-item"
+                                            (click)="onGenericQuestionClick('DESC')">
+                                                <ng-icon name="heroPencil"></ng-icon>
+                                                Edit
+                                            </a>
+                                        </li>
+                                        <li *ngIf="question?.logics.length==0 && question?.isRequired">
                                             <a href="javascript:void(0);" class="dropdown-item"
                                                 (click)="toggleLogic(i,question?.id,'add');getQuestionListBranching(question?.id);getOptionsByQuestionIdLogic(question?.id)">
                                                 <ng-icon name="heroCommandLine"></ng-icon>
@@ -545,6 +553,9 @@
                                     </ng-container>
 
 
+                                </div>
+                                <div *ngIf="question?.isRequired === false">
+                                    <p>{{question.description}}</p>
                                 </div>
                                 <div *ngIf="planid =='500' && question?.isLogicShow" class="alert alert-danger"
                                     role="alert">

@@ -28,7 +28,7 @@ export class CreateSurveyPopupComponent {
   categoryId: number;
   newsurveyId: number;
   selectedOption: any;
-  displayId: boolean = false
+  isQNumberRequired: boolean = false
   searchControl = new FormControl();
   options: { id: number, name: string }[] = [];
   country: { id: string, name: string, images: string }[] = [];
@@ -65,8 +65,8 @@ export class CreateSurveyPopupComponent {
   }
 
   onCheckboxChange(event: any) {
-    this.displayId = event.target.checked;
-    console.log("displayId",this.displayId)
+    this.isQNumberRequired = event.target.checked;
+    console.log("isQNumberRequired",this.isQNumberRequired)
   }
 
   getNames() {
@@ -133,7 +133,7 @@ export class CreateSurveyPopupComponent {
         categoryId: this.categoryId,
         otherCategory: this.categoryName,
         countryId: this.selectedCountryId,
-        displayId: this.displayId
+        isQNumberRequired: this.isQNumberRequired
       };
 
 
