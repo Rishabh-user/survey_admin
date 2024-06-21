@@ -782,7 +782,7 @@ export class EditSurveyComponent {
           this.categoryNameCheck = false;
           if (resp == '"QuestionSuccessfullyUpdated"') {
             this.utility.showSuccess('Question Updated Successfully.');
-            // window.location.reload()
+            window.location.reload()
             let url = `/survey/manage-survey/${this.crypto.encryptParam(this.surveyId)}`;
             this.router.navigateByUrl(url);
             

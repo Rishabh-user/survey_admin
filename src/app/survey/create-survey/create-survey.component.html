@@ -2,7 +2,7 @@
     <div [ngClass]="{'add-ques-sidebar': true, 'toggle-sidebar': toggleClass}">
 
         <div>
-            <div class="infocircle mb-2">
+            <!-- <div class="infocircle mb-2">
                 <h6 class="mb-0">Add Description Screen</h6>
                 <div class="custom-tooltip">
                     <ng-icon name="heroInformationCircle" ngClass="edit-action info-circle"
@@ -30,7 +30,7 @@
                 <figcaption>Add Description Screen
                 </figcaption>
             </a>
-            </div>
+            </div> -->
             
         
             <div class="infocircle mb-2">
@@ -427,14 +427,13 @@
                     <div class="drag-item">
                         <div [ngClass]="{'ques-header': true, 'screening': question.isScreening}">
                            
-                            <h5 [ngClass]="'mb-0'" *ngIf="isQNumberRequired !== true" >
+                            <h5 [ngClass]="'mb-0'">
                                 Q-{{question?.sort}} {{(question?.question)}}
                                 <!-- <div [innerHTML]="sanitizeHtml(question?.question)"></div> -->
                             </h5>
-                            <h5 [ngClass]="'mb-0'" *ngIf="isQNumberRequired === true">
+                            <!-- <h5 [ngClass]="'mb-0'" *ngIf="isQNumberRequired === true">
                                 {{question?.qNo}} {{(question?.question)}}
-                                <!-- <div [innerHTML]="sanitizeHtml(question?.question)"></div> -->
-                            </h5>
+                            </h5> -->
 
                             <div class="d-flex align-items-center justify-content-end">
                                 <div class="badge text-bg-primary fw-normal me-2" *ngIf="question?.genericTypeId>0">
