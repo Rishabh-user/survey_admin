@@ -16,9 +16,9 @@
 
                 </div>
                 <div class="ms-2">
-                    <span *ngIf="surveystatus.includes('DEL')" class="badge text-bg-danger activestatus">Inactive</span>
-                    <span *ngIf="surveystatus.includes('ACT')" class="badge text-bg-success activestatus">Active</span>
-                    <span *ngIf="surveystatus.includes('HOL')" class="badge text-bg-warning activestatus">Hold</span>
+                    <span *ngIf="surveystatus?.includes('DEL')" class="badge text-bg-danger activestatus">Inactive</span>
+                    <span *ngIf="surveystatus?.includes('ACT')" class="badge text-bg-success activestatus">Active</span>
+                    <span *ngIf="surveystatus?.includes('HOL')" class="badge text-bg-warning activestatus">Hold</span>
                 </div>
             </div>
 

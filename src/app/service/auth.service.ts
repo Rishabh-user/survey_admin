@@ -33,6 +33,9 @@ export class AuthService {
     return throwError(errorMessage);
   }
   login(userDetails: any) {
+    
+    localStorage.removeItem('authToken');
+    //localStorage.clear();
     const params = new HttpParams()
       .set('email', userDetails.email)
       .set('password', userDetails.password)
@@ -43,9 +46,17 @@ export class AuthService {
           localStorage.setItem('authToken', response);
           this.setUserDetails();
         }
+        
         return response;
+      }),
+      
+      catchError((error) => {
+        
+        console.error('Login error:', error);
+        return throwError(() => new Error('Login failed. Please try again.'));
       })
     );
+    
   }
 
 

@@ -36,6 +36,7 @@ export class HttpInterceptorService implements HttpInterceptor {
         } else if (err.status === 408) {
           console.error('Internal Server Error:', err);
           if (!this.modalService.isModalOpen()) {
+            localStorage.setItem("popuplogin", "true");
             this.modalService.triggerModal(true);
           }
         }

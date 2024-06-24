@@ -131,6 +131,7 @@ export class PaymentComponent {
       amount: orderData.amount * 100,
       name: 'Scrip8',
       key: 'rzp_live_MCaO8pF7KZUV9F',
+      // key: 'rzp_test_Ncll0VDPCO6Ffq',
       prefill: {
         // name: 'testing',
         // email: 'test@gmail.com',

@@ -357,6 +357,12 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
     }
 
   }
+  onGenericQuestionClickDesc(type: any): void {
+     if (type === "DESC") {
+      this.DescriptionScreenModal.show();
+    } 
+
+  }
 
 
 

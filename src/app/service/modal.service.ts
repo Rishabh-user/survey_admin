@@ -19,4 +19,9 @@ export class ModalService {
   isModalOpen(): boolean {
     return this.openModalSubject.getValue();
   }
+
+  closeModal() {
+    this.openModalSubject.next(false); 
+  }
+
 }

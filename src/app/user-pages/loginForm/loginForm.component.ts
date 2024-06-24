@@ -7,6 +7,7 @@ import { AuthService } from 'src/app/service/auth.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CaptchaComponent } from 'src/app/shared/captcha/captcha.component';
 import { UtilsService } from 'src/app/service/utils.service';
+import { ModalService } from 'src/app/service/modal.service';
 
 @Component({
   selector: 'app-loginForm',
@@ -29,7 +30,8 @@ export class LoginFormComponent {
     private route: ActivatedRoute,
     private router: Router,
     private authService: AuthService,
-    private utility: UtilsService
+    private utility: UtilsService,
+    private modalservice: ModalService
   ) {
     visibilityService.articleVisible.next(false);
     this.token = undefined;
@@ -57,48 +59,111 @@ export class LoginFormComponent {
 
     });
   }
+  // islogin:boolean = true
+  // onSubmit() {
+  //   this.submitted = true;
+  //   if (this.loginForm.valid) {
+  //     this.loginForm.removeControl('rememberMe');
+  //     this.errorMessage = '';
+  //     this.loading = true;
+  //     const returnUrl =
+  //       this.route.snapshot.queryParamMap.get('returnUrl') || '/dashboard';
 
-  onSubmit() {
-    this.submitted = true;
-    if (this.loginForm.valid) {
-      this.loginForm.removeControl('rememberMe');
-      this.errorMessage = '';
-      this.loading = true;
-      const returnUrl =
-        this.route.snapshot.queryParamMap.get('returnUrl') || '/dashboard';
 
+  //     const userDetails = {
+  //       email: this.loginForm.get('email')?.value,
+  //       password: this.loginForm.get('password')?.value,
+  //       captchertoken: this.loginForm.get('captchertoken')?.value
+  //     };
 
-      const userDetails = {
-        email: this.loginForm.get('email')?.value,
-        password: this.loginForm.get('password')?.value,
-        captchertoken: this.loginForm.get('captchertoken')?.value
-      };
+  //     this.authService
+  //       .login(userDetails)
+  //       .pipe(first())
+  //       .subscribe({
+  //         next: (result) => {
+  //           debugger
+  //           if (result) {
+  //             localStorage.setItem('authToken', result); 
+  //             this.loginForm.reset();
 
-      this.authService
-        .login(userDetails)
-        .pipe(first())
-        .subscribe({
-          next: (result) => {
+  //             // this.router.navigateByUrl(returnUrl).then(() => {
 
-            if (result) {
-              this.loginForm.reset();
+  //             //   window.location.reload();
+  //             // });
+  //             if(this.islogin){
+  //               this.router.navigateByUrl(returnUrl).then(() => {
+  //                 window.location.reload();
+  //               });
+  //             }else{
+  //               this.modalservice.closeModal();
+  //               window.location.reload();
+  //             }
+  //             debugger
+  //           } else {
+  //             this.loading = false;
+  //             this.errorMessage = result;
+  //           }
+  //         },
+  //         error: (errObject) => {
+  //           this.utility.showError("Please enter correct password ");
+  //         },
+  //         complete: () => {
+  //           this.loading = false;
+  //         },
+  //       });
+  //   }
+  //   //}
+  // }
+  islogin: boolean = false;
 
-              this.router.navigateByUrl(returnUrl).then(() => {
-                window.location.reload();
-              });
-            } else {
-              this.loading = false;
-              this.errorMessage = result;
-            }
-          },
-          error: (errObject) => {
-            this.utility.showError("Please enter correct password ");
-          },
-          complete: () => {
-            this.loading = false;
-          },
-        });
-    }
-    //}
+onSubmit() {
+  this.submitted = true;
+  if (this.loginForm.valid) {
+    this.loginForm.removeControl('rememberMe');
+    this.errorMessage = '';
+    this.loading = true;
+    const returnUrl = this.route.snapshot.queryParamMap.get('returnUrl') || '/dashboard';
+
+    const userDetails = {
+      email: this.loginForm.get('email')?.value,
+      password: this.loginForm.get('password')?.value,
+      captchertoken: this.loginForm.get('captchertoken')?.value
+    };
+
+    this.authService.login(userDetails).pipe(first()).subscribe({
+      next: (result) => {
+        let popuplogin =  localStorage.getItem("popuplogin");
+        if (result) {
+          localStorage.setItem('authToken', result); 
+          this.loginForm.reset();
+          console.log("S",this.islogin)
+        
+          if(popuplogin == 'true'){
+            // Login via popup
+            this.modalservice.closeModal();
+            localStorage.removeItem("popuplogin");
+            window.location.reload()
+          }
+          else{
+            this.router.navigateByUrl(returnUrl).then(() => {
+              window.location.reload();
+            });
+          }
+        
+        } else {
+          this.loading = false;
+          this.errorMessage = result;
+        }
+      },
+      error: (errObject) => {
+        this.utility.showError("Please enter correct password ");
+        this.loading = false;
+      },
+      complete: () => {
+        this.loading = false;
+      }
+    });
   }
+}
+
 }
