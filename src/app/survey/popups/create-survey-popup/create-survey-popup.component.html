@@ -9,7 +9,7 @@
                 <form>
                     <div class="mb-4">
                         <label for="surveyname" class="form-label">Enter Your Survey Name</label>
-                        <input id="surveyname" type="text" class="form-control" [(ngModel)]="surveyName"
+                        <input id="surveyname" type="text" class="form-control" [(ngModel)]="surveyName" [ngModelOptions]="{standalone: true}"
                             name="surveyName" (blur)="validateSurvey()" />
                         <div *ngIf="!surveyNameCheck" class="text-danger">Survey Name is required.</div>
                     </div>
@@ -40,7 +40,7 @@
                         <label class="form-label">Select The Survey Category</label>
                         <mat-form-field>
                             <ng-icon name="heroMagnifyingGlass" class=""></ng-icon>
-                            <input type="text" placeholder="Search..." matInput [formControl]="searchControl"
+                            <input type="text" placeholder="Search..." matInput [formControl]="searchControl" 
                                 [matAutocomplete]="auto" [(ngModel)]="selectedOption" (blur)="validateSurvey()" />
                             <mat-autocomplete #auto="matAutocomplete" (optionSelected)="filterOptions($event)">
                                 <mat-option *ngFor="let option of options" [value]="option.id">
@@ -53,16 +53,16 @@
                     <div class="mb-4" *ngIf="selectedOption === 'Others'">
                         <label for="categoryName" class="form-label">Enter Category Name</label>
                         <input id="categoryName" type="text" class="form-control" [(ngModel)]="categoryName"
-                            name="categoryName" (blur)="validateSurvey()" />
+                            name="categoryName" (blur)="validateSurvey()" [ngModelOptions]="{standalone: true}"/>
                         <div *ngIf="!otherCategoryCheck" class="text-danger">Category Name is required.</div>
                     </div>
-                    <!-- <div>
+                    <div>
                         <label for="">Serial number</label>
                         <div class="form-check form-switch">
-                            <input class="form-check-input" type="checkbox" role="switch"  [(ngModel)]="isQNumberRequired"
+                            <input class="form-check-input" type="checkbox" role="switch"  [(ngModel)]="isQNumberRequired" [ngModelOptions]="{standalone: true}"
                                 name="isChecked" (change)="onCheckboxChange($event)">
                         </div>
-                    </div> -->
+                    </div>
                 </form>
             </div>
             <div class="modal-footer upload">

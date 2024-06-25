@@ -24,12 +24,12 @@
         <form>
             <div class="mb-4">
                 <label for="text" class="form-label">Title</label>
-                <input type="text" class="form-control" [(ngModel)]="name" name="name" (blur)="validateSurvey()">
+                <input type="text" class="form-control" [(ngModel)]="name"  (blur)="validateSurvey()" [ngModelOptions]="{standalone: true}">
                 <div *ngIf="!title" class="text-danger">Title is required.</div>
             </div>
             <div class="mb-4">
                 <label for="text" class="form-label">Description</label>
-                <ckeditor [editor]="Editor" [(ngModel)]="description" name="description" class="large-editor"
+                <ckeditor [editor]="Editor" [(ngModel)]="description" name="description" class="large-editor" 
                     (blur)="validateSurvey()">
                 </ckeditor>
                 <div *ngIf="!descriptioninfo" class="text-danger">Description is required.</div>

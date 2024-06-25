@@ -268,8 +268,9 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
     this.getSurveyLooping();
   }
   ngAfterViewInit() {
-    // Set the default value after the view initialization
-    this.selectElement.value = null; // Set the default value to null or any desired default value
+    if (this.selectElement) {
+      this.selectElement.value = null; 
+    }
   }
   onGenericQuestionClick(type: any): void {
     if (type === "Gender") {
@@ -1675,16 +1676,38 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
 
     return transformedData;
   }
+  // getSurveyLooping(): void {
+  //   this.surveyservice.getSurveyLooping(this.surveyId).subscribe(
+  //     (response) => {
+  //       if (response.length > 0) {
+  //         this.selectedAutoCodeOption = response;
+  //       }
+
+  //       if (response != '' && response != undefined)
+  //         this.selectedAutoCodeOption = response
+  //       this.isDivVisible = true;
+  //     },
+  //     (error) => {
+  //       // Handle errors
+  //       console.error(error);
+  //     }
+  //   );
+  // }
+
   getSurveyLooping(): void {
     this.surveyservice.getSurveyLooping(this.surveyId).subscribe(
       (response) => {
-        if (response.length > 0) {
+        if (response && response.length > 0) {
           this.selectedAutoCodeOption = response;
+          this.isDivVisible = false;
+          
         }
-
-        if (response != '' && response != undefined)
-          this.selectedAutoCodeOption = response
-        this.isDivVisible = true;
+  
+        if (response != '' && response != undefined) {
+          this.selectedAutoCodeOption = response;
+          this.isDivVisible = true;
+        }
+        // this.isDivVisible = true;
       },
       (error) => {
         // Handle errors
@@ -1692,6 +1715,7 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
       }
     );
   }
+  
 
 
   onSelect(event: any) {

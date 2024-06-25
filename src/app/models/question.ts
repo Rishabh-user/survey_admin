@@ -17,7 +17,7 @@ export class Question {
     public modifiedDate: string = '';
     public colorCode: string ='';
     public isRequired: boolean = true
-    public qNo: string =''
+    public qNo: string ="";
     public genericTypeId: number = 0
     public isGrouping: boolean = false;
     public sort: number = 1;

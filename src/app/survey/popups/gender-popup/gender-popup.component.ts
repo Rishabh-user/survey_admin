@@ -31,6 +31,8 @@ export class GenderPopupComponent {
   surveyId = 0;
   questionText: string = '';
   baseUrl = '';
+  qNo: any;
+  quesserialno:any;
   constructor(private surveyservice: SurveyService, private route: ActivatedRoute, private crypto: CryptoService, private router: Router, private utility: UtilsService) {
     this.baseUrl = environment.baseURL;
     this.route.paramMap.subscribe(params => {
@@ -38,12 +40,14 @@ export class GenderPopupComponent {
       if (_surveyId) {
         this.surveyId = parseInt(this.crypto.decryptQueryParam(_surveyId));
       }
+      console.log("qwertt",this.surveyId)
     });
   }
 
   show(surveyId: any) {
     this.getQuestions();
     this.intializeDefaultValue()
+    this.getSerialNumber()
   }
 
   close() {
@@ -122,21 +126,27 @@ export class GenderPopupComponent {
   }
 
   onContinue() {
+    // const isSurveyValid = this.validateSurvey();
+
+    // if (!isSurveyValid) {
+    //   this.utility.showError('Please fill required fields.');
+    //   return;
+    // }
     if (!this.isAtLeastOneOptionSelected()) {
       this.utility.showError("Please select at least one option");
       return;
     }
-
+    this.question.qNo = this.qNo
     this.question.question = this.questionText;
-
-
     this.question.options = this.questions[0]?.options.filter(option => option.selected);
+
     const currentDateTime = this.getCurrentDateTime();
     this.question.options.forEach(option => {
       option.createdDate = currentDateTime;
       option.modifiedDate = currentDateTime;
     });
     this.question.genericTypeId = this.typeid
+ 
     this.surveyservice.CreateGeneralQuestion(this.question).subscribe({
       next: (resp: any) => {
         if (resp == '"QuestionAlreadyExits"') {
@@ -156,5 +166,25 @@ export class GenderPopupComponent {
     });
 
   }
+
+  getSerialNumber(){
+    this.surveyservice.getQuesNumberRequired(this.surveyId).subscribe({
+      next: (resp: any) => {
+        if(resp){
+          console.log("ww",resp)
+          this.quesserialno = resp
+        }
+      },
+      error: (err:any) =>{
+        
+      }
+    })
+  }
+
+  getSerialNumberreq: boolean = false
+  // validateSurvey(): boolean {
+  //   this.getSerialNumberreq = !this.qNo || this.qNo.trim().length === 0; 
+  //   return this.getSerialNumberreq;
+  // }
 
 }

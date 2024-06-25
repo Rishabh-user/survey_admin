@@ -18,10 +18,13 @@ export class OccupationPopupComponent {
   @ViewChild('OccupationModal', { static: true }) modal!: ModalDirective;
 
   @Output() onSaveEvent = new EventEmitter();
+  qNo: any;
+  quesserialno:any;
 
   show() {
     this.modal.show();
     this.getQuestions();
+    this.getSerialNumber();
   }
 
   close() {
@@ -112,6 +115,7 @@ export class OccupationPopupComponent {
     let successfulAPICalls = 0;
     for (let i = 0; i < this.questions.length; i++) {
       const currentQuestion = this.questions[i];
+      currentQuestion.qNo = this.qNo
       currentQuestion.questionTypeId = this.questionTypeId
       currentQuestion.surveyTypeId = this.surveyId
       currentQuestion.createdDate = this.getCurrentDateTime()
@@ -146,6 +150,19 @@ export class OccupationPopupComponent {
       });
     }
 
+  }
+  getSerialNumber(){
+    this.surveyservice.getQuesNumberRequired(this.surveyId).subscribe({
+      next: (resp: any) => {
+        if(resp){
+          console.log("ww",resp)
+          this.quesserialno = resp
+        }
+      },
+      error: (err:any) =>{
+        
+      }
+    })
   }
 
 }

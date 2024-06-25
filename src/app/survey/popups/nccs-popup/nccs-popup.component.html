@@ -12,7 +12,7 @@
                             <label for="surveyname" class="form-label">Enter Your Question</label>
                             <div class="input-group">
                                 <input type="text" class="form-control" [ngModel]="question.question"
-                                    (ngModelChange)="question.question = $event" id="{{ 'question_' + i }}"
+                                    (ngModelChange)="question.question = $event" id="{{ 'question_' + i }}" [ngModelOptions]="{standalone: true}"
                                     name="{{ 'question_' + i }}" readonly />
                             </div>
                         </div>

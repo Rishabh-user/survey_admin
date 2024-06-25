@@ -34,7 +34,8 @@ export class DescriptionScreenComponent {
   questionId: any;
   allOptions: any[] = [];
   descriptiondetails: any;
-
+  qNo: any;
+  quesserialno:any;
 
   constructor(private surveyservice: SurveyService, private dataservice: DataService, private route: ActivatedRoute, private crypto: CryptoService, private router: Router, private utility: UtilsService) {
     this.route.paramMap.subscribe(params => {
@@ -88,6 +89,7 @@ export class DescriptionScreenComponent {
 
     this.modal.show();
     this.getQuestionDetails()
+    this.getSerialNumber();
  
   }
 
@@ -102,6 +104,7 @@ export class DescriptionScreenComponent {
 
   continueClicked() {
     const currentQuestion = this.questions;
+    currentQuestion.qNo = this.qNo
     currentQuestion.question = this.descques;
     currentQuestion.description = this.descdescription;
     currentQuestion.surveyTypeId = this.surveyId;
@@ -144,6 +147,20 @@ export class DescriptionScreenComponent {
         console.error(err);
       }
     });
+  }
+
+  getSerialNumber(){
+    this.surveyservice.getQuesNumberRequired(this.surveyId).subscribe({
+      next: (resp: any) => {
+        if(resp){
+          console.log("ww",resp)
+          this.quesserialno = resp
+        }
+      },
+      error: (err:any) =>{
+        
+      }
+    })
   }
 
 

@@ -6,9 +6,22 @@
                 <button type="button" class="btn-close" (click)="close()"></button>
             </div>
             <div class="modal-body">
-                <div class="mb-4">
+                <!-- <div class="mb-4">
                         <p>Enter the Question</p>
-                        <input type="text" class="form-control" [(ngModel)]="descques" />
+                        <input type="text" class="form-control" [(ngModel)]="descques" [ngModelOptions]="{standalone: true}"/>
+                </div> -->
+                <div class="mb-4">
+                    <div class="row">
+                        <p>Enter the Question</p>
+                        <div class="col-md-2" *ngIf="quesserialno === 'true'">
+                            <input type="text" id="qNo" name="qNo" class="form-control"  [(ngModel)]="qNo" placeholder="S.No" />
+                            <!-- <div *ngIf="!getSerialNumberreq" class="text-danger">S.NO is required.</div> -->
+                        </div>
+                        <div class="col-md-10">
+                            
+                          <input type="text" class="form-control" [(ngModel)]="descques" [ngModelOptions]="{standalone: true}"/>
+                        </div>
+                    </div>
                 </div>
                 <!-- <div class="mb-4">
                     <p>Enter the Description</p>
@@ -16,12 +29,12 @@
                 </div> -->
                 <div class="mb-4">
                     <label for="text" class="form-label">Description</label>
-                    <ckeditor [editor]="Editor" [(ngModel)]="descdescription" name="description" class="large-editor">
+                    <ckeditor [editor]="Editor" [(ngModel)]="descdescription" name="description" class="large-editor" [ngModelOptions]="{standalone: true}">
                     </ckeditor>
                 </div>
                 <div class="mb-4">
                     <p>Enter the Button Name</p>
-                    <input type="text" class="form-control" [(ngModel)]="descbutton"/>
+                    <input type="text" class="form-control" [(ngModel)]="descbutton" [ngModelOptions]="{standalone: true}"/>
                 </div>
             </div>
             <div class="modal-footer">

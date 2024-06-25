@@ -466,4 +466,9 @@ export class SurveyService {
     return this.http.get<responseDTO[]>(url);
   }
 
+  getQuesNumberRequired(surveyId: any): Observable<any> {
+    const url = `${this.apiUrl}api/admin/${this.userId}/GenericQuestion/IsQuestionNumberRequired?surveyId=${surveyId}`;
+    return this.http.get(url, { responseType: 'text' });
+  }
+
 }

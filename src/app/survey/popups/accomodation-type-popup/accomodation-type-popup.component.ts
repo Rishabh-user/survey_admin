@@ -22,6 +22,8 @@ export class AccomodationTypePopupComponent {
   questionText: string = '';
   surveyId = 0;
   questionTypeId = 8
+  quesserialno:any;
+  qNo:any
   constructor(private surveyservice: SurveyService, private route: ActivatedRoute, private crypto: CryptoService, private router: Router, private utility: UtilsService) {
     this.route.paramMap.subscribe(params => {
       let _surveyId = params.get('param1');
@@ -36,6 +38,7 @@ export class AccomodationTypePopupComponent {
   show() {
     this.modal.show();
     this.getQuestions();
+    this.getSerialNumber();
   }
 
   close() {
@@ -113,6 +116,7 @@ export class AccomodationTypePopupComponent {
     let successfulAPICalls = 0;
     for (let i = 0; i < this.questions.length; i++) {
       const currentQuestion = this.questions[i];
+      currentQuestion.qNo = this.qNo
       currentQuestion.questionTypeId = this.questionTypeId
       currentQuestion.surveyTypeId = this.surveyId
       currentQuestion.createdDate = this.getCurrentDateTime()
@@ -148,6 +152,20 @@ export class AccomodationTypePopupComponent {
       });
     }
 
+  }
+
+  getSerialNumber(){
+    this.surveyservice.getQuesNumberRequired(this.surveyId).subscribe({
+      next: (resp: any) => {
+        if(resp){
+          console.log("ww",resp)
+          this.quesserialno = resp
+        }
+      },
+      error: (err:any) =>{
+        
+      }
+    })
   }
 
 

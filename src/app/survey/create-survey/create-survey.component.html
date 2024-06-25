@@ -425,7 +425,7 @@
                 <li
                     *ngFor="let question of questions | paginate: { id: 'server', itemsPerPage: pageSize, currentPage: pageNumber, totalItems: totalItemsCount } ;let i=index;">
                     <div class="drag-item">
-                        <div [ngClass]="{'ques-header': true, 'screening': question.isScreening}">
+                        <div [ngClass]="{'ques-header': true, 'screening': question.isScreening,'descques': question.isRequired === false}">
                            
                             <h5 [ngClass]="'mb-0'"*ngIf="!isQNumberRequired === true">
                                 Q-{{question?.sort}} {{(question?.question)}}
@@ -1377,7 +1377,7 @@
                 <label class="form-label">Select Survey Categories</label>
                 <mat-form-field>
                     <ng-icon name="heroMagnifyingGlass" class=""></ng-icon>
-                    <input type="text" placeholder="Search..." matInput [formControl]="searchControl"
+                    <input type="text" placeholder="Search..." matInput [formControl]="searchControl" name="serach" 
                         [matAutocomplete]="auto" [(ngModel)]="categoryName" (blur)="validateSurvey()" />
                     <mat-autocomplete #auto="matAutocomplete" (optionSelected)="filterOptions($event)">
                         <mat-option *ngFor="let option of options" [value]="option.id">
@@ -1389,7 +1389,7 @@
             </div>
             <div class="mb-4" *ngIf="selectedOption === 'Others'">
                 <label for="otherCategoryName" class="form-label">Enter Category Name</label>
-                <input id="otherCategoryName" type="text" class="form-control" [(ngModel)]="otherCategoryName"
+                <input id="otherCategoryName" type="text" class="form-control" [(ngModel)]="otherCategoryName" [ngModelOptions]="{standalone: true}"
                     name="otherCategoryName" />
             </div>
 

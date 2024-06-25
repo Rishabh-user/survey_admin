@@ -2535,3 +2535,6 @@ figure.image-figure {
 
 .youtubeurl .onhover-text{ position: relative; display: flex; align-items: center; }
 .youtubeurl .onhover-text figcaption{ position: absolute; top: 0px; left: 0px; width: 100%; height: 100%; display: flex; background-color: rgba(0,0,0,0.5); color: #fff; text-align: center; align-items: center; justify-content: center; }
+.descques{
+    background-color: #08b7f0;
+}

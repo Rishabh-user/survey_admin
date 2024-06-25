@@ -695,7 +695,6 @@ export class EditSurveyComponent {
     const isSurveyValid = this.validateSurvey();
 
     if (!isSurveyValid) {
-      // Show error message if fields are empty
       this.utility.showError('Please fill all required fields.');
       return;
     }
@@ -798,10 +797,21 @@ export class EditSurveyComponent {
       this.surveyservice.CreateGeneralQuestion(this.question).subscribe({
         next: (resp: any) => {
           this.categoryNameCheck = false;
-          this.utility.showSuccess('Question Generated Successfully.');
-          let url = `/survey/manage-survey/${this.crypto.encryptParam(this.surveyId)}`;
-          this.router.navigateByUrl(url);
-          this.onSaveEvent.emit();
+          // this.utility.showSuccess('Question Generated Successfully.');
+          // let url = `/survey/manage-survey/${this.crypto.encryptParam(this.surveyId)}`;
+          // this.router.navigateByUrl(url);
+          // this.onSaveEvent.emit();
+          if (resp == '"QuestionCreateFailed"') {
+            this.utility.showSuccess('Failed to Create Question');
+          } else if('"QuestionSuccessfullyCreated"') {
+            this.utility.showSuccess('Question Generated Successfully.');
+            let url = `/survey/manage-survey/${this.crypto.encryptParam(this.surveyId)}`;
+            this.router.navigateByUrl(url);
+            this.onSaveEvent.emit();
+          }
+           else {
+            this.utility.showError(resp)
+          }
         },
         error: (err: any) => {
           this.utility.showError('error');
