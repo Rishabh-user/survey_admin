@@ -1211,7 +1211,7 @@
 
         <div class="custom-pagination d-flex justify-content-between align-items-center mt-5"
             *ngIf="questions?.length>pageSize-1 || pageNumber>1">
-            <pagination-controls *ngIf="questions != null && questions.length>0" class="d-flex justify-content-center"
+            <pagination-controls *ngIf="questions != null && questions?.length>0" class="d-flex justify-content-center"
                 id="server" (pageChange)="onPageChange($event)"></pagination-controls>
             <div class="d-flex align-items-center">
                 <span class="me-2">Page Size:</span>
@@ -1228,7 +1228,7 @@
                     class="form-control" />
             </div> -->
         </div>
-        <div ngClass="drag-ques" *ngIf="questions == null || questions.length==0">
+        <div ngClass="drag-ques" *ngIf="questions == null || questions?.length==0">
             <div>
                 <ng-icon name="heroArrowUpTray"></ng-icon>
                 <p>Create your New Question for Survey</p>

@@ -21,64 +21,75 @@ import { serveyOption } from 'src/app/models/serveyOption';
 export class DescriptionScreenComponent {
 
   @ViewChild('DescriptionScreenModal', { static: true }) modal!: ModalDirective;
-  
+
 
   @Output() onSaveEvent = new EventEmitter();
   public Editor = ClassicEditor;
   questions: Question = new Question();
-  descques:any
-  descdescription:any
-  descbutton:any
-  surveyId:any
+  descques: any
+  descdescription: any
+  descbutton: any
+  surveyId: any
   questionTypeId = 21
   questionId: any;
   allOptions: any[] = [];
   descriptiondetails: any;
 
 
-  constructor(private surveyservice: SurveyService,private dataservice:DataService, private route: ActivatedRoute, private crypto: CryptoService, private router: Router, private utility: UtilsService) {
+  constructor(private surveyservice: SurveyService, private dataservice: DataService, private route: ActivatedRoute, private crypto: CryptoService, private router: Router, private utility: UtilsService) {
     this.route.paramMap.subscribe(params => {
       let _surveyId = params.get('param1');
       if (_surveyId) {
         this.surveyId = parseInt(this.crypto.decryptQueryParam(_surveyId));
       }
     });
-    
+
   }
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.dataservice.currentQuestionId.subscribe(questionId => {
       this.questionId = questionId;
-      console.log("DESCP",this.questionId)
+      console.log("DESCP", this.questionId)
+      
     });
 
-    this.getQuestionDetails();
-    
   }
 
   getQuestionDetails() {
-    this.surveyservice.getQuestionDetailsById(this.questionId).subscribe((data: any) => {
-      debugger
-      this.descriptiondetails = data
+    if (this.questionId) {
+      this.surveyservice.getQuestionDetailsById(this.questionId).subscribe((data: any) => {
 
-      this.descques = data.question;
-      this.descdescription = data.description
+        this.descriptiondetails = data;
+        this.descques = data.question;
+        this.descdescription = data.description
 
-      if (data.options && Array.isArray(data.options)) {
-        data.options.forEach((option: any) => {
-          this.descbutton = option.option; 
-        });
-      }
+        if (data.options && Array.isArray(data.options)) {
+          data.options.forEach((option: any) => {
+            this.descbutton = option.option;
+          });
+        }
 
-      debugger
-    });
+      });
+    }
+    else{
+      this.resetForm();
+    }
 
   }
 
+  resetForm(){
+      this.descriptiondetails = "";
+      this.descques = "";
+      this.descdescription = "";
+      this.descbutton = "";
+  }
+
   show() {
+
     this.modal.show();
     this.getQuestionDetails()
-    }
+ 
+  }
 
   close() {
     this.modal.hide();
@@ -101,12 +112,12 @@ export class DescriptionScreenComponent {
     currentQuestion.status = 'ACT';
     currentQuestion.options = [{
       id: 0,
-      option: this.descbutton, 
-      image: '', 
+      option: this.descbutton,
+      image: '',
       createdDate: this.getCurrentDateTime(),
       modifiedDate: this.getCurrentDateTime(),
-      keyword: '', 
-      status: 'ACT', 
+      keyword: '',
+      status: 'ACT',
       isRandomize: true,
       isExcluded: true,
       group: 0,
@@ -116,11 +127,13 @@ export class DescriptionScreenComponent {
       isSelected: true,
       selected: false
     }];
-  
+
     this.surveyservice.CreateGeneralQuestion(currentQuestion).subscribe({
       next: (resp: any) => {
         if (resp === '"QuestionAlreadyExits"') {
           this.utility.showError("This Question Already Created");
+        }else if (resp == '"QuestionCreateFailed"') {
+          this.utility.showError("Failed to Create Question");
         } else {
           this.utility.showSuccess('Question Generated Successfully.');
           this.close();
@@ -132,6 +145,6 @@ export class DescriptionScreenComponent {
       }
     });
   }
-  
+
 
 }

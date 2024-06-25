@@ -358,7 +358,9 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
 
   }
   onGenericQuestionClickDesc(type: any): void {
-     if (type === "DESC") {
+     if (type === "DESC") 
+      {
+      this.dataService.changeQuestionId(null);
       this.DescriptionScreenModal.show();
     } 
 

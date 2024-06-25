@@ -129,6 +129,8 @@ export class HouseholdComponent {
           if (successfulAPICalls === this.questions.length) {
             if (resp == '"QuestionAlreadyExits"') {
               this.utility.showError("This Question Already Created ");
+            }else if (resp == '"QuestionCreateFailed"') {
+              this.utility.showError("Failed to Create Question");
             } else {
               this.utility.showSuccess('Question Generated Successfully.');
               this.close();
