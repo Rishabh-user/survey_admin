@@ -115,6 +115,7 @@ export class EditSurveyComponent {
   numeric: boolean = false;
   alphabet: boolean = false; 
   isQNumberRequired:any
+  quesserialno:any
 
   
 
@@ -283,6 +284,7 @@ export class EditSurveyComponent {
     this.getAllSurveyList();
     this.getOptionLogics();
     this.openEndedValue();
+    this.getSerialNumber();
 
     if (this.mode != 'modify') {
       this.intializeDefaultValue();
@@ -685,6 +687,11 @@ export class EditSurveyComponent {
   onSave() {
 
     // Validate the survey
+
+    if (!this.validateSurveySno() && this.quesserialno === 'true') {
+      this.utility.showError('Please fill required fields.');
+      return;
+    }
 
     const isAnyOptionNonUnique = (new Set(this.allOptions.map(option => option.option.trim()))).size !== this.allOptions.length;
     if (isAnyOptionNonUnique) {
@@ -1667,6 +1674,26 @@ export class EditSurveyComponent {
 
   //   return this.sanitizer.bypassSecurityTrustHtml(doc.body.innerHTML);
   // }
+  getSerialNumberreq: boolean = true
+
+  validateSurveySno(): boolean {
+    this.getSerialNumberreq = !!this.qNo && this.qNo.trim().length > 0;
+    return this.getSerialNumberreq;
+  }
+
+  getSerialNumber(){
+    this.surveyservice.getQuesNumberRequired(this.surveyId).subscribe({
+      next: (resp: any) => {
+        if(resp){
+          console.log("ww",resp)
+          this.quesserialno = resp
+        }
+      },
+      error: (err:any) =>{
+        
+      }
+    })
+  }
 
  
 

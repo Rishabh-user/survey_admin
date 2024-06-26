@@ -470,5 +470,14 @@ export class SurveyService {
     const url = `${this.apiUrl}api/admin/${this.userId}/GenericQuestion/IsQuestionNumberRequired?surveyId=${surveyId}`;
     return this.http.get(url, { responseType: 'text' });
   }
+  partnerRedirect(data: any): Observable<any> {
+    const url = `${this.apiUrl}api/admin/${this.userId}/PartnerRedirects/CreatePartnerRedirect`;
+    return this.http.post(url, data, { responseType: 'text' });
+  }
+
+  GetPartnerRirection(surveyId: any): Observable<responseDTO[]> {
+    const url = `${this.apiUrl}api/admin/${this.userId}/PartnerRedirects/GetPartnerRedirect?surveyId=${surveyId}`;
+    return this.http.get<responseDTO[]>(url);
+  }
 
 }

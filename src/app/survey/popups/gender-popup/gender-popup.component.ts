@@ -47,7 +47,9 @@ export class GenderPopupComponent {
   show(surveyId: any) {
     this.getQuestions();
     this.intializeDefaultValue()
-    this.getSerialNumber()
+    this.getSerialNumber();
+    this.qNo = ''
+    
   }
 
   close() {
@@ -126,12 +128,11 @@ export class GenderPopupComponent {
   }
 
   onContinue() {
-    // const isSurveyValid = this.validateSurvey();
 
-    // if (!isSurveyValid) {
-    //   this.utility.showError('Please fill required fields.');
-    //   return;
-    // }
+    if (!this.validateSurvey() && this.quesserialno === 'true') {
+      this.utility.showError('Please fill required fields.');
+      return;
+    }
     if (!this.isAtLeastOneOptionSelected()) {
       this.utility.showError("Please select at least one option");
       return;
@@ -181,10 +182,10 @@ export class GenderPopupComponent {
     })
   }
 
-  getSerialNumberreq: boolean = false
-  // validateSurvey(): boolean {
-  //   this.getSerialNumberreq = !this.qNo || this.qNo.trim().length === 0; 
-  //   return this.getSerialNumberreq;
-  // }
+  getSerialNumberreq: boolean = true
+  validateSurvey(): boolean {
+    this.getSerialNumberreq = !!this.qNo && this.qNo.trim().length > 0;
+    return this.getSerialNumberreq;
+  }
 
 }

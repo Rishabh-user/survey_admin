@@ -15,6 +15,26 @@
                                     (ngModelChange)="question.question = $event" id="{{ 'question_' + i }}" [ngModelOptions]="{standalone: true}"
                                     name="{{ 'question_' + i }}" readonly />
                             </div>
+                            <!-- <div >
+                                <div class="row">
+                                    <div class="col-md-2">
+                                        <input
+                                        type="text"
+                                        id="{{ 'qNo' + i }}"
+                                        name="{{ 'qNo' + i }}"
+                                        class="form-control"
+                                        [(ngModel)]="qNo[i+1]"
+                                        placeholder="S.No"
+                                    />
+                                    </div>
+                                    
+                                    <div class="col-md-10">
+                                        <input type="text" class="form-control" [ngModel]="question.question"
+                                    (ngModelChange)="question.question = $event" id="{{ 'question_' + i }}" [ngModelOptions]="{standalone: true}"
+                                    name="{{ 'question_' + i }}" readonly />
+                                    </div>
+                                </div>
+                            </div> -->
                         </div>
 
                         <div class="mb-4">

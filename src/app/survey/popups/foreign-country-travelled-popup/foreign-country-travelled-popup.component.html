@@ -17,12 +17,12 @@
                                     name="{{ 'question_' + i }}" readonly/>
                             </div> -->
                             <div >
-                                <div class="row">
-                                    <div class="col-md-2" *ngIf="quesserialno === 'true'">
-                                        <input type="text" id="qNo" name="qNo" class="form-control"  [(ngModel)]="qNo" placeholder="S.No" />
-                                        <!-- <div *ngIf="!getSerialNumberreq" class="text-danger">S.NO is required.</div> -->
+                                <div class="d-flex gap-2">
+                                    <div class="flex-1" *ngIf="quesserialno === 'true'">
+                                        <input type="text" id="qNo" name="qNo" class="form-control"  [(ngModel)]="qNo" placeholder="S.No" (blur)="validateSurvey()" [ngModelOptions]="{standalone: true}"/>
+                                        <div *ngIf="!getSerialNumberreq" class="text-danger">S.no is required.</div>
                                     </div>
-                                    <div class="col-md-10">
+                                    <div class="flex-5">
                                         <input type="text" class="form-control" [ngModel]="question.question" [ngModelOptions]="{standalone: true}"
                                     (ngModelChange)="question.question = $event" id="{{ 'question_' + i }}"
                                     name="{{ 'question_' + i }}" readonly/>

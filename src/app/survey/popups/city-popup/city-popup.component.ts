@@ -50,6 +50,8 @@ export class CityPopupComponent {
   surveyId: any
   questionText: any
   countryId: any
+  qNo: any;
+  quesserialno:any;
   constructor(private surveyservice: SurveyService, private route: ActivatedRoute, private crypto: CryptoService, private router: Router, private utility: UtilsService) {
     this.route.paramMap.subscribe(params => {
       let _surveyId = params.get('param1');
@@ -79,6 +81,8 @@ export class CityPopupComponent {
       this.getQuestions();
     });
     this.modal.show();
+    this.getSerialNumber()
+    this.qNo =''
 
   }
   filterPanIndiaLocations() {
@@ -130,6 +134,11 @@ export class CityPopupComponent {
   onConfirmSelection() {
 
 
+    if (!this.validateSurvey() && this.quesserialno === 'true') {
+      this.utility.showError('Please fill required fields.');
+      return;
+    }
+
     const selectedStates = this.getSelectedStates();
     const selectedCities = this.getSelectedCities();
     const selectedPanIndiaStates = this.getSelectedPanIndiaStates();
@@ -147,6 +156,7 @@ export class CityPopupComponent {
     } else if (selectedStates.length > 0 || selectedCities.length) {
       const currentDateTime = this.getCurrentDateTime();
       const currentQuestion = this.questions.length > 0 ? this.questions[0] : new Question();
+      currentQuestion.qNo = this.qNo
       currentQuestion.questionTypeId = this.questionTypeId
       currentQuestion.surveyTypeId = this.surveyId
       currentQuestion.createdDate = this.getCurrentDateTime()
@@ -244,5 +254,25 @@ export class CityPopupComponent {
       error: (err) => {
       }
     });
+  }
+
+  getSerialNumber(){
+    this.surveyservice.getQuesNumberRequired(this.surveyId).subscribe({
+      next: (resp: any) => {
+        if(resp){
+          console.log("ww",resp)
+          this.quesserialno = resp
+        }
+      },
+      error: (err:any) =>{
+        
+      }
+    })
+  }
+
+  getSerialNumberreq: boolean = true
+  validateSurvey(): boolean {
+    this.getSerialNumberreq = !!this.qNo && this.qNo.trim().length > 0;
+    return this.getSerialNumberreq;
   }
 }

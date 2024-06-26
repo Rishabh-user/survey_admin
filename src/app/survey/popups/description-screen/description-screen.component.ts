@@ -50,7 +50,6 @@ export class DescriptionScreenComponent {
   ngOnInit(): void {
     this.dataservice.currentQuestionId.subscribe(questionId => {
       this.questionId = questionId;
-      console.log("DESCP", this.questionId)
       
     });
 
@@ -90,6 +89,7 @@ export class DescriptionScreenComponent {
     this.modal.show();
     this.getQuestionDetails()
     this.getSerialNumber();
+    this.qNo =''
  
   }
 
@@ -103,6 +103,11 @@ export class DescriptionScreenComponent {
   }
 
   continueClicked() {
+    if (!this.validateSurvey() && this.quesserialno === 'true') {
+      this.utility.showError('Please fill required fields.');
+      return;
+    }
+    
     const currentQuestion = this.questions;
     currentQuestion.qNo = this.qNo
     currentQuestion.question = this.descques;
@@ -153,7 +158,6 @@ export class DescriptionScreenComponent {
     this.surveyservice.getQuesNumberRequired(this.surveyId).subscribe({
       next: (resp: any) => {
         if(resp){
-          console.log("ww",resp)
           this.quesserialno = resp
         }
       },
@@ -161,6 +165,12 @@ export class DescriptionScreenComponent {
         
       }
     })
+  }
+
+  getSerialNumberreq: boolean = true
+  validateSurvey(): boolean {
+    this.getSerialNumberreq = !!this.qNo && this.qNo.trim().length > 0;
+    return this.getSerialNumberreq;
   }
 
 

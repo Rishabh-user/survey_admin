@@ -39,6 +39,7 @@ export class EmailAddressPopupComponent {
     this.modal.show();
     this.getQuestions();
     this.getSerialNumber();
+    this.qNo =''
   }
 
   close() {
@@ -71,6 +72,11 @@ export class EmailAddressPopupComponent {
     return currentDateTime.substring(0, currentDateTime.length - 1) + 'Z';
   }
   continueClicked() {
+
+    if (!this.validateSurvey() && this.quesserialno === 'true') {
+      this.utility.showError('Please fill required fields.');
+      return;
+    }
 
     const currentDateTime = this.getCurrentDateTime();
 
@@ -122,6 +128,12 @@ export class EmailAddressPopupComponent {
         
       }
     })
+  }
+
+  getSerialNumberreq: boolean = true
+  validateSurvey(): boolean {
+    this.getSerialNumberreq = !!this.qNo && this.qNo.trim().length > 0;
+    return this.getSerialNumberreq;
   }
 
 }

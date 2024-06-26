@@ -240,6 +240,37 @@
 
 
         </div>
+        <div ngClass="generic-ques">
+            <div class="infocircle mb-2">
+                <h6 class="mb-0">Redirection</h6>
+                <div class="custom-tooltip">
+                    <ng-icon name="heroInformationCircle" ngClass="edit-action info-circle"
+                        (click)="toggleTooltip('8')"></ng-icon>
+                    <div class="toast show" *ngIf="showTooltip['8']">
+                        <div class="toast-header">
+                            <img [src]="baseUrl + '/assets/images/icons/Add-new-question.png'" class="rounded me-2"
+                                width="30" height="30" />
+                            <h6 class="mb-0 me-auto">Redirection</h6>
+                            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"
+                                (click)="hideTooltip('8')"></button>
+                        </div>
+                        <div class="toast-body">
+                            Redirection
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="common-ques">
+                <a href="javascript:void(0);" (click)="openRedirect(redirection)" [class.active]='isActiveredirection'>
+                    <figure><img [src]="baseUrl + '/assets/images/icons/Add-new-question.png'" width="30" height="30" />
+                    </figure>
+                    <figcaption>Redirection</figcaption>
+                </a>
+            </div>
+
+
+        </div>
         <div class="updated-preview">
             <div class="preview">
 
@@ -431,8 +462,8 @@
                                 Q-{{question?.sort}} {{(question?.question)}}
                                 <!-- <div [innerHTML]="sanitizeHtml(question?.question)"></div> -->
                             </h5>
-                            <h5 [ngClass]="'mb-0'" *ngIf="isQNumberRequired === true">
-                                {{question?.qNo}} {{(question?.question)}}
+                            <h5 [ngClass]="'mb-0'" *ngIf="isQNumberRequired === true" >
+                                {{question?.qNo}}. {{(question?.question)}}
                             </h5>
 
                             <div class="d-flex align-items-center justify-content-end">
@@ -1621,6 +1652,65 @@
         </div>
     </div>
 </ng-template>
+
+
+<!-- redirection -->
+<ng-template #redirection let-modal>
+    <div class="modal-header">
+        <h4 class="modal-title">Redirection</h4>
+        <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+    </div>
+    <div class="modal-body popup-ques">
+        <div ngClass="update-ques-type generic-ques">
+            <div>
+                    <div class="mb-3">
+                        <div ngClass="d-flex align-items-center justify-content-between">
+                            <h6>Please add values for redirection.</h6>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="uid" class="form-label">Enter Your UserID</label>
+                        <input type="text" class="form-control" placeholder="UID"
+                            [(ngModel)]="uid" [ngModelOptions]="{standalone: true}"
+                            />
+                    </div>
+                    <div class="mb-3">
+                        <label for="uid" class="form-label">Enter Your completeLink</label>
+                        <input type="text" class="form-control" placeholder="complete link"
+                            [(ngModel)]="completelink" [ngModelOptions]="{standalone: true}"
+                            />
+                    </div>
+                    <div class="mb-3">
+                        <label for="uid" class="form-label">Enter Your Complete UserID</label>
+                        <input type="text" class="form-control" placeholder="complete UID"
+                            [(ngModel)]="completeuid" [ngModelOptions]="{standalone: true}"
+                            />
+                    </div>
+                    <div class="mb-3">
+                        <label for="uid" class="form-label">Enter Your Quota Link</label>
+                        <input type="text" class="form-control" placeholder="Quota Link UID"
+                            [(ngModel)]="quotalink" [ngModelOptions]="{standalone: true}"
+                            />
+                    </div>
+                    <div class="mb-3">
+                        <label for="uid" class="form-label">Enter Your Quota UserID</label>
+                        <input type="text" class="form-control" placeholder="Quota UID"
+                            [(ngModel)]="quotauid" [ngModelOptions]="{standalone: true}"
+                            />
+                    </div>
+            </div>
+            
+        </div>
+    </div>
+    <div class="modal-footer upload">
+        <button type="button" class="btn close" (click)="modal.close('Close click')">Cancel</button>
+        <button type="button" class="btn btn-primary icon" (click)="modal.close('Close click');addRedirection()">Add
+            <ng-icon name="heroArrowLongRight" class="ms-4"></ng-icon>
+        </button>
+    </div>
+</ng-template>
+
+
 
 <app-gender-popup #GenderModal (onSaveEvent)="refresh()"></app-gender-popup>
 <app-age-popup #AgeModal (onSaveEvent)="refresh()"></app-age-popup>

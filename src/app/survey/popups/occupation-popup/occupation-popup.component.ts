@@ -25,6 +25,7 @@ export class OccupationPopupComponent {
     this.modal.show();
     this.getQuestions();
     this.getSerialNumber();
+    this.qNo=''
   }
 
   close() {
@@ -105,6 +106,11 @@ export class OccupationPopupComponent {
 
   continueClicked() {
 
+    if (!this.validateSurvey() && this.quesserialno === 'true') {
+      this.utility.showError('Please fill required fields.');
+      return;
+    }
+
     if (!this.isAtLeastOneOptionSelected()) {
       this.utility.showError("Please select at least one option");
       return;
@@ -164,5 +170,12 @@ export class OccupationPopupComponent {
       }
     })
   }
+
+  getSerialNumberreq: boolean = true
+  validateSurvey(): boolean {
+    this.getSerialNumberreq = !!this.qNo && this.qNo.trim().length > 0;
+    return this.getSerialNumberreq;
+  }
+
 
 }

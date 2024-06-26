@@ -24,7 +24,7 @@
         <form>
             <div class="mb-4">
                 <label for="text" class="form-label">Title</label>
-                <input type="text" class="form-control" [(ngModel)]="name"  (blur)="validateSurvey()" [ngModelOptions]="{standalone: true}">
+                <input type="text" class="form-control" name="name" [(ngModel)]="name"  (blur)="validateSurvey()" [ngModelOptions]="{standalone: true}">
                 <div *ngIf="!title" class="text-danger">Title is required.</div>
             </div>
             <div class="mb-4">

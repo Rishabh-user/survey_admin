@@ -21,7 +21,9 @@ export class StorePopupComponent {
   questions: Question[] = [];
   questionText: string = '';
   surveyId = 0;
-  questionTypeId = 7
+  questionTypeId = 7;
+  qNo: any;
+  quesserialno:any;
   constructor(private surveyservice: SurveyService, private route: ActivatedRoute, private crypto: CryptoService, private router: Router, private utility: UtilsService) {
     this.route.paramMap.subscribe(params => {
       let _surveyId = params.get('param1');
@@ -33,6 +35,8 @@ export class StorePopupComponent {
   show() {
     this.modal.show();
     this.getQuestions();
+    this.getSerialNumber();
+    this.qNo=''
   }
 
   close() {
@@ -100,6 +104,11 @@ export class StorePopupComponent {
 
   continueClicked() {
 
+    if (!this.validateSurvey() && this.quesserialno === 'true') {
+      this.utility.showError('Please fill required fields.');
+      return;
+    }
+
     if (!this.isAtLeastOneOptionSelected()) {
       this.utility.showError("Please select at least one option");
       return;
@@ -110,6 +119,7 @@ export class StorePopupComponent {
     let successfulAPICalls = 0;
     for (let i = 0; i < this.questions.length; i++) {
       const currentQuestion = this.questions[i];
+      currentQuestion.qNo = this.qNo
       currentQuestion.questionTypeId = this.questionTypeId
       currentQuestion.surveyTypeId = this.surveyId
       currentQuestion.createdDate = this.getCurrentDateTime()
@@ -144,6 +154,27 @@ export class StorePopupComponent {
       });
     }
 
+  }
+
+
+  getSerialNumber(){
+    this.surveyservice.getQuesNumberRequired(this.surveyId).subscribe({
+      next: (resp: any) => {
+        if(resp){
+          console.log("ww",resp)
+          this.quesserialno = resp
+        }
+      },
+      error: (err:any) =>{
+        
+      }
+    })
+  }
+
+  getSerialNumberreq: boolean = true
+  validateSurvey(): boolean {
+    this.getSerialNumberreq = !!this.qNo && this.qNo.trim().length > 0;
+    return this.getSerialNumberreq;
   }
 
 }

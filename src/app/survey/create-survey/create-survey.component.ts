@@ -266,6 +266,7 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
     this.getLogicCount();
 
     this.getSurveyLooping();
+    this.getPartnerRidirection();
   }
   ngAfterViewInit() {
     if (this.selectElement) {
@@ -442,6 +443,9 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
   openAddScreen(AddScreen: any) {
     this.modalService.open(AddScreen, { size: 'xl', centered: true });
     this.isActivescreen = !this.isActivescreen;
+  }
+  openRedirect(redirection: any) {
+    this.modalService.open(redirection, { size: 'lg', centered: true });
   }
 
   getNames() {
@@ -2230,10 +2234,66 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
     this.dataService.changeQuestionId(questionId)
     
     this.onGenericQuestionClick('DESC');
-    console.log("just before", questionId);
     this.dataService.changeQuestionId(questionId);
-    console.log(this.dataService.changeQuestionId(questionId))
   }
+
+  uid:any;
+  completelink:any;
+  completeuid:any;
+  quotalink:any;
+  quotauid:any;
+  isActiveredirection:boolean = false
+  
+  addRedirection(){
+
+    const dataToSend = {
+      surveyId: this.surveyId,
+      uid: this.uid,
+      completeLink: this.completelink,
+      completeUid: this.completeuid,
+      quotafullLink: this.quotalink,
+      quotafullUid: this.quotauid,
+      terminateLink: '',
+      terminateUid: '',
+      noSurveyLink: '',
+      noSurveyUid: '',
+      duplicateLink: '',
+      duplicateUid: '',
+      securityLink: '',
+      securityUid: '',
+      status: ''
+    };
+    this.surveyservice.partnerRedirect(dataToSend).subscribe({
+      next: (resp: any) => {
+        if (resp == '"CreatedSuccessfully"') {
+          this.utils.showSuccess("Redirection Added");
+        }
+      },
+      error: (err: any) => {
+        this.utils.showError('Error');
+      }
+    });
+  }
+
+  getPartnerRidirection(){
+  
+    this.surveyservice.GetPartnerRirection(this.surveyId).subscribe({
+      next: (resp: any) => {
+          this.isActiveredirection=true
+          this.uid = resp.uid;
+          this.completelink = resp.completeLink;
+          this.completeuid = resp.completeUid;
+          this.quotalink = resp.quotafullLink;
+          this.quotauid = resp.quotafullUid
+        
+      },
+      error: (err:any) =>{
+        
+      }
+    })
+
+  }
+  
 
 
 

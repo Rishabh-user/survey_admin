@@ -23,6 +23,8 @@ export class NccsPopupComponent {
   questions: Question[] = [];
   questionText: string = '';
   surveyId = 0;
+  qNo:string[] = [];
+  quesserialno:any;
   constructor(private surveyservice: SurveyService, private route: ActivatedRoute, private crypto: CryptoService, private router: Router, private utility: UtilsService) {
 
     this.route.paramMap.subscribe(params => {
@@ -36,6 +38,7 @@ export class NccsPopupComponent {
   show() {
     this.modal.show();
     this.getQuestions();
+    this.getSerialNumber();
   }
 
   close() {
@@ -128,6 +131,7 @@ export class NccsPopupComponent {
       }
 
       currentQuestion.surveyTypeId = this.surveyId
+      // currentQuestion.qNo = this.qNo
       currentQuestion.createdDate = this.getCurrentDateTime()
       currentQuestion.modifiedDate = this.getCurrentDateTime();
       currentQuestion.genericTypeId = this.typeid
@@ -166,6 +170,20 @@ export class NccsPopupComponent {
       delayCounter++;
     }
 
+  }
+
+  getSerialNumber(){
+    this.surveyservice.getQuesNumberRequired(this.surveyId).subscribe({
+      next: (resp: any) => {
+        if(resp){
+          console.log("ww",resp)
+          this.quesserialno = resp
+        }
+      },
+      error: (err:any) =>{
+        
+      }
+    })
   }
 }
 

@@ -9,9 +9,22 @@
                 <form>
                     <div class="mb-4">
                         <label for="surveyname" class="form-label">Question</label>
-                        <div class="input-group">
+                        <!-- <div class="input-group">
                             <input id="questionText" type="text" class="form-control" [(ngModel)]="questionText"
                                 [ngModelOptions]="{standalone: true}" placeholder="Question" readonly />
+                        </div> -->
+                        <div >
+                            <div class="d-flex gap-2">
+                                <div class="flex-1" *ngIf="quesserialno === 'true'">
+                                    <input type="text" id="qNo" name="qNo" class="form-control"  [(ngModel)]="qNo" placeholder="S.No" (blur)="validateSurvey()" [ngModelOptions]="{standalone: true}"/>
+                                    <div *ngIf="!getSerialNumberreq" class="text-danger">S.no is required.</div>
+                                </div>
+                                <div class="flex-5">
+                                    <input type="text" class="form-control" [ngModel]="questionText"
+                                    (ngModelChange)="questionText = $event" id="questionText" name="questionText"
+                                    readonly />
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div class="mb-4">
