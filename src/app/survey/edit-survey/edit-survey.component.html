@@ -113,9 +113,16 @@
                             </div>
                         </div>
                         </div>
-                        <div class="d-flex gap-2">                            
+                        <div class="d-flex gap-3">                            
                             <input type="color" class="form-control form-control-color" id="exampleColorInput" value="#563d7c" title="Choose your color" [(ngModel)]="colorCode">
-                            <input type="text" class="form-control" [(ngModel)]="colorCode">
+                            <input type="text" class="form-control flex-2" [(ngModel)]="colorCode">
+                            <div class="flex-5">
+                                <strong>Eg*</strong>
+                                    <i>
+                                        If you want to add color to the question and option, add a custom tag like 
+                                        <code>&lt;color&gt;</code> around the text,like <code>&lt;color&gt;question's name&lt;/color&gt;</code>.
+                                    </i>
+                            </div>
                         </div>
                     </div>
                     <div ngClass="update-ques-type add-media generic-ques mt-0 mb-5">

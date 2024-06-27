@@ -44,10 +44,10 @@
                     <tr
                         *ngFor="let item of reportSurvey | paginate: { id: 'server', itemsPerPage: pageSize, currentPage: pageNumber, totalItems: totalItemsCount } ; let i = index">
                         <td>{{ (pageNumber - 1) * pageSize + i + 1 }}</td>
-                        <td>{{item.name}}</td>
-                        <td>{{item.surveyId}}</td>
-                        <td *ngIf="item.categoryName !='Others'">{{item.categoryName}}</td>
-                        <td *ngIf="item.categoryName =='Others'">{{item.otherCategory}}</td>
+                        <td>{{item?.name}}</td>
+                        <td>{{item?.surveyId}}</td>
+                        <td *ngIf="item?.categoryName !='Others'">{{item.categoryName}}</td>
+                        <td *ngIf="item?.categoryName =='Others'">{{item.otherCategory}}</td>
                         <td>
 
                             <div class="d-flex align-items-center">
@@ -93,8 +93,8 @@
                     </tr>
                 </tbody>
             </table>
-            <div class="custom-pagination mt-5" *ngIf="reportSurvey.length>pageSize-1 || pageNumber>1">
-                <pagination-controls *ngIf="reportSurvey != null && reportSurvey.length > 0"
+            <div class="custom-pagination mt-5" *ngIf="reportSurvey?.length>pageSize-1 || pageNumber>1">
+                <pagination-controls *ngIf="reportSurvey != null && reportSurvey?.length > 0"
                     class="d-flex justify-content-center" id="server" (pageChange)="onPageChange($event)">
                 </pagination-controls>
 

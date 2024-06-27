@@ -44,7 +44,7 @@ export class DashboardComponent {
   uniqueDates: any[];
   uniqueMonths: string[];
   userId: any;
-
+  isQNumberRequired:any
   constructor(private visibilityService: DataService, private modalService: NgbModal, public themeService: DataService,
     public surveyservice: SurveyService, private auth: AuthService, private utility: UtilsService, private crypto: CryptoService, private router: Router,
     private csvService: SurveyService,
@@ -468,7 +468,8 @@ export class DashboardComponent {
         name: this.surveyName,
         categoryId: this.categoryId,
         otherCategory: this.categoryName,
-        countryId: this.selectedCountryId
+        countryId: this.selectedCountryId,
+        isQNumberRequired: this.isQNumberRequired
       };
 
 
@@ -504,6 +505,11 @@ export class DashboardComponent {
   }
   removeQuotes(str: string): string {
     return str.replace(/"/g, '');
+  }
+
+  onCheckboxChange(event: any) {
+    this.isQNumberRequired = event.target.checked;
+    console.log("isQNumberRequired",this.isQNumberRequired)
   }
 
 

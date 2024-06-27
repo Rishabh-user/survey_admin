@@ -402,7 +402,7 @@ export class SurveyService {
   }
 
   getSurveyReportBySurveyId(surveyId: any): Observable<responseDTO[]> {
-    const url = `${this.apiUrl}api/admin/1/Report/SurveyReport?surveyId=${surveyId}`;
+    const url = `${this.apiUrl}api/admin/${this.userId}/Report/SurveyReport?surveyId=${surveyId}`;
     return this.http.get<responseDTO[]>(url);
   }
 
@@ -462,7 +462,7 @@ export class SurveyService {
   }
 
   getReport(surveyId: any): Observable<responseDTO[]> {
-    const url = `${this.apiUrl}api/admin/1/Report/RowSurveyReportById?surveyId=${surveyId}`;
+    const url = `${this.apiUrl}api/admin/${this.userId}/Report/RowSurveyReportById?surveyId=${surveyId}`;
     return this.http.get<responseDTO[]>(url);
   }
 
@@ -476,8 +476,24 @@ export class SurveyService {
   }
 
   GetPartnerRirection(surveyId: any): Observable<responseDTO[]> {
-    const url = `${this.apiUrl}api/admin/${this.userId}/PartnerRedirects/GetPartnerRedirect?surveyId=${surveyId}`;
+    const url = `${this.apiUrl}GetPartnerRedirect?surveyId=${surveyId}`;
     return this.http.get<responseDTO[]>(url);
   }
+
+  GetBinaryReport(surveyId: any): Observable<any> {
+    const url = `${this.apiUrl}api/admin/${this.userId}/Report/GetBinaryReport?surveyId=${surveyId}`;
+    return this.http.get<string>(url);
+  }
+
+  updatePartnerRedirect(data: any): Observable<any> {
+    const url = `${this.apiUrl}api/admin/${this.userId}/PartnerRedirects/UpdarePartnerRedirect`;
+    return this.http.post(url, data, { responseType: 'text' });
+  }
+
+  deletePartnerRedirect(surveyId: any): Observable<any> {
+    const url = `${this.apiUrl}api/admin/${this.userId}/PartnerRedirects/DeletePartnerRedirect?surveyId=${surveyId}`;
+    return this.http.delete(url, { responseType: 'text' });
+  }
+
 
 }

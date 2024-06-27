@@ -36,6 +36,10 @@ export class DescriptionScreenComponent {
   descriptiondetails: any;
   qNo: any;
   quesserialno:any;
+  files: File[] = [];
+  image:any
+  userid:any
+  baseUrl:any
 
   constructor(private surveyservice: SurveyService, private dataservice: DataService, private route: ActivatedRoute, private crypto: CryptoService, private router: Router, private utility: UtilsService) {
     this.route.paramMap.subscribe(params => {
@@ -44,7 +48,7 @@ export class DescriptionScreenComponent {
         this.surveyId = parseInt(this.crypto.decryptQueryParam(_surveyId));
       }
     });
-
+    this.baseUrl = environment.baseURL;
   }
 
   ngOnInit(): void {
@@ -52,8 +56,11 @@ export class DescriptionScreenComponent {
       this.questionId = questionId;
       
     });
+    this.userid = this.utility.getUserId();
 
   }
+
+  
 
   getQuestionDetails() {
     if (this.questionId) {
@@ -62,6 +69,7 @@ export class DescriptionScreenComponent {
         this.descriptiondetails = data;
         this.descques = data.question;
         this.descdescription = data.description
+        this.image = data.image
 
         if (data.options && Array.isArray(data.options)) {
           data.options.forEach((option: any) => {
@@ -82,6 +90,7 @@ export class DescriptionScreenComponent {
       this.descques = "";
       this.descdescription = "";
       this.descbutton = "";
+      this.image =""
   }
 
   show() {
@@ -107,6 +116,11 @@ export class DescriptionScreenComponent {
       this.utility.showError('Please fill required fields.');
       return;
     }
+
+    if(!this.validateSurveyDesc()){
+      this.utility.showError("Please fill required fields.")
+      return
+    }
     
     const currentQuestion = this.questions;
     currentQuestion.qNo = this.qNo
@@ -114,6 +128,7 @@ export class DescriptionScreenComponent {
     currentQuestion.description = this.descdescription;
     currentQuestion.surveyTypeId = this.surveyId;
     currentQuestion.questionTypeId = this.questionTypeId;
+    currentQuestion.image = this.image;
     currentQuestion.isRequired = false;
     currentQuestion.createdDate = this.getCurrentDateTime();
     currentQuestion.modifiedDate = this.getCurrentDateTime();
@@ -172,6 +187,40 @@ export class DescriptionScreenComponent {
     this.getSerialNumberreq = !!this.qNo && this.qNo.trim().length > 0;
     return this.getSerialNumberreq;
   }
+ 
+  serialbuttonreq:boolean = true
+  serialtitlereq:boolean = true
+  validateSurveyDesc(): boolean {
+    this.serialtitlereq = !!this.descques && this.descques.trim().length > 0;
+    this.serialbuttonreq = !!this.descbutton && this.descbutton.trim().length > 0;
+
+    return this.serialtitlereq && this.serialbuttonreq
+
+  }
+
+  onSelect(event: any) {
+    const file = event.addedFiles && event.addedFiles.length > 0 ? event.addedFiles[0] : null;
+
+    if (file) {
+      this.files.push(file);
+      this.uploadImage(file);
+    }
+  }
+
+  uploadImage(file: File): void {
+    this.dataservice.uploadImageAboutUs(file, this.userid).subscribe(
+      (response: string) => {
+        this.image = response.replace(/"/g, '');
+      },
+      (error) => {
+        console.error('Error occurred while uploading:', error);
+      }
+    );
+  }
+  onRemove(event: any) {
+    this.files.splice(this.files.indexOf(event), 1);
+  }
+
 
 
 }

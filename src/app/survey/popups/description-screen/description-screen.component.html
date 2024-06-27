@@ -11,15 +11,15 @@
                         <input type="text" class="form-control" [(ngModel)]="descques" [ngModelOptions]="{standalone: true}"/>
                 </div> -->
                 <div class="mb-4">
+                    <p>Enter the Question</p>
                     <div class="d-flex gap-2">
-                        <p>Enter the Question</p>
                         <div class="flex-1" *ngIf="quesserialno === 'true'">
                             <input type="text" id="qNo" name="qNo" class="form-control"  [(ngModel)]="qNo" placeholder="S.No" (blur)="validateSurvey()" [ngModelOptions]="{standalone: true}"/>
                             <div *ngIf="!getSerialNumberreq" class="text-danger">S.no is required.</div>
                         </div>
                         <div class="flex-5">
-                            
-                          <input type="text" class="form-control" id="descques" name="descques" [(ngModel)]="descques" [ngModelOptions]="{standalone: true}"/>
+                          <input type="text" class="form-control" id="descques" name="descques" [(ngModel)]="descques" (blur)="validateSurveyDesc()" [ngModelOptions]="{standalone: true}"/>
+                          <div *ngIf="!serialtitlereq" class="text-danger">Title is required</div>
                         </div>
                     </div>
                 </div>
@@ -33,9 +33,27 @@
                     </ckeditor>
                 </div>
                 <div class="mb-4">
-                    <p>Enter the Button Name</p>
-                    <input type="text" class="form-control" [(ngModel)]="descbutton" [ngModelOptions]="{standalone: true}"/>
+                    <label for="text" class="form-label">Upload Image</label>
+                    <ngx-dropzone (change)="onSelect($event)" [ngClass]="'drop-file'">
+                        <ngx-dropzone-label>
+                            <img [src]="baseUrl+'/assets/images/icons/attach-image.png'" />
+                            <a href="javascript:"><u>Click to upload</u></a> <span> or drag and drop</span>
+                            <p>Max. File Size: 15MB</p>
+                        </ngx-dropzone-label>
+                        <ngx-dropzone-preview *ngFor="let f of files" [removable]="true" (removed)="onRemove(f)">
+                            <ngx-dropzone-label>{{ f.name }} ({{ f.type }})</ngx-dropzone-label>
+                        </ngx-dropzone-preview>
+                    </ngx-dropzone>
                 </div>
+                <div class="mb-3">
+                    <img [src]="image" width="50%" />
+                </div>
+                <div class="mb-4">
+                    <p>Enter the Button Name</p>
+                    <input type="text" class="form-control" [(ngModel)]="descbutton" (blur)="validateSurveyDesc()" [ngModelOptions]="{standalone: true}"/>
+                    <div *ngIf="!serialbuttonreq" class="text-danger">Button Name is required</div>
+                </div>
+                
             </div>
             <div class="modal-footer">
                 <button type="button" (click)="continueClicked()" class="btn btn-primary w-100">Continue</button>

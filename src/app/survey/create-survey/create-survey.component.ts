@@ -42,6 +42,7 @@ interface LogicQuestion {
 export class CreateSurveyComponent implements OnInit, AfterViewInit {
   showTooltip: { [key: string]: boolean } = {};
   currentTooltip: string | null = null;
+  
   // toggleTooltip(identifier: string) {
   //   this.showTooltip[identifier] = !this.showTooltip[identifier];
   // }
@@ -175,6 +176,7 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
   notificationmessage: any
   planid: any
   imageurl:any
+  redirectid:any
 
   centerId: number = this.utils.getCenterId();
 
@@ -522,9 +524,15 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
         let screenyoutubeurl: string[] = [];
         let screenvideo: string[] = []
 
+        // this.questions.forEach((question: any) => {
+          
+        //   question.question = this.sanitizer.bypassSecurityTrustHtml(question?.question);
+
+        // })
+
         // Iterate over questions
         this.questions.forEach((question: any) => {
-
+              
           // Check if the question is for screening
           if (question.isScreening) {
             // Store the description, screeningRedirectUrl, and image for this question
@@ -618,7 +626,8 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
         name: this.surveyName,
         categoryId: this.categoryId,
         otherCategory: this.otherCategoryName,
-        countryId: this.selectedCountryId
+        countryId: this.selectedCountryId,
+        isQNumberRequired: this.isQNumberRequired
       };
       this.surveyservice.updateSurvey(dataToSend).subscribe(
         response => {
@@ -2263,23 +2272,44 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
       securityUid: '',
       status: ''
     };
-    this.surveyservice.partnerRedirect(dataToSend).subscribe({
-      next: (resp: any) => {
-        if (resp == '"CreatedSuccessfully"') {
-          this.utils.showSuccess("Redirection Added");
+    if(this.redirectid > 0){
+
+      this.surveyservice.updatePartnerRedirect(dataToSend).subscribe({
+        next: (resp: any) => {
+          if (resp == '"UpdatedSuccessfully"') {
+            this.utils.showSuccess("Redirection Updated");
+            window.location.reload();
+          }
+        },
+        error: (err: any) => {
+          this.utils.showError('Error');
         }
-      },
-      error: (err: any) => {
-        this.utils.showError('Error');
-      }
-    });
+      });
+
+    }else{
+      this.surveyservice.partnerRedirect(dataToSend).subscribe({
+        next: (resp: any) => {
+          if (resp == '"CreatedSuccessfully"') {
+            this.utils.showSuccess("Redirection Added");
+            window.location.reload();
+          }
+        },
+        error: (err: any) => {
+          this.utils.showError('Error');
+        }
+      });
+
+    }
+    
   }
 
   getPartnerRidirection(){
-  
     this.surveyservice.GetPartnerRirection(this.surveyId).subscribe({
       next: (resp: any) => {
-          this.isActiveredirection=true
+          this.redirectid = resp.id;
+          if(this.redirectid > 0){
+            this.isActiveredirection=true;
+          }
           this.uid = resp.uid;
           this.completelink = resp.completeLink;
           this.completeuid = resp.completeUid;
@@ -2292,6 +2322,11 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
       }
     })
 
+  }
+
+  onCheckboxChange(event: any) {
+    this.isQNumberRequired = event.target.checked;
+    console.log("isQNumberRequired",this.isQNumberRequired)
   }
   
 
