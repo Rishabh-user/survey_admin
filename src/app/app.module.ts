@@ -40,6 +40,8 @@ import { heroShoppingBag } from '@ng-icons/heroicons/outline';
 import { heroInformationCircle } from '@ng-icons/heroicons/outline';
 import { heroLink } from '@ng-icons/heroicons/outline';
 import { heroPlus } from '@ng-icons/heroicons/outline';
+import { heroChartPie } from '@ng-icons/heroicons/outline';
+import { heroTicket } from '@ng-icons/heroicons/outline';
 
 
 import { HeaderComponent } from './shared/header/header.component';
@@ -127,7 +129,9 @@ import { SupportComponent } from './support/support.component';
       heroShoppingBag,
       heroInformationCircle,
       heroLink,
-      heroPlus
+      heroPlus,
+      heroChartPie,
+      heroTicket
     }),
     BrowserAnimationsModule,
     RecaptchaModule,
