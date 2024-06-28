@@ -499,8 +499,9 @@ article {
     box-shadow: 0px 20px 16px #d6d4d4;
     position: sticky;
     top: 0;
-    height: 100%;
     z-index: 1;
+    height: 100vh;
+    overflow-y: scroll;
 }
 
 .add-ques-sidebar.toggle-sidebar {
