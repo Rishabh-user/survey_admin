@@ -90,7 +90,9 @@
                         </div>
                         <div class="mt-2">
                             <label class="mb-2">Description</label>
-                            <textarea class="form-control" [(ngModel)]="questionSummery" rows="5"></textarea>
+                            <!-- <textarea class="form-control" [(ngModel)]="questionSummery" rows="5"></textarea> -->
+                            <ckeditor [editor]="Editor" [(ngModel)]="questionSummery" name="questionSummery" class="large-editor" [ngModelOptions]="{standalone: true}">
+                            </ckeditor>
                         </div>
                     </div>
                     <div class="mb-3">

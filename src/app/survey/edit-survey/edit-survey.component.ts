@@ -21,6 +21,7 @@ import { MatSelect, MatSelectChange } from '@angular/material/select';
 import { UtilsService } from 'src/app/service/utils.service';
 import { serveyOption } from 'src/app/models/serveyOption';
 import { DomSanitizer,SafeHtml } from '@angular/platform-browser';
+import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 
 @Component({
   selector: 'app-edit-survey',
@@ -64,7 +65,8 @@ export class EditSurveyComponent {
 
   }
   @Output() onSaveEvent = new EventEmitter();
-
+  
+  public Editor = ClassicEditor;
   separatorKeysCodes: number[] = [ENTER, COMMA];
   optionlogicifexpectedid:any;
   surveyId: any;
