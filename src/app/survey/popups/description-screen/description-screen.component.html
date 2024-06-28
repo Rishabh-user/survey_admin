@@ -45,9 +45,12 @@
                         </ngx-dropzone-preview>
                     </ngx-dropzone>
                 </div>
-                <div class="mb-3">
-                    <img [src]="image" width="50%" />
-                </div>
+                <!-- <div class="mb-3">
+                    <ng-container *ngIf="image !== (imageurl + 'Files/Images/')">
+                        <img [src]="image" width="50%" />
+                    </ng-container>
+                    
+                </div> -->
                 <div class="mb-4">
                     <p>Enter the Button Name</p>
                     <input type="text" class="form-control" [(ngModel)]="descbutton" (blur)="validateSurveyDesc()" [ngModelOptions]="{standalone: true}"/>
