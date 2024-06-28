@@ -500,7 +500,7 @@ article {
     position: relative;
     top: 0;
     z-index: 1;
-    height: 100vh;
+    height: 100%;
 }
 
 .add-ques-sidebar.toggle-sidebar {
