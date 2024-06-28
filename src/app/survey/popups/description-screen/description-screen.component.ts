@@ -342,6 +342,7 @@ export class DescriptionScreenComponent {
         this.utility.showSuccess("Image Uploded Successfully");
       },
       (error) => {
+        this.utility.showError("Not uploaded")
         console.error('Error occurred while uploading:', error);
       }
     );
