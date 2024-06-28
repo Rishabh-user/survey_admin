@@ -460,11 +460,12 @@
                             [ngClass]="{'ques-header': true, 'screening': question.isScreening,'descques': question.isRequired === false}">
 
                             <h5 [ngClass]="'mb-0'" *ngIf="!isQNumberRequired === true">
-                                Q-{{question?.sort}} {{(question?.question)}}
+                                <!-- Q-{{question?.sort}} <div>{{question?.question}}</div> -->
+                                Q-{{question?.sort}} <div [innerHTML]="question?.question"></div>
                                 <!-- <div [innerHTML]="sanitizeHtml(question?.question)"></div> -->
                             </h5>
                             <h5 [ngClass]="'mb-0'" *ngIf="isQNumberRequired === true">
-                                {{question?.qNo}}. {{(question?.question)}}
+                                {{question?.qNo}}. <div [innerHTML]="question?.question"></div>
                             </h5>
 
                             <div class="d-flex align-items-center justify-content-end">
@@ -555,7 +556,10 @@
                                     <div class="ques-radio mb-3" *ngFor="let option of question?.options; let i=index;">
                                         <label>
                                             <input type="radio" [id]="'question_option_' + i" name="question_option">
-                                            <span class="checked">{{ option.option }}</span>
+                                            <span class="checked">
+                                                <div [innerHTML]=" option.option"></div>
+                                            </span>
+                                            <!-- <span class="checked"><div> {{option.option}}</div></span> -->
                                         </label>
                                     </div>
                                 </div>
@@ -565,7 +569,10 @@
                                     <div class="ques-radio mb-3" *ngFor="let option of question?.options; let i=index;">
                                         <label>
                                             <input type="radio" [id]="'question_option_' + i" name="question_option">
-                                            <span class="checked">{{ option.option }}</span>
+                                            <span class="checked">
+                                                <div [innerHTML]=" option.option"></div>
+                                            </span>
+                                            <!-- <span class="checked"><div>{{option.option}}</div></span> -->
                                         </label>
                                     </div>
                                 </div>
@@ -588,7 +595,8 @@
                                     <img class="img-fluid" style="width: 400px;"
                                         *ngIf="question.image !== (imageurl + 'Files/Images/')"
                                         [src]="question.image" />
-                                    <p>{{question.description}}</p>
+                                    <!-- <p>{{question.description}}</p> -->
+                                    <div [innerHTML]="question.description"></div>
                                 </div>
                                 <div *ngIf="planid =='500' && question?.isLogicShow" class="alert alert-danger"
                                     role="alert">

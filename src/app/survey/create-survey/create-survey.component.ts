@@ -524,11 +524,12 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
         let screenyoutubeurl: string[] = [];
         let screenvideo: string[] = []
 
-        // this.questions.forEach((question: any) => {
+        this.questions.forEach((question: any) => {
           
-        //   question.question = this.sanitizer.bypassSecurityTrustHtml(question?.question);
+          question.question = this.sanitizer.bypassSecurityTrustHtml(question?.question);
 
-        // })
+        })
+        
 
         // Iterate over questions
         this.questions.forEach((question: any) => {
@@ -2270,7 +2271,7 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
       duplicateUid: '',
       securityLink: '',
       securityUid: '',
-      status: ''
+      status: 'ACT'
     };
     if(this.redirectid > 0){
 
