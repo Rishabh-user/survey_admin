@@ -42,6 +42,7 @@ import { heroLink } from '@ng-icons/heroicons/outline';
 import { heroPlus } from '@ng-icons/heroicons/outline';
 import { heroChartPie } from '@ng-icons/heroicons/outline';
 import { heroTicket } from '@ng-icons/heroicons/outline';
+import { heroChatBubbleBottomCenter } from '@ng-icons/heroicons/outline';
 
 
 import { HeaderComponent } from './shared/header/header.component';
@@ -131,7 +132,8 @@ import { SupportComponent } from './support/support.component';
       heroLink,
       heroPlus,
       heroChartPie,
-      heroTicket
+      heroTicket,
+      heroChatBubbleBottomCenter
     }),
     BrowserAnimationsModule,
     RecaptchaModule,
