@@ -2540,4 +2540,9 @@ figure.image-figure {
 .descques{
     background-color: #08b7f0;
 }
+th:last-child, td:last-child
+{
+  position:sticky;
+  right:0px;
+}
 

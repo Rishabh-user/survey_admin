@@ -723,8 +723,10 @@ export class EditSurveyComponent {
     if (this.question.questionTypeName === 'Open Ended') {
       this.question.openEndedType = "textarea"
       this.question.textLimit = this.textlimit
-
+    }else{
+      this.question.openEndedType = 'text'
     }
+  
 
 
     this.question.image = this.questionImage;
@@ -734,6 +736,7 @@ export class EditSurveyComponent {
     this.question.qNo = this.qNo
     this.question.isNumeric =  this.numeric
     this.question.isAlphabet = this.alphabet
+    
 
     let modifiedoptions: serveyOption[] = [];
     let matrixoption: MatrixHeader[]=[]
