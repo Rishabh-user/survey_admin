@@ -599,13 +599,16 @@
                                     <!-- <p>{{question.description}}</p> -->
                                      
                                     <div class="mt-2" [innerHTML]="question.description"></div>
+                                    
+                                    
                                     <div class="ques-radio mb-3" *ngFor="let option of question?.options; let i=index;">
-                                        <label>
+                                        <label *ngIf="option.option.trim() !== ''">
                                             <input type="radio" [id]="'question_option_' + i" name="question_option">
                                             <span class="checked"><div [innerHTML]=" option.option"></div></span>
                                             <!-- <span class="checked"><div> {{option.option}}</div></span> -->
                                         </label>
                                     </div>
+                                    
                                 </div>
                                 <div *ngIf="planid =='500' && question?.isLogicShow" class="alert alert-danger"
                                     role="alert">
@@ -1695,52 +1698,204 @@
 
 <!-- redirection -->
 <ng-template #redirection let-modal>
-    <div class="modal-header">
+    <div class="modal-header">        
         <h4 class="modal-title">Redirection</h4>
-        <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+        <button type="button" class="btn-close" aria-label="Close"
+            (click)="modal.dismiss('Cross click'); isActivescreen = false;"></button>          
+        
     </div>
     <div class="modal-body popup-ques">
-        <div ngClass="update-ques-type generic-ques">
-            <div>
-                <div class="mb-3">
-                    <div ngClass="d-flex align-items-center justify-content-between">
-                        <h6>Please add values for redirection.</h6>
+        <div>
+            <div class="mb-3">
+                <label for="uid" class="form-label">Enter Your User ID</label>
+                <input type="text" class="form-control" name="uid" placeholder="UID" [(ngModel)]="uid" (blur)="validateUID()"
+                    [ngModelOptions]="{standalone: true}"/>
+                <div *ngIf="!uidreq" class="text-danger">UID is required.</div>
+            </div>
+        </div>
+        <div class="logic-tab">
+            <!-- Nav tabs -->
+            <ul class="nav flex-column nav-tabs" id="myTab" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="addcompletelink-tab" data-bs-toggle="tab" data-bs-target="#addcompletelink" role="tab"
+                        aria-selected="false">Add Complete Link</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link active" id="addquotalink-tab" data-bs-toggle="tab" data-bs-target="#addquotalink"
+                        role="tab" aria-selected="false">Add Quota Full Link</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="addterminatelink-tab" data-bs-toggle="tab" data-bs-target="#addterminatelink"
+                        role="tab" aria-selected="false">Add Terminate Link</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="addnosurveylink-tab" data-bs-toggle="tab" data-bs-target="#addnosurveylink"
+                        role="tab" aria-selected="false">Add No Survey Link</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="addduplicatelink-tab" data-bs-toggle="tab" data-bs-target="#addduplicatelink"
+                        role="tab" aria-selected="false">Add Duplicate Link</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="addsecuritylink-tab" data-bs-toggle="tab" data-bs-target="#addsecuritylink"
+                        role="tab" aria-selected="false">Add Security Link</button>
+                </li>
+            </ul>
+            <!-- Logic Question -->
+            <div class="tab-content p-4">
+                <div class="tab-pane" id="addcompletelink" role="tabpanel" aria-labelledby="addcompletelink-tab">
+                    <h5 ngClass="mb-4">Add Complete Link</h5>
+                    <div class="mb-3">
+                        <div ngClass="d-flex align-items-center justify-content-between">
+                            <h6>Please add values for redirection.</h6>
+                        </div>
+                    </div>
+                   
+                    <div class="mb-3">
+                        <label for="uid" class="form-label">Enter Your complete Link</label>
+                        <input type="text" class="form-control" placeholder="complete link" [(ngModel)]="completelink"
+                            [ngModelOptions]="{standalone: true}" (blur)="validateRedirectLink('completelink')"/>
+                    </div>
+                    <div *ngIf="!completelinkreq" class="text-danger">Link is required.</div>
+                    <div class="mb-3">
+                        <label for="uid" class="form-label">Enter Your Complete UserID</label>
+                        <input type="text" class="form-control" placeholder="complete UID" [(ngModel)]="completeuid"
+                            [ngModelOptions]="{standalone: true}" (blur)="validateRedirectLink('completelink')"/>
+                    </div>
+                    <div *ngIf="!completeuidreq" class="text-danger">UID is required.</div>
+                    <div class="mb-3">
+                        <button type="button" class="btn btn-primary btn-sm"
+                            (click)="addRedirection('completelink')">Save</button>
                     </div>
                 </div>
-                <div class="mb-3">
-                    <label for="uid" class="form-label">Enter Your UserID</label>
-                    <input type="text" class="form-control" placeholder="UID" [(ngModel)]="uid"
-                        [ngModelOptions]="{standalone: true}" />
+
+                <div class="tab-pane active" id="addquotalink" role="tabpanel" aria-labelledby="addquotalink-tab">
+                    <h5 ngClass="mb-4">Add an Quota Full Link</h5>
+                    <div class="mb-3">
+                        <div ngClass="d-flex align-items-center justify-content-between">
+                            <h6>Please add values for redirection.</h6>
+                        </div>
+                    </div> <div class="mb-3">
+                        <label for="uid" class="form-label">Enter Your Quota Link</label>
+                        <input type="text" class="form-control" placeholder="Quota Link UID" [(ngModel)]="quotalink"
+                            [ngModelOptions]="{standalone: true}" (blur)="validateRedirectLink('quotalink')"/>
+                    </div>
+                    <div *ngIf="!quotalinkreq" class="text-danger">Link is required.</div>
+                    <div class="mb-3">
+                        <label for="uid" class="form-label">Enter Your Quota UserID</label>
+                        <input type="text" class="form-control" placeholder="Quota UID" [(ngModel)]="quotauid"
+                            [ngModelOptions]="{standalone: true}" (blur)="validateRedirectLink('quotalink')"/>
+                    </div>
+                    <div *ngIf="!quotauidreq" class="text-danger">UID is required.</div>
+                   
+                    <div class="mb-3">
+                        <button type="button" class="btn btn-primary btn-sm"
+                            (click)="addRedirection('quotalink')">Save</button>
+                    </div>
+
                 </div>
-                <div class="mb-3">
-                    <label for="uid" class="form-label">Enter Your completeLink</label>
-                    <input type="text" class="form-control" placeholder="complete link" [(ngModel)]="completelink"
-                        [ngModelOptions]="{standalone: true}" />
+                <div class="tab-pane" id="addterminatelink" role="tabpanel" aria-labelledby="addterminatelink-tab">
+                    <h5 ngClass="mb-4">Add Terminate Link</h5>
+                    <div class="mb-3">
+                        <div ngClass="d-flex align-items-center justify-content-between">
+                            <h6>Please add values for redirection.</h6>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="uid" class="form-label">Enter Your Terminate Link</label>
+                        <input type="text" class="form-control" placeholder="Terminate link" [(ngModel)]="terminatelink"
+                            [ngModelOptions]="{standalone: true}" (blur)="validateRedirectLink('terminatelink')"/>
+                    </div>
+                    <div *ngIf="!terminatelinkreq" class="text-danger">Link is required.</div>
+                    <div class="mb-3">
+                        <label for="uid" class="form-label">Enter Your Terminate Link UserID</label>
+                        <input type="text" class="form-control" placeholder="Terminate UID" [(ngModel)]="terminateuid"
+                            [ngModelOptions]="{standalone: true}" (blur)="validateRedirectLink('terminatelink')"/>
+                    </div>
+                    <div *ngIf="!termeinateuidreq" class="text-danger">UID is required.</div>
+                    <div class="mb-3">
+                        <button type="button" class="btn btn-primary btn-sm"
+                            (click)="addRedirection('terminatelink')">Save</button>
+                    </div>
+
                 </div>
-                <div class="mb-3">
-                    <label for="uid" class="form-label">Enter Your Complete UserID</label>
-                    <input type="text" class="form-control" placeholder="complete UID" [(ngModel)]="completeuid"
-                        [ngModelOptions]="{standalone: true}" />
+                <div class="tab-pane" id="addnosurveylink" role="tabpanel" aria-labelledby="addnosurveylink-tab">
+                    <h5 ngClass="mb-4">Add No Survey Link</h5>
+                    <div class="mb-3">
+                        <div ngClass="d-flex align-items-center justify-content-between">
+                            <h6>Please add values for redirection.</h6>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="uid" class="form-label">Enter Your No Survey Link</label>
+                        <input type="text" class="form-control" placeholder="No Survey Link" [(ngModel)]="nosurveylink"
+                            [ngModelOptions]="{standalone: true}" (blur)="validateRedirectLink('nosurveylink')"/>
+                    </div>
+                    <div *ngIf="!nosurveylinkreq" class="text-danger">Link is required.</div>
+                    <div class="mb-3">
+                        <label for="uid" class="form-label">Enter Your No Survey Link UserID</label>
+                        <input type="text" class="form-control" placeholder="No Survey UID" [(ngModel)]="nosurveyuid"
+                            [ngModelOptions]="{standalone: true}" (blur)="validateRedirectLink('nosurveylink')"/>
+                    </div>
+                    <div *ngIf="!nosurveyuidreq" class="text-danger">UID is required.</div>
+                    <div class="mb-3">
+                        <button type="button" class="btn btn-primary btn-sm"
+                            (click)="addRedirection('nosurveylink')">Save</button>
+                    </div>
+
                 </div>
-                <div class="mb-3">
-                    <label for="uid" class="form-label">Enter Your Quota Link</label>
-                    <input type="text" class="form-control" placeholder="Quota Link UID" [(ngModel)]="quotalink"
-                        [ngModelOptions]="{standalone: true}" />
+                <div class="tab-pane" id="addduplicatelink" role="tabpanel" aria-labelledby="addduplicatelink-tab">
+                    <h5 ngClass="mb-4">Add Duplicate Link</h5>
+                    <div class="mb-3">
+                        <div ngClass="d-flex align-items-center justify-content-between">
+                            <h6>Please add values for redirection.</h6>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="uid" class="form-label">Enter Your Duplicate Link</label>
+                        <input type="text" class="form-control" placeholder="Duplicate Link" [(ngModel)]="duplicatelink"
+                            [ngModelOptions]="{standalone: true}" (blur)="validateRedirectLink('duplicatelink')"/>
+                    </div>
+                    <div *ngIf="!duplicatelinkreq" class="text-danger">Link is required.</div>
+                    <div class="mb-3">
+                        <label for="uid" class="form-label">Enter Your  Duplicate Link UserID</label>
+                        <input type="text" class="form-control" placeholder=" Duplicate  UID" [(ngModel)]="duplicateuid"
+                            [ngModelOptions]="{standalone: true}" (blur)="validateRedirectLink('duplicatelink')" />
+                    </div>
+                    <div *ngIf="!duplicateuidreq" class="text-danger">UID is required.</div>
+                    <div class="mb-3">
+                        <button type="button" class="btn btn-primary btn-sm"
+                            (click)="addRedirection('duplicatelink')">Save</button>
+                    </div>
+
                 </div>
-                <div class="mb-3">
-                    <label for="uid" class="form-label">Enter Your Quota UserID</label>
-                    <input type="text" class="form-control" placeholder="Quota UID" [(ngModel)]="quotauid"
-                        [ngModelOptions]="{standalone: true}" />
+                <div class="tab-pane" id="addsecuritylink" role="tabpanel" aria-labelledby="addsecuritylink-tab">
+                    <h5 ngClass="mb-4">Add Security Link</h5>
+                    <div class="mb-3">
+                        <div ngClass="d-flex align-items-center justify-content-between">
+                            <h6>Please add values for redirection.</h6>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="uid" class="form-label">Enter Your Security Link</label>
+                        <input type="text" class="form-control" placeholder="Security Link" [(ngModel)]="securitylink"
+                            [ngModelOptions]="{standalone: true}" (blur)="validateRedirectLink('securitylink')"/>
+                    </div>
+                    <div *ngIf="!securitylinkreq" class="text-danger">Link is required.</div>
+                    <div class="mb-3">
+                        <label for="uid" class="form-label">Enter Your Security Link UserID</label>
+                        <input type="text" class="form-control" placeholder="Security  UID" [(ngModel)]="securityuid"
+                            [ngModelOptions]="{standalone: true}" (blur)="validateRedirectLink('securitylink')"/>
+                    </div>
+                    <div *ngIf="!securityuidreq" class="text-danger">UID is required.</div>
+                    <div class="mb-3">
+                        <button type="button" class="btn btn-primary btn-sm"
+                            (click)="addRedirection('securitylink')">Save</button>
+                    </div>
+
                 </div>
             </div>
-
         </div>
-    </div>
-    <div class="modal-footer upload">
-        <button type="button" class="btn close" (click)="modal.close('Close click')">Cancel</button>
-        <button type="button" class="btn btn-primary icon" (click)="modal.close('Close click');addRedirection()">Add
-            <ng-icon name="heroArrowLongRight" class="ms-4"></ng-icon>
-        </button>
     </div>
 </ng-template>
 

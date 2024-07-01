@@ -2252,57 +2252,157 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
   completeuid:any;
   quotalink:any;
   quotauid:any;
+  terminatelink:any;
+  terminateuid:any;
+  nosurveylink:any;
+  nosurveyuid:any;
+  duplicatelink:any;
+  duplicateuid:any;
+  securitylink:any;
+  securityuid:any;
   isActiveredirection:boolean = false
   
-  addRedirection(){
+  // addRedirection(tab:string){
 
-    const dataToSend = {
-      surveyId: this.surveyId,
-      uid: this.uid,
-      completeLink: this.completelink,
-      completeUid: this.completeuid,
-      quotafullLink: this.quotalink,
-      quotafullUid: this.quotauid,
-      terminateLink: '',
-      terminateUid: '',
-      noSurveyLink: '',
-      noSurveyUid: '',
-      duplicateLink: '',
-      duplicateUid: '',
-      securityLink: '',
-      securityUid: '',
-      status: 'ACT'
-    };
-    if(this.redirectid > 0){
+  //   if (!this.validateRedirectLink(tab)) {
+  //     this.utils.showError('Please fill all required fields.');
+  //     return;
+  //   }
 
-      this.surveyservice.updatePartnerRedirect(dataToSend).subscribe({
-        next: (resp: any) => {
-          if (resp == '"UpdatedSuccessfully"') {
-            this.utils.showSuccess("Redirection Updated");
-            window.location.reload();
-          }
-        },
-        error: (err: any) => {
-          this.utils.showError('Error');
-        }
-      });
+  //   const dataToSend = {
+  //     surveyId: this.surveyId,
+  //     uid: this.uid,
+  //     completeLink: this.completelink,
+  //     completeUid: this.completeuid,
+  //     quotafullLink: this.quotalink,
+  //     quotafullUid: this.quotauid,
+  //     terminateLink: this.terminatelink,
+  //     terminateUid: this.terminateuid,
+  //     noSurveyLink: this.nosurveylink,
+  //     noSurveyUid: this.nosurveyuid,
+  //     duplicateLink: this.duplicatelink,
+  //     duplicateUid: this.duplicateuid,
+  //     securityLink: this.securitylink,
+  //     securityUid: this.securityuid,
+  //     status: 'ACT'
+  //   };
+  //   if(this.redirectid > 0){
 
-    }else{
-      this.surveyservice.partnerRedirect(dataToSend).subscribe({
-        next: (resp: any) => {
-          if (resp == '"CreatedSuccessfully"') {
-            this.utils.showSuccess("Redirection Added");
-            window.location.reload();
-          }
-        },
-        error: (err: any) => {
-          this.utils.showError('Error');
-        }
-      });
+  //     this.surveyservice.updatePartnerRedirect(dataToSend).subscribe({
+  //       next: (resp: any) => {
+  //         if (resp == '"UpdatedSuccessfully"') {
+  //           this.utils.showSuccess("Redirection Updated");
+  //           window.location.reload();
+  //         }
+  //       },
+  //       error: (err: any) => {
+  //         this.utils.showError('Error');
+  //       }
+  //     });
 
-    }
+  //   }else{
+  //     this.surveyservice.partnerRedirect(dataToSend).subscribe({
+  //       next: (resp: any) => {
+  //         if (resp == '"CreatedSuccessfully"') {
+  //           this.utils.showSuccess("Redirection Added");
+  //           window.location.reload();
+  //         }
+  //       },
+  //       error: (err: any) => {
+  //         this.utils.showError('Error');
+  //       }
+  //     });
+
+  //   }
     
-  }
+  // }
+  addRedirection(tab: string) {
+
+    if (!this.validateUID()){
+      this.utils.showError("Please fill UID");
+      return
+    }
+
+    if (!this.validateRedirectLink(tab)) {
+        this.utils.showError('Please fill all required fields.');
+        return;
+    }
+
+    let dataToSend: any = {
+        surveyId: this.surveyId,
+        uid: this.uid,
+        status: 'ACT',
+        completeLink: this.completelink,
+        completeUid: this.completeuid,
+        quotafullLink: this.quotalink,
+        quotafullUid: this.quotauid,
+        terminateLink: this.terminatelink,
+        terminateUid: this.terminateuid,
+        noSurveyLink: this.nosurveylink,
+        noSurveyUid: this.nosurveyuid,
+        duplicateLink: this.duplicatelink,
+        duplicateUid: this.duplicateuid,
+        securityLink: this.securitylink,
+        securityUid: this.securityuid,
+    };
+
+    switch (tab) {
+        case 'completelink':
+            dataToSend.completeLink = this.completelink;
+            dataToSend.completeUid = this.completeuid;
+            break;
+        case 'quotalink':
+            dataToSend.quotafullLink = this.quotalink;
+            dataToSend.quotafullUid = this.quotauid;
+            break;
+        case 'terminatelink':
+            dataToSend.terminateLink = this.terminatelink;
+            dataToSend.terminateUid = this.terminateuid;
+            break;
+        case 'nosurveylink':
+            dataToSend.noSurveyLink = this.nosurveylink;
+            dataToSend.noSurveyUid = this.nosurveyuid;
+            break;
+        case 'duplicatelink':
+            dataToSend.duplicateLink = this.duplicatelink;
+            dataToSend.duplicateUid = this.duplicateuid;
+            break;
+        case 'securitylink':
+            dataToSend.securityLink = this.securitylink;
+            dataToSend.securityUid = this.securityuid;
+            break;
+        default:
+            this.utils.showError('Invalid tab.');
+            return;
+    }
+
+    if (this.redirectid > 0) {
+        this.surveyservice.updatePartnerRedirect(dataToSend).subscribe({
+            next: (resp: any) => {
+                if (resp === '"UpdatedSuccessfully"') {
+                    this.utils.showSuccess("Redirection Updated");
+                    // window.location.reload();
+                }
+            },
+            error: (err: any) => {
+                this.utils.showError('Error');
+            }
+        });
+    } else {
+        this.surveyservice.partnerRedirect(dataToSend).subscribe({
+            next: (resp: any) => {
+                if (resp === '"CreatedSuccessfully"') {
+                    this.utils.showSuccess("Redirection Added");
+                    // window.location.reload();
+                }
+            },
+            error: (err: any) => {
+                this.utils.showError('Error');
+            }
+        });
+    }
+}
+
 
   getPartnerRidirection(){
     this.surveyservice.GetPartnerRirection(this.surveyId).subscribe({
@@ -2316,6 +2416,14 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
           this.completeuid = resp.completeUid;
           this.quotalink = resp.quotafullLink;
           this.quotauid = resp.quotafullUid
+          this.duplicatelink =  resp.duplicateLink;
+          this.duplicateuid = resp.duplicateUid;
+          this.nosurveylink = resp.nosurveylink;
+          this.nosurveyuid = resp.noSurveyUid;
+          this.securitylink = resp.securityLink;
+          this.securityuid = resp.securityUid;
+          this.terminatelink = resp.terminateLink;
+          this.terminateuid = resp.terminateUid;
         
       },
       error: (err:any) =>{
@@ -2329,6 +2437,85 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
     this.isQNumberRequired = event.target.checked;
     console.log("isQNumberRequired",this.isQNumberRequired)
   }
+
+
+  uidreq: boolean = true
+  completelinkreq: boolean = true
+  completeuidreq: boolean = true
+  quotalinkreq: boolean = true
+  quotauidreq: boolean = true
+  nosurveylinkreq: boolean = true
+  nosurveyuidreq: boolean = true
+  terminatelinkreq: boolean = true
+  termeinateuidreq: boolean = true
+  duplicatelinkreq: boolean = true
+  duplicateuidreq: boolean = true
+  securitylinkreq: boolean = true
+  securityuidreq: boolean = true
+  touchedreq: boolean = false;
+
+  validateRedirectLink(tab: string): boolean {
+    let isValid = false;
+    this.touchedreq = true;
+
+    switch (tab) {
+      case 'completelink':
+        this.completelinkreq = !!this.completelink && this.completelink.trim().length > 0;
+        this.completeuidreq = !!this.completeuid && this.completeuid.trim().length > 0;
+
+        isValid = this.completelinkreq && this.completeuidreq;
+        break;
+
+      case 'quotalink':
+        this.quotalinkreq = !!this.quotalink && this.quotalink.trim().length > 0;
+        this.quotauidreq = !!this.quotauid && this.quotauid.trim().length > 0;
+
+        isValid = this.quotalinkreq && this.quotauidreq;
+        break;
+
+      case 'terminatelink':
+        this.terminatelinkreq = !!this.terminatelink && this.terminatelink.trim().length > 0;
+        this.termeinateuidreq = !!this.terminateuid && this.terminateuid.trim().length > 0;
+
+        isValid = this.terminatelinkreq && this.termeinateuidreq;
+        break;
+
+      case 'nosurveylink':
+        this.nosurveylinkreq = !!this.nosurveylink && this.nosurveylink.trim().length > 0;
+        this.nosurveyuidreq = !!this.nosurveyuid && this.nosurveyuid.trim().length > 0;
+
+        isValid = this.nosurveylinkreq && this.nosurveyuidreq ;
+        break;
+
+      case 'duplicatelink':
+        this.duplicatelinkreq = !!this.duplicatelink && this.duplicatelink.trim().length > 0;
+        this.duplicateuidreq = !!this.duplicateuid && this.duplicateuid.trim().length > 0;
+
+        isValid = this.duplicatelinkreq && this.duplicateuidreq ;
+        break;
+
+
+      case 'securitylink':
+        this.securitylinkreq = !!this.securitylink && this.securitylink.trim().length > 0;
+        this.securityuidreq = !!this.securityuid && this.securityuid.trim().length > 0;
+
+        isValid = this.securitylinkreq && this.securityuidreq ;
+        break;
+      default:
+
+        break;
+    }
+
+    return isValid;
+  }
+
+  validateUID(): boolean {
+    this.uidreq = !!this.uid && this.uid.trim().length > 0;
+
+    return this.uidreq
+
+  }
+
   
 
 

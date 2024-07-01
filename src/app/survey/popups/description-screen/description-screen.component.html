@@ -53,8 +53,7 @@
                 </div> -->
                 <div class="mb-4">
                     <p>Enter the Button Name</p>
-                    <input type="text" class="form-control" [(ngModel)]="descbutton" (blur)="validateSurveyDesc()" [ngModelOptions]="{standalone: true}"/>
-                    <div *ngIf="!serialbuttonreq" class="text-danger">Button Name is required</div>
+                    <input type="text" class="form-control" [(ngModel)]="descbutton"  [ngModelOptions]="{standalone: true}"/>
                 </div>
                 
             </div>

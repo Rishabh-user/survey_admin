@@ -319,9 +319,8 @@ export class DescriptionScreenComponent {
   serialtitlereq:boolean = true
   validateSurveyDesc(): boolean {
     this.serialtitlereq = !!this.descques && this.descques.trim().length > 0;
-    this.serialbuttonreq = !!this.descbutton && this.descbutton.trim().length > 0;
 
-    return this.serialtitlereq && this.serialbuttonreq
+    return this.serialtitlereq 
 
   }
 
