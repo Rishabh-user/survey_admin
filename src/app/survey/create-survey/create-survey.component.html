@@ -465,8 +465,8 @@
 
                                 <!-- <div [innerHTML]="sanitizeHtml(question?.question)"></div> -->
                             </h5>
-                            <h5 [ngClass]="'mb-0'" *ngIf="isQNumberRequired === true" >
-                                {{question?.qNo}}.&nbsp;<div [innerHTML]="question?.question"></div> 
+                            <h5 [ngClass]="'mb-0'" *ngIf="isQNumberRequired === true">
+                                {{question?.qNo}}.&nbsp;<div [innerHTML]="question?.question"></div>
                             </h5>
 
                             <div class="d-flex align-items-center justify-content-end">
@@ -532,7 +532,8 @@
                                             </a>
 
                                         </li>
-                                        <li *ngIf="question.genericTypeId==0 && question?.isRequired"><a class="dropdown-item" routerLink="#"
+                                        <li *ngIf="question.genericTypeId==0 && question?.isRequired"><a
+                                                class="dropdown-item" routerLink="#"
                                                 (click)="cloning(question.id)"><ng-icon
                                                     name="heroDocumentDuplicate"></ng-icon>Clone</a>
                                         </li>
@@ -553,7 +554,8 @@
                         </div>
                         <div ngClass="ques-body p-3">
                             <div ngClass="ques-ans">
-                                <div *ngIf="question?.openEndedType === null || question?.openEndedType === ''  && question?.isRequired === true">
+                                <div
+                                    *ngIf="question?.openEndedType === null || question?.openEndedType === ''  && question?.isRequired === true">
                                     <div class="ques-radio mb-3" *ngFor="let option of question?.options; let i=index;">
                                         <label>
                                             <input type="radio" [id]="'question_option_' + i" name="question_option">
@@ -604,7 +606,9 @@
                                     <div class="ques-radio mb-3" *ngFor="let option of question?.options; let i=index;">
                                         <label *ngIf="option.option.trim() !== ''">
                                             <input type="radio" [id]="'question_option_' + i" name="question_option">
-                                            <span class="checked"><div [innerHTML]=" option.option"></div></span>
+                                            <span class="checked">
+                                                <div [innerHTML]=" option.option"></div>
+                                            </span>
                                             <!-- <span class="checked"><div> {{option.option}}</div></span> -->
                                         </label>
                                     </div>
