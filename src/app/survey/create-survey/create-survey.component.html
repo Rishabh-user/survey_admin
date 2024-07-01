@@ -674,6 +674,12 @@
                                                         aria-selected="false"
                                                         (click)="getLogicQuestionListForCalculation(question?.id,question?.sort);getQuestionListAgeCalculation(question?.id)">Calculations</button>
                                                 </li>
+                                                <li class="nav-item" role="presentation">
+                                                    <button class="nav-link" id="piping-tab" data-bs-toggle="tab"
+                                                        [attr.data-bs-target]="'#piping' + question.id" role="tab"
+                                                        aria-selected="false"
+                                                        (click)="getLogicQuestionListForCalculation(question?.id,question?.sort);getQuestionListAgeCalculation(question?.id)">Piping</button>
+                                                </li>
                                             </ul>
                                             <div class="tab-content p-4">
                                                 <div class="tab-pane active" [id]="'branching' + question.id"
@@ -1255,6 +1261,41 @@
                                                 <div class="tab-pane" [id]="'calculator' + question.id" role="tabpanel"
                                                     aria-labelledby="calculator-tab" *ngIf="checkgenerictype !== true">
                                                     <p>Calculation is not avaliable for this Survey</p>
+                                                </div>
+                                                <div class="tab-pane" [id]="'piping' + question.id" role="tabpanel"
+                                                    aria-labelledby="piping-tab">
+                                                    <h5 ngClass="mb-4">Piping</h5>
+                                                    <div ngClass="d-flex justify-content-between mb-3">
+                                                        <h6>Set Values for Piping</h6>
+                                                    </div>
+
+                                                    <div class="input-group flex-nowrap">
+                                                        <span class="input-group-text"
+                                                            id="addon-wrapping">In</span>
+                                                        <select class="form-select">
+                                                            <option selected><div [innerHTML]="question?.question"></div>
+                                                            </option>
+                                                        </select>
+                                                    </div>
+                                                    
+                                                    <!-- {{ question | json }} -->
+                                                    <form>
+                                                        <mat-form-field>
+                                                        <mat-select [formControl]="getFormControl(question?.id)" multiple (selectionChange)="onSelectionChange($event, question?.id)">
+                                                            <ng-container *ngFor="let name of pipingQuestionById">
+                                                            <mat-option [value]="name.id">{{ name.item }}</mat-option>
+                                                            </ng-container>
+                                                        </mat-select>
+                                                        </mat-form-field>
+                                                    </form>
+
+                                                    <div class="row">
+                                                        <div class="col-12 text-end d-flex justify-content-end">
+                                                            <button type="button" class="btn btn-primary"
+                                                                (click)="savePiping(question?.id,i)">Save</button>
+                                                        </div>
+                                                    </div>
+
                                                 </div>
                                             </div>
                                         </div>

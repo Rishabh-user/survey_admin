@@ -495,5 +495,15 @@ export class SurveyService {
     return this.http.delete(url, { responseType: 'text' });
   }
 
+  createPiping(data: any): Observable<any> {
+    const url = `${this.apiUrl}api/admin/${this.userId}/Logics/CreatePiping`;
+    return this.http.post(url, data, { responseType: 'text' });
+  }
+
+  GetPiping(surveyId: any): Observable<responseDTO[]> {
+    const url = `${this.apiUrl}api/admin/${this.userId}/Logics/GetPiping?surveyId=${surveyId}`;
+    return this.http.get<responseDTO[]>(url);
+  }
+
 
 }

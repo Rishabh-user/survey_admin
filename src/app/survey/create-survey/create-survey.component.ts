@@ -1,7 +1,7 @@
 import { Component, OnInit, Renderer2, ElementRef, ViewChild, AfterViewInit, EventEmitter, Output } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
-import { FormControl } from '@angular/forms';
+import { FormArray, FormBuilder, FormControl } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { startWith, map } from 'rxjs/operators';
 import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
@@ -177,6 +177,9 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
   planid: any
   imageurl:any
   redirectid:any
+  toppings: FormArray;
+  selectedSurveyIds: { [key: number]: any[] } = {};
+  
 
   centerId: number = this.utils.getCenterId();
 
@@ -204,7 +207,8 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
     private surveyservice: SurveyService,
     private crypto: CryptoService,
     private utils: UtilsService,
-    private sanitizer: DomSanitizer
+    private sanitizer: DomSanitizer,
+    private fb: FormBuilder
   ) {
     this.baseUrl = environment.baseURL;
     this.mainURL = environment.mainURL;
@@ -226,6 +230,8 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
         this.surveyId = parseInt(this.crypto.decryptQueryParam(_surveyId));
       }
     });
+
+    this.toppings = this.fb.array([]);
 
 
   }
@@ -269,6 +275,11 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
 
     this.getSurveyLooping();
     this.getPartnerRidirection();
+    this.getPipingVlaue();
+
+    this.pipingQuestionById.forEach(() => {
+      this.toppings.push(new FormControl([]));
+    });
   }
   ngAfterViewInit() {
     if (this.selectElement) {
@@ -659,11 +670,11 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
   logicIndex: number;
 
   toggleLogic(index: number, questionId: any, mode: string) {
-    debugger
+
     if (this.planid === '500') {
       this.questions[index].isLogicShow = true;
     }
-    debugger
+   
     //this.logicIndex = index;
     if (mode === "add")
       this.addNewLogicEntry(index);
@@ -704,6 +715,7 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
     });
   }
   logicQuestionListById: any
+  pipingQuestionById:any
   getLogicQuestionList(questionId: any) {
     //alert(questionId);
     this.logicQuestionList = [];
@@ -721,9 +733,11 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
         }
       );
     }
-    this.logicQuestionListById = []; // Assuming logicQuestionListById is of type responseDTO[]
+    this.logicQuestionListById = [];
+    this.pipingQuestionById=[] // Assuming logicQuestionListById is of type responseDTO[]
     this.surveyservice.GetQuestionListBySurveyId(this.surveyId).subscribe((response: responseDTO[]) => {
       this.logicQuestionListById = response;
+      this.pipingQuestionById = response
     });
     //}
   }
@@ -1443,7 +1457,7 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
     } else {
       console.warn('No valid range found for randomization.');
     }
-    debugger
+   
   }
 
 
@@ -2513,6 +2527,68 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
     this.uidreq = !!this.uid && this.uid.trim().length > 0;
 
     return this.uidreq
+
+  }
+
+  getFormControl(index: number): FormControl {
+    return this.toppings.at(index) as FormControl;
+  }
+
+  onSelectionChange(event: any, quesid: any): void {
+    this.selectedSurveyIds[quesid] = event.value;
+    console.log("this.selectedSurveyIds[quesid]", this.selectedSurveyIds[quesid]);
+  }
+
+  savePiping(quesid:any,index:any){
+    console.log("index",index)
+
+    const parentData = {
+      id: 0,
+      surveyId: this.surveyId,
+      questionId: quesid, 
+      groupId: index+1,
+      isParent: true,
+      status: 'ACT'
+    };
+     console.log("selectedSurveyIds",this.selectedSurveyIds)
+    const childData = (this.selectedSurveyIds[quesid] || []).map((item: number) => ({
+      id: 0,
+      surveyId: this.surveyId,
+      questionId: item,
+      groupId: index+1,
+      isParent: false,
+      status: 'ACT'
+    }));
+
+    const dataToSend = [parentData, ...childData];
+    console.log("dataToSend,",dataToSend)
+
+    this.surveyservice.createPiping(dataToSend).subscribe({
+      next: (resp: any) => {
+          if (resp === '"CreatedSuccessfully"') {
+              this.utils.showSuccess("Created");
+              // window.location.reload();
+          }
+      },
+      error: (err: any) => {
+          this.utils.showError('Error');
+      }
+  });
+
+  }
+
+  groupid:any
+  getPipingVlaue(){
+    this.surveyservice.GetPiping(this.surveyId).subscribe({
+      next: (resp: any) => {
+        console.log("resp pipe",resp)
+        this.groupid = resp.groupId
+        
+      },
+      error: (err:any) =>{
+        
+      }
+    })
 
   }
 
