@@ -2467,12 +2467,12 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
   securitylinkreq: boolean = true
   securityuidreq: boolean = true
   touchedreq: boolean = false;
-  uidvalidate:boolean = false;
-  uidquotavalidate:boolean = false;
-  uidterminatevalidate:boolean = false;
-  uidnosurveyvalidate:boolean = false;
-  uidduplicatevalidate:boolean = false;
-  uidsecurityvalidate:boolean = false
+  uidvalidate:boolean = true;
+  uidquotavalidate:boolean = true;
+  uidterminatevalidate:boolean = true;
+  uidnosurveyvalidate:boolean = true;
+  uidduplicatevalidate:boolean = true;
+  uidsecurityvalidate:boolean = true
 
   validateRedirectLink(type: string): boolean {
     let isValid = false;
