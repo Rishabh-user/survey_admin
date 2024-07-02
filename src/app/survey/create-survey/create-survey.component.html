@@ -1792,33 +1792,33 @@
             <!-- Nav tabs -->
             <ul class="nav flex-column nav-tabs" id="myTab" role="tablist">
                 <li class="nav-item" role="presentation">
-                    <button class="nav-link" id="addcompletelink-tab" data-bs-toggle="tab" data-bs-target="#addcompletelink" role="tab"
-                        aria-selected="false">Add Complete Link</button>
+                    <button class="nav-link active" id="addcompletelink-tab" data-bs-toggle="tab" data-bs-target="#addcompletelink" role="tab"
+                        aria-selected="false">Complete Link</button>
                 </li>
                 <li class="nav-item" role="presentation">
-                    <button class="nav-link active" id="addquotalink-tab" data-bs-toggle="tab" data-bs-target="#addquotalink"
-                        role="tab" aria-selected="false">Add Quota Full Link</button>
+                    <button class="nav-link" id="addquotalink-tab" data-bs-toggle="tab" data-bs-target="#addquotalink"
+                        role="tab" aria-selected="false">Quota Full Link</button>
                 </li>
                 <li class="nav-item" role="presentation">
                     <button class="nav-link" id="addterminatelink-tab" data-bs-toggle="tab" data-bs-target="#addterminatelink"
-                        role="tab" aria-selected="false">Add Terminate Link</button>
+                        role="tab" aria-selected="false">Terminate Link</button>
                 </li>
                 <li class="nav-item" role="presentation">
                     <button class="nav-link" id="addnosurveylink-tab" data-bs-toggle="tab" data-bs-target="#addnosurveylink"
-                        role="tab" aria-selected="false">Add No Survey Link</button>
+                        role="tab" aria-selected="false">No Survey Link</button>
                 </li>
                 <li class="nav-item" role="presentation">
                     <button class="nav-link" id="addduplicatelink-tab" data-bs-toggle="tab" data-bs-target="#addduplicatelink"
-                        role="tab" aria-selected="false">Add Duplicate Link</button>
+                        role="tab" aria-selected="false">Duplicate Link</button>
                 </li>
                 <li class="nav-item" role="presentation">
                     <button class="nav-link" id="addsecuritylink-tab" data-bs-toggle="tab" data-bs-target="#addsecuritylink"
-                        role="tab" aria-selected="false">Add Security Link</button>
+                        role="tab" aria-selected="false">Security Link</button>
                 </li>
             </ul>
             <!-- Logic Question -->
             <div class="tab-content p-4">
-                <div class="tab-pane" id="addcompletelink" role="tabpanel" aria-labelledby="addcompletelink-tab">
+                <div class="tab-pane active" id="addcompletelink" role="tabpanel" aria-labelledby="addcompletelink-tab">
                     <h5 ngClass="mb-4">Add Complete Link</h5>
                     <div class="mb-3">
                         <div ngClass="d-flex align-items-center justify-content-between">
@@ -1845,7 +1845,7 @@
                     </div>
                 </div>
 
-                <div class="tab-pane active" id="addquotalink" role="tabpanel" aria-labelledby="addquotalink-tab">
+                <div class="tab-pane" id="addquotalink" role="tabpanel" aria-labelledby="addquotalink-tab">
                     <h5 ngClass="mb-4">Add an Quota Full Link</h5>
                     <div class="mb-3">
                         <div ngClass="d-flex align-items-center justify-content-between">
@@ -1863,7 +1863,7 @@
                             [ngModelOptions]="{standalone: true}" (blur)="validateRedirectLink('quotalink')"/>
                     </div>
                     <div *ngIf="!quotauidreq" class="text-danger">UID is required.</div>
-                    <div *ngIf="!uidvalidate" class="text-danger">UID is must be there in Link.</div>
+                    <div *ngIf="!uidquotavalidate" class="text-danger">UID is must be there in Link.</div>
                    
                     <div class="mb-3">
                         <button type="button" class="btn btn-primary btn-sm"
@@ -1890,7 +1890,7 @@
                             [ngModelOptions]="{standalone: true}" (blur)="validateRedirectLink('terminatelink')"/>
                     </div>
                     <div *ngIf="!termeinateuidreq" class="text-danger">UID is required.</div>
-                    <div *ngIf="!uidvalidate" class="text-danger">UID is must be there in Link.</div>
+                    <div *ngIf="!uidterminatevalidate" class="text-danger">UID is must be there in Link.</div>
                     <div class="mb-3">
                         <button type="button" class="btn btn-primary btn-sm"
                             (click)="addRedirection('terminatelink')">Save</button>
@@ -1916,7 +1916,7 @@
                             [ngModelOptions]="{standalone: true}" (blur)="validateRedirectLink('nosurveylink')"/>
                     </div>
                     <div *ngIf="!nosurveyuidreq" class="text-danger">UID is required.</div>
-                    <div *ngIf="!uidvalidate" class="text-danger">UID is must be there in Link.</div>
+                    <div *ngIf="!uidnosurveyvalidate" class="text-danger">UID is must be there in Link.</div>
                     <div class="mb-3">
                         <button type="button" class="btn btn-primary btn-sm"
                             (click)="addRedirection('nosurveylink')">Save</button>
@@ -1942,7 +1942,7 @@
                             [ngModelOptions]="{standalone: true}" (blur)="validateRedirectLink('duplicatelink')" />
                     </div>
                     <div *ngIf="!duplicateuidreq" class="text-danger">UID is required.</div>
-                    <div *ngIf="!uidvalidate" class="text-danger">UID is must be there in Link.</div>
+                    <div *ngIf="!uidduplicatevalidate" class="text-danger">UID is must be there in Link.</div>
                     <div class="mb-3">
                         <button type="button" class="btn btn-primary btn-sm"
                             (click)="addRedirection('duplicatelink')">Save</button>
@@ -1968,7 +1968,7 @@
                             [ngModelOptions]="{standalone: true}" (blur)="validateRedirectLink('securitylink')"/>
                     </div>
                     <div *ngIf="!securityuidreq" class="text-danger">UID is required.</div>
-                    <div *ngIf="!uidvalidate" class="text-danger">UID is must be there in Link.</div>
+                    <div *ngIf="!uidsecurityvalidate" class="text-danger">UID is must be there in Link.</div>
                     <div class="mb-3">
                         <button type="button" class="btn btn-primary btn-sm"
                             (click)="addRedirection('securitylink')">Save</button>

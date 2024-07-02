@@ -2467,7 +2467,12 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
   securitylinkreq: boolean = true
   securityuidreq: boolean = true
   touchedreq: boolean = false;
-  uidvalidate:boolean = false
+  uidvalidate:boolean = false;
+  uidquotavalidate:boolean = false;
+  uidterminatevalidate:boolean = false;
+  uidnosurveyvalidate:boolean = false;
+  uidduplicatevalidate:boolean = false;
+  uidsecurityvalidate:boolean = false
 
   validateRedirectLink(type: string): boolean {
     let isValid = false;
@@ -2513,15 +2518,15 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
   
             console.log("queryParams", queryParams);
   
-           this.uidvalidate = false;
+           this.uidquotavalidate = false;
             queryParams.forEach((value, key) => {
               console.log(`Query Parameter - ${key}: ${value}`);
               if (value === this.quotauid) {
-                this.uidvalidate = true;
+                this.uidquotavalidate = true;
               }
             });
   
-            isValid = this.uidvalidate;
+            isValid = this.uidquotavalidate;
           } catch (error) {
             console.error("Error parsing URL:", error);
             isValid = false;
@@ -2542,15 +2547,15 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
   
             console.log("queryParams", queryParams);
   
-            this.uidvalidate = false;
+            this.uidterminatevalidate = false;
             queryParams.forEach((value, key) => {
               console.log(`Query Parameter - ${key}: ${value}`);
               if (value === this.terminateuid) {
-                this.uidvalidate = true;
+                this.uidterminatevalidate = true;
               }
             });
   
-            isValid = this.uidvalidate;
+            isValid = this.uidterminatevalidate;
           } catch (error) {
             console.error("Error parsing URL:", error);
             isValid = false;
@@ -2571,15 +2576,15 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
   
             console.log("queryParams", queryParams);
   
-            this.uidvalidate = false;
+            this.uidnosurveyvalidate = false;
             queryParams.forEach((value, key) => {
               console.log(`Query Parameter - ${key}: ${value}`);
               if (value === this.nosurveyuid) {
-                this.uidvalidate = true;
+                this.uidnosurveyvalidate = true;
               }
             });
   
-            isValid = this.uidvalidate;
+            isValid = this.uidnosurveyvalidate;
           } catch (error) {
             console.error("Error parsing URL:", error);
             isValid = false;
@@ -2600,15 +2605,15 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
   
             console.log("queryParams", queryParams);
   
-            this.uidvalidate= false;
+            this.uidduplicatevalidate= false;
             queryParams.forEach((value, key) => {
               console.log(`Query Parameter - ${key}: ${value}`);
               if (value === this.duplicateuid) {
-                this.uidvalidate = true;
+                this.uidduplicatevalidate = true;
               }
             });
   
-            isValid = this.uidvalidate;
+            isValid = this.uidduplicatevalidate;
           } catch (error) {
             console.error("Error parsing URL:", error);
             isValid = false;
@@ -2629,15 +2634,15 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
   
             console.log("queryParams", queryParams);
   
-            this.uidvalidate = false;
+            this.uidsecurityvalidate = false;
             queryParams.forEach((value, key) => {
               console.log(`Query Parameter - ${key}: ${value}`);
               if (value === this.securityuid) {
-                this.uidvalidate = true;
+                this.uidsecurityvalidate = true;
               }
             });
   
-            isValid = this.uidvalidate;
+            isValid = this.uidsecurityvalidate;
           } catch (error) {
             console.error("Error parsing URL:", error);
             isValid = false;
