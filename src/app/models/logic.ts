@@ -10,3 +10,26 @@ export class Logic {
         public elseExpected: number = 0
     ) { }
 }
+
+export class childData {
+    constructor(
+        public id: number = 0,
+        public surveyId: number = 0,
+        public questionId: number = 0,
+        public groupId: number = 0,
+        public isParent: boolean = false ,
+        public status: string = 'ACT'
+    ) { }
+}
+
+export class Pipe {
+    constructor(
+        public id: number = 0,
+        public surveyId: number = 0,
+        public questionId: number = 0,
+        public groupId: number = 0,
+        public isParent: boolean = true ,
+        public status: string = 'ACT',
+        public childData: childData[] = []
+    ) { }
+}

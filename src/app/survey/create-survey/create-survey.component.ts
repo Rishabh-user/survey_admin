@@ -2467,59 +2467,191 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
   securitylinkreq: boolean = true
   securityuidreq: boolean = true
   touchedreq: boolean = false;
+  uidvalidate:boolean = false
 
-  validateRedirectLink(tab: string): boolean {
+  validateRedirectLink(type: string): boolean {
     let isValid = false;
-    this.touchedreq = true;
 
-    switch (tab) {
+    switch (type) {
       case 'completelink':
         this.completelinkreq = !!this.completelink && this.completelink.trim().length > 0;
         this.completeuidreq = !!this.completeuid && this.completeuid.trim().length > 0;
-
-        isValid = this.completelinkreq && this.completeuidreq;
+  
+        if (this.completelinkreq && this.completeuidreq) {
+          try {
+            const url = new URL(this.completelink);
+            const queryParams = new URLSearchParams(url.search);
+  
+            console.log("queryParams", queryParams);
+  
+            this.uidvalidate = false;
+            queryParams.forEach((value, key) => {
+              console.log(`Query Parameter - ${key}: ${value}`);
+              if (value === this.completeuid) {
+                this.uidvalidate = true;
+              }
+            });
+  
+            isValid = this.uidvalidate;
+          } catch (error) {
+            console.error("Error parsing URL:", error);
+            isValid = false;
+          }
+        } else {
+          isValid = false;
+        }
         break;
-
+  
       case 'quotalink':
         this.quotalinkreq = !!this.quotalink && this.quotalink.trim().length > 0;
         this.quotauidreq = !!this.quotauid && this.quotauid.trim().length > 0;
-
-        isValid = this.quotalinkreq && this.quotauidreq;
+  
+        if (this.quotalinkreq && this.quotauidreq) {
+          try {
+            const url = new URL(this.quotalink);
+            const queryParams = new URLSearchParams(url.search);
+  
+            console.log("queryParams", queryParams);
+  
+           this.uidvalidate = false;
+            queryParams.forEach((value, key) => {
+              console.log(`Query Parameter - ${key}: ${value}`);
+              if (value === this.quotauid) {
+                this.uidvalidate = true;
+              }
+            });
+  
+            isValid = this.uidvalidate;
+          } catch (error) {
+            console.error("Error parsing URL:", error);
+            isValid = false;
+          }
+        } else {
+          isValid = false;
+        }
         break;
-
+  
       case 'terminatelink':
         this.terminatelinkreq = !!this.terminatelink && this.terminatelink.trim().length > 0;
         this.termeinateuidreq = !!this.terminateuid && this.terminateuid.trim().length > 0;
-
-        isValid = this.terminatelinkreq && this.termeinateuidreq;
+  
+        if (this.terminatelinkreq && this.termeinateuidreq) {
+          try {
+            const url = new URL(this.terminatelink);
+            const queryParams = new URLSearchParams(url.search);
+  
+            console.log("queryParams", queryParams);
+  
+            this.uidvalidate = false;
+            queryParams.forEach((value, key) => {
+              console.log(`Query Parameter - ${key}: ${value}`);
+              if (value === this.terminateuid) {
+                this.uidvalidate = true;
+              }
+            });
+  
+            isValid = this.uidvalidate;
+          } catch (error) {
+            console.error("Error parsing URL:", error);
+            isValid = false;
+          }
+        } else {
+          isValid = false;
+        }
         break;
-
+  
       case 'nosurveylink':
         this.nosurveylinkreq = !!this.nosurveylink && this.nosurveylink.trim().length > 0;
         this.nosurveyuidreq = !!this.nosurveyuid && this.nosurveyuid.trim().length > 0;
-
-        isValid = this.nosurveylinkreq && this.nosurveyuidreq ;
+  
+        if (this.nosurveylinkreq && this.nosurveyuidreq) {
+          try {
+            const url = new URL(this.nosurveylink);
+            const queryParams = new URLSearchParams(url.search);
+  
+            console.log("queryParams", queryParams);
+  
+            this.uidvalidate = false;
+            queryParams.forEach((value, key) => {
+              console.log(`Query Parameter - ${key}: ${value}`);
+              if (value === this.nosurveyuid) {
+                this.uidvalidate = true;
+              }
+            });
+  
+            isValid = this.uidvalidate;
+          } catch (error) {
+            console.error("Error parsing URL:", error);
+            isValid = false;
+          }
+        } else {
+          isValid = false;
+        }
         break;
-
+  
       case 'duplicatelink':
         this.duplicatelinkreq = !!this.duplicatelink && this.duplicatelink.trim().length > 0;
         this.duplicateuidreq = !!this.duplicateuid && this.duplicateuid.trim().length > 0;
-
-        isValid = this.duplicatelinkreq && this.duplicateuidreq ;
+  
+        if (this.duplicatelinkreq && this.duplicateuidreq) {
+          try {
+            const url = new URL(this.duplicatelink);
+            const queryParams = new URLSearchParams(url.search);
+  
+            console.log("queryParams", queryParams);
+  
+            this.uidvalidate= false;
+            queryParams.forEach((value, key) => {
+              console.log(`Query Parameter - ${key}: ${value}`);
+              if (value === this.duplicateuid) {
+                this.uidvalidate = true;
+              }
+            });
+  
+            isValid = this.uidvalidate;
+          } catch (error) {
+            console.error("Error parsing URL:", error);
+            isValid = false;
+          }
+        } else {
+          isValid = false;
+        }
         break;
-
-
+  
       case 'securitylink':
         this.securitylinkreq = !!this.securitylink && this.securitylink.trim().length > 0;
         this.securityuidreq = !!this.securityuid && this.securityuid.trim().length > 0;
-
-        isValid = this.securitylinkreq && this.securityuidreq ;
+  
+        if (this.securitylinkreq && this.securityuidreq) {
+          try {
+            const url = new URL(this.securitylink);
+            const queryParams = new URLSearchParams(url.search);
+  
+            console.log("queryParams", queryParams);
+  
+            this.uidvalidate = false;
+            queryParams.forEach((value, key) => {
+              console.log(`Query Parameter - ${key}: ${value}`);
+              if (value === this.securityuid) {
+                this.uidvalidate = true;
+              }
+            });
+  
+            isValid = this.uidvalidate;
+          } catch (error) {
+            console.error("Error parsing URL:", error);
+            isValid = false;
+          }
+        } else {
+          isValid = false;
+        }
         break;
+  
       default:
-
+        isValid = false;
         break;
     }
-
+  
     return isValid;
   }
 
@@ -2537,6 +2669,17 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
   onSelectionChange(event: any, quesid: any): void {
     this.selectedSurveyIds[quesid] = event.value;
     console.log("this.selectedSurveyIds[quesid]", this.selectedSurveyIds[quesid]);
+  }
+
+  getPipingquesList(ques:any){
+
+    console.log("aaa",ques)
+    this.pipingQuestionById=[] 
+    this.surveyservice.GetQuestionListBySurveyId(this.surveyId).subscribe((response: responseDTO[]) => {
+      this.pipingQuestionById = response
+      console.log("aaa",this.pipingQuestionById)
+    });
+
   }
 
   savePiping(quesid:any,index:any){
@@ -2579,7 +2722,9 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
 
   groupid:any
   getPipingVlaue(){
+
     this.surveyservice.GetPiping(this.surveyId).subscribe({
+      
       next: (resp: any) => {
         console.log("resp pipe",resp)
         this.groupid = resp.groupId
@@ -2588,9 +2733,33 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
       error: (err:any) =>{
         
       }
+    });
+
+  }
+
+  deletePiping(quesid:any,index:any){
+
+    this.surveyservice.deletePipe(this.surveyId,index+1).subscribe({
+      
+      next: (resp: any) => {
+        
+        if(resp === '"DeletedSuccessfully"'){
+          this.utils.showSuccess("Piping deleted succesfully")
+          window.location.reload();
+        }
+        else {
+          this.utils.showError("Not Deleted")
+        }
+        
+      },
+      error: (err:any) =>{
+        
+      }
     })
 
   }
+
+  
 
   
 

@@ -678,7 +678,7 @@
                                                     <button class="nav-link" id="piping-tab" data-bs-toggle="tab"
                                                         [attr.data-bs-target]="'#piping' + question.id" role="tab"
                                                         aria-selected="false"
-                                                        (click)="getLogicQuestionListForCalculation(question?.id,question?.sort);getQuestionListAgeCalculation(question?.id)">Piping</button>
+                                                        (click)="getPipingquesList(question?.id)">Piping</button>
                                                 </li>
                                             </ul>
                                             <div class="tab-content p-4">
@@ -1269,7 +1269,7 @@
                                                         <h6>Set Values for Piping</h6>
                                                     </div>
 
-                                                    <div class="input-group flex-nowrap">
+                                                    <div class="input-group flex-nowrap mb-3">
                                                         <span class="input-group-text"
                                                             id="addon-wrapping">In</span>
                                                         <select class="form-select">
@@ -1288,13 +1288,29 @@
                                                         </mat-select>
                                                         </mat-form-field>
                                                     </form>
+                                                    <div  class="row mt-3">
+                                                        <div class="col-6 d-flex ">
+                                                            <button type="button" class="btn btn-primary"
+                                                                (click)="savePiping(question?.id,i)">Save</button>
+                                                        </div>
+                                                        <div class="col-6 text-end d-flex justify-content-end">
+                                                            <button type="button" class="btn btn-primary"
+                                                                (click)="deletePiping(question?.id,i)">Delete</button>
+                                                        </div>
 
-                                                    <div class="row">
+                                                    </div>
+                                                    <!-- <div class="row">
                                                         <div class="col-12 text-end d-flex justify-content-end">
                                                             <button type="button" class="btn btn-primary"
                                                                 (click)="savePiping(question?.id,i)">Save</button>
                                                         </div>
                                                     </div>
+                                                    <div class="row">
+                                                        <div class="col-12 text-end d-flex justify-content-end">
+                                                            <button type="button" class="btn btn-primary"
+                                                                (click)="deletePiping(question?.id,i)">Delete</button>
+                                                        </div>
+                                                    </div> -->
 
                                                 </div>
                                             </div>
@@ -1808,6 +1824,7 @@
                             [ngModelOptions]="{standalone: true}" (blur)="validateRedirectLink('completelink')"/>
                     </div>
                     <div *ngIf="!completeuidreq" class="text-danger">UID is required.</div>
+                    <div *ngIf="!uidvalidate" class="text-danger">UID is must be there in Link.</div>
                     <div class="mb-3">
                         <button type="button" class="btn btn-primary btn-sm"
                             (click)="addRedirection('completelink')">Save</button>
@@ -1832,6 +1849,7 @@
                             [ngModelOptions]="{standalone: true}" (blur)="validateRedirectLink('quotalink')"/>
                     </div>
                     <div *ngIf="!quotauidreq" class="text-danger">UID is required.</div>
+                    <div *ngIf="!uidvalidate" class="text-danger">UID is must be there in Link.</div>
                    
                     <div class="mb-3">
                         <button type="button" class="btn btn-primary btn-sm"
@@ -1858,6 +1876,7 @@
                             [ngModelOptions]="{standalone: true}" (blur)="validateRedirectLink('terminatelink')"/>
                     </div>
                     <div *ngIf="!termeinateuidreq" class="text-danger">UID is required.</div>
+                    <div *ngIf="!uidvalidate" class="text-danger">UID is must be there in Link.</div>
                     <div class="mb-3">
                         <button type="button" class="btn btn-primary btn-sm"
                             (click)="addRedirection('terminatelink')">Save</button>
@@ -1883,6 +1902,7 @@
                             [ngModelOptions]="{standalone: true}" (blur)="validateRedirectLink('nosurveylink')"/>
                     </div>
                     <div *ngIf="!nosurveyuidreq" class="text-danger">UID is required.</div>
+                    <div *ngIf="!uidvalidate" class="text-danger">UID is must be there in Link.</div>
                     <div class="mb-3">
                         <button type="button" class="btn btn-primary btn-sm"
                             (click)="addRedirection('nosurveylink')">Save</button>
@@ -1908,6 +1928,7 @@
                             [ngModelOptions]="{standalone: true}" (blur)="validateRedirectLink('duplicatelink')" />
                     </div>
                     <div *ngIf="!duplicateuidreq" class="text-danger">UID is required.</div>
+                    <div *ngIf="!uidvalidate" class="text-danger">UID is must be there in Link.</div>
                     <div class="mb-3">
                         <button type="button" class="btn btn-primary btn-sm"
                             (click)="addRedirection('duplicatelink')">Save</button>
@@ -1933,6 +1954,7 @@
                             [ngModelOptions]="{standalone: true}" (blur)="validateRedirectLink('securitylink')"/>
                     </div>
                     <div *ngIf="!securityuidreq" class="text-danger">UID is required.</div>
+                    <div *ngIf="!uidvalidate" class="text-danger">UID is must be there in Link.</div>
                     <div class="mb-3">
                         <button type="button" class="btn btn-primary btn-sm"
                             (click)="addRedirection('securitylink')">Save</button>
