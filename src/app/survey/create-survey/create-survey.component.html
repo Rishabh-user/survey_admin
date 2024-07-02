@@ -701,7 +701,7 @@
                                                                         <span class="input-group-text"
                                                                             id="addon-wrapping">In</span>
                                                                         <select class="form-select">
-                                                                            <option selected>{{question?.question}}
+                                                                            <option selected><div [innerHTML]="question?.question"></div>
                                                                             </option>
                                                                         </select>
                                                                     </div>
@@ -1075,7 +1075,7 @@
                                                     </div>
                                                 </div>
                                                 <div class="tab-pane" [id]="'calculator' + question.id" role="tabpanel"
-                                                    aria-labelledby="calculator-tab" *ngIf="checkgenerictype === true">
+                                                    aria-labelledby="calculator-tab" *ngIf="checkgenerictype === true && question?.genericType !='Age'">
                                                     <h5 ngClass="mb-4">Calculations</h5>
                                                     <div ngClass="d-flex justify-content-between mb-3">
                                                         <h6>Find current age of respondent given his/her year of birth
@@ -1088,10 +1088,14 @@
                                                             <div class="col-md-3">
                                                                 <div>Question</div>
                                                             </div>
-                                                            <div class="col-md-9">
+                                                            <!-- <div class="col-md-9">
                                                                 <input class="form-control"
                                                                     [ngModel]="question.question">
+                                                            </div> -->
+                                                            <div class="col-md-9">
+                                                                <div [innerHTML]="question?.question"></div>
                                                             </div>
+                                                            
                                                         </div>
                                                     </div>
 
@@ -1259,8 +1263,18 @@
 
                                                 </div>
                                                 <div class="tab-pane" [id]="'calculator' + question.id" role="tabpanel"
+                                                    aria-labelledby="calculator-tab" *ngIf="checkgenerictype === true && question?.genericType =='Age'">
+                                                    <div class="alert alert-danger" role="alert">
+                                                        Calculation is not avaliable for this Question
+                                                    </div>
+                                                    <!-- <p>Calculation is not avaliable for this Question</p> -->
+                                                </div>
+                                                <div class="tab-pane" [id]="'calculator' + question.id" role="tabpanel"
                                                     aria-labelledby="calculator-tab" *ngIf="checkgenerictype !== true">
-                                                    <p>Calculation is not avaliable for this Survey</p>
+                                                    <!-- <p>Calculation is not avaliable for this Survey</p> -->
+                                                    <div class="alert alert-danger" role="alert">
+                                                        Calculation is not avaliable for this Survey
+                                                    </div>
                                                 </div>
                                                 <div class="tab-pane" [id]="'piping' + question.id" role="tabpanel"
                                                     aria-labelledby="piping-tab">
