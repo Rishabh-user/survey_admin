@@ -2677,18 +2677,29 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
     console.log("this.selectedSurveyIds[quesid]", this.selectedSurveyIds[quesid]);
   }
 
-  getPipingquesList(ques:any){
+  nextQuestions:any[]=[]
 
-    console.log("aaa",ques)
-    this.pipingQuestionById=[] 
+  getPipingquesList(quesId: number): void {
+    console.log("Requesting questions after ID:", quesId);
+
     this.surveyservice.GetQuestionListBySurveyId(this.surveyId).subscribe((response: responseDTO[]) => {
-      this.pipingQuestionById = response
-      console.log("aaa",this.pipingQuestionById)
-      const selectedQuestion = this.pipingQuestionById.find((item: { id: any; }) => item.id < ques);
-      console.log("selectedQuestion",selectedQuestion)
-    });
+      this.pipingQuestionById = response;
+      console.log("Fetched questions:", this.pipingQuestionById);
+     
+      const quesIndex = this.pipingQuestionById.findIndex((q: { id: number; }) => q.id === quesId);
+  
+      if (quesIndex !== -1) {
+        // Get the next question items
+        this.nextQuestions = this.pipingQuestionById.slice(quesIndex + 1);
+        const nextQuestionItems = this.nextQuestions.map((q: { item: any; }) => q.item);
+       
+      }
 
+    }, (error: any) => {
+      console.error("Error fetching question list:", error);
+    });
   }
+  
 
 
   questionIds:any[]=[];
@@ -2710,6 +2721,13 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
             this.questionIds = group.pipingConcepts
               .filter((concept: any) => !concept.isParent)
               .map((concept: any) => concept.questionId);
+
+              this.pipingQuestionById.forEach((_: any, index: number) => {
+                if (index < this.toppings.length) {
+                  const control = this.getFormControl(index);
+                  control.setValue(this.questionIds, { emitEvent: false }); // Set value without emitting change events
+                }
+              });
 
             this.parentid = group.pipingConcepts
               .filter((concept: any) => concept.isParent)

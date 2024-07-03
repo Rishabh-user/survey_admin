@@ -1297,7 +1297,7 @@
                                                         {{questionIds}}
                                                         <mat-form-field>
                                                         <mat-select [formControl]="getFormControl(question?.id)" multiple (selectionChange)="onSelectionChange($event, question?.id)" [(ngModel)]="questionIds">
-                                                            <ng-container *ngFor="let name of pipingQuestionById">
+                                                            <ng-container *ngFor="let name of nextQuestions">
                                                               <mat-option [value]="name.id">{{ name.item }}</mat-option>
                                                             </ng-container>
                                                         </mat-select>
