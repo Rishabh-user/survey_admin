@@ -181,6 +181,7 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
   selectedSurveyIds: { [key: number]: any[] } = {};
   
   
+  
 
   centerId: number = this.utils.getCenterId();
 
@@ -2032,6 +2033,14 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
     const ifIdNumber = +logicEntryIfId;
 
     const selectedOption = event.option.value;
+
+    if (!this.selectedOptionsLogic[questionIndex]) {
+      this.selectedOptionsLogic[questionIndex] = [];
+    }
+    if (!this.selectedOptionsLogic[questionIndex][logicIndex]) {
+      this.selectedOptionsLogic[questionIndex][logicIndex] = [];
+    }
+    
     if (!this.selectedOptionsLogic[questionIndex][logicIndex].includes(selectedOption)) {
       this.selectedOptionsLogic[questionIndex][logicIndex].push(selectedOption);
 
@@ -2042,6 +2051,27 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
 
     }
   }
+   
+  selectedOptionsIFLogicOneValue(event: MatAutocompleteSelectedEvent, logicEntryIfId: any, questionIndex: number, logicIndex: number): void {
+    const selectedOption = event.option.value;
+  
+    if (logicEntryIfId === 1 || logicEntryIfId === 2) {
+      // Clear previous selections
+      this.selectedOptionsLogic[questionIndex][logicIndex] = [];
+      this.valuefilteredOptions.forEach(option => {
+        option.isSelected = (option.option === selectedOption);
+      });
+    } else {
+      selectedOption.isSelected = true;
+    }
+    
+    // Update the selection
+    this.selectedOptionsIFLogic(event, logicEntryIfId, questionIndex, logicIndex);
+  }
+  
+  
+
+
   optionListByQuestionIdLogic: any
   valuefilteredOptions: any[] = []
   getOptionsByQuestionIdLogic(selectedQuestion: any) {
@@ -2062,18 +2092,37 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
       console.log("valuefilteredOptions", this.valuefilteredOptions)
     });
   }
+  // removeOptionLogic(option: any, questionIndex: number, logicIndex: number): void {
+  //   const index = this.selectedOptionsLogic[questionIndex][logicIndex].indexOf(option);
+  //   if (index >= 0) {
+  //     this.selectedOptionsLogic[questionIndex][logicIndex].splice(index, 1);
+
+  //     const selectedOptionsArray = this.selectedOptionsLogic[questionIndex][logicIndex];
+  //     const selectedOptionsString = selectedOptionsArray.map((option: { id: any; }) => option.id).join(', ');
+
+  //     this.logicEntriesPerQuestion[questionIndex][logicIndex].ifExpected = selectedOptionsString;
+
+  //   }
+  // }
   removeOptionLogic(option: any, questionIndex: number, logicIndex: number): void {
     const index = this.selectedOptionsLogic[questionIndex][logicIndex].indexOf(option);
     if (index >= 0) {
       this.selectedOptionsLogic[questionIndex][logicIndex].splice(index, 1);
-
+  
+      const filteredOption = this.valuefilteredOptions.find(opt => opt.option === option.option);
+      if (filteredOption) {
+        filteredOption.isSelected = false;
+      }
+  
+      // Update ifExpected with the remaining selected options
       const selectedOptionsArray = this.selectedOptionsLogic[questionIndex][logicIndex];
       const selectedOptionsString = selectedOptionsArray.map((option: { id: any; }) => option.id).join(', ');
-
+  
+      // Update the ifExpected property
       this.logicEntriesPerQuestion[questionIndex][logicIndex].ifExpected = selectedOptionsString;
-
     }
   }
+  
   onLogicEntryChange(questionIndex: number, logicIndex: number): void {
     this.selectedOptionsLogic[questionIndex][logicIndex] = []; // Clear the selectedOptions array
   }

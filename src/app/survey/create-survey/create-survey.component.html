@@ -715,6 +715,7 @@
                                                                                     <div>Value</div>
                                                                                 </div>
                                                                                 <div class="col-md-3">
+                                                                                    
                                                                                     <select class="form-select"
                                                                                         [(ngModel)]="logicEntry.ifId"
                                                                                         (change)="onLogicEntryChange(i,j)">
@@ -749,10 +750,10 @@
                                                                                         </mat-chip-grid>
                                                                                         <mat-autocomplete
                                                                                             #auto="matAutocomplete"
-                                                                                            (optionSelected)="selectedOptionsIFLogic($event,logicEntry.ifId,i,j)">
+                                                                                            (optionSelected)="selectedOptionsIFLogic($event,logicEntry.ifId,i,j);selectedOptionsIFLogicOneValue($event,logicEntry.ifId,i,j)">
                                                                                             <mat-option
                                                                                                 *ngFor="let option of valuefilteredOptions"
-                                                                                                [value]="option">
+                                                                                                [value]="option" [disabled]="option.isSelected">
                                                                                                 {{option.option}}
                                                                                             </mat-option>
                                                                                         </mat-autocomplete>
@@ -1294,23 +1295,23 @@
                                                     
                                                     <!-- {{ question | json }} -->
                                                     <form>
-                                                        {{questionIds}}
                                                         <mat-form-field>
-                                                        <mat-select [formControl]="getFormControl(question?.id)" multiple (selectionChange)="onSelectionChange($event, question?.id)" [(ngModel)]="questionIds">
-                                                            <ng-container *ngFor="let name of nextQuestions">
-                                                              <mat-option [value]="name.id">{{ name.item }}</mat-option>
-                                                            </ng-container>
-                                                        </mat-select>
+                                                            <mat-select [formControl]="getFormControl(question?.id)" multiple (selectionChange)="onSelectionChange($event, question?.id)" [(ngModel)]="questionIds"
+                                                           >
+                                                                <ng-container *ngFor="let name of nextQuestions">
+                                                                <mat-option [value]="name.id">{{ name.item }}</mat-option>
+                                                                </ng-container>
+                                                            </mat-select>
                                                         </mat-form-field>
                                                     </form>
                                                     <div  class="row mt-3">
                                                         <div class="col-6 d-flex ">
                                                             <button type="button" class="btn btn-primary"
-                                                                (click)="savePiping(question?.id,i)">Save</button>
+                                                                (click)="deletePiping(question?.id,i)">Delete</button>
                                                         </div>
                                                         <div class="col-6 text-end d-flex justify-content-end">
                                                             <button type="button" class="btn btn-primary"
-                                                                (click)="deletePiping(question?.id,i)">Delete</button>
+                                                            (click)="savePiping(question?.id,i)">Save</button>
                                                         </div>
 
                                                     </div>
