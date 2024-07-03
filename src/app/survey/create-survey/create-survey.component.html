@@ -678,7 +678,7 @@
                                                     <button class="nav-link" id="piping-tab" data-bs-toggle="tab"
                                                         [attr.data-bs-target]="'#piping' + question.id" role="tab"
                                                         aria-selected="false"
-                                                        (click)="getPipingquesList(question?.id)">Piping</button>
+                                                        (click)="getPipingquesList(question?.id);getpiping(question?.id)">Piping</button>
                                                 </li>
                                             </ul>
                                             <div class="tab-content p-4">
@@ -1294,10 +1294,11 @@
                                                     
                                                     <!-- {{ question | json }} -->
                                                     <form>
+                                                        {{questionIds}}
                                                         <mat-form-field>
-                                                        <mat-select [formControl]="getFormControl(question?.id)" multiple (selectionChange)="onSelectionChange($event, question?.id)">
+                                                        <mat-select [formControl]="getFormControl(question?.id)" multiple (selectionChange)="onSelectionChange($event, question?.id)" [(ngModel)]="questionIds">
                                                             <ng-container *ngFor="let name of pipingQuestionById">
-                                                            <mat-option [value]="name.id">{{ name.item }}</mat-option>
+                                                              <mat-option [value]="name.id">{{ name.item }}</mat-option>
                                                             </ng-container>
                                                         </mat-select>
                                                         </mat-form-field>

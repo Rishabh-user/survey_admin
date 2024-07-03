@@ -180,6 +180,7 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
   toppings: FormArray;
   selectedSurveyIds: { [key: number]: any[] } = {};
   
+  
 
   centerId: number = this.utils.getCenterId();
 
@@ -265,7 +266,8 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
     this.GetSurveyDetails(this.pageSize, this.pageNumber)
     this.getLogicValues();
     this.getLogicThens();
-    this.getLogicQuestionList(0)
+    this.getLogicQuestionList(0);
+    this.getpiping(0)
     this.defaultSelectedValue = null;
 
     //this.defaultRandomValueEnter();
@@ -275,7 +277,6 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
 
     this.getSurveyLooping();
     this.getPartnerRidirection();
-    this.getPipingVlaue();
 
     this.pipingQuestionById.forEach(() => {
       this.toppings.push(new FormControl([]));
@@ -2683,15 +2684,67 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
     this.surveyservice.GetQuestionListBySurveyId(this.surveyId).subscribe((response: responseDTO[]) => {
       this.pipingQuestionById = response
       console.log("aaa",this.pipingQuestionById)
+      const selectedQuestion = this.pipingQuestionById.find((item: { id: any; }) => item.id < ques);
+      console.log("selectedQuestion",selectedQuestion)
     });
 
   }
 
+
+  questionIds:any[]=[];
+  pipegroupid:number = 0;
+  parentid:any;
+
+  getpiping(quesid: any): void {
+    this.surveyservice.GetPipingByGroup(this.surveyId, quesid).subscribe({
+      next: (resp: any) => {
+        console.log("Response:", resp);
+        this.groupid = resp; 
+        
+        this.groupid.forEach((group: any) => {
+          console.log("Group:", group);
+          this.pipegroupid = group.groupId
+          console.log("Group:", this.pipegroupid);
+          
+          if (Array.isArray(group.pipingConcepts)) {
+            this.questionIds = group.pipingConcepts
+              .filter((concept: any) => !concept.isParent)
+              .map((concept: any) => concept.questionId);
+
+            this.parentid = group.pipingConcepts
+              .filter((concept: any) => concept.isParent)
+              .map((concept: any) => concept.id);
+
+            console.log("parentid",this.parentid)
+            
+            console.log("Question IDs:", this.questionIds);
+            
+          } else {
+            console.error(`Invalid pipingConcepts in group ID: ${group.groupId}`);
+          }
+        });
+      },
+      error: (err: any) => {
+        console.error("Error:", err);
+      }
+    });
+  }
+
   savePiping(quesid:any,index:any){
+    debugger
     console.log("index",index)
+    console.log("pipeval",this.pipegroupid)
+
+    let pipeid
+
+    if(this.pipegroupid > 0){
+      pipeid = Array.isArray(this.parentid) && this.parentid.length > 0 ? this.parentid[0] : 0;
+    }else {
+      pipeid = 0
+    }
 
     const parentData = {
-      id: 0,
+      id: pipeid,
       surveyId: this.surveyId,
       questionId: quesid, 
       groupId: index+1,
@@ -2710,6 +2763,22 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
 
     const dataToSend = [parentData, ...childData];
     console.log("dataToSend,",dataToSend)
+   
+    if(this.pipegroupid > 0){
+
+      this.surveyservice.updatePiping(dataToSend).subscribe({
+        next: (resp: any) => {
+            if (resp === '"UpdatedSuccessfully"') {
+                this.utils.showSuccess("qwertyui");
+                // window.location.reload();
+            }
+        },
+        error: (err: any) => {
+            this.utils.showError('Error');
+        }
+      });
+
+    } else {
 
     this.surveyservice.createPiping(dataToSend).subscribe({
       next: (resp: any) => {
@@ -2721,26 +2790,34 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
       error: (err: any) => {
           this.utils.showError('Error');
       }
-  });
+    });
+
+
+  }
+    debugger
+
+    
 
   }
 
   groupid:any
-  getPipingVlaue(){
+  // getPipingVlaue(){
 
-    this.surveyservice.GetPiping(this.surveyId).subscribe({
+  //   this.surveyservice.GetPiping(this.surveyId).subscribe({
       
-      next: (resp: any) => {
-        console.log("resp pipe",resp)
-        this.groupid = resp.groupId
+  //     next: (resp: any) => {
+  //       console.log("resp pipe",resp)
+  //       this.groupid = resp.groupId
         
-      },
-      error: (err:any) =>{
+  //     },
+  //     error: (err:any) =>{
         
-      }
-    });
+  //     }
+  //   });
 
-  }
+  // }
+
+  
 
   deletePiping(quesid:any,index:any){
 

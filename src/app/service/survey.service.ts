@@ -510,6 +510,11 @@ export class SurveyService {
     return this.http.get<responseDTO[]>(url);
   }
 
+  GetPipingByGroup(surveyId: any,questionId:any): Observable<responseDTO[]> {
+    const url = `${this.apiUrl}api/admin/${this.userId}/Logics/GetPipingByGroup?surveyId=${surveyId}&questionId=${questionId}`;
+    return this.http.get<responseDTO[]>(url);
+  }
+
   deletePipe(surveyId: any,groupId:any): Observable<any> {
     const url = `${this.apiUrl}api/admin/${this.userId}/Logics/DeletePiping?surveyId=${surveyId}&groupId=${groupId}`;
     return this.http.delete(url, { responseType: 'text' });
