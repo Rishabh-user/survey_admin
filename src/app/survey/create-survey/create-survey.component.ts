@@ -2531,6 +2531,11 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
       case 'completelink':
         this.completelinkreq = !!this.completelink && this.completelink.trim().length > 0;
         this.completeuidreq = !!this.completeuid && this.completeuid.trim().length > 0;
+
+        if (this.completelink && !/^https?:\/\//i.test(this.completelink)) {
+
+          this.completelink = 'http://' + this.completelink;
+        }
   
         if (this.completelinkreq && this.completeuidreq) {
           try {
@@ -2560,6 +2565,11 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
       case 'quotalink':
         this.quotalinkreq = !!this.quotalink && this.quotalink.trim().length > 0;
         this.quotauidreq = !!this.quotauid && this.quotauid.trim().length > 0;
+
+        if (this.quotalink && !/^https?:\/\//i.test(this.quotalink)) {
+
+          this.quotalink = 'http://' + this.quotalink;
+        }
   
         if (this.quotalinkreq && this.quotauidreq) {
           try {
@@ -2589,6 +2599,11 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
       case 'terminatelink':
         this.terminatelinkreq = !!this.terminatelink && this.terminatelink.trim().length > 0;
         this.termeinateuidreq = !!this.terminateuid && this.terminateuid.trim().length > 0;
+
+        if (this.terminatelink && !/^https?:\/\//i.test(this.terminatelink)) {
+
+          this.terminatelink = 'http://' + this.terminatelink;
+        }
   
         if (this.terminatelinkreq && this.termeinateuidreq) {
           try {
@@ -2618,6 +2633,11 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
       case 'nosurveylink':
         this.nosurveylinkreq = !!this.nosurveylink && this.nosurveylink.trim().length > 0;
         this.nosurveyuidreq = !!this.nosurveyuid && this.nosurveyuid.trim().length > 0;
+
+        if (this.nosurveylink && !/^https?:\/\//i.test(this.nosurveylink)) {
+
+          this.nosurveylink = 'http://' + this.nosurveylink;
+        }
   
         if (this.nosurveylinkreq && this.nosurveyuidreq) {
           try {
@@ -2647,6 +2667,11 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
       case 'duplicatelink':
         this.duplicatelinkreq = !!this.duplicatelink && this.duplicatelink.trim().length > 0;
         this.duplicateuidreq = !!this.duplicateuid && this.duplicateuid.trim().length > 0;
+
+        if (this.duplicatelink && !/^https?:\/\//i.test(this.duplicatelink)) {
+
+          this.duplicatelink = 'http://' + this.duplicatelink;
+        }
   
         if (this.duplicatelinkreq && this.duplicateuidreq) {
           try {
@@ -2676,6 +2701,12 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
       case 'securitylink':
         this.securitylinkreq = !!this.securitylink && this.securitylink.trim().length > 0;
         this.securityuidreq = !!this.securityuid && this.securityuid.trim().length > 0;
+
+
+        if (this.securitylink && !/^https?:\/\//i.test(this.securitylink)) {
+
+          this.securitylink = 'http://' + this.duplicatelink;
+        }
   
         if (this.securitylinkreq && this.securityuidreq) {
           try {
