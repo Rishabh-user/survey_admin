@@ -1,7 +1,7 @@
 import { Component, OnInit, Renderer2, ElementRef, ViewChild, AfterViewInit, EventEmitter, Output } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
-import { FormArray, FormBuilder, FormControl } from '@angular/forms';
+import { FormArray, FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { startWith, map } from 'rxjs/operators';
 import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
@@ -179,6 +179,9 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
   redirectid:any
   toppings: FormArray;
   selectedSurveyIds: { [key: number]: any[] } = {};
+  form: FormGroup;
+  quesserialno:any;
+  qNo:any
   
   
   
@@ -234,6 +237,7 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
     });
 
     this.toppings = this.fb.array([]);
+    this.form = this.fb.group({});
 
 
   }
@@ -282,6 +286,7 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
     this.pipingQuestionById.forEach(() => {
       this.toppings.push(new FormControl([]));
     });
+   
   }
   ngAfterViewInit() {
     if (this.selectElement) {
@@ -526,6 +531,7 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
         this.categoryId = data.categoryId
         this.isQNumberRequired = data.isQNumberRequired
         this.selectedCountry = this.country.find(country => country.id === this.countryId) || null;
+
 
         this.surveycreateddate = data.createdDate
 
@@ -1805,14 +1811,19 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
   description: any
   youtubeUrl: any
   saveScreenImage(tab: string): void {
+
+    if(!this.validateSerialNumber(tab) && this.isQNumberRequired === true){
+      this.utils.showError("Serial Number is required");
+      return;
+    }
     if (!this.validateAddScreen(tab)) {
       this.utils.showError('Please fill all required fields.');
       return;
     }
-    this.screenQuestionObj.createdDate = this.surveycreateddate
-    this.screenQuestionObj.question = this.screenQuestion
-    this.screenQuestionObj.description = this.description
-    this.screenQuestionObj.youtubeUrl = this.youtubeUrl
+    this.screenQuestionObj.createdDate = this.surveycreateddate;
+    this.screenQuestionObj.question = this.screenQuestion;
+    this.screenQuestionObj.description = this.description;
+    this.screenQuestionObj.youtubeUrl = this.youtubeUrl;
     // this.screenQuestionObj.image = this.screenImage.replace(/"/g, "");
     // this.screenQuestionObj.image = this.screenImage;
     if (typeof this.screenImage === 'string') {
@@ -1828,10 +1839,12 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
       this.screenQuestionObj.video = '';
     }
 
-    this.screenQuestionObj.isScreening = this.screenRedirectUser
-    this.screenQuestionObj.screeningRedirectUrl = this.screenRedirectURL
-    this.screenQuestionObj.surveyTypeId = this.surveyId
-    this.screenQuestionObj.questionTypeId = 21
+    this.screenQuestionObj.isScreening = this.screenRedirectUser;
+    this.screenQuestionObj.screeningRedirectUrl = this.screenRedirectURL;
+    this.screenQuestionObj.surveyTypeId = this.surveyId;
+    this.screenQuestionObj.qNo = this.qNo
+    this.screenQuestionObj.questionTypeId = 21;
+    this.screenQuestionObj.isRequired = false;
 
     this.surveyservice.CreateGeneralQuestion(this.screenQuestionObj).subscribe({
       next: (resp: any) => {
@@ -1871,6 +1884,7 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
   categoryNameCheck: boolean = true
   otherCategoryCheck: boolean = true
   isValidSurvey: boolean = false
+  
 
   validateSurvey() {
     this.surveyNameCheck = !!this.surveyName && this.surveyName.length >= 3;
@@ -2204,11 +2218,11 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
 
 
   //add screen validation
-  headingrequired: boolean = true
-  descriptionrequired: boolean = true
-  checkedrequired: boolean = true
-  urlrequired: boolean = true
-  iframerequired: boolean = true
+  headingrequired: boolean = true;
+  descriptionrequired: boolean = true;
+  checkedrequired: boolean = true;
+  urlrequired: boolean = true;
+  iframerequired: boolean = true;
   touched: boolean = false;
 
 
@@ -2748,9 +2762,9 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
 
   }
 
-  getFormControl(index: number): FormControl {
-    return this.toppings.at(index) as FormControl;
-  }
+  // getFormControl(index: number): FormControl {
+  //   return this.toppings.at(index) as FormControl;
+  // }
 
   onSelectionChange(event: any, quesid: any): void {
     this.selectedSurveyIds[quesid] = event.value;
@@ -2813,13 +2827,37 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
               .filter((concept: any) => concept.isParent)
               .map((concept: any) => concept.id);
 
+            alert(this.questionIds)
+    
+            // this.questionFormControl.setValue(this.questionIds);
             console.log("parentid",this.parentid)
             
             console.log("Question IDs:", this.questionIds);
-            
+
+
+            this.questionIds.forEach(id => {
+              const controlId = id.toString();
+              console.log("Processing question ID:", controlId);
+              if (!this.form.contains(controlId)) {
+                console.log("Adding control for ID:", controlId);
+                this.form.addControl(controlId, new FormControl([]));
+                console.log("Control added for ID:", controlId);
+              }
+              const control = this.form.get(controlId);
+              if (control) {
+                console.log("Setting value for control ID:", controlId);
+                control.setValue([2025]);
+                console.log("Value set for control ID:", controlId);
+              } else {
+                console.error("Control not found for ID:", controlId);
+              }
+            });
+
           } else {
             console.error(`Invalid pipingConcepts in group ID: ${group.groupId}`);
-          }
+          
+            
+          } 
         });
       },
       error: (err: any) => {
@@ -2827,6 +2865,11 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
       }
     });
   }
+
+  getFormControl(questionId: any): FormControl {
+    return this.form.get(questionId.toString()) as FormControl;
+  }
+  
 
   savePiping(quesid:any,index:any){
     debugger
@@ -2867,7 +2910,7 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
       this.surveyservice.updatePiping(dataToSend).subscribe({
         next: (resp: any) => {
             if (resp === '"UpdatedSuccessfully"') {
-                this.utils.showSuccess("qwertyui");
+                this.utils.showSuccess("Updated Successfully");
                 // window.location.reload();
             }
         },
@@ -2939,9 +2982,44 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
 
   }
 
-  
+  getSerialNumberreq: boolean = true
 
-  
+  validateSerialNumber(tab:string): boolean {
+    let isValid = false;
+
+    switch (tab) {
+      case 'text':
+        this.getSerialNumberreq = !!this.qNo && this.qNo.trim().length > 0;
+
+        isValid = this.getSerialNumberreq
+        break;
+
+      case 'image':
+        this.getSerialNumberreq = !!this.qNo && this.qNo.trim().length > 0;
+
+        isValid = this.getSerialNumberreq
+        break;
+
+      case 'video':
+        this.getSerialNumberreq = !!this.qNo && this.qNo.trim().length > 0;
+
+        isValid = this.getSerialNumberreq
+
+        break
+
+      case 'iframe':
+        this.getSerialNumberreq = !!this.qNo && this.qNo.trim().length > 0;
+
+        isValid = this.getSerialNumberreq
+        break;
+
+      default:
+
+        break;
+    }
+
+    return isValid;
+  }
 
 
 

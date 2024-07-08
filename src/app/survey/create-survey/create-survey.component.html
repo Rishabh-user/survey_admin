@@ -347,6 +347,10 @@
                             <button class="nav-link" id="logics-tab" data-bs-toggle="tab" data-bs-target="#logics"
                                 role="tab" aria-selected="false">Logics</button>
                         </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="blank-tab" data-bs-toggle="tab" data-bs-target="#blank"
+                                role="tab" aria-selected="false">blank</button>
+                        </li>
                     </ul>
                     <div class="tab-content p-4">
                         <div class="tab-pane active" id="randomaisation" role="tabpanel"
@@ -444,6 +448,31 @@
                             <h6>In this Survey Applied Logics Count is <span
                                     class="badge text-bg-warning">{{logiccount}}</span>
                             </h6>
+                        </div>
+
+                        <div class="tab-pane" id="blank" role="tabpanel" aria-labelledby="blank-tab">
+                            <h5 ngClass="mb-4">Blank</h5>
+                            <div ngClass="mb-3 row">
+
+                                <div class="mb-3">
+                                    <mat-form-field>
+                                        <mat-select [(ngModel)]="selectedAutoCodeOption" #selectElement>
+                                            <ng-container *ngFor="let option of pipingQuestionById">
+                                                <mat-option 
+                                                    [value]="option.id">
+                                                    {{ option.item }}
+                                                </mat-option>
+                                            </ng-container>
+                                        </mat-select>
+                                    </mat-form-field>
+                                </div>
+                                <div class="row">
+                                    <div class="col-12 text-end d-flex justify-content-end">
+                                        <button type="button" class="btn btn-primary btn-sm"
+                                            (click)="saveAutoCode()">Save</button>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
 
                     </div>
@@ -594,7 +623,7 @@
 
 
                                 </div>
-                                <div *ngIf="question?.isRequired === false">
+                                <div *ngIf="question?.isRequired === false && !question.isScreening">
                                     <img class="img-fluid" style="width: 400px;"
                                         *ngIf="question.image !== (imageurl + 'Files/Images/')"
                                         [src]="question.image" />
@@ -1295,11 +1324,13 @@
                                                     
                                                     <!-- {{ question | json }} -->
                                                     <form>
+                                                        {{questionIds}}
                                                         <mat-form-field>
                                                             <mat-select [formControl]="getFormControl(question?.id)" multiple (selectionChange)="onSelectionChange($event, question?.id)" [(ngModel)]="questionIds"
                                                            >
                                                                 <ng-container *ngFor="let name of nextQuestions">
-                                                                <mat-option [value]="name.id">{{ name.item }}</mat-option>
+                                                                <mat-option [ariaChecked]="name.id === questionIds"
+                                                                 [value]="name.id">{{ name.item }}</mat-option>
                                                                 </ng-container>
                                                             </mat-select>
                                                         </mat-form-field>
@@ -1589,11 +1620,25 @@
                             <h6>Please add text you want display before the next queston.</h6>
                         </div>
                     </div>
-                    <div class="mb-3">
+                    <!-- <div class="mb-3">
                         <input type="text" class="form-control" placeholder="Insert Heading for Image Screen"
                             [(ngModel)]="screenQuestion" [ngModelOptions]="{standalone: true}"
                             (blur)="validateAddScreen('text')" />
                         <div *ngIf="!headingrequired" class="text-danger">Heading is required.</div>
+                    </div> -->
+                    <div class="mb-3">
+                        <div class="d-flex gap-2">
+                            <div class="flex-1" *ngIf="isQNumberRequired === true">
+                                <input type="text" id="qNo" name="qNo" class="form-control" [(ngModel)]="qNo" placeholder="S.No" placeholder="S.No" (blur)="validateSerialNumber('text')" [ngModelOptions]="{standalone: true}"/>
+                                <div *ngIf="!getSerialNumberreq" class="text-danger">S.no is required.</div>
+                            </div>
+                            <div class="flex-5">
+                                <input type="text" class="form-control" placeholder="Insert Heading for Image Screen"
+                                [(ngModel)]="screenQuestion" [ngModelOptions]="{standalone: true}"
+                                (blur)="validateAddScreen('text')" />
+                                <div *ngIf="!headingrequired" class="text-danger">Heading is required.</div>
+                            </div>
+                        </div>
                     </div>
                     <div class="mb-3">
                         <textarea type="text" class="form-control" rows="10" col="20" placeholder="Insert Text"
@@ -1632,10 +1677,19 @@
                         </div>
                     </div>
                     <div class="mb-3">
-                        <input type="text" class="form-control" placeholder="Insert Heading for Image Screen"
-                            [(ngModel)]="screenQuestion" [ngModelOptions]="{standalone: true}"
-                            (blur)="validateAddScreen('image')" />
-                        <div *ngIf="!headingrequired" class="text-danger">Heading is required.</div>
+                        <div class="d-flex gap-2">
+                            <div class="flex-1" *ngIf="isQNumberRequired === true">
+                                <input type="text" id="qNo" name="qNo" class="form-control" [(ngModel)]="qNo" placeholder="S.No" placeholder="S.No" (blur)="validateSerialNumber('image')" [ngModelOptions]="{standalone: true}"/>
+                                <div *ngIf="!getSerialNumberreq" class="text-danger">S.no is required.</div>
+                            </div>
+                            <div class="flex-5">
+                                <input type="text" class="form-control" placeholder="Insert Heading for Image Screen"
+                                    [(ngModel)]="screenQuestion" [ngModelOptions]="{standalone: true}"
+                                    (blur)="validateAddScreen('image')" />
+                                <div *ngIf="!headingrequired" class="text-danger">Heading is required.</div>
+                            </div>
+                        </div>
+                        
                     </div>
                     <div class="mb-3">
                         <ngx-dropzone (change)="onSelect($event)" [ngClass]="'drop-file'">
@@ -1681,10 +1735,19 @@
                         </div>
                     </div>
                     <div class="mb-3">
-                        <input type="text" class="form-control" placeholder="Insert Heading for video Screen"
-                            [(ngModel)]="screenQuestion" [ngModelOptions]="{standalone: true}"
-                            (blur)="validateAddScreen('video')" />
-                        <div *ngIf="!headingrequired" class="text-danger">Heading is required.</div>
+                        <div class="d-flex gap-2">
+                            <div class="flex-1" *ngIf="isQNumberRequired === true">
+                                <input type="text" id="qNo" name="qNo" class="form-control" [(ngModel)]="qNo" placeholder="S.No" placeholder="S.No" (blur)="validateSerialNumber('Video')" [ngModelOptions]="{standalone: true}"/>
+                                <div *ngIf="!getSerialNumberreq" class="text-danger">S.no is required.</div>
+                            </div>
+                            <div class="flex-5">
+                                <input type="text" class="form-control" placeholder="Insert Heading for video Screen"
+                                    [(ngModel)]="screenQuestion" [ngModelOptions]="{standalone: true}"
+                                    (blur)="validateAddScreen('video')" />
+                                <div *ngIf="!headingrequired" class="text-danger">Heading is required.</div>
+                            </div>
+                        </div>
+                        
                     </div>
                     <div class="mb-3">
                         <ngx-dropzone (change)="onSelectVideo($event)" [ngClass]="'drop-file'">
@@ -1730,11 +1793,20 @@
                         </div>
                     </div>
                     <div class="mb-3">
-                        <input type="text" class="form-control" placeholder="Insert Heading for iFrame"
-                            [(ngModel)]="screenQuestion" [ngModelOptions]="{standalone: true}"
-                            (blur)="validateAddScreen('iframe')" />
+                        <div class="d-flex gap-2">
+                            <div class="flex-1" *ngIf="isQNumberRequired === true">
+                                <input type="text" id="qNo" name="qNo" class="form-control" [(ngModel)]="qNo" placeholder="S.No" placeholder="S.No" (blur)="validateSerialNumber('iframe')" [ngModelOptions]="{standalone: true}"/>
+                                <div *ngIf="!getSerialNumberreq" class="text-danger">S.no is required.</div>
+                            </div>
+                            <div class="flex-5">
+                                <input type="text" class="form-control" placeholder="Insert Heading for iFrame"
+                                [(ngModel)]="screenQuestion" [ngModelOptions]="{standalone: true}"
+                                (blur)="validateAddScreen('iframe')" />
+                                <div *ngIf="!headingrequired" class="text-danger">Heading is required.</div>
+                            </div>
+                        </div>
                     </div>
-                    <div *ngIf="!headingrequired" class="text-danger">Heading is required.</div>
+                    
                     <div class="mb-3">
                         <textarea type="text" class="form-control" rows="6" col="20" placeholder="Insert iFrame"
                             [(ngModel)]="youtubeUrl" [ngModelOptions]="{standalone: true}"
