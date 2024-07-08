@@ -520,5 +520,10 @@ export class SurveyService {
     return this.http.delete(url, { responseType: 'text' });
   }
 
+  endScreen(surveyId: any,questionId:any): Observable<any> {
+    const url = `${this.apiUrl}api/admin/${this.userId}/Logics/SetEndScreen?surveyId=${surveyId}&questionId=${questionId}`;
+    return this.http.post(url, { responseType: 'text' });
+  }
+
 
 }

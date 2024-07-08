@@ -181,7 +181,8 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
   selectedSurveyIds: { [key: number]: any[] } = {};
   form: FormGroup;
   quesserialno:any;
-  qNo:any
+  qNo:any;
+  pipingques: { [key: number]: any[] } = {}; 
   
   
   
@@ -2767,6 +2768,7 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
   // }
 
   onSelectionChange(event: any, quesid: any): void {
+    console.log("event",event)
     this.selectedSurveyIds[quesid] = event.value;
     console.log("this.selectedSurveyIds[quesid]", this.selectedSurveyIds[quesid]);
   }
@@ -2816,12 +2818,7 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
               .filter((concept: any) => !concept.isParent)
               .map((concept: any) => concept.questionId);
 
-              this.pipingQuestionById.forEach((_: any, index: number) => {
-                if (index < this.toppings.length) {
-                  const control = this.getFormControl(index);
-                  control.setValue(this.questionIds, { emitEvent: false }); // Set value without emitting change events
-                }
-              });
+             
 
             this.parentid = group.pipingConcepts
               .filter((concept: any) => concept.isParent)
@@ -2834,24 +2831,10 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
             
             console.log("Question IDs:", this.questionIds);
 
-
-            this.questionIds.forEach(id => {
-              const controlId = id.toString();
-              console.log("Processing question ID:", controlId);
-              if (!this.form.contains(controlId)) {
-                console.log("Adding control for ID:", controlId);
-                this.form.addControl(controlId, new FormControl([]));
-                console.log("Control added for ID:", controlId);
-              }
-              const control = this.form.get(controlId);
-              if (control) {
-                console.log("Setting value for control ID:", controlId);
-                control.setValue([2025]);
-                console.log("Value set for control ID:", controlId);
-              } else {
-                console.error("Control not found for ID:", controlId);
-              }
-            });
+            setTimeout(() => {
+              this.autoSelectQuestions(this.questionIds, quesid);
+            }, 500);
+            
 
           } else {
             console.error(`Invalid pipingConcepts in group ID: ${group.groupId}`);
@@ -2866,10 +2849,29 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
     });
   }
 
+  autoSelectQuestions(questionIds: number[], quesid: number): void {
+    // Initialize pipingques for the specific question ID if it doesn't exist
+    if (!this.pipingques[quesid]) {
+      this.pipingques[quesid] = [];
+    }
+  
+    // Filter nextQuestions to find questions whose IDs match those in questionIds
+    const selectedQuestions = this.nextQuestions.filter(question =>
+      questionIds.includes(question.id)
+    );
+  
+    // Update pipingques for the specific question ID
+    this.pipingques[quesid] = selectedQuestions;
+  
+    console.log(`Auto-selected Questions for quesid ${quesid}:`, this.pipingques[quesid]);
+  }
+  
+
   getFormControl(questionId: any): FormControl {
     return this.form.get(questionId.toString()) as FormControl;
   }
   
+  pipequestion:any
 
   savePiping(quesid:any,index:any){
     debugger
@@ -2892,11 +2894,11 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
       isParent: true,
       status: 'ACT'
     };
-     console.log("selectedSurveyIds",this.selectedSurveyIds)
-    const childData = (this.selectedSurveyIds[quesid] || []).map((item: number) => ({
+     console.log("selectedSurveyIds",this.pipingques)
+    const childData = (this.pipingques[quesid] || []).map((item: any) => ({
       id: 0,
       surveyId: this.surveyId,
-      questionId: item,
+      questionId: item.id,
       groupId: index+1,
       isParent: false,
       status: 'ACT'
@@ -3019,6 +3021,83 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
     }
 
     return isValid;
+  }
+
+  
+  add(event: MatChipInputEvent, quesid: number): void {
+    const input = event.input;
+    const value = event.value;
+
+    // Add the chip value only if it's not empty
+    if ((value || '').trim()) {
+      // Initialize the array for the question ID if it doesn't exist
+      if (!this.pipingques[quesid]) {
+        this.pipingques[quesid] = [];
+      }
+      
+      // Add chip only if it's not already in the list
+      if (!this.pipingques[quesid].some((option: { item: string; }) => option.item === value.trim())) {
+        this.pipingques[quesid].push({ item: value.trim() });
+      }
+    }
+
+    // Reset the input value
+    if (input) {
+      input.value = '';
+    }
+
+    this.pipequestion = '';
+  }
+
+  remove(option: any, quesid: number): void {
+    const index = this.pipingques[quesid]?.indexOf(option);
+
+    if (index >= 0) {
+      this.pipingques[quesid].splice(index, 1);
+    }
+  }
+
+  onSelectionChangepiping(event: MatAutocompleteSelectedEvent, quesid: number): void {
+    const selectedOption = event.option.value;
+
+    if (!this.pipingques[quesid]) {
+      this.pipingques[quesid] = [];
+    }
+
+    if (!this.pipingques[quesid].some((option: { item: any; }) => option.item === selectedOption.item)) {
+      this.pipingques[quesid].push(selectedOption);
+    }
+
+    console.log("selectedOption", this.pipingques[quesid]);
+
+    this.pipequestion = '';
+  }
+
+  endscreenquesid:any
+
+  onSelectionEndScreen(event:any){
+    this.endscreenquesid = event.value; // Get the selected value
+    console.log('Selected Value end', this.endscreenquesid);
+  }
+
+
+  saveEndScreen(){
+
+    this.surveyservice.endScreen(this.surveyId,this.endscreenquesid).subscribe({
+      
+      next: (resp: any) => {
+        
+        
+          this.utils.showSuccess("Updated")
+          // window.location.reload();
+        
+        
+      },
+      error: (err:any) =>{
+        
+      }
+    })
+
   }
 
 

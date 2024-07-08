@@ -349,7 +349,7 @@
                         </li>
                         <li class="nav-item" role="presentation">
                             <button class="nav-link" id="blank-tab" data-bs-toggle="tab" data-bs-target="#blank"
-                                role="tab" aria-selected="false">blank</button>
+                                role="tab" aria-selected="false">End Screen</button>
                         </li>
                     </ul>
                     <div class="tab-content p-4">
@@ -451,12 +451,12 @@
                         </div>
 
                         <div class="tab-pane" id="blank" role="tabpanel" aria-labelledby="blank-tab">
-                            <h5 ngClass="mb-4">Blank</h5>
+                            <h5 ngClass="mb-4">End Screen</h5>
                             <div ngClass="mb-3 row">
 
                                 <div class="mb-3">
                                     <mat-form-field>
-                                        <mat-select [(ngModel)]="selectedAutoCodeOption" #selectElement>
+                                        <mat-select [(ngModel)]="selectedAutoCodeOption" #selectElement (selectionChange)="onSelectionEndScreen($event)">
                                             <ng-container *ngFor="let option of pipingQuestionById">
                                                 <mat-option 
                                                     [value]="option.id">
@@ -469,7 +469,7 @@
                                 <div class="row">
                                     <div class="col-12 text-end d-flex justify-content-end">
                                         <button type="button" class="btn btn-primary btn-sm"
-                                            (click)="saveAutoCode()">Save</button>
+                                            (click)="saveEndScreen()">Save</button>
                                     </div>
                                 </div>
                             </div>
@@ -1323,7 +1323,7 @@
                                                     </div>
                                                     
                                                     <!-- {{ question | json }} -->
-                                                    <form>
+                                                    <!-- <form>
                                                         {{questionIds}}
                                                         <mat-form-field>
                                                             <mat-select [formControl]="getFormControl(question?.id)" multiple (selectionChange)="onSelectionChange($event, question?.id)" [(ngModel)]="questionIds"
@@ -1334,7 +1334,36 @@
                                                                 </ng-container>
                                                             </mat-select>
                                                         </mat-form-field>
-                                                    </form>
+                                                    </form> -->
+
+                                                    <mat-form-field class="example-chip-list">
+                                                        <mat-chip-grid #chipGrid aria-label="City selection">
+                                                          <mat-chip-row *ngFor="let option of pipingques[question?.id]">
+                                                            {{option.item}}
+                                                            <button matChipRemove
+                                                            [attr.aria-label]="'remove'"
+                                                            (click)="remove(option, question?.id)">
+                                                              <mat-icon>cancel</mat-icon>
+                                                            </button>
+                                                          </mat-chip-row>
+                                                          <input
+                                                            [(ngModel)]="pipequestion"
+                                                            [matChipInputFor]="chipGrid"
+                                                            [matAutocomplete]="auto"
+                                                            [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                                                            (matChipInputTokenEnd)="add($event, question?.id)">
+                                                        </mat-chip-grid>
+                                                        <mat-autocomplete
+                                                          #auto="matAutocomplete"
+                                                          (optionSelected)="onSelectionChangepiping($event, question?.id)">
+                                                          <mat-option *ngFor="let name of nextQuestions" [value]="name">
+                                                            {{name.item}}
+                                                          </mat-option>
+                                                        </mat-autocomplete>
+                                                    </mat-form-field>
+                                                      
+                                                      
+
                                                     <div  class="row mt-3">
                                                         <div class="col-6 d-flex ">
                                                             <button type="button" class="btn btn-primary"
