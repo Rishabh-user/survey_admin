@@ -525,5 +525,20 @@ export class SurveyService {
     return this.http.post(url, { responseType: 'text' });
   }
 
+  createMatrixHeaderLogics(data: any): Observable<any> {
+    const url = `${this.apiUrl}api/admin/${this.userId}/Logics/CreateMatrixHeaderLogics`;
+    return this.http.post(url, data, { responseType: 'text' });
+  }
+
+  getOpenEndedValues(isOpenEnded: any): Observable<responseDTO[]> {
+    const url = `${this.apiUrl}api/admin/${this.userId}/Logics/GetValues?isOpenEnded=${isOpenEnded}`;
+    return this.http.get<responseDTO[]>(url);
+  }
+
+  getEndScreenId(surveyId: any): Observable<responseDTO[]> {
+    const url = `${this.apiUrl}api/admin/${this.userId}/Logics/GetEndScreen?surveyId=${surveyId}`;
+    return this.http.get<responseDTO[]>(url);
+  }
+
 
 }

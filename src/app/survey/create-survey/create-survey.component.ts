@@ -182,6 +182,7 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
   form: FormGroup;
   quesserialno:any;
   qNo:any;
+  questiontype:any
   pipingques: { [key: number]: any[] } = {}; 
   
   
@@ -520,6 +521,7 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
       } else {
         this.surveyId = data.surveyId
         this.status = data.status
+        this.questiontype = data.questionType
         this.surveyName = data.surveyName;
         this.categoryName = data.categoryName;
         this.questions = data.questions;
@@ -2486,23 +2488,23 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
   getPartnerRidirection(){
     this.surveyservice.GetPartnerRirection(this.surveyId).subscribe({
       next: (resp: any) => {
-          this.redirectid = resp.id;
-          if(this.redirectid > 0){
+          this.redirectid = resp?.id;
+          if(this?.redirectid > 0){
             this.isActiveredirection=true;
           }
-          this.uid = resp.uid;
-          this.completelink = resp.completeLink;
-          this.completeuid = resp.completeUid;
-          this.quotalink = resp.quotafullLink;
-          this.quotauid = resp.quotafullUid
-          this.duplicatelink =  resp.duplicateLink;
-          this.duplicateuid = resp.duplicateUid;
-          this.nosurveylink = resp.nosurveylink;
-          this.nosurveyuid = resp.noSurveyUid;
-          this.securitylink = resp.securityLink;
-          this.securityuid = resp.securityUid;
-          this.terminatelink = resp.terminateLink;
-          this.terminateuid = resp.terminateUid;
+          this.uid = resp?.uid;
+          this.completelink = resp?.completeLink;
+          this.completeuid = resp?.completeUid;
+          this.quotalink = resp?.quotafullLink;
+          this.quotauid = resp?.quotafullUid
+          this.duplicatelink =  resp?.duplicateLink;
+          this.duplicateuid = resp?.duplicateUid;
+          this.nosurveylink = resp?.nosurveylink;
+          this.nosurveyuid = resp?.noSurveyUid;
+          this.securitylink = resp?.securityLink;
+          this.securityuid = resp?.securityUid;
+          this.terminatelink = resp?.terminateLink;
+          this.terminateuid = resp?.terminateUid;
         
       },
       error: (err:any) =>{
@@ -2824,7 +2826,6 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
               .filter((concept: any) => concept.isParent)
               .map((concept: any) => concept.id);
 
-            alert(this.questionIds)
     
             // this.questionFormControl.setValue(this.questionIds);
             console.log("parentid",this.parentid)
@@ -2874,7 +2875,7 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
   pipequestion:any
 
   savePiping(quesid:any,index:any){
-    debugger
+
     console.log("index",index)
     console.log("pipeval",this.pipegroupid)
 
@@ -2886,6 +2887,7 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
       pipeid = 0
     }
 
+    
     const parentData = {
       id: pipeid,
       surveyId: this.surveyId,
@@ -2937,30 +2939,11 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
 
 
   }
-    debugger
-
-    
 
   }
 
   groupid:any
-  // getPipingVlaue(){
 
-  //   this.surveyservice.GetPiping(this.surveyId).subscribe({
-      
-  //     next: (resp: any) => {
-  //       console.log("resp pipe",resp)
-  //       this.groupid = resp.groupId
-        
-  //     },
-  //     error: (err:any) =>{
-        
-  //     }
-  //   });
-
-  // }
-
-  
 
   deletePiping(quesid:any,index:any){
 
@@ -3076,7 +3059,7 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
   endscreenquesid:any
 
   onSelectionEndScreen(event:any){
-    this.endscreenquesid = event.value; // Get the selected value
+    this.endscreenquesid = event.value; 
     console.log('Selected Value end', this.endscreenquesid);
   }
 
@@ -3086,17 +3069,66 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
     this.surveyservice.endScreen(this.surveyId,this.endscreenquesid).subscribe({
       
       next: (resp: any) => {
-        
-        
-          this.utils.showSuccess("Updated")
-          // window.location.reload();
-        
+        console.log("resp",resp)
+
+        if(resp === 'UpdatedSuccessfully'){
+          this.utils.showSuccess("Updated Successfully");
+
+          setTimeout(() => {
+            window.location.reload();
+          }, 500);
+          
+        }
+        else{
+          this.utils.showError("Not Updated")
+        }
         
       },
       error: (err:any) =>{
         
       }
     })
+
+  }
+
+  openendedlist:any[]=[];
+  isopenended:boolean
+
+  openEndedVlaues(questype:any){
+    if(questype == 'Open Ended') {
+     this.isopenended = true
+    }
+    else{
+      this.isopenended = false
+    }
+
+    this.surveyservice.getOpenEndedValues(this.isopenended).subscribe({
+      
+      next: (resp: any) => {
+        this.openendedlist = resp;
+      },
+      error: (err:any) =>{
+        console.log(err)
+        
+      }
+    })
+
+  }
+
+  endscreenid:any
+
+  getEndScreen(){
+ 
+     this.surveyservice.getEndScreenId(this.surveyId).subscribe({
+       
+       next: (resp: any) => {
+         this.endscreenid = resp.id;
+       },
+       error: (err:any) =>{
+         console.log(err)
+         
+       }
+     })
 
   }
 

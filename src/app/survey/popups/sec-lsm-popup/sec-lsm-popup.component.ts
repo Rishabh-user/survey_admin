@@ -144,9 +144,13 @@ export class SecLsmPopupComponent {
             successfulAPICalls++;
 
             if (successfulAPICalls === this.questions.length) {
-              this.utility.showSuccess('Question Generated Successfully.');
-              this.close();
-              this.onSaveEvent.emit();
+              if(resp === '"QuestionSuccessfullyCreated"'){
+                this.utility.showSuccess('Question Generated Successfully.');
+                this.close();
+                this.onSaveEvent.emit();
+              }else {
+                this.utility.showError("Question Created Failed")
+              }
             }
           },
           error: (err: any) => {

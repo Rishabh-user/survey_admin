@@ -348,7 +348,7 @@
                                 role="tab" aria-selected="false">Logics</button>
                         </li>
                         <li class="nav-item" role="presentation">
-                            <button class="nav-link" id="blank-tab" data-bs-toggle="tab" data-bs-target="#blank"
+                            <button (click)="getEndScreen()" class="nav-link" id="blank-tab" data-bs-toggle="tab" data-bs-target="#blank"
                                 role="tab" aria-selected="false">End Screen</button>
                         </li>
                     </ul>
@@ -451,12 +451,34 @@
                         </div>
 
                         <div class="tab-pane" id="blank" role="tabpanel" aria-labelledby="blank-tab">
-                            <h5 ngClass="mb-4">End Screen</h5>
+                            
+                                <div class="d-flex mb-2">
+                                    <h5 ngClass="mb-4 me-2">End Screen</h5>
+                                    <div class="custom-tooltip">
+                                        <ng-icon name="heroInformationCircle" ngClass="edit-action info-circle"
+                                            (click)="toggleTooltip('9')"></ng-icon>
+                                        <div class="toast show" *ngIf="showTooltip['9']">
+                                            <div class="toast-header">
+                                                <img [src]="baseUrl + '/assets/images/icons/Add-new-question.png'" class="rounded me-2"
+                                                    width="30" height="30" />
+                                                <h6 class="mb-0 me-auto">Add End Screen Logic</h6>
+                                                <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"
+                                                    (click)="hideTooltip('9')"></button>
+                                            </div>
+                                            <div class="toast-body">
+                                                Add End Screen Logic
+                                            </div>
+                                        </div>
+                                    </div>
+                    
+                                </div>
+                                
+                            
                             <div ngClass="mb-3 row">
 
                                 <div class="mb-3">
                                     <mat-form-field>
-                                        <mat-select [(ngModel)]="selectedAutoCodeOption" #selectElement (selectionChange)="onSelectionEndScreen($event)">
+                                        <mat-select [(ngModel)]="endscreenid" #selectElement (selectionChange)="onSelectionEndScreen($event)">
                                             <ng-container *ngFor="let option of pipingQuestionById">
                                                 <mat-option 
                                                     [value]="option.id">
@@ -511,7 +533,7 @@
 
                                 <div class="badge text-bg-primary fw-normal me-2 position-relative"
                                     *ngIf="question?.logics.length>0"
-                                    (click)="getQuestionLogic(i,question?.id);getQuestionListBranching(question?.id);toggleLogic(i,question?.id,'edit')">
+                                    (click)="getQuestionLogic(i,question?.id);getQuestionListBranching(question?.id);toggleLogic(i,question?.id,'edit');openEndedVlaues(question?.questionType)">
                                     <ng-icon class="me-1" name="heroCommandLine"></ng-icon>
                                     <span>logics</span>
                                     <span
@@ -555,7 +577,7 @@
                                         </li>
                                         <li *ngIf="question?.logics.length==0 && question?.isRequired">
                                             <a href="javascript:void(0);" class="dropdown-item"
-                                                (click)="toggleLogic(i,question?.id,'add');getQuestionListBranching(question?.id);getOptionsByQuestionIdLogic(question?.id)">
+                                                (click)="toggleLogic(i,question?.id,'add');getQuestionListBranching(question?.id);getOptionsByQuestionIdLogic(question?.id);openEndedVlaues(question?.questionType)">
                                                 <ng-icon name="heroCommandLine"></ng-icon>
                                                 Logic
                                             </a>
@@ -689,7 +711,8 @@
                                                     <button class="nav-link active d-flex" id="branching-tab"
                                                         data-bs-toggle="tab"
                                                         [attr.data-bs-target]="'#branching' + question.id" role="tab"
-                                                        aria-selected="true">Branching</button>
+                                                        aria-selected="true"
+                                                       >Branching</button>
                                                 </li>
                                                 <li class="nav-item" role="presentation">
                                                     <button class="nav-link" id="customLogic-tab" data-bs-toggle="tab"
@@ -743,7 +766,7 @@
                                                                                 <div class="col-md-1">
                                                                                     <div>Value</div>
                                                                                 </div>
-                                                                                <div class="col-md-3">
+                                                                                <div class="col-md-3" *ngIf="question?.questionType !== 'Open Ended'">
                                                                                     
                                                                                     <select class="form-select"
                                                                                         [(ngModel)]="logicEntry.ifId"
@@ -755,8 +778,20 @@
                                                                                         </option>
                                                                                     </select>
                                                                                 </div>
+                                                                                <div class="col-md-3" *ngIf="question?.questionType === 'Open Ended'">
+                                                                                    
+                                                                                    <select class="form-select"
+                                                                                        [(ngModel)]="logicEntry.ifId"
+                                                                                        (change)="onLogicEntryChange(i,j)">
+                                                                                        <option
+                                                                                            *ngFor="let item of openendedlist;"
+                                                                                            [ngValue]="item.id">
+                                                                                            {{item.name}}
+                                                                                        </option>
+                                                                                    </select>
+                                                                                </div>
 
-                                                                                <div class="col-md-8">
+                                                                                <div class="col-md-8" *ngIf="question?.questionType !== 'Open Ended'">
                                                                                     <mat-form-field
                                                                                         class="example-chip-list">
                                                                                         <mat-chip-grid #chipGrid
@@ -788,6 +823,10 @@
                                                                                         </mat-autocomplete>
                                                                                     </mat-form-field>
                                                                                 </div>
+
+                                                                                <div class="col-md-8" *ngIf="question?.questionType === 'Open Ended'">
+                                                                                    <input id="answer" type="text" name="answer" class="form-control" [(ngModel)]="logicEntry.ifExpected"/>
+                                                                                </div> 
 
                                                                             </div>
                                                                         </div>
@@ -993,12 +1032,13 @@
                                                                         </div>
                                                                     </div>
                                                                 </div>
-                                                                <div ngClass="if-then"
-                                                                    *ngIf="isBranchingElseShow[i][j] || logicEntry.elseId != null">
+                                                                <div ngClass="if-then" 
+                                                                    *ngIf="isBranchingElseShow[i][j] || logicEntry.elseId != null && question?.questionType !== 'Open Ended'">
+                                                                   
                                                                     <span>Else {{logicEntry.elseExpected}}</span>
                                                                 </div>
                                                                 <div ngClass="mb-4"
-                                                                    *ngIf="isBranchingElseShow[i][j] || logicEntry.elseId != null">
+                                                                    *ngIf="isBranchingElseShow[i][j] || logicEntry.elseId != null && question?.questionType !== 'Open Ended'">
                                                                     <div class="row g-2 align-items-center">
                                                                         <div class="col-md-4">
                                                                             <!-- Use unique template reference variables by appending the index -->
@@ -1308,7 +1348,27 @@
                                                 </div>
                                                 <div class="tab-pane" [id]="'piping' + question.id" role="tabpanel"
                                                     aria-labelledby="piping-tab">
-                                                    <h5 ngClass="mb-4">Piping</h5>
+                                                    
+                                                    <div class="d-flex mb-2">
+                                                        <h5 ngClass="mb-4 me-2">Piping</h5>
+                                                        <div class="custom-tooltip">
+                                                            <ng-icon name="heroInformationCircle" ngClass="edit-action info-circle"
+                                                                (click)="toggleTooltip('10')"></ng-icon>
+                                                            <div class="toast show" *ngIf="showTooltip['10']">
+                                                                <div class="toast-header">
+                                                                    <img [src]="baseUrl + '/assets/images/icons/Add-new-question.png'" class="rounded me-2"
+                                                                        width="30" height="30" />
+                                                                    <h6 class="mb-0 me-auto">Add Piping</h6>
+                                                                    <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"
+                                                                        (click)="hideTooltip('10')"></button>
+                                                                </div>
+                                                                <div class="toast-body">
+                                                                    Select questions and add a "@pipe" tag inside the same question text.
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                        
+                                                    </div>
                                                     <div ngClass="d-flex justify-content-between mb-3">
                                                         <h6>Set Values for Piping</h6>
                                                     </div>

@@ -54,8 +54,47 @@
 
                     </div>
                     <div ngClass="mb-5">
-                        <h5 class="mb-3" *ngIf="mode =='modify'">Update Your Question</h5>
-                        <h5 class="mb-3" *ngIf="mode !='modify'">Add Your Question</h5>
+
+                        <div class="d-flex">
+                            <h5 class="mb-3" *ngIf="mode =='modify'">Update Your Question</h5>
+                            <div class="custom-tooltip ms-2" *ngIf="mode =='modify'">
+                              <ng-icon name="heroInformationCircle" ngClass="edit-action info-circle"
+                                  (click)="toggleTooltip('5')"></ng-icon>
+                                <div class="toast show" *ngIf="showTooltip['5']">
+                                  <div class="toast-header">
+                                      <img [src]="baseUrl + '/assets/images/icons/Add-new-question.png'"
+                                          class="rounded me-2" width="30" height="30" />
+                                      <h6 class="mb-0 me-auto">Piping</h6>
+                                      <button type="button" class="btn-close" data-bs-dismiss="toast"
+                                          aria-label="Close" (click)="hideTooltip('5')"></button>
+                                  </div>
+                                  <div class="toast-body">
+                                    Select questions and add a "@pipe" tag inside the same question text.
+                                  </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        
+                        <div class="d-flex">
+                            <h5 class="mb-3" *ngIf="mode !='modify'">Add Your Question</h5>
+                            <div class="custom-tooltip ms-2" *ngIf="mode !='modify'">
+                              <ng-icon name="heroInformationCircle" ngClass="edit-action info-circle"
+                                  (click)="toggleTooltip('5')"></ng-icon>
+                                <div class="toast show" *ngIf="showTooltip['5']">
+                                  <div class="toast-header">
+                                      <img [src]="baseUrl + '/assets/images/icons/Add-new-question.png'"
+                                          class="rounded me-2" width="30" height="30" />
+                                      <h6 class="mb-0 me-auto">Piping</h6>
+                                      <button type="button" class="btn-close" data-bs-dismiss="toast"
+                                          aria-label="Close" (click)="hideTooltip('5')"></button>
+                                  </div>
+                                  <div class="toast-body">
+                                      Use Pipe
+                                  </div>
+                                </div>
+                            </div>
+                        </div>
                         <div class="row g-3 align-items-center">
                             <div class="flex-width" *ngIf="isQNumberRequired === true ">
                                 <input type="text" id="" class="form-control"  [(ngModel)]="qNo" placeholder="S.No" (blur)="validateSurveySno()" [ngModelOptions]="{standalone: true}"/>
@@ -113,6 +152,7 @@
                                     color picker
                                 </div>
                             </div>
+                            </div>
                         </div>
                         </div>
                         <div class="d-flex gap-3">                            
@@ -126,7 +166,7 @@
                                     </i>
                             </div>
                         </div>
-                    </div>
+                    
                     <div ngClass="update-ques-type add-media generic-ques mt-0 mb-5">
                         <h5 class="mb-3">Add Media</h5>
                         <ul>
@@ -689,7 +729,7 @@
                                                         </select>
                                                     </div>
                                                     <div class="col-md-3">
-                                                        {{optionlogicifexpectedid}}
+                                                        <!-- {{optionlogicifexpectedid}} -->
                                                         <!-- <mat-select [(ngModel)]="optionlogicifexpectedid" [value]="optionlogicifexpectedid" multiple>
                                                             <mat-option *ngFor="let option of optionListByQuestionId" [value]="option.id">
                                                                 {{ option.option }}
@@ -715,9 +755,10 @@
                                                                     [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
                                                                     (matChipInputTokenEnd)="addOption($event)">
                                                             </mat-chip-grid>
+                                                           
                                                             <mat-autocomplete #auto="matAutocomplete"  
                                                                 (optionSelected)="selectedOption($event)">
-                                                                <mat-option [value]="9685"
+                                                                <mat-option 
                                                                     *ngFor="let option of optionListByQuestionId"                                                                   
                                                                     [value]="option">
                                                                     {{option.option}}
@@ -769,7 +810,6 @@
                                                             </select>
                                                         </div>
                                                         <div class="col-md-4">
-                                                            {{optionlogicelseexpected}}
                                                             <select class="form-select"  [(ngModel)]="optionlogicelseexpected" #elseExpectedSelect>
                                                                 <option *ngFor="let item of optionsArr1;let i=index;"
                                                                     value="{{item.id}}">{{item.option}}</option>
