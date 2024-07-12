@@ -8,6 +8,8 @@ import { Option } from 'src/app/models/option';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CryptoService } from 'src/app/service/crypto.service';
 import { UtilsService } from 'src/app/service/utils.service';
+import { environment } from 'src/environments/environment';
+import { N } from '@angular/cdk/keycodes';
 
 @Component({
   selector: 'app-nccs-popup',
@@ -25,7 +27,9 @@ export class NccsPopupComponent {
   surveyId = 0;
   qNo:string[] = [];
   quesserialno:any;
+  baseUrl = '';
   constructor(private surveyservice: SurveyService, private route: ActivatedRoute, private crypto: CryptoService, private router: Router, private utility: UtilsService) {
+    this.baseUrl = environment.baseURL;
 
     this.route.paramMap.subscribe(params => {
       let _surveyId = params.get('param1');
@@ -137,6 +141,10 @@ export class NccsPopupComponent {
       currentQuestion.genericTypeId = this.typeid
       currentQuestion.genericKey = i + 1
 
+      currentQuestion.qNo = currentQuestion.qNo || (i + 1).toString();
+
+      console.log("currentQuestion.qNo",currentQuestion.qNo)
+
 
 
       currentQuestion.options = currentQuestion.options.filter(option => option.selected);
@@ -185,6 +193,35 @@ export class NccsPopupComponent {
       }
     })
   }
+
+  
+
+  showTooltip: { [key: number]: boolean } = {};
+  currentTooltip: number | null = null;
+
+  toggleTooltip(identifier: number) {
+    if (this.currentTooltip !== null && this.currentTooltip !== identifier) {
+      this.showTooltip[this.currentTooltip] = false;
+    }
+
+    this.showTooltip[identifier] = !this.showTooltip[identifier];
+
+    if (this.showTooltip[identifier]) {
+      this.currentTooltip = identifier;
+    } else {
+      this.currentTooltip = null;
+    }
+  }
+
+  hideTooltip(identifier: number) {
+    this.showTooltip[identifier] = false;
+
+    if (this.currentTooltip === identifier) {
+      this.currentTooltip = null;
+    }
+  }
+
+  
 }
 
 

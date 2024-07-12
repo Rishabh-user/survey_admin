@@ -9,7 +9,31 @@
                 <form *ngIf="questions && questions.length > 0">
                     <div *ngFor="let question of questions; let i = index">
                         <div class="mb-4">
-                            <label for="surveyname" class="form-label">Enter Your Question</label>
+                            
+
+                            <div class="infocircle justify-content-start">
+                                <label for="surveyname" class="form-label">Enter Your Question</label>
+                                <div class="mb-2" *ngIf="quesserialno === 'true'">
+                                    <div class="custom-tooltip ms-2">
+                                        <ng-icon name="heroInformationCircle" ngClass="edit-action info-circle"
+                                            (click)="toggleTooltip('1')"></ng-icon>
+                                        <div class="toast show" *ngIf="showTooltip['1']">
+                                            <div class="toast-header">
+                                                <img [src]="baseUrl + '/assets/images/icons/Add-new-question.png'" class="rounded me-2"
+                                                    width="30" height="30" />
+                                                <h6 class="mb-0 me-auto">Add Custom Serial Number</h6>
+                                                <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"
+                                                    (click)="hideTooltip('1')"></button>
+                                            </div>
+                                            <div class="toast-body">
+                                                S.no will only indicate the question numbers and will not determine the position of the question in the survey.
+        
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                
+                            </div>
                             <!-- <div class="input-group">
                                 <input type="text" class="form-control" [ngModel]="question.question" [ngModelOptions]="{standalone: true}"
                                     (ngModelChange)="question.question = $event" id="{{ 'question_' + i }}"

@@ -188,4 +188,33 @@ export class GenderPopupComponent {
     return this.getSerialNumberreq;
   }
 
+  showTooltip: { [key: string]: boolean } = {};
+  currentTooltip: string | null = null;
+  
+
+  toggleTooltip(identifier: string) {
+
+    if (this.currentTooltip && this.currentTooltip !== identifier) {
+      this.showTooltip[this.currentTooltip] = false;
+    }
+
+    this.showTooltip[identifier] = !this.showTooltip[identifier];
+
+    if (this.showTooltip[identifier]) {
+      this.currentTooltip = identifier;
+    } else {
+      this.currentTooltip = null;
+    }
+
+  }
+
+  hideTooltip(identifier: string) {
+    this.showTooltip[identifier] = false;
+
+    if (this.currentTooltip === identifier) {
+      this.currentTooltip = null;
+    }
+
+  }
+
 }

@@ -1703,7 +1703,30 @@
             <!-- Logic Question -->
             <div class="tab-content p-4">
                 <div class="tab-pane" id="addText" role="tabpanel" aria-labelledby="addText-tab">
-                    <h5 ngClass="mb-4">Add Text</h5>
+                    
+                    <div class="infocircle justify-content-start">
+                        <h5 ngClass="mb-4">Add Text</h5>
+                        <div class="mb-4" *ngIf="isQNumberRequired == true">
+                            <div class="custom-tooltip ms-2">
+                                <ng-icon name="heroInformationCircle" ngClass="edit-action info-circle"
+                                    (click)="toggleTooltip('11')"></ng-icon>
+                                <div class="toast show" *ngIf="showTooltip['11']">
+                                    <div class="toast-header">
+                                        <img [src]="baseUrl + '/assets/images/icons/Add-new-question.png'" class="rounded me-2"
+                                            width="30" height="30" />
+                                        <h6 class="mb-0 me-auto">Add Custom Serial Number</h6>
+                                        <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"
+                                            (click)="hideTooltip('11')"></button>
+                                    </div>
+                                    <div class="toast-body">
+                                        S.no will only indicate the question numbers and will not determine the position of the question in the survey.
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+        
+                    </div>
                     <div class="mb-3">
                         <div ngClass="d-flex align-items-center justify-content-between">
                             <h6>Please add text you want display before the next queston.</h6>
@@ -1759,7 +1782,30 @@
                 </div>
 
                 <div class="tab-pane active" id="addImage" role="tabpanel" aria-labelledby="addImage-tab">
-                    <h5 ngClass="mb-4">Add an Image</h5>
+                    
+                    <div class="infocircle justify-content-start">
+                        <h5 ngClass="mb-4">Add an Image</h5>
+                        <div class="mb-4" *ngIf="isQNumberRequired == true">
+                            <div class="custom-tooltip ms-2">
+                                <ng-icon name="heroInformationCircle" ngClass="edit-action info-circle"
+                                    (click)="toggleTooltip('12')"></ng-icon>
+                                <div class="toast show" *ngIf="showTooltip['12']">
+                                    <div class="toast-header">
+                                        <img [src]="baseUrl + '/assets/images/icons/Add-new-question.png'" class="rounded me-2"
+                                            width="30" height="30" />
+                                        <h6 class="mb-0 me-auto">Add Custom Serial Number</h6>
+                                        <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"
+                                            (click)="hideTooltip('12')"></button>
+                                    </div>
+                                    <div class="toast-body">
+                                        S.no will only indicate the question numbers and will not determine the position of the question in the survey.
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+        
+                    </div>
                     <div class="mb-3">
                         <div ngClass="d-flex align-items-center justify-content-between">
                             <h6>Please add image you want display before the next queston.</h6>
@@ -1817,7 +1863,30 @@
 
                 </div>
                 <div class="tab-pane" id="addVideo" role="tabpanel" aria-labelledby="addVideo-tab">
-                    <h5 ngClass="mb-4">Add Video</h5>
+                  
+                    <div class="infocircle justify-content-start">
+                        <h5 ngClass="mb-4">Add Video</h5>
+                        <div class="mb-4" *ngIf="isQNumberRequired == true">
+                            <div class="custom-tooltip ms-2">
+                                <ng-icon name="heroInformationCircle" ngClass="edit-action info-circle"
+                                    (click)="toggleTooltip('13')"></ng-icon>
+                                <div class="toast show" *ngIf="showTooltip['13']">
+                                    <div class="toast-header">
+                                        <img [src]="baseUrl + '/assets/images/icons/Add-new-question.png'" class="rounded me-2"
+                                            width="30" height="30" />
+                                        <h6 class="mb-0 me-auto">Add Custom Serial Number</h6>
+                                        <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"
+                                            (click)="hideTooltip('13')"></button>
+                                    </div>
+                                    <div class="toast-body">
+                                        S.no will only indicate the question numbers and will not determine the position of the question in the survey.
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+        
+                    </div>
                     <div class="mb-3">
                         <div ngClass="d-flex align-items-center justify-content-between">
                             <h6>Please add video you want display before the next queston.</h6>
@@ -1875,7 +1944,30 @@
 
                 </div>
                 <div class="tab-pane" id="addiFrame" role="tabpanel" aria-labelledby="addiFrame-tab">
-                    <h5 ngClass="mb-4">Add iFrame</h5>
+                    
+                    <div class="infocircle justify-content-start">
+                        <h5 ngClass="mb-4">Add iFrame</h5>
+                        <div class="mb-4" *ngIf="isQNumberRequired == true">
+                            <div class="custom-tooltip ms-2">
+                                <ng-icon name="heroInformationCircle" ngClass="edit-action info-circle"
+                                    (click)="toggleTooltip('14')"></ng-icon>
+                                <div class="toast show" *ngIf="showTooltip['14']">
+                                    <div class="toast-header">
+                                        <img [src]="baseUrl + '/assets/images/icons/Add-new-question.png'" class="rounded me-2"
+                                            width="30" height="30" />
+                                        <h6 class="mb-0 me-auto">Add Custom Serial Number</h6>
+                                        <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"
+                                            (click)="hideTooltip('14')"></button>
+                                    </div>
+                                    <div class="toast-body">
+                                        S.no will only indicate the question numbers and will not determine the position of the question in the survey.
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+        
+                    </div>
                     <div class="mb-3">
                         <div ngClass="d-flex align-items-center justify-content-between">
                             <h6>Please add iFrame you want display before the next queston.</h6>

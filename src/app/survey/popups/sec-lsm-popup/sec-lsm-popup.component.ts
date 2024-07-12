@@ -10,6 +10,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { CryptoService } from 'src/app/service/crypto.service';
 import jsonData from '../../../../assets/seclsmQuestion.json';
 import { UtilsService } from 'src/app/service/utils.service';
+import { environment } from 'src/environments/environment';
 
 
 @Component({
@@ -27,8 +28,10 @@ export class SecLsmPopupComponent {
   questionText: string = '';
   surveyId = 0;
   newOptionValue: string = '';
+  baseUrl = '';
+  quesserialno:any
   constructor(private surveyservice: SurveyService, private route: ActivatedRoute, private crypto: CryptoService, private router: Router, private utility: UtilsService) {
-
+    this.baseUrl = environment.baseURL;
     this.route.paramMap.subscribe(params => {
       let _surveyId = params.get('param1');
       if (_surveyId) {
@@ -40,6 +43,7 @@ export class SecLsmPopupComponent {
   show() {
     this.modal.show();
     this.getQuestionsFromFile();
+    this.getSerialNumber();
   }
 
   close() {
@@ -110,6 +114,7 @@ export class SecLsmPopupComponent {
       currentQuestion.createdDate = this.getCurrentDateTime();
       currentQuestion.modifiedDate = this.getCurrentDateTime();
       currentQuestion.genericTypeId = this.typeid;
+      currentQuestion.qNo = currentQuestion.qNo || (i + 1).toString();
 
       currentQuestion.options = currentQuestion.options.filter(option => option.selected);
 
@@ -239,5 +244,48 @@ export class SecLsmPopupComponent {
   updateOptionValue(event: any, qidx: any, oidx: any) {
 
     this.questions[qidx].options[oidx].option = (event.target as HTMLInputElement)?.value;
+  }
+
+  getSerialNumber(){
+    this.surveyservice.getQuesNumberRequired(this.surveyId).subscribe({
+      next: (resp: any) => {
+        if(resp){
+          console.log("ww",resp)
+          this.quesserialno = resp
+        }
+      },
+      error: (err:any) =>{
+        
+      }
+    })
+  }
+
+  showTooltip: { [key: string]: boolean } = {};
+  currentTooltip: string | null = null;
+  
+
+  toggleTooltip(identifier: any) {
+
+    if (this.currentTooltip !== null && this.currentTooltip !== identifier) {
+      this.showTooltip[this.currentTooltip] = false;
+    }
+
+    this.showTooltip[identifier] = !this.showTooltip[identifier];
+
+    if (this.showTooltip[identifier]) {
+      this.currentTooltip = identifier;
+    } else {
+      this.currentTooltip = null;
+    }
+
+  }
+
+  hideTooltip(identifier: any) {
+    this.showTooltip[identifier] = false;
+
+    if (this.currentTooltip === identifier) {
+      this.currentTooltip = null;
+    }
+
   }
 }

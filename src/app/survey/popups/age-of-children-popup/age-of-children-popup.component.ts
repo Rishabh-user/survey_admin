@@ -8,6 +8,7 @@ import { UtilsService } from 'src/app/service/utils.service';
 import { responseDTO } from 'src/app/types/responseDTO';
 import { responseGenericQuestion } from 'src/app/types/responseGenericQuestion';
 import { Option } from 'src/app/models/option';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-age-of-children-popup',
@@ -26,8 +27,10 @@ export class AgeOfChildrenPopupComponent {
   role: string;
   typeid = 10;
   qNo: any;
-  quesserialno:any
+  quesserialno:any;
+  baseUrl = '';
   constructor(private surveyservice: SurveyService, private route: ActivatedRoute, private crypto: CryptoService, private router: Router, private utility: UtilsService) {
+    this.baseUrl = environment.baseURL;
     this.route.paramMap.subscribe(params => {
       let _surveyId = params.get('param1');
       if (_surveyId) {
@@ -172,5 +175,34 @@ export class AgeOfChildrenPopupComponent {
   validateSurvey(): boolean {
     this.getSerialNumberreq = !!this.qNo && this.qNo.trim().length > 0;
     return this.getSerialNumberreq;
+  }
+
+  showTooltip: { [key: string]: boolean } = {};
+  currentTooltip: string | null = null;
+  
+
+  toggleTooltip(identifier: string) {
+
+    if (this.currentTooltip && this.currentTooltip !== identifier) {
+      this.showTooltip[this.currentTooltip] = false;
+    }
+
+    this.showTooltip[identifier] = !this.showTooltip[identifier];
+
+    if (this.showTooltip[identifier]) {
+      this.currentTooltip = identifier;
+    } else {
+      this.currentTooltip = null;
+    }
+
+  }
+
+  hideTooltip(identifier: string) {
+    this.showTooltip[identifier] = false;
+
+    if (this.currentTooltip === identifier) {
+      this.currentTooltip = null;
+    }
+
   }
 }

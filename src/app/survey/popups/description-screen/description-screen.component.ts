@@ -39,15 +39,16 @@ export class DescriptionScreenComponent {
   files: File[] = [];
   image:any
   userid:any
-  baseUrl:any
   descid:any
   imageUpdated: boolean = false;
   imageName:any;
   buttonid:any
   btnid: any;
-  imageurl:any
+  imageurl:any;
+  baseUrl = '';
 
   constructor(private surveyservice: SurveyService, private dataservice: DataService, private route: ActivatedRoute, private crypto: CryptoService, private router: Router, private utility: UtilsService) {
+    this.baseUrl = environment.baseURL;
     this.route.paramMap.subscribe(params => {
       let _surveyId = params.get('param1');
       if (_surveyId) {
@@ -348,6 +349,35 @@ export class DescriptionScreenComponent {
   }
   onRemove(event: any) {
     this.files.splice(this.files.indexOf(event), 1);
+  }
+
+  showTooltip: { [key: string]: boolean } = {};
+  currentTooltip: string | null = null;
+  
+
+  toggleTooltip(identifier: string) {
+
+    if (this.currentTooltip && this.currentTooltip !== identifier) {
+      this.showTooltip[this.currentTooltip] = false;
+    }
+
+    this.showTooltip[identifier] = !this.showTooltip[identifier];
+
+    if (this.showTooltip[identifier]) {
+      this.currentTooltip = identifier;
+    } else {
+      this.currentTooltip = null;
+    }
+
+  }
+
+  hideTooltip(identifier: string) {
+    this.showTooltip[identifier] = false;
+
+    if (this.currentTooltip === identifier) {
+      this.currentTooltip = null;
+    }
+
   }
 
 

@@ -7,6 +7,7 @@ import { Option } from 'src/app/models/option';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CryptoService } from 'src/app/service/crypto.service';
 import { UtilsService } from 'src/app/service/utils.service';
+import { environment } from 'src/environments/environment';
 @Component({
   selector: 'app-store-popup',
   templateUrl: './store-popup.component.html',
@@ -24,7 +25,9 @@ export class StorePopupComponent {
   questionTypeId = 7;
   qNo: any;
   quesserialno:any;
+  baseUrl = '';
   constructor(private surveyservice: SurveyService, private route: ActivatedRoute, private crypto: CryptoService, private router: Router, private utility: UtilsService) {
+    this.baseUrl = environment.baseURL;
     this.route.paramMap.subscribe(params => {
       let _surveyId = params.get('param1');
       if (_surveyId) {
@@ -175,6 +178,35 @@ export class StorePopupComponent {
   validateSurvey(): boolean {
     this.getSerialNumberreq = !!this.qNo && this.qNo.trim().length > 0;
     return this.getSerialNumberreq;
+  }
+
+  showTooltip: { [key: string]: boolean } = {};
+  currentTooltip: string | null = null;
+  
+
+  toggleTooltip(identifier: string) {
+
+    if (this.currentTooltip && this.currentTooltip !== identifier) {
+      this.showTooltip[this.currentTooltip] = false;
+    }
+
+    this.showTooltip[identifier] = !this.showTooltip[identifier];
+
+    if (this.showTooltip[identifier]) {
+      this.currentTooltip = identifier;
+    } else {
+      this.currentTooltip = null;
+    }
+
+  }
+
+  hideTooltip(identifier: string) {
+    this.showTooltip[identifier] = false;
+
+    if (this.currentTooltip === identifier) {
+      this.currentTooltip = null;
+    }
+
   }
 
 }
