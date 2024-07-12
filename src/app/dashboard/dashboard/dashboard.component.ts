@@ -44,7 +44,8 @@ export class DashboardComponent {
   uniqueDates: any[];
   uniqueMonths: string[];
   userId: any;
-  isQNumberRequired:any
+  isQNumberRequired:any;
+  planid:any
   constructor(private visibilityService: DataService, private modalService: NgbModal, public themeService: DataService,
     public surveyservice: SurveyService, private auth: AuthService, private utility: UtilsService, private crypto: CryptoService, private router: Router,
     private csvService: SurveyService,
@@ -124,6 +125,7 @@ export class DashboardComponent {
   }
 
   ngOnInit(): void {
+    this.planid = this.utility.getPlanId();
     this.showHeader();
     this.createChart();
     this.showSideBar();

@@ -116,8 +116,9 @@ export class EditSurveyComponent {
   showiframeCaption = false
   numeric: boolean = false;
   alphabet: boolean = false; 
-  isQNumberRequired:any
-  quesserialno:any
+  isQNumberRequired:any;
+  quesserialno:any;
+  planid:any
 
   
 
@@ -279,14 +280,15 @@ export class EditSurveyComponent {
   }
 
   ngOnInit() {
-
+    this.planid = this.utility.getPlanId();
     this.themeService.closeSideBar();
     this.getQuestionListBySurveyId();
+    this.getSerialNumber();
     this.getQuestionTypes();
     this.getAllSurveyList();
     this.getOptionLogics();
     this.openEndedValue();
-    this.getSerialNumber();
+    
 
     if (this.mode != 'modify') {
       this.intializeDefaultValue();

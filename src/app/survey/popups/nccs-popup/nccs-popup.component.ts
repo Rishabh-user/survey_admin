@@ -122,6 +122,15 @@ export class NccsPopupComponent {
       return;
     }
 
+    // const questionsWithSelectedOptions = this.questions.filter(question =>
+    //   question.options.some(option => option.selected)
+    // );
+
+    // if (!questionsWithSelectedOptions.every(question => question.qNo && question.qNo.trim() !== '')) {
+    //   this.utility.showError("Please enter a valid question number (qNo) for all questions with selected options");
+    //   return;
+    // }
+
     let successfulAPICalls = 0;
     let delayCounter = 0;
     for (let i = 0; i < this.questions.length; i++) {

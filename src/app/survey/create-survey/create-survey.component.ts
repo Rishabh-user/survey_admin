@@ -3070,17 +3070,20 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
       
       next: (resp: any) => {
         console.log("resp",resp)
+        if(resp){
 
-        if(resp === 'UpdatedSuccessfully'){
-          this.utils.showSuccess("Updated Successfully");
+          if(resp === 'UpdatedSuccessfully'){
+            this.utils.showSuccess("Updated Successfully");
+  
+            setTimeout(() => {
+              window.location.reload();
+            }, 500);
+            
+          }
+          else{
+            this.utils.showError("Not Updated")
+          }
 
-          setTimeout(() => {
-            window.location.reload();
-          }, 500);
-          
-        }
-        else{
-          this.utils.showError("Not Updated")
         }
         
       },

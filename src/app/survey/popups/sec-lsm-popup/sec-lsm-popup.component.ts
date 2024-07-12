@@ -104,6 +104,15 @@ export class SecLsmPopupComponent {
   }
   continueClicked() {
 
+    const questionsWithSelectedOptions = this.questions.filter(question =>
+      question.options.some(option => option.selected)
+    );
+
+    if (!questionsWithSelectedOptions.every(question => question.qNo && question.qNo.trim() !== '')  && this.quesserialno === 'true') {
+      this.utility.showError("Please enter a custom serail number");
+      return;
+    }
+
     const currentDateTime = this.getCurrentDateTime();
 
     let successfulAPICalls = 0;

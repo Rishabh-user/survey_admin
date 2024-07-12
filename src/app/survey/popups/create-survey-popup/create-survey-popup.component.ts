@@ -21,7 +21,7 @@ export class CreateSurveyPopupComponent {
 
   @ViewChild('CreateSurveyModal', { static: true }) modal!: ModalDirective;
   baseUrl = '';
-  
+  planid:any
 
   categoryName: any = "";
   surveyName: any;
@@ -52,6 +52,10 @@ export class CreateSurveyPopupComponent {
     this.baseUrl = environment.baseURL;
 
 
+  }
+
+  ngOnInit() {
+    this.planid = this.utility.getPlanId()
   }
 
   show() {
