@@ -1114,7 +1114,7 @@ export class EditSurveyComponent {
 
   optionselectedvalue:any
   getOptionsByQuestionId(selectedQuestion: any) {
- 
+    debugger
     this.selectedOptions = [];
     this.optionListByQuestionId = ''
 
@@ -1130,8 +1130,10 @@ export class EditSurveyComponent {
       this.optionListByQuestionId = response
       this.optionListByQuestionId = JSON.parse(this.optionListByQuestionId)
       console.log("fff",this.optionListByQuestionId)
+      this.autoSelectQuestions(this.optionlogicifexpectedid)
       
     });
+    debugger
   }
   
 
@@ -1313,7 +1315,7 @@ export class EditSurveyComponent {
     const youtubeUrl = this.youtubeUrl;
   }
 
-  //createanswerthen
+  //addthen
 
   thenSection = false
 
@@ -1323,6 +1325,7 @@ export class EditSurveyComponent {
 
   createansweraddthen() {
     this.thenSection = true
+    
   }
 
   //select all
@@ -1410,6 +1413,8 @@ export class EditSurveyComponent {
       this.filteredQuestionList.push(item);
       
     }
+    
+    
   }
   starRating: any[] = [];
   addStarRating() {
@@ -1621,7 +1626,7 @@ export class EditSurveyComponent {
         const response = data[0];
         this.getoptionlogic = data[0];
         this.visibleanslogic = true;
-        console.log("data", response);
+        console.log("data", data.length);
         this.optionlogicid = response.id
         this.optionlogicquesid = response.questionId;
         this.optionlogicifid = response.ifId;
@@ -1631,8 +1636,11 @@ export class EditSurveyComponent {
         this.optionlogicelseid = response.elseId;
         this.optionlogicelseexpected = response.elseExpected;
         setTimeout(() => {
-          this.autoSelectQuestions(this.optionlogicifexpectedid)
+            this.getOptionsByQuestionId(this.optionlogicquesid)
         }, 1000);
+        if(data.length > 0){
+          this.thenSection = true
+        }
        
       } else {
         // Handle empty response or error
