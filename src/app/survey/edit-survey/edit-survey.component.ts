@@ -22,6 +22,7 @@ import { UtilsService } from 'src/app/service/utils.service';
 import { serveyOption } from 'src/app/models/serveyOption';
 import { DomSanitizer,SafeHtml } from '@angular/platform-browser';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+import { MatixHeaderLogics } from 'src/app/models/logic';
 
 @Component({
   selector: 'app-edit-survey',
@@ -118,7 +119,8 @@ export class EditSurveyComponent {
   alphabet: boolean = false; 
   isQNumberRequired:any;
   quesserialno:any;
-  planid:any
+  planid:any;
+  matrixheaderlogics: MatixHeaderLogics = new MatixHeaderLogics();
 
   
 
@@ -1552,6 +1554,7 @@ export class EditSurveyComponent {
 
     this.matrixAllOptions = [];
     this.matrixAllOptions.push(...this.matrixOptions, ...this.optionsArr3);
+    console.log("matrixAllOptions",this.matrixAllOptions)
 
     // this.question.options.push(newOption);
   }
@@ -1616,8 +1619,8 @@ export class EditSurveyComponent {
 
       if (data && data.length > 0) {
         const response = data[0];
-        this.getoptionlogic = data[0] 
-        this.visibleanslogic = true// Access the first element of the array
+        this.getoptionlogic = data[0];
+        this.visibleanslogic = true;
         console.log("data", response);
         this.optionlogicid = response.id
         this.optionlogicquesid = response.questionId;
@@ -1749,6 +1752,85 @@ export class EditSurveyComponent {
     })
   }
 
+  matriclogicifId:any;
+  matrixlogicifexpectedid:any
+  matrixheaderthenid:any;
+  matrixlogicthanexpected:any;
+  matrixlogicifexpected:any
+  matrixlogicelseid:any;
+  matrixlogicelseexpected:any;
+  selectedMatricHeaderOptions: any[] = [];
+
+  addMatrixHeaderOption(event: MatChipInputEvent): void {
+    const input = event.input;
+    const value = event.value.trim();
+
+    // Check if the entered value is in the available options
+    
+    const matchingOption = this.matrixAllOptions.find((option: Option) => option.option === value);
+
+    if (matchingOption && !this.selectedMatricHeaderOptions.includes(matchingOption)) {
+      this.selectedMatricHeaderOptions.push(matchingOption);
+    }
+
+    if (input) {
+      input.value = '';
+    }
+    this.matrixlogicifexpectedid = '';
+  }
+  removeMatrixHeaderOption(option: any): void {
+    const index = this.selectedMatricHeaderOptions.indexOf(option);
+    if (index >= 0) {
+      this.selectedMatricHeaderOptions.splice(index, 1);
+    }
+  }
+
+  selectedMatrixHeaderOption(event: MatAutocompleteSelectedEvent): void {
+    const selectedOption = event.option.value;
+    if (!this.selectedMatricHeaderOptions.includes(selectedOption)) {
+      this.selectedMatricHeaderOptions.push(selectedOption);
+    }
+    console.log("selectedMatricHeaderOptions",this.selectedMatricHeaderOptions)
+    this.matrixlogicifexpected = this.selectedMatricHeaderOptions.map((option: { id: any }) => option.id).join(', ');
+    this.matrixlogicifexpectedid = selectedOption.option;
+
+  }
+
+  createMatixLogic(): void {
+
+
+    const matrixLogics: MatixHeaderLogics = {
+      id: 0,
+      surveyId: this.surveyId,
+      questionId: Number(this.questionId),
+      ifId: Number(this.matriclogicifId),
+      ifExpected: this.matrixlogicifexpected,
+      thanId: Number(this.matrixheaderthenid),
+      thanExpected: Number(this.matrixlogicthanexpected),
+      elseId: Number(this.matrixlogicelseid),
+      elseExpected: Number(this.matrixlogicelseexpected),
+      sort: 0,
+      status: 'ACT'
+    };
+    
+    const matrixLogicsArray: MatixHeaderLogics[] = [matrixLogics];
+    
+    console.log(JSON.stringify(matrixLogicsArray));
+
+
+
+    this.surveyservice.createMatrixHeaderLogics(matrixLogicsArray).subscribe({
+      next: (resp: any) => {
+        if(resp == '"createdSuccessfully"'){
+        this.utility.showSuccess('Created Sucessfully');
+        window.location.reload()
+        }
+      },
+      error: (err: any) => {
+        this.utility.showError("Not created")
+      }
+    });
+  }
  
 
 

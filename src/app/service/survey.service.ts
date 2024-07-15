@@ -530,6 +530,16 @@ export class SurveyService {
     return this.http.post(url, data, { responseType: 'text' });
   }
 
+  updateMatrixHeaderLogics(data: any): Observable<any> {
+    const url = `${this.apiUrl}api/admin/${this.userId}/Logics/UpdateMatrixHeaderLogics`;
+    return this.http.post(url, data, { responseType: 'text' });
+  }
+
+  getMatrixHeaderLogics(surveyId:any,questionId:any): Observable<responseDTO[]> {
+    const url = `${this.apiUrl}api/admin/${this.userId}/Logics/GetMatrixHeaderLogics?surveyId=${surveyId}&questionId=${questionId}`;
+    return  this.http.get<responseDTO[]>(url);
+  }
+
   getOpenEndedValues(isOpenEnded: any): Observable<responseDTO[]> {
     const url = `${this.apiUrl}api/admin/${this.userId}/Logics/GetValues?isOpenEnded=${isOpenEnded}`;
     return this.http.get<responseDTO[]>(url);

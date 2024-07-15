@@ -671,17 +671,17 @@
                                 <ul class="nav flex-column nav-tabs" id="myTab" role="tablist">
             
                                     <li class="nav-item" role="presentation">
-                                        <button class="nav-link active" id="randomaisation-tab" data-bs-toggle="tab"
-                                            data-bs-target="#randomaisation" role="tab" aria-selected="false">Create Answer Logic</button>
+                                        <button class="nav-link active" id="answerlogic-tab" data-bs-toggle="tab"
+                                            data-bs-target="#answerlogic" role="tab" aria-selected="false">Create Answer Logic</button>
                                     </li>
                                     <li class="nav-item" role="presentation" >
-                                        <button (click)="getAllSurveyList()" class="nav-link" id="autocode-tab" data-bs-toggle="tab"
-                                            data-bs-target="#autocode" role="tab" aria-selected="false">Create Matrix Logic</button>
+                                        <button (click)="getAllSurveyList()" class="nav-link" id="matrixlogic-tab" data-bs-toggle="tab"
+                                            data-bs-target="#matrixlogic" role="tab" aria-selected="false">Create Matrix Logic</button>
                                     </li>
                                 </ul>
                                 <div class="tab-content p-4">
-                                    <div class="tab-pane active" id="randomaisation" role="tabpanel"
-                                        aria-labelledby="randomaisation-tab">
+                                    <div class="tab-pane active" id="answerlogic" role="tabpanel"
+                                        aria-labelledby="answerlogic-tab">
                                         <div ngClass="mb-4">
                                             <div class="logic-tab">
                                                 <!-- Logic Question -->
@@ -858,7 +858,7 @@
                                         
                                     </div>
             
-                                    <div class="tab-pane" id="autocode" role="tabpanel" aria-labelledby="autocode-tab">
+                                    <div class="tab-pane" id="matrixlogic" role="tabpanel" aria-labelledby="matrixlogic-tab">
                                         <h5 ngClass="mb-4">Matrix Logic</h5>
                                         <div ngClass="mb-4">
                                             <div class="logic-tab">
@@ -870,21 +870,20 @@
                                                             <h5>Create Matrix Logic</h5>
                                                             <div class="custom-tooltip ms-2">
                                                                 <ng-icon name="heroInformationCircle" ngClass="edit-action info-circle"
-                                                                    (click)="toggleTooltip('2')"></ng-icon>
-                                                                <div class="toast show" *ngIf="showTooltip['2']">
+                                                                    (click)="toggleTooltip('6')"></ng-icon>
+                                                                <div class="toast show" *ngIf="showTooltip['6']">
                                                                     <div class="toast-header">
                                                                         <img [src]="baseUrl + '/assets/images/icons/Add-new-question.png'"
                                                                             class="rounded me-2" width="30" height="30" />
-                                                                        <h6 class="mb-0 me-auto">Create Question (Create Answer Logic)
+                                                                        <h6 class="mb-0 me-auto">Create Matrix Header Logic
                                                                         </h6>
                                                                         <button type="button" class="btn-close" data-bs-dismiss="toast"
-                                                                            aria-label="Close" (click)="hideTooltip('2')"></button>
+                                                                            aria-label="Close" (click)="hideTooltip('6')"></button>
                                                                     </div>
                                                                     <div class="toast-body">
-                                                                        By implementing answer logic, you can dynamically show or hide
+                                                                        By implementing Matrix Header Logic, you can dynamically show or hide
                                                                         answer options based on the respondents' answers. This feature
-                                                                        not
-                                                                        only streamlines the survey-taking process but also ensures that
+                                                                        not only streamlines the survey-taking process but also ensures that
                                                                         respondents are presented with relevant questions, leading to
                                                                         more
                                                                         accurate and insightful data.
@@ -896,18 +895,15 @@
                                                             <h6>Redirect to different questions based on user's answer.</h6>
                 
                                                         </div>
-                                                        <div class="alert alert-danger"
+                                                        <!-- <div class="alert alert-danger"
                                                         role="alert" *ngIf="filteredQuestionList.length == 0">
                                                           <p>Option Logic can not apply to this Question</p>
-                                                        </div>
-                                                        <div ngClass="logic-ques" *ngIf="filteredQuestionList.length > 0">
+                                                        </div> -->
+                                                        <div ngClass="logic-ques" >
                                                             <div class="input-group flex-nowrap">
                                                                 <span class="input-group-text" id="addon-wrapping">In</span>
-                                                                <select class="form-select" [(ngModel)]="optionlogicquesid" #selectedQuestion
-                                                                    (change)="getOptionsByQuestionId(selectedQuestion.value)">
-                                                                    <option *ngFor="let item of filteredQuestionList;let i=index;"
-                                                                        value="{{item.id}}">{{item.item}}</option>
-                                                                </select>
+                                                                <input id="question" type="text" [(ngModel)]="question.question" class="form-control"
+                                                                name="question" />
                                                             </div>
                                                             <div ngClass="if-then">
                                                                 <span>If</span>
@@ -918,7 +914,7 @@
                                                                         <div>Value</div>
                                                                     </div>
                                                                     <div class="col-md-3">
-                                                                        <select class="form-select" [(ngModel)]="optionlogicifid" #ifIdSelect>
+                                                                        <select class="form-select" [(ngModel)]="matriclogicifId" #ifIdSelect>
                                                                             <option *ngFor="let item of logicValuesList;let i=index;"
                                                                                 value="{{item.id}}">{{item.name}}</option>
                                                                         </select>
@@ -936,27 +932,27 @@
                                                                         <mat-form-field class="example-chip-list">
                                                                             <mat-chip-grid #chipGrid aria-label="City selection">
                                                                                 <mat-chip-row
-                                                                                    *ngFor="let option of selectedOptions; let i=index;">
-                                                                                    {{option.option}}
+                                                                                    *ngFor="let option of selectedMatricHeaderOptions; let i=index;">
+                                                                                    {{option.header}}
                                                                                     <button matChipRemove [attr.aria-label]="'remove'"
-                                                                                        (click)="removeOption(option)">
+                                                                                        (click)="removeMatrixHeaderOption(option)">
                                                                                         <mat-icon>cancel</mat-icon>
                                                                                     </button>
                                                                                 </mat-chip-row>
                                                                                 <input 
-                                                                                    [(ngModel)]="optionlogicifexpectedid"
+                                                                                    [(ngModel)]="matrixlogicifexpectedid"
                                                                                     [matChipInputFor]="chipGrid"
                                                                                     [matAutocomplete]="auto"
                                                                                     [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
-                                                                                    (matChipInputTokenEnd)="addOption($event)">
+                                                                                    (matChipInputTokenEnd)="addMatrixHeaderOption($event)">
                                                                             </mat-chip-grid>
                                                                            
                                                                             <mat-autocomplete #auto="matAutocomplete"  
-                                                                                (optionSelected)="selectedOption($event)">
+                                                                                (optionSelected)="selectedMatrixHeaderOption($event)">
                                                                                 <mat-option 
-                                                                                    *ngFor="let option of optionListByQuestionId"                                                                   
+                                                                                    *ngFor="let option of matrixAllOptions"                                                                   
                                                                                     [value]="option">
-                                                                                    {{option.option}}
+                                                                                    {{option.header}}
                                                                                     
                                                                                 </mat-option>
                                                                             </mat-autocomplete>
@@ -971,14 +967,14 @@
                                                                 <div ngClass="mb-4">
                                                                     <div class="row g-2 align-items-center">
                                                                         <div class="col-md-4">
-                                                                            <select class="form-select" [(ngModel)]="optionlogicthanid" #thanIdSelect>
+                                                                            <select class="form-select" [(ngModel)]="matrixheaderthenid" #thanIdSelect>
                                                                                 <option
                                                                                     *ngFor="let item of optionLogicValuesList;let i=index;"
                                                                                     value="{{item.id}}">{{item.name}}</option>
                                                                             </select>
                                                                         </div>
                                                                         <div class="col-md-4">
-                                                                            <select class="form-select"  [(ngModel)]="optionlogicthanexpectedid" #thanExpectedSelect>
+                                                                            <select class="form-select"  [(ngModel)]="matrixlogicthanexpected" #thanExpectedSelect>
                                                                                 <option *ngFor="let item of optionsArr1;let i=index;"
                                                                                     value="{{item.id}}">{{item.option}}</option>
                                                                             </select>
@@ -998,14 +994,14 @@
                                                                 <div ngClass="mb-4">
                                                                     <div class="row g-2 align-items-center">
                                                                         <div class="col-md-4">
-                                                                            <select class="form-select" [(ngModel)]="optionlogicelseid" #thanIdSelect>
+                                                                            <select class="form-select" [(ngModel)]="matrixlogicelseid" #thanIdSelect>
                                                                                 <option
                                                                                     *ngFor="let item of optionLogicValuesList;let i=index;"
                                                                                     value="{{item.id}}">{{item.name}}</option>
                                                                             </select>
                                                                         </div>
                                                                         <div class="col-md-4">
-                                                                            <select class="form-select"  [(ngModel)]="optionlogicelseexpected" #elseExpectedSelect>
+                                                                            <select class="form-select"  [(ngModel)]="matrixlogicelseexpected" #elseExpectedSelect>
                                                                                 <option *ngFor="let item of optionsArr1;let i=index;"
                                                                                     value="{{item.id}}">{{item.option}}</option>
                                                                             </select>
@@ -1027,7 +1023,7 @@
                                             </div>
                                             <div class="row mt-3">
                                                 <div class="col-12 text-end">
-                                                    <button type="button" class="btn btn-primary px-5" (click)="onLogicSave()">Save
+                                                    <button type="button" class="btn btn-primary px-5" (click)="createMatixLogic()">Save
                                                         Logic</button>
                                                     <button type="button" class="btn trash-icon px-5 ms-4" (click)="deleteOptionLogics()">Delete</button>
                                                 </div>
