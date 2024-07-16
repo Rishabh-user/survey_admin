@@ -515,10 +515,11 @@ export class EditSurveyComponent {
   getQuestionTypes() {
     this.surveyservice.GetQuestionTypes().subscribe({
       next: (resp: any) => {
+
         this.questionTypes = resp;
         this.createquestionType = resp.type
         this.questionTypeNameGet = this.getTypeById(this.questionTypeId);
-
+       
       },
       error: (err) => { }
     });
@@ -1114,7 +1115,7 @@ export class EditSurveyComponent {
 
   optionselectedvalue:any
   getOptionsByQuestionId(selectedQuestion: any) {
-    debugger
+
     this.selectedOptions = [];
     this.optionListByQuestionId = ''
 
@@ -1133,7 +1134,7 @@ export class EditSurveyComponent {
       this.autoSelectQuestions(this.optionlogicifexpectedid)
       
     });
-    debugger
+
   }
   
 
@@ -1321,6 +1322,8 @@ export class EditSurveyComponent {
 
   createanswershidethen() {
     this.thenSection = !this.thenSection;
+    this.optionlogicelseid ='';
+    this.optionlogicelseexpected ='';
   }
 
   createansweraddthen() {
@@ -1413,9 +1416,8 @@ export class EditSurveyComponent {
       this.filteredQuestionList.push(item);
       
     }
-    
-    
   }
+
   starRating: any[] = [];
   addStarRating() {
     for (let i = 1; i <= 10; i++) {
@@ -1650,7 +1652,6 @@ export class EditSurveyComponent {
   }
 
   autoSelectQuestions(ansifid:any): void {
-    debugger
     // Initialize pipingques for the specific question ID if it doesn't exist
     console.log('ff0',this.optionListByQuestionId)
     if (!this.selectedOptions) {
@@ -1666,7 +1667,6 @@ export class EditSurveyComponent {
     // Update pipingques for the specific question ID
     this.selectedOptions = selectedQuestions;
   
-   debugger
   }
 
   addOption(event: MatChipInputEvent): void {
@@ -1773,8 +1773,6 @@ export class EditSurveyComponent {
     const input = event.input;
     const value = event.value.trim();
 
-    // Check if the entered value is in the available options
-    
     const matchingOption = this.matrixAllOptions.find((option: Option) => option.option === value);
 
     if (matchingOption && !this.selectedMatricHeaderOptions.includes(matchingOption)) {
@@ -1786,6 +1784,7 @@ export class EditSurveyComponent {
     }
     this.matrixlogicifexpectedid = '';
   }
+  
   removeMatrixHeaderOption(option: any): void {
     const index = this.selectedMatricHeaderOptions.indexOf(option);
     if (index >= 0) {

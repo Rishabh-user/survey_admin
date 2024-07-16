@@ -674,7 +674,7 @@
                                         <button class="nav-link active" id="answerlogic-tab" data-bs-toggle="tab"
                                             data-bs-target="#answerlogic" role="tab" aria-selected="false">Create Answer Logic</button>
                                     </li>
-                                    <li class="nav-item" role="presentation" >
+                                    <li class="nav-item" role="presentation" *ngIf="question.questionTypeName == 'Matrix Choice'">
                                         <button (click)="getAllSurveyList()" class="nav-link" id="matrixlogic-tab" data-bs-toggle="tab"
                                             data-bs-target="#matrixlogic" role="tab" aria-selected="false">Create Matrix Logic</button>
                                     </li>
@@ -859,7 +859,7 @@
                                     </div>
             
                                     <div class="tab-pane" id="matrixlogic" role="tabpanel" aria-labelledby="matrixlogic-tab">
-                                        <h5 ngClass="mb-4">Matrix Logic</h5>
+                                        <!-- <h5 ngClass="mb-4">Matrix Logic</h5> -->
                                         <div ngClass="mb-4">
                                             <div class="logic-tab">
                                                 <!-- Logic Question -->
@@ -920,14 +920,6 @@
                                                                         </select>
                                                                     </div>
                                                                     <div class="col-md-3">
-                                                                        <!-- {{optionlogicifexpectedid}} -->
-                                                                        <!-- <mat-select [(ngModel)]="optionlogicifexpectedid" [value]="optionlogicifexpectedid" multiple>
-                                                                            <mat-option *ngFor="let option of optionListByQuestionId" [value]="option.id">
-                                                                                {{ option.option }}
-                                                                            </mat-option>
-                                                                        </mat-select> -->
-                
-                                                                        
                                                                        
                                                                         <mat-form-field class="example-chip-list">
                                                                             <mat-chip-grid #chipGrid aria-label="City selection">
@@ -944,7 +936,7 @@
                                                                                     [matChipInputFor]="chipGrid"
                                                                                     [matAutocomplete]="auto"
                                                                                     [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
-                                                                                    (matChipInputTokenEnd)="addMatrixHeaderOption($event)">
+                                                                                   >
                                                                             </mat-chip-grid>
                                                                            
                                                                             <mat-autocomplete #auto="matAutocomplete"  

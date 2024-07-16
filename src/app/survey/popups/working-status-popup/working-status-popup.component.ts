@@ -130,7 +130,8 @@ export class WorkingStatusPopupComponent {
       currentQuestion.surveyTypeId = this.surveyId
       currentQuestion.createdDate = this.getCurrentDateTime()
       currentQuestion.modifiedDate = this.getCurrentDateTime();
-      currentQuestion.genericTypeId = this.typeid
+      currentQuestion.genericTypeId = this.typeid;
+      currentQuestion.openEndedType =  "text";
 
       currentQuestion.options = currentQuestion.options.filter(option => option.selected);
       currentQuestion.options.forEach(option => {

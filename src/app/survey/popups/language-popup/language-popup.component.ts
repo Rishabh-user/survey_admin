@@ -22,7 +22,7 @@ export class LanguagePopupComponent {
   questions: Question[] = [];
   questionText: string = '';
   surveyId = 0;
-  questionTypeId = 8;
+  questionTypeId = 7;
   qNo: any;
   quesserialno:any;
   baseUrl = '';
