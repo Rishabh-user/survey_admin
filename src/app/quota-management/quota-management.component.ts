@@ -789,6 +789,65 @@ activeIndicesForInterlock(interlockindex: number): number[] {
     console.log("final combinations",combinations)
     return combinations;
   }
+
+
+  saveCount() {
+    
+    const dataToSend = {
+      quotaId: 0,
+      surveyId: this.surveyId,
+      totalUsers: this.surveycount,
+      centerId: this.centerId,
+      status: "ACT",
+      createdDate: this.getCurrentDateTime(),
+      questionDto: {
+        quotaQuestionsId: 0,
+        quotaId: 0,
+        questionId: 0,
+        type: '',
+        interlock: false,
+        isOpenEnded: false,
+        optionsDto: [] as { quotaOptionsId: number; quotaQuestionId: number; optionId: any; userCount: number }[]
+      }
+    };
+
+
+    const options = this.selectedoptionid;
+
+    options.forEach((optionId: any) => {
+      const optionsDto = {
+        quotaOptionsId: 0,
+        quotaQuestionId: 0,
+        optionId: optionId,
+        userCount: 0
+      }
+      dataToSend.questionDto.optionsDto.push(optionsDto);
+    });
+    if (this.quotaid > 0) {
+      this.surveyservice.updateQuota(dataToSend).subscribe(
+        resp => {
+          console.log("updateQuota ", resp)
+          this.utility.showSuccess('Quota updated Successfully.');
+        },
+        error => {
+          console.log("err create", error)
+          this.utility.showError('error');
+        }
+      )
+    } else {
+      this.surveyservice.createQuota(dataToSend).subscribe(
+        resp => {
+          console.log("create quota", resp)
+          this.utility.showSuccess('Quota Created Successfully.');
+        },
+        error => {
+          console.log("err create", error)
+          this.utility.showError('error');
+        }
+      )
+    }
+
+  }
   
  
 }
