@@ -97,7 +97,7 @@ export class EditSurveyComponent {
   logicValuesList: any
   optionLogicValuesList: any
   optionListByQuestionId: any
-  selectedOptions: any[] = [];
+  selectedOptions: any[][] = [];
   getquestionTypeName: any
   questionsort: any
   screeningRedirectUrl: any
@@ -121,6 +121,7 @@ export class EditSurveyComponent {
   quesserialno:any;
   planid:any;
   matrixheaderlogics: MatixHeaderLogics = new MatixHeaderLogics();
+  logicEntries: any[] = [];
 
   
 
@@ -741,6 +742,9 @@ export class EditSurveyComponent {
       this.question.openEndedType = "textarea"
       this.question.textLimit = this.textlimit
     }
+    if (this.question.questionTypeName === 'Continous Sum') {
+      this.question.textLimit = this.textlimit
+    }
     // else{
     //   this.question.openEndedType = 'text'
     // }
@@ -1320,14 +1324,28 @@ export class EditSurveyComponent {
 
   thenSection = false
 
-  createanswershidethen() {
+  matrixHeaderHideThen() {
     this.thenSection = !this.thenSection;
     this.optionlogicelseid ='';
     this.optionlogicelseexpected ='';
   }
 
-  createansweraddthen() {
+  matrixHeadeeAddThen() {
     this.thenSection = true
+    
+  }
+
+
+  createanswerthenSection: boolean[]= []
+
+  createanswershidethen(index:any):void {
+    this.createanswerthenSection[index] = !this.createanswerthenSection[index];
+    this.logicEntries[index].optionlogicelseid ='';
+    this.logicEntries[index].optionlogicelseexpected ='';
+  }
+
+  createansweraddthen(index:any):void {
+    this.createanswerthenSection[index] = true
     
   }
 
@@ -1582,6 +1600,19 @@ export class EditSurveyComponent {
 
     this.matrixAllOptions.push(...this.matrixOptions, ...this.optionsArr3);
   }
+
+  onAddLogic(){
+    this.logicEntries.push({
+      optionlogicquesid: null,
+      optionlogicifid: null,
+      optionlogicifexpectedid: [],
+      optionlogicthanid: null,
+      optionlogicthanexpectedid: null,
+      optionlogicelseid: null,
+      optionlogicelseexpected: null
+    });
+
+  }
  
   optionlogicquesid:any;
   optionlogicifid:any;
@@ -1593,32 +1624,36 @@ export class EditSurveyComponent {
 
 
   onLogicSave(): void {
-    const datatosend={
-      
-        questionId: this.optionlogicquesid,
-        ifId: this.optionlogicifid,
-        ifExpected: this.selectedifexpected,
-        thanId: this.optionlogicthanid,
-        thanExpected: this.optionlogicthanexpectedid,
-        elseId: this.optionlogicelseid,
-        elseExpected: this.optionlogicelseexpected,
-        sort: 1,
+    this.logicEntries.forEach((entry, index) => {
+      const datatosend = {
+        questionId: entry.optionlogicquesid,
+        ifId: entry.optionlogicifid,
+        ifExpected: entry.selectedifexpected,
+        thanId: entry.optionlogicthanid,
+        thanExpected: entry.optionlogicthanexpectedid,
+        elseId: entry.optionlogicelseid,
+        elseExpected: entry.optionlogicelseexpected,
+        sort: index,  
         onLogicQuestionId: this.questionId,
         surveyId: this.surveyId
-    }
-
-    this.surveyservice.optionLogics(datatosend).subscribe({
-      next: (resp: any) => {
-        if(resp == '"UpdatedSuccessfully"'){
-        this.utility.showSuccess('Updated Sucessfully');
-        window.location.reload()
+      };
+  
+      this.surveyservice.optionLogics(datatosend).subscribe({
+        next: (resp: any) => {
+          if (resp === '"UpdatedSuccessfully"') {
+            this.utility.showSuccess('Updated Successfully');
+            if (index === this.logicEntries.length - 1) {
+              // window.location.reload();
+            }
+          }
+        },
+        error: (err: any) => {
+          this.utility.showError("Not created");
         }
-      },
-      error: (err: any) => {
-        this.utility.showError("Not created")
-      }
+      });
     });
   }
+  
 
   getoptionlogic:any[]=[]
   getOptionLogics(): void {
@@ -1629,16 +1664,23 @@ export class EditSurveyComponent {
         this.getoptionlogic = data[0];
         this.visibleanslogic = true;
         console.log("data", data.length);
-        this.optionlogicid = response.id
-        this.optionlogicquesid = response.questionId;
-        this.optionlogicifid = response.ifId;
-        this.optionlogicifexpectedid = response.ifExpected;
-        this.optionlogicthanid = response.thanId;
-        this.optionlogicthanexpectedid = response.thanExpected;
-        this.optionlogicelseid = response.elseId;
-        this.optionlogicelseexpected = response.elseExpected;
+        debugger
+        this.logicEntries = data.map((response) => ({
+          
+          optionlogicid: response.id,
+          optionlogicquesid: response.questionId,
+          optionlogicifid: response.ifId,
+          optionlogicifexpectedid: response.ifExpected,
+          optionlogicthanid: response.thanId,
+          optionlogicthanexpectedid: response.thanExpected,
+          optionlogicelseid: response.elseId,
+          optionlogicelseexpected: response.elseExpected
+          
+        }));
+        debugger
+
         setTimeout(() => {
-            this.getOptionsByQuestionId(this.optionlogicquesid)
+          this.getOptionsByQuestionId(this.logicEntries[0].optionlogicquesid);
         }, 1000);
         if(data.length > 0){
           this.thenSection = true
@@ -1669,40 +1711,112 @@ export class EditSurveyComponent {
   
   }
 
-  addOption(event: MatChipInputEvent): void {
+  // addOption(event: MatChipInputEvent): void {
+  //   const input = event.input;
+  //   const value = event.value.trim();
+
+  //   // Check if the entered value is in the available options
+    
+  //   const matchingOption = this.optionListByQuestionId.find((option: Option) => option.option === value);
+
+  //   if (matchingOption && !this.selectedOptions.includes(matchingOption)) {
+  //     this.selectedOptions.push(matchingOption);
+  //   }
+
+  //   if (input) {
+  //     input.value = '';
+  //   }
+  //   this.optionlogicifexpectedid = '';
+  // }
+  // removeOption(option: any): void {
+  //   const index = this.selectedOptions.indexOf(option);
+  //   if (index >= 0) {
+  //     this.selectedOptions.splice(index, 1);
+  //   }
+  // }
+
+  // selectedOption(event: MatAutocompleteSelectedEvent): void {
+  //   const selectedOption = event.option.value;
+  //   if (!this.selectedOptions.includes(selectedOption)) {
+  //     this.selectedOptions.push(selectedOption);
+  //   }
+  //   console.log("selectedOptions",this.selectedOptions)
+  //   this.selectedifexpected = this.selectedOptions.map((option: { id: any }) => option.id).join(', ');
+  //   this.optionlogicifexpectedid = selectedOption.option;
+
+  // }
+
+  addOption(event: MatChipInputEvent, index: number): void {
     const input = event.input;
     const value = event.value.trim();
 
-    // Check if the entered value is in the available options
-    
-    const matchingOption = this.optionListByQuestionId.find((option: Option) => option.option === value);
+    // Ensure selectedOptions[index] is initialized
+    if (!this.selectedOptions[index]) {
+      this.selectedOptions[index] = [];
+    }
 
-    if (matchingOption && !this.selectedOptions.includes(matchingOption)) {
-      this.selectedOptions.push(matchingOption);
+    const matchingOption = this.optionListByQuestionId.find((option: any) => option.option === value);
+
+    if (matchingOption && !this.selectedOptions[index].includes(matchingOption)) {
+      this.selectedOptions[index].push(matchingOption);
     }
 
     if (input) {
       input.value = '';
     }
-    this.optionlogicifexpectedid = '';
-  }
-  removeOption(option: any): void {
-    const index = this.selectedOptions.indexOf(option);
-    if (index >= 0) {
-      this.selectedOptions.splice(index, 1);
+
+    // Ensure logicEntries[index] is initialized
+    if (!this.logicEntries[index]) {
+      this.logicEntries[index] = {};
     }
+
+    this.logicEntries[index].optionlogicifexpectedid = this.selectedOptions[index].map(option => option.option).join(', ');
   }
 
-  selectedOption(event: MatAutocompleteSelectedEvent): void {
+  removeOption(option: any, index: number): void {
+    // Ensure selectedOptions[index] is initialized
+    if (!this.selectedOptions[index]) {
+      this.selectedOptions[index] = [];
+    }
+
+    const optionIndex = this.selectedOptions[index].indexOf(option);
+    if (optionIndex >= 0) {
+      this.selectedOptions[index].splice(optionIndex, 1);
+    }
+
+    // Ensure logicEntries[index] is initialized
+    if (!this.logicEntries[index]) {
+      this.logicEntries[index] = {};
+    }
+
+    this.logicEntries[index].optionlogicifexpectedid = this.selectedOptions[index].map(opt => opt.option).join(', ');
+  }
+  
+  
+
+  selectedOption(event: MatAutocompleteSelectedEvent, index: number): void {
     const selectedOption = event.option.value;
-    if (!this.selectedOptions.includes(selectedOption)) {
-      this.selectedOptions.push(selectedOption);
+  
+    if (!this.selectedOptions[index]) {
+      this.selectedOptions[index] = [];
     }
-    console.log("selectedOptions",this.selectedOptions)
-    this.selectedifexpected = this.selectedOptions.map((option: { id: any }) => option.id).join(', ');
-    this.optionlogicifexpectedid = selectedOption.option;
+  
+    if (!this.selectedOptions[index].includes(selectedOption)) {
+      this.selectedOptions[index].push(selectedOption);
+    }
 
+    if (!this.logicEntries[index]) {
+      this.logicEntries[index] = {};
+    }
+  
+    // Update the logicEntries with the selected options
+    this.selectedifexpected[index] = this.selectedOptions[index].map((option: { id: any }) => option.id).join(', ');
+    this.logicEntries[index].optionlogicifexpectedid = this.selectedOptions[index].map(option => option.option).join(', ');
   }
+  
+  
+  
+  
 
   deleteOptionLogics(): void {
     this.surveyservice.deleteOptionLogicById(this.optionlogicid).subscribe({

@@ -406,6 +406,13 @@
                         </div>
 
                     </div>
+                    <div *ngIf="question.questionTypeName === 'Continous Sum'">
+                        <label>Enter Sum</label>
+                        <div class="flex-2 mb-3">
+                            <input id="answer" type="number" name="answer" class="form-control" [(ngModel)]="textlimit"
+                                (blur)="validateSurvey()" />
+                        </div>
+                    </div>
                     <div ngClass="mb-4">
                         <div class="row g-2 align-items-center">
                             <div class="col-auto">
@@ -685,174 +692,171 @@
                                         <div ngClass="mb-4">
                                             <div class="logic-tab">
                                                 <!-- Logic Question -->
-                                                <div class="tab-content p-4" *ngIf="isLogicShow">
-                                                    <div class="tab-pane active" id="branching" role="tabpanel"
-                                                        aria-labelledby="branching-tab">
-                                                        <div class="infocircle justify-content-start mb-4">
-                                                            <h5>Create Answer Logic</h5>
-                                                            <div class="custom-tooltip ms-2">
-                                                                <ng-icon name="heroInformationCircle" ngClass="edit-action info-circle"
-                                                                    (click)="toggleTooltip('2')"></ng-icon>
-                                                                <div class="toast show" *ngIf="showTooltip['2']">
-                                                                    <div class="toast-header">
-                                                                        <img [src]="baseUrl + '/assets/images/icons/Add-new-question.png'"
-                                                                            class="rounded me-2" width="30" height="30" />
-                                                                        <h6 class="mb-0 me-auto">Create Question (Create Answer Logic)
-                                                                        </h6>
-                                                                        <button type="button" class="btn-close" data-bs-dismiss="toast"
-                                                                            aria-label="Close" (click)="hideTooltip('2')"></button>
-                                                                    </div>
-                                                                    <div class="toast-body">
-                                                                        By implementing answer logic, you can dynamically show or hide
-                                                                        answer options based on the respondents' answers. This feature
-                                                                        not
-                                                                        only streamlines the survey-taking process but also ensures that
-                                                                        respondents are presented with relevant questions, leading to
-                                                                        more
-                                                                        accurate and insightful data.
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div ngClass="d-flex justify-content-between mb-3">
-                                                            <h6>Redirect to different questions based on user's answer.</h6>
-                
-                                                        </div>
-                                                        <div class="alert alert-danger"
-                                                        role="alert" *ngIf="filteredQuestionList.length == 0">
-                                                          <p>Option Logic can not apply to this Question</p>
-                                                        </div>
-                                                        <div ngClass="logic-ques" *ngIf="filteredQuestionList.length > 0">
-                                                            <div class="input-group flex-nowrap">
-                                                                <span class="input-group-text" id="addon-wrapping">In</span>
-                                                                <select class="form-select" [(ngModel)]="optionlogicquesid" #selectedQuestion
-                                                                    (change)="getOptionsByQuestionId(selectedQuestion.value)">
-                                                                    <option *ngFor="let item of filteredQuestionList;let i=index;"
-                                                                        value="{{item.id}}">{{item.item}}</option>
-                                                                </select>
-                                                            </div>
-                                                            <div ngClass="if-then">
-                                                                <span>If</span>
-                                                            </div>
-                                                            <div ngClass="mb-4">
-                                                                <div class="row g-2 align-items-center">
-                                                                    <div class="col-md-1">
-                                                                        <div>Value</div>
-                                                                    </div>
-                                                                    <div class="col-md-3">
-                                                                        <select class="form-select" [(ngModel)]="optionlogicifid" #ifIdSelect>
-                                                                            <option *ngFor="let item of logicValuesList;let i=index;"
-                                                                                value="{{item.id}}">{{item.name}}</option>
-                                                                        </select>
-                                                                    </div>
-                                                                    <div class="col-md-3">
-                                                                        <!-- {{optionlogicifexpectedid}} -->
-                                                                        <!-- <mat-select [(ngModel)]="optionlogicifexpectedid" [value]="optionlogicifexpectedid" multiple>
-                                                                            <mat-option *ngFor="let option of optionListByQuestionId" [value]="option.id">
-                                                                                {{ option.option }}
-                                                                            </mat-option>
-                                                                        </mat-select> -->
-                
-                                                                        
-                                                                       
-                                                                        <mat-form-field class="example-chip-list">
-                                                                            <mat-chip-grid #chipGrid aria-label="City selection">
-                                                                                <mat-chip-row
-                                                                                    *ngFor="let option of selectedOptions; let i=index;">
-                                                                                    {{option.option}}
-                                                                                    <button matChipRemove [attr.aria-label]="'remove'"
-                                                                                        (click)="removeOption(option)">
-                                                                                        <mat-icon>cancel</mat-icon>
-                                                                                    </button>
-                                                                                </mat-chip-row>
-                                                                                <input 
-                                                                                    [(ngModel)]="optionlogicifexpectedid"
-                                                                                    [matChipInputFor]="chipGrid"
-                                                                                    [matAutocomplete]="auto"
-                                                                                    [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
-                                                                                    (matChipInputTokenEnd)="addOption($event)">
-                                                                            </mat-chip-grid>
-                                                                           
-                                                                            <mat-autocomplete #auto="matAutocomplete"  
-                                                                                (optionSelected)="selectedOption($event)">
-                                                                                <mat-option 
-                                                                                    *ngFor="let option of optionListByQuestionId"                                                                   
-                                                                                    [value]="option">
-                                                                                    {{option.option}}
-                                                                                    
-                                                                                </mat-option>
-                                                                            </mat-autocomplete>
-                                                                        </mat-form-field>
+                                                <ng-container *ngFor="let logicEntry of logicEntries; let i = index">
+                                                    <div class="tab-content p-4" *ngIf="isLogicShow">
+                                                        <div class="tab-pane active" id="branching" role="tabpanel"
+                                                            aria-labelledby="branching-tab">
+                                                            <div class="infocircle justify-content-start mb-4">
+                                                                <h5>Create Answer Logic</h5>
+                                                                <div class="custom-tooltip ms-2">
+                                                                    <ng-icon name="heroInformationCircle" ngClass="edit-action info-circle"
+                                                                        (click)="toggleTooltip('2')"></ng-icon>
+                                                                    <div class="toast show" *ngIf="showTooltip['2']">
+                                                                        <div class="toast-header">
+                                                                            <img [src]="baseUrl + '/assets/images/icons/Add-new-question.png'"
+                                                                                class="rounded me-2" width="30" height="30" />
+                                                                            <h6 class="mb-0 me-auto">Create Question (Create Answer Logic)
+                                                                            </h6>
+                                                                            <button type="button" class="btn-close" data-bs-dismiss="toast"
+                                                                                aria-label="Close" (click)="hideTooltip('2')"></button>
+                                                                        </div>
+                                                                        <div class="toast-body">
+                                                                            By implementing answer logic, you can dynamically show or hide
+                                                                            answer options based on the respondents' answers. This feature
+                                                                            not
+                                                                            only streamlines the survey-taking process but also ensures that
+                                                                            respondents are presented with relevant questions, leading to
+                                                                            more
+                                                                            accurate and insightful data.
+                                                                        </div>
                                                                     </div>
                                                                 </div>
                                                             </div>
-                                                            <div>
+                                                            <div ngClass="d-flex justify-content-between mb-3">
+                                                                <h6>Redirect to different questions based on user's answer.</h6>
+                    
+                                                            </div>
+                                                            <div class="alert alert-danger"
+                                                            role="alert" *ngIf="filteredQuestionList.length == 0">
+                                                            <p>Option Logic can not apply to this Question</p>
+                                                            </div>
+                                                            <div ngClass="logic-ques" *ngIf="filteredQuestionList.length > 0">
+                                                                <div class="input-group flex-nowrap">
+                                                                    <span class="input-group-text" id="addon-wrapping">In</span>
+                                                                    <select class="form-select" [(ngModel)]="logicEntry.optionlogicquesid" #selectedQuestion
+                                                                        (change)="getOptionsByQuestionId(selectedQuestion.value)">
+                                                                        <option *ngFor="let item of filteredQuestionList;let i=index;"
+                                                                            value="{{item.id}}">{{item.item}}</option>
+                                                                    </select>
+                                                                </div>
                                                                 <div ngClass="if-then">
-                                                                    <span>Then</span>
+                                                                    <span>If</span>
                                                                 </div>
                                                                 <div ngClass="mb-4">
                                                                     <div class="row g-2 align-items-center">
-                                                                        <div class="col-md-4">
-                                                                            <select class="form-select" [(ngModel)]="optionlogicthanid" #thanIdSelect>
-                                                                                <option
-                                                                                    *ngFor="let item of optionLogicValuesList;let i=index;"
-                                                                                    value="{{item.id}}">{{item.name}}</option>
-                                                                            </select>
-                                                                        </div>
-                                                                        <div class="col-md-4">
-                                                                            <select class="form-select"  [(ngModel)]="optionlogicthanexpectedid" #thanExpectedSelect>
-                                                                                <option *ngFor="let item of optionsArr1;let i=index;"
-                                                                                    value="{{item.id}}">{{item.option}}</option>
-                                                                            </select>
-                                                                        </div>
                                                                         <div class="col-md-1">
-                
-                                                                            <button type="button" class="btn btn-outline-primary btn-sm"
-                                                                                (click)="createansweraddthen()">Else</button>
+                                                                            <div>Value</div>
                                                                         </div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div *ngIf="thenSection">
-                                                                <div ngClass="if-then">
-                                                                    <span>Else</span>
-                                                                </div>
-                                                                <div ngClass="mb-4">
-                                                                    <div class="row g-2 align-items-center">
-                                                                        <div class="col-md-4">
-                                                                            <select class="form-select" [(ngModel)]="optionlogicelseid" #thanIdSelect>
-                                                                                <option
-                                                                                    *ngFor="let item of optionLogicValuesList;let i=index;"
+                                                                        <div class="col-md-3">
+                                                                            <select class="form-select" [(ngModel)]="logicEntry.optionlogicifid" #ifIdSelect>
+                                                                                <option *ngFor="let item of logicValuesList;let i=index;"
                                                                                     value="{{item.id}}">{{item.name}}</option>
                                                                             </select>
                                                                         </div>
-                                                                        <div class="col-md-4">
-                                                                            <select class="form-select"  [(ngModel)]="optionlogicelseexpected" #elseExpectedSelect>
-                                                                                <option *ngFor="let item of optionsArr1;let i=index;"
-                                                                                    value="{{item.id}}">{{item.option}}</option>
-                                                                            </select>
-                                                                        </div>
-                                                                        <div class="col-md-8">
-                                                                            <a routerLink="javascript:"><ng-icon name="heroTrash"
-                                                                                    ngClass="trash-icon"
-                                                                                    (click)="createanswershidethen()"></ng-icon></a>
+                                                                        <div class="col-md-3">
+                                                                            <mat-form-field class="example-chip-list">
+                                                                                <mat-chip-grid #chipGrid aria-label="City selection">
+                                                                                    <mat-chip-row
+                                                                                        *ngFor="let option of selectedOptions[i]; let i=index;">
+                                                                                        {{option.option}}
+                                                                                        <button matChipRemove [attr.aria-label]="'remove'"
+                                                                                            (click)="removeOption(option,i)">
+                                                                                            <mat-icon>cancel</mat-icon>
+                                                                                        </button>
+                                                                                    </mat-chip-row>
+                                                                                    <input 
+                                                                                        [(ngModel)]="logicEntry.optionlogicifexpectedid"
+                                                                                        [matChipInputFor]="chipGrid"
+                                                                                        [matAutocomplete]="auto"
+                                                                                        [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                                                                                        (matChipInputTokenEnd)="addOption($event,i)">
+                                                                                </mat-chip-grid>
+                                                                            
+                                                                                <mat-autocomplete #auto="matAutocomplete"  
+                                                                                    (optionSelected)="selectedOption($event,i)">
+                                                                                    <mat-option 
+                                                                                        *ngFor="let option of optionListByQuestionId"                                                                   
+                                                                                        [value]="option">
+                                                                                        {{option.option}}
+                                                                                        
+                                                                                    </mat-option>
+                                                                                </mat-autocomplete>
+                                                                            </mat-form-field>
                                                                         </div>
                                                                     </div>
-                
+                                                                </div>
+                                                                <div>
+                                                                    <div ngClass="if-then">
+                                                                        <span>Then</span>
+                                                                    </div>
+                                                                    <div ngClass="mb-4">
+                                                                        <div class="row g-2 align-items-center">
+                                                                            <div class="col-md-4">
+                                                                                <select class="form-select" [(ngModel)]="logicEntry.optionlogicthanid" #thanIdSelect>
+                                                                                    <option
+                                                                                        *ngFor="let item of optionLogicValuesList;let i=index;"
+                                                                                        value="{{item.id}}">{{item.name}}</option>
+                                                                                </select>
+                                                                            </div>
+                                                                            <div class="col-md-4">
+                                                                                <select class="form-select"  [(ngModel)]="logicEntry.optionlogicthanexpectedid" #thanExpectedSelect>
+                                                                                    <option *ngFor="let item of optionsArr1;let i=index;"
+                                                                                        value="{{item.id}}">{{item.option}}</option>
+                                                                                </select>
+                                                                            </div>
+                                                                            <div class="col-md-1">
+                    
+                                                                                <button type="button" class="btn btn-outline-primary btn-sm"
+                                                                                    (click)="createansweraddthen(i)">Else</button>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div *ngIf="createanswerthenSection[i]">
+                                                                    <div ngClass="if-then">
+                                                                        <span>Else</span>
+                                                                    </div>
+                                                                    <div ngClass="mb-4">
+                                                                        <div class="row g-2 align-items-center">
+                                                                            <div class="col-md-4">
+                                                                                <select class="form-select" [(ngModel)]="logicEntry.optionlogicelseid" #thanIdSelect>
+                                                                                    <option
+                                                                                        *ngFor="let item of optionLogicValuesList;let i=index;"
+                                                                                        value="{{item.id}}">{{item.name}}</option>
+                                                                                </select>
+                                                                            </div>
+                                                                            <div class="col-md-4">
+                                                                                <select class="form-select"  [(ngModel)]="logicEntry.optionlogicelseexpected" #elseExpectedSelect>
+                                                                                    <option *ngFor="let item of optionsArr1;let i=index;"
+                                                                                        value="{{item.id}}">{{item.option}}</option>
+                                                                                </select>
+                                                                            </div>
+                                                                            <div class="col-md-8">
+                                                                                <a routerLink="javascript:"><ng-icon name="heroTrash"
+                                                                                        ngClass="trash-icon"
+                                                                                        (click)="createanswershidethen(i)"></ng-icon></a>
+                                                                            </div>
+                                                                        </div>
+                    
+                                                                    </div>
                                                                 </div>
                                                             </div>
                                                         </div>
+                    
                                                     </div>
-                
-                                                </div>
-                
+                                                    <div class="col-12 text-end">
+                                                        <button type="button" class="btn trash-icon px-5 ms-4" (click)="deleteOptionLogics()">Delete</button>
+                                                    </div>
+                                                </ng-container>
+                                                
                                             </div>
                                             <div class="row mt-3">
                                                 <div class="col-12 text-end">
                                                     <button type="button" class="btn btn-primary px-5" (click)="onLogicSave()">Save
                                                         Logic</button>
-                                                    <button type="button" class="btn trash-icon px-5 ms-4" (click)="deleteOptionLogics()">Delete</button>
+                                                    <button type="button" class="btn btn-primary px-5 ms-4" (click)="onAddLogic()">Add Logic</button>
                                                 </div>
+                                                 
                                             </div>
                                         </div>
                                         
@@ -974,7 +978,7 @@
                                                                         <div class="col-md-1">
                 
                                                                             <button type="button" class="btn btn-outline-primary btn-sm"
-                                                                                (click)="createansweraddthen()">Else</button>
+                                                                                (click)="matrixHeadeeAddThen()">Else</button>
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -1001,7 +1005,7 @@
                                                                         <div class="col-md-8">
                                                                             <a routerLink="javascript:"><ng-icon name="heroTrash"
                                                                                     ngClass="trash-icon"
-                                                                                    (click)="createanswershidethen()"></ng-icon></a>
+                                                                                    (click)="matrixHeaderHideThen()"></ng-icon></a>
                                                                         </div>
                                                                     </div>
                 
