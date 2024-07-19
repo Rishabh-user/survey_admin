@@ -127,10 +127,15 @@
                             </div>
                         </div>
                         <div class="mt-2">
-                            <label class="mb-2">Description</label>
+                            <label class="mb-2"> </label>
                             <!-- <textarea class="form-control" [(ngModel)]="questionSummery" rows="5"></textarea> -->
                             <ckeditor [editor]="Editor" [(ngModel)]="questionSummery" name="questionSummery" class="large-editor" [ngModelOptions]="{standalone: true}">
                             </ckeditor>
+                        </div>
+                        <div class="mt-2">
+                            <label class="mb-2">Tilte</label>
+                            <!-- <textarea class="form-control" [(ngModel)]="questionSummery" rows="5"></textarea> -->
+                           <textarea class="form-control" rows="10" cols="20" [(ngModel)]="description"></textarea>
                         </div>
                     </div>
                     <div class="mb-3" *ngIf="planid == 2500">
@@ -757,10 +762,11 @@
                                                                             <mat-form-field class="example-chip-list">
                                                                                 <mat-chip-grid #chipGrid aria-label="City selection">
                                                                                     <mat-chip-row
-                                                                                        *ngFor="let option of selectedOptions[i]; let i=index;">
+                                                                                        *ngFor="let option of selectedOptions[i]; let option_index=index;">
+                                                                                       
                                                                                         {{option.option}}
                                                                                         <button matChipRemove [attr.aria-label]="'remove'"
-                                                                                            (click)="removeOption(option,i)">
+                                                                                            (click)="removeOption(option, i)">
                                                                                             <mat-icon>cancel</mat-icon>
                                                                                         </button>
                                                                                     </mat-chip-row>

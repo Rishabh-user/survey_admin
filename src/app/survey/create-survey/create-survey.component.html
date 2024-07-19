@@ -163,7 +163,7 @@
 
             <div class="common-ques"
                 [class.disabled-link]="(totalItemsCount == 20 && planid == '500') || (totalItemsCount == 50 && planid == '1200')">
-                <a routerLink="javascript:" (click)="toggleDivVisibility();getRandomization();getSurveyLooping()"
+                <a routerLink="javascript:" (click)="toggleDivVisibility();getRandomization();getSurveyLooping();getEndScreen()"
                     [class.active]='isActive || isDivVisible'>
                     <figure><img [src]="baseUrl + '/assets/images/icons/Add-new-logic.png'" width="30" height="30" />
                     </figure>

@@ -284,6 +284,7 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
 
     this.getSurveyLooping();
     this.getPartnerRidirection();
+    this.getEndScreen();
 
     this.pipingQuestionById.forEach(() => {
       this.toppings.push(new FormControl([]));
@@ -3125,7 +3126,10 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
      this.surveyservice.getEndScreenId(this.surveyId).subscribe({
        
        next: (resp: any) => {
+       
          this.endscreenid = resp.id;
+         this.isDivVisible = true;
+        
        },
        error: (err:any) =>{
          console.log(err)
