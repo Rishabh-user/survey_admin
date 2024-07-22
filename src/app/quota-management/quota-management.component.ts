@@ -8,6 +8,7 @@ import { environment } from 'src/environments/environment';
 import { UtilsService } from '../service/utils.service';
 import { OptionDto, QuestionDto, QuotaData } from '../types/quota';
 import { CryptoService } from 'src/app/service/crypto.service';
+import { MatSelect, MatSelectChange } from '@angular/material/select';
 
 @Component({
   selector: 'app-quota-management',
@@ -15,6 +16,7 @@ import { CryptoService } from 'src/app/service/crypto.service';
   styleUrls: ['./quota-management.component.css']
 })
 export class QuotaManagementComponent {
+  
   selectedQuestion: string;
   isQuotasVisible: boolean = false;
   showQuotasDiv: boolean = false;
@@ -71,6 +73,9 @@ export class QuotaManagementComponent {
   ngOnInit() {
     this.centerId = this.utils.getCenterId();
     this.hideBreadcrumb();
+    setTimeout(() => {
+      this.getAllSurveyList()
+    }, 2000);
     // get surveydata
     this.route.paramMap.subscribe(_params => {
       this.surveyData = history.state.surveyData;
@@ -90,6 +95,7 @@ export class QuotaManagementComponent {
         console.log('Survey data is undefined or null.');
       }
     });
+   
 
     console.log("step1", this.questionList)
     this.GetSurveyDetails();
@@ -848,6 +854,17 @@ activeIndicesForInterlock(interlockindex: number): number[] {
     }
 
   }
+
+  vendorsurveydata:any[]=[]
+
+  getAllSurveyList() {
+    this.surveyservice.GetSurveyList().subscribe((data: any) => {
+      this.vendorsurveydata = data.surveyType;
+      console.log("ertyu",this.vendorsurveydata)
+
+    });
+  }
+  
   
  
 }

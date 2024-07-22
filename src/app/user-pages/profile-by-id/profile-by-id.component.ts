@@ -40,7 +40,8 @@ export class ProfileByIdComponent {
   roles: any[] = [
     { id: 1, name: 'SuperAdmin' },
     { id: 2, name: 'Admin' },
-    { id: 3, name: 'User' }
+    { id: 3, name: 'User' },
+    { id: 5, name: 'Vendor' }
   ];
 
   userroles: string[] = ['superadmin', 'Admin', 'User'];

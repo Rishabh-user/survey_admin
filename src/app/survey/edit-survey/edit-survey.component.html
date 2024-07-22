@@ -104,7 +104,9 @@
                                     name="question" (blur)="validateSurvey()"  placeholder="Enter question"/>
                                 <div *ngIf="!questionadded" class="text-danger">Question is required.</div>
                             </div>
-                            <div class="col-md-2">
+                            <ng-icon *ngIf="!questiontooltip" (click)="addQuestionTooltip()" name="heroPlusCircle"></ng-icon>
+                            <ng-icon *ngIf="questiontooltip" (click)="removeQuestionTooltip()" name="heroMinusCircle"></ng-icon>
+                            <div class="col-md-2 ms-3">
                                 <input id="addquestion" type="text" [(ngModel)]="question.questionTypeName"
                                     class="form-control" name="addquestion" (blur)="validateSurvey()">
                                 <div *ngIf="!qusstionaddednext" class="text-danger">Question is required.</div>
@@ -126,17 +128,18 @@
 
                             </div>
                         </div>
+                        <div class="mt-2" *ngIf="questiontooltip">
+                            <label class="mb-2">ToolTip</label>
+                            <!-- <textarea class="form-control" [(ngModel)]="questionSummery" rows="5"></textarea> -->
+                           <textarea class="form-control" rows="5" cols="10" [(ngModel)]="description"></textarea>
+                        </div>
                         <div class="mt-2">
-                            <label class="mb-2"> </label>
+                            <label class="mb-2">Description</label>
                             <!-- <textarea class="form-control" [(ngModel)]="questionSummery" rows="5"></textarea> -->
                             <ckeditor [editor]="Editor" [(ngModel)]="questionSummery" name="questionSummery" class="large-editor" [ngModelOptions]="{standalone: true}">
                             </ckeditor>
                         </div>
-                        <div class="mt-2">
-                            <label class="mb-2">Tilte</label>
-                            <!-- <textarea class="form-control" [(ngModel)]="questionSummery" rows="5"></textarea> -->
-                           <textarea class="form-control" rows="10" cols="20" [(ngModel)]="description"></textarea>
-                        </div>
+                        
                     </div>
                     <div class="mb-3" *ngIf="planid == 2500">
                         <div class="d-flex">
@@ -315,7 +318,7 @@
                             <div class="flex-width">
                                 <input type="text" id="" class="form-control" value="{{i+1}}" readonly />
                             </div>
-
+                            
 
                             <!-- this -->
                             <div class="flex-width">
@@ -337,23 +340,48 @@
                                     <img [src]="optionimagennew[i]" class="img-fluid">
                                 </ng-container>
                             </div>
-
-
                             <div class="flex-2">
                                 <input id="answer" type="text" name="answer" class="form-control"
                                     [(ngModel)]="option.option" (blur)="validateSurvey()" />
+                                    
                                 <div *ngIf="!option.option.trim()" class="text-danger">Option is required.</div>
                             </div>
+                            <div class="flex-2">
+                                <input id="answer" type="text" name="answer" class="form-control" />
+                                    
+                            </div>
+                            <ng-icon *ngIf="!optiontooltip[i]" (click)="addOptionTooltip(i)" name="heroPlusCircle"></ng-icon>
+                            <ng-icon *ngIf="optiontooltip[i]" (click)="removeOptionTooltip(i)" name="heroMinusCircle"></ng-icon>
 
 
-                            <div class="flex-width text-end" cdkDrag>
+                            <div *ngIf="optiontooltip[i]">
+                                <label class="mb-1">ToolTip</label>
+                                <div class="d-flex align-items-center">
+                                    
+                                    <div class="mt-2 flex-2">                                    
+                                        <input class="form-control" />
+                                    </div>
+                                    
+                                    <div class="flex-width text-end" cdkDrag>
+                                        <ng-icon name="heroBars3"></ng-icon>
+                                    </div>
+                                    <div class="flex-width text-end">
+                                        <a href="javascript:void(0);" (click)="onDeleteOption('optionArr1',i)">
+                                            <ng-icon name="heroTrash"></ng-icon>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                            
+ 
+                            <!-- <div class="flex-width text-end" cdkDrag>
                                 <ng-icon name="heroBars3"></ng-icon>
                             </div>
                             <div class="flex-width text-end">
                                 <a href="javascript:void(0);" (click)="onDeleteOption('optionArr1',i)">
                                     <ng-icon name="heroTrash"></ng-icon>
                                 </a>
-                            </div>
+                            </div> -->
                         </div>
                     </div>
                     <hr *ngIf="optionsArr2.length>0" />
@@ -495,14 +523,30 @@
                                     [(ngModel)]="option.header" (blur)="validateSurvey()" />
                                 <div *ngIf="!option.header.trim()" class="text-danger">Option is required.</div>
                             </div>
-                            
-                            <div class="flex-width text-end" cdkDrag>
-                                <ng-icon name="heroBars3"></ng-icon>
+                            <div class="flex-2">
+                                <input id="answer" type="text" name="answer" class="form-control" />
+                                    
                             </div>
-                            <div class="flex-width text-end">
-                                <a href="javascript:void(0);" (click)="onDeleteMatrixOption('optionmatrix',i)">
-                                    <ng-icon name="heroTrash"></ng-icon>
-                                </a>
+                            <ng-icon *ngIf="!matrixoptiontooltip[i]" (click)="addOptionMatrixTooltip(i)" name="heroPlusCircle"></ng-icon>
+                            <ng-icon *ngIf="matrixoptiontooltip[i]" (click)="removeOptionMatrixTooltip(i)" name="heroMinusCircle"></ng-icon>
+
+                            <div *ngIf="matrixoptiontooltip[i]">
+                                <label class="mb-1">ToolTip</label>
+                                <div class="d-flex align-items-center">
+                                    
+                                    <div class="mt-2 flex-2">                                    
+                                        <input class="form-control" />
+                                    </div>
+                                    
+                                    <div class="flex-width text-end" cdkDrag>
+                                        <ng-icon name="heroBars3"></ng-icon>
+                                    </div>
+                                    <div class="flex-width text-end">
+                                        <a href="javascript:void(0);" (click)="onDeleteMatrixOption('optionmatrix',i)">
+                                            <ng-icon name="heroTrash"></ng-icon>
+                                        </a>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>

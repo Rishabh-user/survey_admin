@@ -413,14 +413,17 @@ export class EditSurveyComponent {
 
           this.optionsArr1[oid].image = response.replace(/"/g, "");
           this.optionsArr1[oid].imageAdded = true;
+          this.utility.showSuccess("Image Uploaded Successfully")
 
 
         } else {
           console.error('Option not found for ID:', oid);
+          
         }
       },
       (error) => {
         console.error('Error occurred while uploading:', error);
+        this.utility.showError("Image not Uploaded")
       }
     );
   }
@@ -1013,7 +1016,9 @@ export class EditSurveyComponent {
 
     this.surveyservice.uploadImageQuestion(fileoption, queryParams).subscribe(
       (response: String) => {
+        this.utility.showSuccess("Image Uploaded Successfully")
         this.questionImage = response
+       
         //  response from the image upload
         // You may want to retrieve the URL or any other relevant information from the response
       },
@@ -2028,6 +2033,38 @@ export class EditSurveyComponent {
         this.utility.showError("Not created")
       }
     });
+  }
+
+  questiontooltip:boolean = false;
+  optiontooltip:boolean[] = [];
+  matrixoptiontooltip:boolean[]=[];
+  isOptionBlurred: boolean[] = [];
+
+  addQuestionTooltip(){
+    this.questiontooltip = true;
+
+  }
+
+  removeQuestionTooltip(){
+    this.questiontooltip = false;
+  }
+
+  addOptionTooltip(index:any): void{
+    this.optiontooltip[index]= true
+  }
+  removeOptionTooltip(index: number): void {
+    this.optiontooltip[index] = false;
+  }
+
+  addOptionMatrixTooltip(index:any): void{
+    this.matrixoptiontooltip[index]= true
+  }
+  removeOptionMatrixTooltip(index: number): void {
+    this.matrixoptiontooltip[index] = false;
+  }
+
+  onBlurOption(index: number): void {
+    this.isOptionBlurred[index] = true;
   }
  
 
