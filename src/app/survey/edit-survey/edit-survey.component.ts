@@ -1138,9 +1138,9 @@ export class EditSurveyComponent {
       this.optionListByQuestionId = response
       this.optionListByQuestionId = JSON.parse(this.optionListByQuestionId)
       console.log("fff",this.optionListByQuestionId)
-      this.logicEntries.forEach((entry, index) => {
-        this.autoSelectQuestions(entry.optionlogicifexpectedid, index);
-      });
+      // this.logicEntries.forEach((entry, index) => {
+      //   this.autoSelectQuestions(entry.optionlogicifexpectedid, index);
+      // });
       
     });
 
@@ -1663,15 +1663,12 @@ export class EditSurveyComponent {
   getoptionlogic:any[]=[]
   getOptionLogics(): void {
     this.surveyservice.GetOptionLogic(this.questionId, this.surveyId).subscribe((data: any[]) => {
-
       if (data && data.length > 0) {
-        const response = data[0];
         this.getoptionlogic = data[0];
         this.visibleanslogic = true;
         console.log("data", data);
-        
+  
         this.logicEntries = data.map((response) => ({
-          
           optionlogicid: response.id,
           optionlogicquesid: response.questionId,
           optionlogicifid: response.ifId,
@@ -1680,41 +1677,61 @@ export class EditSurveyComponent {
           optionlogicthanexpectedid: response.thanExpected,
           optionlogicelseid: response.elseId,
           optionlogicelseexpected: response.elseExpected
-          
         }));
-       
-
-        // Auto select options based on ifExpected
-        
-       
-        setTimeout(() => {
-          this.getOptionsByQuestionId(this.logicEntries[0].optionlogicquesid);
-        }, 1000);
+  
+        // Initialize createanswerthenSection and selectedOptions arrays
+        this.createanswerthenSection = new Array(this.logicEntries.length).fill(false);
+        this.selectedOptions = new Array(this.logicEntries.length).fill([]);
+  
         this.logicEntries.forEach((entry, index) => {
-            
-            this.createanswerthenSection[index] = true;
+          setTimeout(() => {
+            this.getOptionsByQuestion(entry.optionlogicquesid, index);
+          }, index * 1000); // Adding delay to avoid overwhelming the server
         });
-       
+  
+        this.logicEntries.forEach((entry, index) => {
+          this.createanswerthenSection[index] = true;
+        });
       } else {
         // Handle empty response or error
       }
-      
     });
   }
-
+  
+  getOptionsByQuestion(selectedQuestion: any, logicEntryIndex: number): void {
+    const selectedValue = selectedQuestion;
+    this.optionselectedvalue = selectedQuestion;
+    console.log("qwerty", selectedQuestion);
+  
+    let queryParams = {
+      qid: selectedValue
+    };
+  
+    this.surveyservice.getOptionsByQuestionId(queryParams).subscribe((response: { [x: string]: any; }) => {
+      var result = Object.keys(response).map(e => response[e]);
+  
+      this.optionListByQuestionId = response
+      this.optionListByQuestionId = JSON.parse(this.optionListByQuestionId)
+      console.log("fff", this.optionListByQuestionId);
+  
+      // Use logicEntryIndex to ensure correct entry is used
+      this.autoSelectQuestions(this.logicEntries[logicEntryIndex].optionlogicifexpectedid, logicEntryIndex);
+    });
+  }
+  
   autoSelectQuestions(ifExpected: any, index: number): void {
-    
-    console.log("optionListByQuestionIdsdd",ifExpected)
-    console.log("optionListByQuestionIdsdd",index)
+    console.log("optionListByQuestionIdsdd", ifExpected);
+    console.log("optionListByQuestionIdsdd", index);
     console.log('optionListByQuestionIdsdd', this.optionListByQuestionId);
-   
+  
     const selectedQuestions = this.optionListByQuestionId.filter((question: { id: any; }) =>
       ifExpected.includes(question.id)
     );
-    console.log("optionListByQuestionIdsdd",selectedQuestions)
-
-    this.selectedOptions[index] = selectedQuestions;
+    console.log("optionListByQuestionIdsdd", selectedQuestions);
   
+    // Update selectedOptions for the correct index
+    this.selectedOptions[index] = selectedQuestions;
+    console.log("this.selectedOptions[index]", index, this.selectedOptions[index]);
   }
   
 
@@ -1794,6 +1811,7 @@ export class EditSurveyComponent {
     }
 
     this.logicEntries[index].optionlogicifexpectedid = this.selectedOptions[index].map(option => option.option).join(', ');
+  
   }
 
 
