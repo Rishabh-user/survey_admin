@@ -42,6 +42,7 @@ interface LogicQuestion {
 export class CreateSurveyComponent implements OnInit, AfterViewInit {
   showTooltip: { [key: string]: boolean } = {};
   currentTooltip: string | null = null;
+  endscreenqid: any;
   
   // toggleTooltip(identifier: string) {
   //   this.showTooltip[identifier] = !this.showTooltip[identifier];
@@ -2344,60 +2345,7 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
   securityuid:any;
   isActiveredirection:boolean = false
   
-  // addRedirection(tab:string){
 
-  //   if (!this.validateRedirectLink(tab)) {
-  //     this.utils.showError('Please fill all required fields.');
-  //     return;
-  //   }
-
-  //   const dataToSend = {
-  //     surveyId: this.surveyId,
-  //     uid: this.uid,
-  //     completeLink: this.completelink,
-  //     completeUid: this.completeuid,
-  //     quotafullLink: this.quotalink,
-  //     quotafullUid: this.quotauid,
-  //     terminateLink: this.terminatelink,
-  //     terminateUid: this.terminateuid,
-  //     noSurveyLink: this.nosurveylink,
-  //     noSurveyUid: this.nosurveyuid,
-  //     duplicateLink: this.duplicatelink,
-  //     duplicateUid: this.duplicateuid,
-  //     securityLink: this.securitylink,
-  //     securityUid: this.securityuid,
-  //     status: 'ACT'
-  //   };
-  //   if(this.redirectid > 0){
-
-  //     this.surveyservice.updatePartnerRedirect(dataToSend).subscribe({
-  //       next: (resp: any) => {
-  //         if (resp == '"UpdatedSuccessfully"') {
-  //           this.utils.showSuccess("Redirection Updated");
-  //           window.location.reload();
-  //         }
-  //       },
-  //       error: (err: any) => {
-  //         this.utils.showError('Error');
-  //       }
-  //     });
-
-  //   }else{
-  //     this.surveyservice.partnerRedirect(dataToSend).subscribe({
-  //       next: (resp: any) => {
-  //         if (resp == '"CreatedSuccessfully"') {
-  //           this.utils.showSuccess("Redirection Added");
-  //           window.location.reload();
-  //         }
-  //       },
-  //       error: (err: any) => {
-  //         this.utils.showError('Error');
-  //       }
-  //     });
-
-  //   }
-    
-  // }
   addRedirection(tab: string) {
 
     if (!this.validateUID()){
@@ -2506,6 +2454,7 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
           this.securityuid = resp?.securityUid;
           this.terminatelink = resp?.terminateLink;
           this.terminateuid = resp?.terminateUid;
+          this.dataService.changeQuestionId(this.uid);
         
       },
       error: (err:any) =>{
@@ -3062,7 +3011,10 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
   onSelectionEndScreen(event:any){
     this.endscreenquesid = event.value; 
     console.log('Selected Value end', this.endscreenquesid);
+
   }
+
+  
 
 
   saveEndScreen(){
@@ -3095,6 +3047,7 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
 
   }
 
+  
   openendedlist:any[]=[];
   isopenended:boolean
 
@@ -3136,6 +3089,36 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
          
        }
      })
+
+  }
+
+  deleteEndScreen(){
+
+    this.surveyservice.deleteEndScreen(this.endscreenid).subscribe({
+      
+      next: (resp: any) => {
+        console.log("resp",resp)
+        if(resp){
+
+          if(resp === '"QuestionSuccessfullyDeleted"'){
+            this.utils.showSuccess("Delected Successfully");
+  
+            setTimeout(() => {
+              window.location.reload();
+            }, 500);
+            
+          }
+          else{
+            this.utils.showError("Not Deleted")
+          }
+
+        }
+        
+      },
+      error: (err:any) =>{
+        
+      }
+    })
 
   }
 

@@ -14,9 +14,11 @@ export class DataService {
   public isSidebarVisibleSubject = new BehaviorSubject<boolean>(true);
   isSidebarVisible$ = this.isSidebarVisibleSubject.asObservable();
 
-   private questionIdSource = new BehaviorSubject<any>(null);
+  private questionIdSource = new BehaviorSubject<any>(null);
   currentQuestionId = this.questionIdSource.asObservable();
 
+  private redirectionuid = new BehaviorSubject<any>(null);
+  uid = this.redirectionuid.asObservable();
 
  
 
@@ -50,7 +52,11 @@ export class DataService {
   changeQuestionId(questionId: any){
     this.questionIdSource.next(questionId);
     
-    return "yes";
+  }
+
+  redirectionUID(questionId: any){
+    this.redirectionuid.next(questionId);
+    
   }
 
   private headerVisibleSubject = new BehaviorSubject<boolean>(true);

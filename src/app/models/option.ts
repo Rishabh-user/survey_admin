@@ -14,7 +14,8 @@ export class Option {
         public selected: boolean = false,
         public isVisible: boolean = false,
         public isSelected: boolean = false,
-        public isFixed: boolean = false
+        public isFixed: boolean = false,
+        
 
     ) { }
 }
@@ -28,5 +29,6 @@ export class MatrixHeader {
     public sort: number=0,
     public createdDate: string = '',
     public modifiedDate: string = '',
+    public headerToolTip:string = ''
     ){}
 }

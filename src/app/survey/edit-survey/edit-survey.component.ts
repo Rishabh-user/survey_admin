@@ -122,7 +122,8 @@ export class EditSurveyComponent {
   planid:any;
   matrixheaderlogics: MatixHeaderLogics = new MatixHeaderLogics();
   logicEntries: any[] = [];
-  description:any
+  description:any;
+  questionToolTip:any;
 
   
 
@@ -183,6 +184,7 @@ export class EditSurveyComponent {
       this.qNo = data.qNo
       this.isQNumberRequired = data.isQNumberRequired;
       this.description = data.description
+      this.questionToolTip = data.questionToolTip
 
       data.options.forEach((opt: any) => {
 
@@ -199,6 +201,7 @@ export class EditSurveyComponent {
         newOption.isExcluded = opt.isExcluded;
         newOption.group = opt.group;
         newOption.sort = opt.sort;
+        newOption.optionToolTip = opt.optionToolTip;
         newOption.imageAdded = false;
 
         this.optionimagennew.push(opt.image)
@@ -233,6 +236,7 @@ export class EditSurveyComponent {
         headerOption.modifiedDate = opt.modifiedDate;
         headerOption.status = opt.status;
         headerOption.sort = opt.sort;
+        headerOption.headerToolTip = opt.headerToolTip;
 
         this.matrixOptions.push(headerOption)
 
@@ -765,6 +769,7 @@ export class EditSurveyComponent {
     this.question.isNumeric =  this.numeric
     this.question.isAlphabet = this.alphabet;
     this.question.description = this.description;
+    this.question.questionToolTip = this.questionToolTip
     
 
     let modifiedoptions: serveyOption[] = [];
@@ -779,11 +784,12 @@ export class EditSurveyComponent {
       headerOption.modifiedDate = option.modifiedDate;
       headerOption.status = option.status;
       headerOption.sort = option.sort;
+      headerOption.headerToolTip = option.headerToolTip;
 
       matrixoption.push(headerOption)
 
     });
-
+    
     this.allOptions.forEach((option) => {
       let modifiedOption = new serveyOption();
 
@@ -803,9 +809,11 @@ export class EditSurveyComponent {
       modifiedOption.selected = option.selected;
       modifiedOption.sort = option.sort;
       modifiedOption.status = option.status;
+      modifiedOption.optionToolTip = option.optionToolTip;
       modifiedOption.image = option.imageAdded ? option.image : null;
       modifiedoptions.push(modifiedOption);
     });
+    
 
     this.question.options = modifiedoptions;
     this.question.matrixHeader= matrixoption;
@@ -822,9 +830,10 @@ export class EditSurveyComponent {
             this.utility.showError('Question Created Failed')
           } else  if (resp === '"QuestionSuccessfullyUpdated"') {
             this.utility.showSuccess('Question Updated Successfully.');
-            window.location.reload()
+            window.location.reload();
             let url = `/survey/manage-survey/${this.crypto.encryptParam(this.surveyId)}`;
             this.router.navigateByUrl(url);
+             // window.location.reload();
             
           } 
         },
@@ -2035,25 +2044,25 @@ export class EditSurveyComponent {
     });
   }
 
-  questiontooltip:boolean = false;
-  optiontooltip:boolean[] = [];
+  questiontooltipadded:boolean = false;
+  optiontooltipadded:boolean[] = [];
   matrixoptiontooltip:boolean[]=[];
   isOptionBlurred: boolean[] = [];
 
   addQuestionTooltip(){
-    this.questiontooltip = true;
+    this.questiontooltipadded = true;
 
   }
 
   removeQuestionTooltip(){
-    this.questiontooltip = false;
+    this.questiontooltipadded = false;
   }
 
   addOptionTooltip(index:any): void{
-    this.optiontooltip[index]= true
+    this.optiontooltipadded[index]= true
   }
   removeOptionTooltip(index: number): void {
-    this.optiontooltip[index] = false;
+    this.optiontooltipadded[index] = false;
   }
 
   addOptionMatrixTooltip(index:any): void{

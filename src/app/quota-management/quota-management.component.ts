@@ -30,7 +30,8 @@ export class QuotaManagementComponent {
   countryImage: any;
   categoryName: any;
   centerId: any;
-  quotoid: any
+  quotoid: any;
+  role: any;
 
   surveyQuotaJson: QuotaData;
   isEditQuota: boolean = false;
@@ -38,6 +39,9 @@ export class QuotaManagementComponent {
   selectedQuestionIds: number[] = [];
   filteredQuestions:[]
   itemques:any[]=[]
+  vendorurl: boolean=false;
+  vendorgeneratedurl: string;
+  uid: any;
   //QuotaData: QuotaData;
 
 
@@ -72,10 +76,11 @@ export class QuotaManagementComponent {
   status: string;
   ngOnInit() {
     this.centerId = this.utils.getCenterId();
+    this.role = this.utils.getRole();
     this.hideBreadcrumb();
     setTimeout(() => {
       this.getAllSurveyList()
-    }, 2000);
+    }, 1000);
     // get surveydata
     this.route.paramMap.subscribe(_params => {
       this.surveyData = history.state.surveyData;
@@ -95,9 +100,12 @@ export class QuotaManagementComponent {
         console.log('Survey data is undefined or null.');
       }
     });
+    this.visibilityService.currentQuestionId.subscribe(redirectuid => {
+      this.uid = redirectuid;
+    });
    
 
-    console.log("step1", this.questionList)
+    console.log("step1", this.uid)
     this.GetSurveyDetails();
     console.log("step2", this.questionList)
     this.getQuotaBySurveyId();
@@ -863,6 +871,19 @@ activeIndicesForInterlock(interlockindex: number): number[] {
       console.log("ertyu",this.vendorsurveydata)
 
     });
+  }
+
+  generateVendorUrl(){
+    this.vendorurl=true
+    this.vendorgeneratedurl = `${window.location.host}/survey/landing/live/${this.centerId}/${this.surveyId}`;
+
+  }
+
+  copyToLink(inputElement: HTMLInputElement) {
+    inputElement.select();
+    document.execCommand('copy');
+    // alert('Link copied to clipboard');
+    this.utility.showSuccess('Link copied to clipboard')
   }
   
   

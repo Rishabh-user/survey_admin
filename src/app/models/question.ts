@@ -36,4 +36,5 @@ export class Question {
     public textLimit: number = 0
     public questionSummery: string = ''
     public matrixHeader: MatrixHeader[]=[]
+    public questionToolTip: string = ''
 }

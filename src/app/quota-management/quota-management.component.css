@@ -55,3 +55,7 @@ margin-top: 1rem;}
     opacity: .6;
 }
 .blanked-interlocked span{font-size: 22px;}
+
+.vendor-link {
+    pointer-events: none;
+}

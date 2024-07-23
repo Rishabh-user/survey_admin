@@ -550,5 +550,10 @@ export class SurveyService {
     return this.http.get<responseDTO[]>(url);
   }
 
+  deleteEndScreen(questionId: any): Observable<any> {
+    const url = `${this.apiUrl}api/admin/${this.userId}/Logics/DeleteScreen?questionId=${questionId}`;
+    return this.http.delete(url, { responseType: 'text' });
+  }
+
 
 }

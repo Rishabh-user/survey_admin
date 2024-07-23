@@ -104,8 +104,6 @@
                                     name="question" (blur)="validateSurvey()"  placeholder="Enter question"/>
                                 <div *ngIf="!questionadded" class="text-danger">Question is required.</div>
                             </div>
-                            <ng-icon *ngIf="!questiontooltip" (click)="addQuestionTooltip()" name="heroPlusCircle"></ng-icon>
-                            <ng-icon *ngIf="questiontooltip" (click)="removeQuestionTooltip()" name="heroMinusCircle"></ng-icon>
                             <div class="col-md-2 ms-3">
                                 <input id="addquestion" type="text" [(ngModel)]="question.questionTypeName"
                                     class="form-control" name="addquestion" (blur)="validateSurvey()">
@@ -127,14 +125,21 @@
                                 </mat-form-field>
 
                             </div>
+                            <!-- <ng-icon *ngIf="!questiontooltip" (click)="addQuestionTooltip()" name="heroPlusCircle"></ng-icon>
+                            <ng-icon *ngIf="questiontooltip" (click)="removeQuestionTooltip()" name="heroMinusCircle"></ng-icon> -->
+                            <div class="flex-width">
+                                <button *ngIf="!questiontooltipadded" type="button" class="btn btn-primary" (click)="addQuestionTooltip()" matTooltip="Click on '+' icon to add tooltip on question"><ng-icon name="heroPlusCircle"  style="font-size: 1.2rem;height: auto;"></ng-icon></button>
+                                <button *ngIf="questiontooltipadded" type="button" class="btn btn-primary" (click)="removeQuestionTooltip()" matTooltip="Click on '-' icon to remove tooltip on question"><ng-icon name="heroMinusCircle"  style="font-size: 1.2rem;height: auto;"></ng-icon></button>
+                            </div>
+                            
                         </div>
-                        <div class="mt-2" *ngIf="questiontooltip">
+                        <div class="mt-2" *ngIf="questiontooltipadded || questionToolTip">
                             <label class="mb-2">ToolTip</label>
                             <!-- <textarea class="form-control" [(ngModel)]="questionSummery" rows="5"></textarea> -->
-                           <textarea class="form-control" rows="5" cols="10" [(ngModel)]="description"></textarea>
+                           <textarea class="form-control" rows="5" cols="10" [(ngModel)]="questionToolTip"></textarea>
                         </div>
-                        <div class="mt-2">
-                            <label class="mb-2">Description</label>
+                        <div class="mt-3">
+                            <h6 class="mb-2">Description</h6>
                             <!-- <textarea class="form-control" [(ngModel)]="questionSummery" rows="5"></textarea> -->
                             <ckeditor [editor]="Editor" [(ngModel)]="questionSummery" name="questionSummery" class="large-editor" [ngModelOptions]="{standalone: true}">
                             </ckeditor>
@@ -347,10 +352,10 @@
                                 <div *ngIf="!option.option.trim()" class="text-danger">Option is required.</div>
                             </div>
                             <div class="flex-2">
-                                <input id="answer" type="text" name="answer" class="form-control" />
+                                <input id="answer" type="text" name="answer"  class="form-control" />
                                     
                             </div>
-                            <ng-icon *ngIf="!optiontooltip[i]" (click)="addOptionTooltip(i)" name="heroPlusCircle"></ng-icon>
+                            <!-- <ng-icon *ngIf="!optiontooltip[i]" (click)="addOptionTooltip(i)" name="heroPlusCircle"></ng-icon>
                             <ng-icon *ngIf="optiontooltip[i]" (click)="removeOptionTooltip(i)" name="heroMinusCircle"></ng-icon>
 
 
@@ -371,18 +376,33 @@
                                         </a>
                                     </div>
                                 </div>
-                            </div>
+                            </div> -->
                             
  
-                            <!-- <div class="flex-width text-end" cdkDrag>
+                            <div class="flex-width text-end" cdkDrag>
                                 <ng-icon name="heroBars3"></ng-icon>
                             </div>
                             <div class="flex-width text-end">
                                 <a href="javascript:void(0);" (click)="onDeleteOption('optionArr1',i)">
                                     <ng-icon name="heroTrash"></ng-icon>
                                 </a>
-                            </div> -->
+                            </div>
+                            <div class="flex-width ms-3 text-end">
+                                <button *ngIf="!optiontooltipadded[i]" type="button" class="btn btn-primary" (click)="addOptionTooltip(i)" matTooltip="Click on '+' icon to add tooltip on option"><ng-icon name="heroPlusCircle"  style="font-size: 1.2rem;height: auto;"></ng-icon></button>
+                                <button *ngIf="optiontooltipadded[i]" type="button" class="btn btn-primary" (click)="removeOptionTooltip(i)" matTooltip="Click on '-' icon to remove tooltip on option"><ng-icon name="heroMinusCircle"  style="font-size: 1.2rem;height: auto;"></ng-icon></button>
+                            </div>
+                            <div *ngIf="optiontooltipadded[i] || option.optionToolTip">
+                                <label class="mb-1">ToolTip</label>
+                                <div class="d-flex align-items-center">
+                                    
+                                    <div class="mt-2 flex-2">                                    
+                                        <input class="form-control" [(ngModel)]="option.optionToolTip" name="tooptip" id="tooptip" type="text"/>
+                                    </div>
+                                    
+                                </div>
+                            </div> 
                         </div>
+                        
                     </div>
                     <hr *ngIf="optionsArr2.length>0" />
                     <div ngClass="mb-4">
@@ -527,7 +547,15 @@
                                 <input id="answer" type="text" name="answer" class="form-control" />
                                     
                             </div>
-                            <ng-icon *ngIf="!matrixoptiontooltip[i]" (click)="addOptionMatrixTooltip(i)" name="heroPlusCircle"></ng-icon>
+                            <div class="flex-width text-end" cdkDrag>
+                                <ng-icon name="heroBars3"></ng-icon>
+                            </div>
+                            <div class="flex-width text-end">
+                                <a href="javascript:void(0);" (click)="onDeleteMatrixOption('optionmatrix',i)">
+                                    <ng-icon name="heroTrash"></ng-icon>
+                                </a>
+                            </div>
+                            <!-- <ng-icon *ngIf="!matrixoptiontooltip[i]" (click)="addOptionMatrixTooltip(i)" name="heroPlusCircle"></ng-icon>
                             <ng-icon *ngIf="matrixoptiontooltip[i]" (click)="removeOptionMatrixTooltip(i)" name="heroMinusCircle"></ng-icon>
 
                             <div *ngIf="matrixoptiontooltip[i]">
@@ -547,7 +575,21 @@
                                         </a>
                                     </div>
                                 </div>
+                            </div> -->
+                            <div class="flex-width ms-3 text-end">
+                                <button *ngIf="!matrixoptiontooltip[i]" type="button" class="btn btn-primary" (click)="addOptionMatrixTooltip(i)" matTooltip="Click on '+' icon to add tooltip on option"><ng-icon name="heroPlusCircle"  style="font-size: 1.2rem;height: auto;"></ng-icon></button>
+                                <button *ngIf="matrixoptiontooltip[i]" type="button" class="btn btn-primary" (click)="removeOptionMatrixTooltip(i)" ><ng-icon name="heroMinusCircle"  style="font-size: 1.2rem;height: auto;"></ng-icon></button>
                             </div>
+                            <div *ngIf="matrixoptiontooltip[i] || option.headerToolTip">
+                                <label class="mb-1">ToolTip</label>
+                                <div class="d-flex align-items-center">
+                                    
+                                    <div class="mt-2 flex-2">                                    
+                                        <input class="form-control" [(ngModel)]="option.headerToolTip" id="headeroption" name="headeroption" type="text" />
+                                    </div>
+                                    
+                                </div>
+                            </div> 
                         </div>
                     </div>
                     <hr *ngIf="matrixOptions.length>0" />

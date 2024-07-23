@@ -93,6 +93,7 @@ export class VendarSurveyListComponent {
       this.surveyData = data.surveyType;
       this.totalItemsCount = data.totalCount;
       this.cdr.detectChanges();
+      console.log("surveyData",this.surveyData)
     });
   }
   models: { id: number, name: string }[] = [];
