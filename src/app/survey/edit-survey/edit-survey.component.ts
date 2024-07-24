@@ -124,6 +124,12 @@ export class EditSurveyComponent {
   logicEntries: any[] = [];
   description:any;
   questionToolTip:any;
+  descriptionadded:boolean= false;
+  descaddededitor: boolean = false;
+  optiondescpadded: boolean = false;
+  optiondescp:boolean = false;
+  optionmatricadded:boolean = false;
+  optionmatrixdesc: boolean = false;
 
   
 
@@ -995,7 +1001,7 @@ export class EditSurveyComponent {
 
       },
       (error) => {
-        this.utility.showError("Image should in png anf jpeg")
+        this.utility.showError("Image should in png and jpeg")
         console.error('Error occurred while uploading:', error);
         // Handle error
       }
@@ -2074,6 +2080,35 @@ export class EditSurveyComponent {
 
   onBlurOption(index: number): void {
     this.isOptionBlurred[index] = true;
+  }
+
+  onCheckboxChange(event: any) {
+    this.descriptionadded = event.target.checked;
+    if(this.descriptionadded){
+      this.descaddededitor = true;
+    }else{
+      this.descaddededitor = false;
+    }
+  }
+
+  onCheckboxOptionDescp(event: any){
+    this.optiondescpadded = event.target.checked;
+    if(this.optiondescpadded){
+      this.optiondescp = true;
+    }else{
+      this.optiondescp = false;
+    }
+
+  }
+
+  onCheckboxOptionMatrix(event: any){
+    this.optionmatricadded = event.target.checked;
+    if(this.optionmatricadded){
+      this.optionmatrixdesc = true;
+    }else{
+      this.optionmatrixdesc = false;
+    }
+
   }
  
 
