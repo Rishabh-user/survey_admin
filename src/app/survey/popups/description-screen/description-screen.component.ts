@@ -9,7 +9,9 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { CryptoService } from 'src/app/service/crypto.service';
 import { environment } from 'src/environments/environment';
 import { UtilsService } from 'src/app/service/utils.service';
+import { DataService } from 'src/app/service/data.service';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+import { serveyOption } from 'src/app/models/serveyOption';
 
 @Component({
   selector: 'app-description-screen',
@@ -29,9 +31,12 @@ export class DescriptionScreenComponent {
   descbutton:any
   surveyId:any
   questionTypeId = 21
+  questionId: any;
+  allOptions: any[] = [];
+  descriptiondetails: any;
 
 
-  constructor(private surveyservice: SurveyService, private route: ActivatedRoute, private crypto: CryptoService, private router: Router, private utility: UtilsService) {
+  constructor(private surveyservice: SurveyService,private dataservice:DataService, private route: ActivatedRoute, private crypto: CryptoService, private router: Router, private utility: UtilsService) {
     this.route.paramMap.subscribe(params => {
       let _surveyId = params.get('param1');
       if (_surveyId) {
@@ -41,9 +46,39 @@ export class DescriptionScreenComponent {
     
   }
 
+  ngOnInit() {
+    this.dataservice.currentQuestionId.subscribe(questionId => {
+      this.questionId = questionId;
+      console.log("DESCP",this.questionId)
+    });
+
+    this.getQuestionDetails();
+    
+  }
+
+  getQuestionDetails() {
+    this.surveyservice.getQuestionDetailsById(this.questionId).subscribe((data: any) => {
+      debugger
+      this.descriptiondetails = data
+
+      this.descques = data.question;
+      this.descdescription = data.description
+
+      if (data.options && Array.isArray(data.options)) {
+        data.options.forEach((option: any) => {
+          this.descbutton = option.option; 
+        });
+      }
+
+      debugger
+    });
+
+  }
+
   show() {
     this.modal.show();
-  }
+    this.getQuestionDetails()
+    }
 
   close() {
     this.modal.hide();
@@ -54,33 +89,49 @@ export class DescriptionScreenComponent {
     return currentDateTime.substring(0, currentDateTime.length - 1) + 'Z';
   }
 
-  continueClicked(){
+  continueClicked() {
     const currentQuestion = this.questions;
-    currentQuestion.question = this.descques
-    currentQuestion.description = this.descdescription
-    currentQuestion.surveyTypeId = this.surveyId
-    currentQuestion.questionTypeId = this.questionTypeId
-    currentQuestion.isRequired = false
-    currentQuestion.createdDate = this.getCurrentDateTime()
+    currentQuestion.question = this.descques;
+    currentQuestion.description = this.descdescription;
+    currentQuestion.surveyTypeId = this.surveyId;
+    currentQuestion.questionTypeId = this.questionTypeId;
+    currentQuestion.isRequired = false;
+    currentQuestion.createdDate = this.getCurrentDateTime();
     currentQuestion.modifiedDate = this.getCurrentDateTime();
-    currentQuestion.status = 'ACT'
-
+    currentQuestion.status = 'ACT';
+    currentQuestion.options = [{
+      id: 0,
+      option: this.descbutton, 
+      image: '', 
+      createdDate: this.getCurrentDateTime(),
+      modifiedDate: this.getCurrentDateTime(),
+      keyword: '', 
+      status: 'ACT', 
+      isRandomize: true,
+      isExcluded: true,
+      group: 0,
+      sort: 0,
+      isFixed: true,
+      isVisible: true,
+      isSelected: true,
+      selected: false
+    }];
+  
     this.surveyservice.CreateGeneralQuestion(currentQuestion).subscribe({
       next: (resp: any) => {
-
-          if (resp == '"QuestionAlreadyExits"') {
-            this.utility.showError("This Question Already Created ");
-          } else {
-            this.utility.showSuccess('Question Generated Successfully.');
-            this.close();
-            this.onSaveEvent.emit();
-          }
-        
+        if (resp === '"QuestionAlreadyExits"') {
+          this.utility.showError("This Question Already Created");
+        } else {
+          this.utility.showSuccess('Question Generated Successfully.');
+          this.close();
+          this.onSaveEvent.emit();
+        }
       },
       error: (err: any) => {
-        console.error( err);
+        console.error(err);
       }
     });
   }
+  
 
 }

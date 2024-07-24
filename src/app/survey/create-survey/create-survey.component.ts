@@ -2193,7 +2193,15 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
   //   }
   // }
 
-
+  onEditDesc(questionId: any) {
+    console.log(questionId);
+    this.dataService.changeQuestionId(questionId)
+    
+    this.onGenericQuestionClick('DESC');
+    console.log("just before", questionId);
+    this.dataService.changeQuestionId(questionId);
+    console.log(this.dataService.changeQuestionId(questionId))
+  }
 
 
 

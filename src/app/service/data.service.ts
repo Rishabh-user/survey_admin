@@ -14,6 +14,12 @@ export class DataService {
   public isSidebarVisibleSubject = new BehaviorSubject<boolean>(true);
   isSidebarVisible$ = this.isSidebarVisibleSubject.asObservable();
 
+   private questionIdSource = new BehaviorSubject<any>(null);
+  currentQuestionId = this.questionIdSource.asObservable();
+
+
+ 
+
   userId: any;
 
   public addMargin: boolean = false;
@@ -38,6 +44,13 @@ export class DataService {
 
   setHoverAddWidth(hover: boolean): void {
     this.hoveraddwidth = hover;
+  }
+
+
+  changeQuestionId(questionId: any){
+    this.questionIdSource.next(questionId);
+    
+    return "yes";
   }
 
   private headerVisibleSubject = new BehaviorSubject<boolean>(true);
