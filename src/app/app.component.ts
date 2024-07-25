@@ -5,6 +5,9 @@ import { AuthService } from './service/auth.service';
 import { LoaderService } from './service/loader.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ModalService } from './service/modal.service';
+import { version } from 'src/environments/version';
+
+
 
 @Component({
   selector: 'app-root',
@@ -19,6 +22,8 @@ export class AppComponent {
   breadcrumbVisible: boolean = true;
   articleVisible: boolean = true;
   showModal: boolean = false;
+  
+ 
 
 
   constructor(private router: ActivatedRoute, public visibilityService: DataService, public themeService: DataService,
@@ -34,6 +39,7 @@ export class AppComponent {
     this.visibilityService.breadcrumbVisible$.subscribe(visible => {
       this.breadcrumbVisible = visible;
     });
+    // console.log('App Version:', version);
   }
 
   ngOnInit() {

@@ -384,13 +384,16 @@
                                     
                                 <div *ngIf="!option.option.trim()" class="text-danger" style="position: absolute;">Option is required.</div>
                             </div>
-                            <!-- {{optionaloption}}
-                            {{optiondescp}}
-                            {{option.optionDescription}} -->
-                            <div class="flex-2" *ngIf="optionaloption || optiondescp || option.optionDescription">
+                           
+                            <!-- <div class="flex-2" *ngIf="optionaloption || optiondescp || option.optionDescription">
                                 <input id="answer" type="text" name="answer"  class="form-control" [(ngModel)]="option.optionDescription" placeholder="Option Description" [ngModelOptions]="{standalone: true}" />
                                     
+                            </div> -->
+                            <div class="flex-2" *ngIf="option.option !== 'Prefer not to Answer' && option.option !== 'Other (Please specify)' && option.option !== 'None of above' && option.option !== 'Other' && option.option !== 'Don\'t know /Can\'t say' && (optiondescp || option.optionDescription)">
+                                <input id="answer" type="text" name="answer" class="form-control" [(ngModel)]="option.optionDescription" placeholder="Option Description" [ngModelOptions]="{standalone: true}" />
                             </div>
+                            
+                            
                             
  
                             <div class="flex-width text-end" cdkDrag>
