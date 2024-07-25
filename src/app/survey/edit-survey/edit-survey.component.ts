@@ -130,7 +130,9 @@ export class EditSurveyComponent {
   optiondescp:boolean = false;
   optionmatricadded:boolean = false;
   optionmatrixdesc: boolean = false;
-
+  matrixdescpisChecked:boolean = false;
+  optiondescpisChecked:boolean = false;
+  optionaloption:boolean = true;
   
 
   constructor(public themeService: DataService, private router: Router,
@@ -208,7 +210,13 @@ export class EditSurveyComponent {
         newOption.group = opt.group;
         newOption.sort = opt.sort;
         newOption.optionToolTip = opt.optionToolTip;
+        newOption.optionDescription = opt.optionDescription;
         newOption.imageAdded = false;
+
+        if(opt.optionDescription){
+          this.optiondescpisChecked = true;
+          this.optiondescp = true;
+        }
 
         this.optionimagennew.push(opt.image)
 
@@ -234,7 +242,6 @@ export class EditSurveyComponent {
 
       });
       data.matrixHeader.forEach((opt: any) => {
-
         let headerOption = new MatrixHeader();
         headerOption.id = opt.id;
         headerOption.header = opt.header
@@ -243,6 +250,12 @@ export class EditSurveyComponent {
         headerOption.status = opt.status;
         headerOption.sort = opt.sort;
         headerOption.headerToolTip = opt.headerToolTip;
+        headerOption.headerDescription = opt.headerDescription;
+
+        if( opt.headerDescription){
+          this.matrixdescpisChecked = true;
+          this.optionmatrixdesc = true;
+        }
 
         this.matrixOptions.push(headerOption)
 
@@ -575,16 +588,16 @@ export class EditSurveyComponent {
 
     newOption.createdDate = this.getCurrentDateTime();
     newOption.modifiedDate = this.getCurrentDateTime();
-
+    this.optionaloption = false;
+    
 
     if (type == 'other') {
       newOption.option = "Other";
-      newOption.isFixed = true
-
+      newOption.isFixed = true;
     }
     else if (type == 'noneOfAbove') {
       newOption.option = "None of above";
-      newOption.isFixed = true
+      newOption.isFixed = true;
     }
     else if (type == 'dontKnow') {
       newOption.option = "Don't know /Can't say";
@@ -603,6 +616,10 @@ export class EditSurveyComponent {
       newOption.option = "";
       newOption.status = 'ACT'
     }
+
+    // if(type == 'Optional' || type == 'prefernottoanswer'){
+    //   this.optiondescp = false
+    // }
 
     let sort = 0;
 
@@ -791,6 +808,7 @@ export class EditSurveyComponent {
       headerOption.status = option.status;
       headerOption.sort = option.sort;
       headerOption.headerToolTip = option.headerToolTip;
+      headerOption.headerDescription = option.headerDescription;
 
       matrixoption.push(headerOption)
 
@@ -816,6 +834,7 @@ export class EditSurveyComponent {
       modifiedOption.sort = option.sort;
       modifiedOption.status = option.status;
       modifiedOption.optionToolTip = option.optionToolTip;
+      modifiedOption.optionDescription = option.optionDescription;
       modifiedOption.image = option.imageAdded ? option.image : null;
       modifiedoptions.push(modifiedOption);
     });
@@ -836,9 +855,9 @@ export class EditSurveyComponent {
             this.utility.showError('Question Created Failed')
           } else  if (resp === '"QuestionSuccessfullyUpdated"') {
             this.utility.showSuccess('Question Updated Successfully.');
-            window.location.reload();
-            let url = `/survey/manage-survey/${this.crypto.encryptParam(this.surveyId)}`;
-            this.router.navigateByUrl(url);
+            // window.location.reload();
+            // let url = `/survey/manage-survey/${this.crypto.encryptParam(this.surveyId)}`;
+            // this.router.navigateByUrl(url);
              // window.location.reload();
             
           } 

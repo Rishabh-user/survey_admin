@@ -29,6 +29,7 @@ export class MatrixHeader {
     public sort: number=0,
     public createdDate: string = '',
     public modifiedDate: string = '',
-    public headerToolTip:string = ''
+    public headerToolTip:string = '',
+    public headerDescription:string = ''
     ){}
 }

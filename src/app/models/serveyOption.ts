@@ -16,7 +16,8 @@ export class serveyOption {
         public isSelected: boolean = false,
         public isFixed: boolean = false,
         public imageAdded: boolean = false,
-        public optionToolTip: string = ''
+        public optionToolTip: string = '',
+        public optionDescription:string = ''
 
     ) { }
 }

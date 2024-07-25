@@ -155,7 +155,7 @@
                         </div>
                         
                     </div>
-                    <div class="mb-3" >
+                    <div class="mb-3"  *ngIf="planid == 2500">
                         <div class="d-flex">
                           <label for="exampleColorInput" class="form-label">Color picker</label>
                           <div class="custom-tooltip ms-2">
@@ -330,18 +330,19 @@
                             <h6 class="mb-0 me-2">Enable Description</h6>
                             <div class="form-check form-switch">
                                 <input class="form-check-input" type="checkbox" role="switch"
-                                    name="isChecked" (change)="onCheckboxOptionDescp($event)"
+                                    name="isChecked" (change)="onCheckboxOptionDescp($event)" [(ngModel)]="optiondescpisChecked"
                                     style="width: 2.5rem;height: 1.4rem;">
                             </div>
                         </div>
                     </div>
                     <div ngClass="mb-4" cdkDropList (cdkDropListDropped)="onDropOption($event)">
+                    
                         <div class="row mb-3 border-bottom" style="font-weight: 500;">
                             <div class="flex-width">S. No</div>
                             <div class="flex-width">Image</div>
                             <div class="flex-width"></div>
                             <div class="flex-2">Option</div>
-                            <div class="flex-2" *ngIf="optiondescp">
+                            <div class="flex-2" *ngIf="optiondescp || optiondescpisChecked">
                                 <div class="d-flex">
                                     <p>Option Description</p>
                                     
@@ -352,7 +353,6 @@
                             <div class="flex-width">Tooltip</div>
                         </div>
                         <div class="row g-2 align-items-center mb-3" *ngFor="let option of optionsArr1;let i=index;">
-                            
                             <div class="flex-width">
                                 <input type="text" id="" class="form-control" value="{{i+1}}" readonly />
                             </div>
@@ -384,32 +384,13 @@
                                     
                                 <div *ngIf="!option.option.trim()" class="text-danger" style="position: absolute;">Option is required.</div>
                             </div>
-                            <div class="flex-2" *ngIf="optiondescp">
-                                <input id="answer" type="text" name="answer"  class="form-control" placeholder="Option Description"/>
+                            <!-- {{optionaloption}}
+                            {{optiondescp}}
+                            {{option.optionDescription}} -->
+                            <div class="flex-2" *ngIf="optionaloption || optiondescp || option.optionDescription">
+                                <input id="answer" type="text" name="answer"  class="form-control" [(ngModel)]="option.optionDescription" placeholder="Option Description" [ngModelOptions]="{standalone: true}" />
                                     
                             </div>
-                            <!-- <ng-icon *ngIf="!optiontooltip[i]" (click)="addOptionTooltip(i)" name="heroPlusCircle"></ng-icon>
-                            <ng-icon *ngIf="optiontooltip[i]" (click)="removeOptionTooltip(i)" name="heroMinusCircle"></ng-icon>
-
-
-                            <div *ngIf="optiontooltip[i]">
-                                <label class="mb-1">ToolTip</label>
-                                <div class="d-flex align-items-center">
-                                    
-                                    <div class="mt-2 flex-2">                                    
-                                        <input class="form-control" />
-                                    </div>
-                                    
-                                    <div class="flex-width text-end" cdkDrag>
-                                        <ng-icon name="heroBars3"></ng-icon>
-                                    </div>
-                                    <div class="flex-width text-end">
-                                        <a href="javascript:void(0);" (click)="onDeleteOption('optionArr1',i)">
-                                            <ng-icon name="heroTrash"></ng-icon>
-                                        </a>
-                                    </div>
-                                </div>
-                            </div> -->
                             
  
                             <div class="flex-width text-end" cdkDrag>
@@ -441,7 +422,7 @@
                     <div ngClass="mb-4">
                         <div class="row g-2 align-items-center mb-3" *ngFor="let option of optionsArr2;let i=index;">
                             <div class="flex-width">
-                                <input type="text" id="" class="form-control" value="{{optionsArr1.length+1}}"
+                                <input type="text" id="" class="form-control" value="{{optionsArr1.length+i+1}}"
                                     readonly />
                             </div>
 
@@ -464,6 +445,20 @@
                             <div class="flex-width text-end">
                                 <ng-icon name="heroTrash" (click)="onDeleteOption('optionArr2',i)"></ng-icon>
                             </div>
+                            <div class="flex-width ms-3 text-end">
+                                <button *ngIf="!optiontooltipadded[i]" type="button" class="btn btn-primary" (click)="addOptionTooltip(i)" matTooltip="Click on '+' icon to add tooltip on option"><ng-icon name="heroPlusCircle"  style="font-size: 1.2rem;height: auto;"></ng-icon></button>
+                                <button *ngIf="optiontooltipadded[i]" type="button" class="btn btn-primary" (click)="removeOptionTooltip(i)" matTooltip="Click on '-' icon to remove tooltip on option"><ng-icon name="heroMinusCircle"  style="font-size: 1.2rem;height: auto;"></ng-icon></button>
+                            </div>
+                            <div *ngIf="optiontooltipadded[i] || option.optionToolTip">
+                                <div class="bg-light p-4 border rounded d-flex align-items-center">
+                                    <h6 class="mb-0 me-3">ToolTip</h6>
+                                    <div class="d-flex align-items-center" style="flex:1;">
+                                        <div class="flex-2">                                    
+                                            <input class="form-control" [(ngModel)]="option.optionToolTip" name="tooptip" id="tooptip" type="text"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div> 
                         </div>
                     </div>
                     <div *ngIf="screeningRedirectUrl" class="mb-3">
@@ -562,7 +557,7 @@
                         <div class="mb-2 ms-4 d-flex align-items-center">
                             <h6 class="mb-0 me-2">Enable Description</h6>
                             <div class="form-check form-switch">
-                                <input class="form-check-input" type="checkbox" role="switch"
+                                <input class="form-check-input" type="checkbox" role="switch" [(ngModel)]="matrixdescpisChecked"
                                     name="isChecked" (change)="onCheckboxOptionMatrix($event)"
                                     style="width: 2.5rem;height: 1.4rem;">
                             </div>
@@ -573,7 +568,7 @@
                         <div class="row mb-3 border-bottom" style="font-weight: 500;">
                             <div class="flex-width">S. No</div>
                             <div class="flex-2">Option</div>
-                            <div class="flex-2" *ngIf="optionmatrixdesc">
+                            <div class="flex-2" *ngIf="optionmatrixdesc || matrixdescpisChecked">
                                 <div class="d-flex">
                                     <p>Option Description</p>
                                     
@@ -597,8 +592,9 @@
                                     [(ngModel)]="option.header" (blur)="validateSurvey()" />
                                 <div *ngIf="!option.header.trim()" class="text-danger" style="position: absolute;">Option is required.</div>
                             </div>
-                            <div class="flex-2" *ngIf="optionmatrixdesc">
-                                <input id="answer" type="text" name="answer" class="form-control" />
+                            <div class="flex-2" *ngIf="optionmatrixdesc || option.headerDescription">
+                                
+                                <input id="answer" type="text" name="answer" class="form-control" [(ngModel)]="option.headerDescription" placeholder="Option Description"  />
                                     
                             </div>
                             <div class="flex-width text-end" cdkDrag>
