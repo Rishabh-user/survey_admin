@@ -155,7 +155,7 @@
                         </div>
                         
                     </div>
-                    <div class="mb-3"  *ngIf="planid == 2500">
+                    <div class="mb-3" *ngIf="planid == 2500">
                         <div class="d-flex">
                           <label for="exampleColorInput" class="form-label">Color picker</label>
                           <div class="custom-tooltip ms-2">
@@ -778,6 +778,22 @@
                                                 name="excludeGroup{{group.id}}"
                                                 (change)="onGroupValueChange('excluded', group.isExcluded, group.id)">
                                             <label class="form-check-label" for="Exclude{{group.id}}">Exclude</label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="radio" id="Flip{{group.id}}"
+                                                [(ngModel)]="group.isRandomize" value="yes"
+                                                name="FlipGroup{{group.id}}"
+                                                (change)="onGroupValueChange('flip', group.isFlipNumber, group.id)">
+                                            <label class="form-check-label"
+                                                for="Flip{{group.id}}">Flip</label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="radio" id="Rotate{{group.id}}"
+                                                [(ngModel)]="group.isRandomize" value="no"
+                                                name="RotateGroup{{group.id}}"
+                                                (change)="onGroupValueChange('rotate', group.isrotate, group.id)">
+                                            <label class="form-check-label"
+                                                for="Rotate{{group.id}}">Rotate</label>
                                         </div>
                                     </div>
                                     <div class="col-md-6 text-end">

@@ -9,6 +9,7 @@ export class serveyOption {
         public status: string = '',
         public isRandomize: boolean = false,
         public isExcluded: boolean = false,
+        public isFlipNumber: boolean = false,
         public group: number | null = null,
         public sort: number = 0,
         public selected: boolean = false,

@@ -164,7 +164,7 @@ export class EditSurveyComponent {
       }
     });
   }
-  groupedOptions: { [key: number]: { options: Option[], isRandomize: boolean, isExcluded: boolean } } = {};
+  groupedOptions: { [key: number]: { options: Option[], isRandomize: boolean, isExcluded: boolean, isFlipNumber:boolean, isRotate:boolean } } = {};
   getQuestionDetails() {
     this.surveyservice.getQuestionDetailsById(this.questionId).subscribe((data: any) => {
 
@@ -196,6 +196,7 @@ export class EditSurveyComponent {
 
       data.options.forEach((opt: any) => {
 
+       debugger
         let newOption = new serveyOption();
         newOption.id = opt.id;
         newOption.option = opt.option;
@@ -207,6 +208,7 @@ export class EditSurveyComponent {
         newOption.isFixed = opt.isFixed
         newOption.isRandomize = opt.isRandomize;
         newOption.isExcluded = opt.isExcluded;
+        newOption.isFlipNumber = opt.isFlipNumber
         newOption.group = opt.group;
         newOption.sort = opt.sort;
         newOption.optionToolTip = opt.optionToolTip;
@@ -234,11 +236,14 @@ export class EditSurveyComponent {
             this.groupedOptions[opt.group] = {
               options: [], // Initialize array for the options
               isRandomize: opt.isRandomize || false, // Set isRandomize for the group
-              isExcluded: opt.isExcluded || false, // Set isExcluded for the group
+              isExcluded: opt.isExcluded || false,
+              isFlipNumber:opt.isFlipNumber || false,
+              isRotate: opt.isRotate || false
             };
           }
           this.groupedOptions[opt.group].options.push(newOption);
         }
+        debugger
 
       });
       data.matrixHeader.forEach((opt: any) => {
@@ -291,11 +296,15 @@ export class EditSurveyComponent {
           const groupOptions = this.groupedOptions[groupKey];
           const isRandomize = groupOptions.isRandomize || false;
           const isExcluded = groupOptions.isExcluded || false;
+          const isFlipNumber = groupOptions.isFlipNumber || false;
+          const isRotate = groupOptions.isRotate || false;
 
           let newGroup = {
             id: +groupKey, // Convert groupKey to number if needed
             isRandomize: isRandomize,
             isExcluded: isExcluded,
+            isFlipNumber: isFlipNumber,
+            isRotate: isRotate,
             options: groupOptions.options // Assign options for this group
           };
 
@@ -496,10 +505,12 @@ export class EditSurveyComponent {
     let groupDetail = this.groups[groupIndex];
 
     let indexToModify = this.allOptions.findIndex((option: any) => option.option === optionValue);
+  
     if (indexToModify !== -1) {
       this.allOptions[indexToModify].group = groupDetail.id;
       this.allOptions[indexToModify].isRandomize = groupDetail.isRandomize;
       this.allOptions[indexToModify].isExcluded = groupDetail.isExcluded;
+      this.allOptions[indexToModify].isFlipNumber = groupDetail.isFlipNumber;
     } else {
 
     }
@@ -524,6 +535,7 @@ export class EditSurveyComponent {
       this.allOptions[indexToModify].group = 0;
       this.allOptions[indexToModify].isRandomize = false;
       this.allOptions[indexToModify].isExcluded = false;
+      this.allOptions[indexToModify].isFlipNumber= false;
     } else {
 
     }
@@ -824,6 +836,7 @@ export class EditSurveyComponent {
       modifiedOption.isExcluded = option.isExcluded;
       modifiedOption.isFixed = option.isFixed;
       modifiedOption.isRandomize = option.isRandomize;
+      modifiedOption.isFlipNumber = option.isFlipNumber
       modifiedOption.isSelected = option.isSelected;
       modifiedOption.isVisible = option.isVisible;
 
@@ -855,9 +868,9 @@ export class EditSurveyComponent {
             this.utility.showError('Question Created Failed')
           } else  if (resp === '"QuestionSuccessfullyUpdated"') {
             this.utility.showSuccess('Question Updated Successfully.');
-            window.location.reload();
-            let url = `/survey/manage-survey/${this.crypto.encryptParam(this.surveyId)}`;
-            this.router.navigateByUrl(url);
+            // window.location.reload();
+            // let url = `/survey/manage-survey/${this.crypto.encryptParam(this.surveyId)}`;
+            // this.router.navigateByUrl(url);
              // window.location.reload();
             
           } 
@@ -909,6 +922,8 @@ export class EditSurveyComponent {
       return;
     }
 
+    
+
 
     if (type === 'randomize') {
       groupToUpdate.isRandomize = value;
@@ -919,6 +934,20 @@ export class EditSurveyComponent {
         }
       });
     } else if (type === 'excluded') {
+      groupToUpdate.isExcluded = true;
+      this.allOptions.forEach(option => {
+        if (option.group === groupId) {
+          option.isExcluded = true;
+        }
+      });
+    } else if (type === 'flip') {
+      groupToUpdate.isFlipNumber = true;
+      this.allOptions.forEach(option => {
+        if (option.group === groupId) {
+          option.isFlipNumber = true;
+        }
+      });
+    } else if (type === 'rotate') {
       groupToUpdate.isExcluded = true;
       this.allOptions.forEach(option => {
         if (option.group === groupId) {
@@ -988,6 +1017,7 @@ export class EditSurveyComponent {
       id: id,
       isRandomize: false,
       isExcluded: false,
+      isFlipNumber: false,
       options: []
     }
 
@@ -1428,6 +1458,7 @@ export class EditSurveyComponent {
         this.allOptions[indexToModify].group = this.groups[groupIndex].id;
         this.allOptions[indexToModify].isRandomize = this.groups[groupIndex].isRandomize;
         this.allOptions[indexToModify].isExcluded = this.groups[groupIndex].isExcluded;
+        this.allOptions[indexToModify].isFlipNumber = this.groups[groupIndex].isFlipNumber;
       }
     }
     this.validateSurvey();
