@@ -326,7 +326,7 @@
                 <div ngClass="border-top p-4">
                     <div ngClass="select-ans-choice mb-3">
                         <h5>Rows</h5>
-                        <div class="mb-2 ms-4 d-flex align-items-center">
+                        <div class="mb-2 ms-4 d-flex align-items-center" *ngIf="question.questionTypeName !== 'Open Ended'">
                             <h6 class="mb-0 me-2">Enable Description</h6>
                             <div class="form-check form-switch">
                                 <input class="form-check-input" type="checkbox" role="switch"
@@ -337,7 +337,7 @@
                     </div>
                     <div ngClass="mb-4" cdkDropList (cdkDropListDropped)="onDropOption($event)">
                     
-                        <div class="row mb-3 border-bottom" style="font-weight: 500;">
+                        <div class="row mb-3 border-bottom" style="font-weight: 500;" *ngIf="question.questionTypeName !== 'Open Ended'">
                             <div class="flex-width">S. No</div>
                             <div class="flex-width">Image</div>
                             <div class="flex-width"></div>
@@ -756,7 +756,8 @@
                                                 </mat-option>
                                             </mat-autocomplete>
                                         </mat-form-field>
-                                        <div *ngIf="!categoryNameChecks[groupIndex]" class="text-danger">Option is
+                                        {{categoryNameChecks[groupIndex]}}
+                                        <div *ngIf="categoryNameChecks[groupIndex] === false" class="text-danger">Option is
                                             required.</div>
                                     </form>
 
@@ -764,9 +765,53 @@
 
                                 <div class="row">
                                     <div class="col-md-6">
+                                        {{group.optionType}}
                                         <div class="form-check form-check-inline">
                                             <input class="form-check-input" type="radio" id="Randomize{{group.id}}"
-                                                [(ngModel)]="group.isRandomize" value="true"
+                                            [checked]="group.isRandomize == true" 
+                                                name="groupOption{{group.id}}"
+                                                (change)="onGroupValueChange('randomize', group.id)">
+                                            <label class="form-check-label"
+                                                for="Randomize{{group.id}}">Randomize</label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="radio" id="Exclude{{group.id}}"
+                                            [checked]="group.isExcluded == true"
+                                            name="groupOption{{group.id}}"
+                                                (change)="onGroupValueChange('excluded',  group.id)">
+                                            <label class="form-check-label" for="Exclude{{group.id}}">Exclude</label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="radio" id="Flip{{group.id}}"
+                                                [checked]="group.isFlipNumber === true"
+                                                name="groupOption{{group.id}}"
+                                                (change)="onGroupValueChange('flipNumber', group.id)">
+                                              
+                                            <label class="form-check-label"
+                                                for="Flip{{group.id}}">Flip</label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="radio" id="Rotate{{group.id}}"
+                                            [checked]="group.isrotate === true"
+                                                name="groupOption{{group.id}}"
+                                                (change)="onGroupValueChange('rotate',  group.id)">
+                                            <label class="form-check-label"
+                                                for="Rotate{{group.id}}">Rotate</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 text-end">
+                                        <button type="button" class="btn btn-primary btn-sm"
+                                            (click)="onDeleteGroup(groupIndex)">Delete</button>
+                                    </div>
+                                </div>
+
+
+
+                                <!-- <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="radio" id="Randomize{{group.id}}"
+                                                [(ngModel)]="group.isRandomize" [value]="group.isRandomize"
                                                 name="randomizeGroup{{group.id}}"
                                                 (change)="onGroupValueChange('randomize', group.isRandomize, group.id)">
                                             <label class="form-check-label"
@@ -774,7 +819,7 @@
                                         </div>
                                         <div class="form-check form-check-inline">
                                             <input class="form-check-input" type="radio" id="Exclude{{group.id}}"
-                                                [(ngModel)]="group.isRandomize" value="false"
+                                                [(ngModel)]="group.isRandomize" [value]="group.isExcluded"
                                                 name="excludeGroup{{group.id}}"
                                                 (change)="onGroupValueChange('excluded', group.isExcluded, group.id)">
                                             <label class="form-check-label" for="Exclude{{group.id}}">Exclude</label>
@@ -800,7 +845,7 @@
                                         <button type="button" class="btn btn-primary btn-sm"
                                             (click)="onDeleteGroup(groupIndex)">Delete</button>
                                     </div>
-                                </div>
+                                </div> -->
 
                             </div>
 

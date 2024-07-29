@@ -164,7 +164,18 @@ export class EditSurveyComponent {
       }
     });
   }
-  groupedOptions: { [key: number]: { options: Option[], isRandomize: boolean, isExcluded: boolean, isFlipNumber:boolean, isRotate:boolean } } = {};
+  //groupedOptions: { [key: number]: { options: Option[], isRandomize: boolean, isExcluded: boolean, isFlipNumber:boolean, isRotate:boolean } } = {};
+  groupedOptions: { 
+    [key: number]: { 
+      options: Option[], 
+      isRandomize: boolean, 
+      isExcluded: boolean, 
+      isFlipNumber: boolean, 
+      isRotate: boolean,
+      optionType: string
+    } 
+  } = {};
+  
   getQuestionDetails() {
     this.surveyservice.getQuestionDetailsById(this.questionId).subscribe((data: any) => {
 
@@ -230,19 +241,40 @@ export class EditSurveyComponent {
 
         }
 
+         // Assuming newOption and opt are defined and of correct types
+        console.log("opt", opt.group);  // 1
+        console.log("opt grp1", this.groupedOptions[opt.group]);  // undefined
+        console.log("opt grp", this.groupedOptions);  // {}
 
         if (opt.group > 0) {
           if (!this.groupedOptions[opt.group]) {
+            if(opt.isRandomize){
+              opt.optionType = 'randomize';
+            }
+            else if(opt.isExcluded){
+              opt.optionType = 'excluded';
+            }
+            else if(opt.isFlipNumber){
+              opt.optionType = 'flipNumber';
+            }
+            else if(opt.isRotate){
+              opt.optionType = 'rotate';
+            }
+            console.log("init options", opt);
             this.groupedOptions[opt.group] = {
-              options: [], // Initialize array for the options
-              isRandomize: opt.isRandomize || false, // Set isRandomize for the group
+              options: [],  // Initialize array for the options
+              isRandomize: opt.isRandomize || false,  // Set isRandomize for the group
               isExcluded: opt.isExcluded || false,
-              isFlipNumber:opt.isFlipNumber || false,
-              isRotate: opt.isRotate || false
+              isFlipNumber: opt.isFlipNumber || false,
+              isRotate: opt.isRotate || false,  // Ensure correct property name
+              optionType: opt.optionType || ''
             };
+            console.log("New group created:", this.groupedOptions[opt.group]);
           }
           this.groupedOptions[opt.group].options.push(newOption);
+          console.log("Updated group:", this.groupedOptions[opt.group]);
         }
+
         debugger
 
       });
@@ -353,6 +385,7 @@ export class EditSurveyComponent {
       
 
     }
+    
     
 
 
@@ -514,6 +547,7 @@ export class EditSurveyComponent {
     } else {
 
     }
+    this.validateSurvey();
 
   }
 
@@ -527,6 +561,7 @@ export class EditSurveyComponent {
     } else {
 
     }
+    
 
     this.filteredOptions.push(data);
 
@@ -539,6 +574,7 @@ export class EditSurveyComponent {
     } else {
 
     }
+    this.validateSurvey()
 
   }
 
@@ -674,6 +710,7 @@ export class EditSurveyComponent {
   categoryNameChecks: boolean[] = [];
   initializeCategoryNameChecks() {
     this.categoryNameChecks = new Array(this.groups.length).fill(false);
+   
   }
 
   optionFieldIsValid: boolean = true
@@ -688,7 +725,7 @@ export class EditSurveyComponent {
     this.questionadded = !!this.question && !!this.question.question && this.question.question.trim().length > 0;
     
 
-
+   debugger
 
     // Check if categoryNameCheck validation is needed (only if a group exists)
     const atLeastOneGroupExists = this.groups.length > 0;
@@ -709,28 +746,21 @@ export class EditSurveyComponent {
         this.categoryNameChecks[i] = !hasBlankOption; // If no blank or undefined value found, set it to true
       }
     } else {
-      this.categoryNameCheck = true; // Skip validation if no groups exist
+      // this.categoryNameCheck = true;
+      this.categoryNameChecks.fill(true); // Skip validation if no groups exist
     }
 
     // Check if the answer input field is empty
 
     const isAnyOptionEmpty = this.allOptions.some(option => !option.option || option.option.trim() === '');
-    //const isAnyOptionNonUnique = (new Set(this.allOptions.map(option => option.option.trim()))).size !== this.allOptions.length;
-    // if (isAnyOptionNonUnique) {
-    //   this.utility.showError('Duplicate option value.');
-    // }
+ 
+    this.isValidSurvey = this.questionadded && this.qusstionaddednext && this.categoryNameChecks.every(check => check) && !isAnyOptionEmpty ;
 
-
-    // if (atLeastOneGroupExists) {
-    //   this.categoryNameCheck = !!this.categoryId && this.categoryId !== 0;
-    // } else {
-    //   this.categoryNameCheck = true; // Skip validation if no groups exist
-    // }
-
-    // Update the validity state of the survey
-    this.isValidSurvey = this.questionadded && this.qusstionaddednext && this.categoryNameCheck && !isAnyOptionEmpty ;
+    debugger
 
     return this.isValidSurvey; // Return the validation result
+
+    
     
   }
 
@@ -912,21 +942,29 @@ export class EditSurveyComponent {
 
 
 
-  onGroupValueChange(type: string, value: boolean, groupId: number) {
+  onGroupValueChange(type: string,  groupId: number) {
     // Update the specified group directly
     let groupoption = new serveyOption();
 
     const groupToUpdate = this.groups.find(group => group.id === groupId);
+
+
+    console.log("groupToUpdate",groupToUpdate)
+
+    
     if (!groupToUpdate) {
       console.error('Group not found with ID:', groupId);
       return;
     }
 
     
-
+    groupToUpdate.isRandomize = false;
+    groupToUpdate.isExcluded = false;
+    groupToUpdate.isFlipNumber = false;
+    groupToUpdate.isRotate = false;
 
     if (type === 'randomize') {
-      groupToUpdate.isRandomize = value;
+      groupToUpdate.isRandomize = true;
 
       this.allOptions.forEach(option => {
         if (option.group === groupId) {
@@ -948,17 +986,68 @@ export class EditSurveyComponent {
         }
       });
     } else if (type === 'rotate') {
-      groupToUpdate.isExcluded = true;
+      groupToUpdate.isRotate = true;
       this.allOptions.forEach(option => {
         if (option.group === groupId) {
-          option.isExcluded = true;
+          option.isRotate = true;
         }
       });
     }
 
+    groupToUpdate.optionType = type;
+
     this.allOptions = [...this.optionsArr1, ...this.optionsArr2];
 
   }
+
+
+  // onGroupValueChange(type: string, value: boolean, groupId: number) {
+  //   // Update the specified group directly
+  //   let groupoption = new serveyOption();
+
+  //   const groupToUpdate = this.groups.find(group => group.id === groupId);
+  //   if (!groupToUpdate) {
+  //     console.error('Group not found with ID:', groupId);
+  //     return;
+  //   }
+
+    
+
+
+  //   if (type === 'randomize') {
+  //     groupToUpdate.isRandomize = value;
+
+  //     this.allOptions.forEach(option => {
+  //       if (option.group === groupId) {
+  //         option.isRandomize = true;
+  //       }
+  //     });
+  //   } else if (type === 'excluded') {
+  //     groupToUpdate.isExcluded = true;
+  //     this.allOptions.forEach(option => {
+  //       if (option.group === groupId) {
+  //         option.isExcluded = true;
+  //       }
+  //     });
+  //   } else if (type === 'flip') {
+  //     groupToUpdate.isFlipNumber = true;
+  //     this.allOptions.forEach(option => {
+  //       if (option.group === groupId) {
+  //         option.isFlipNumber = true;
+  //       }
+  //     });
+  //   } else if (type === 'rotate') {
+  //     groupToUpdate.isExcluded = true;
+  //     this.allOptions.forEach(option => {
+  //       if (option.group === groupId) {
+  //         option.isExcluded = true;
+  //       }
+  //     });
+  //   }
+
+  //   this.allOptions = [...this.optionsArr1, ...this.optionsArr2];
+
+  // }
 
 
   getCurrentDateTime(): string {
