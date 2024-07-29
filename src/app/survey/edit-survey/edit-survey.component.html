@@ -756,7 +756,6 @@
                                                 </mat-option>
                                             </mat-autocomplete>
                                         </mat-form-field>
-                                        {{categoryNameChecks[groupIndex]}}
                                         <div *ngIf="categoryNameChecks[groupIndex] === false" class="text-danger">Option is
                                             required.</div>
                                     </form>
@@ -765,7 +764,6 @@
 
                                 <div class="row">
                                     <div class="col-md-6">
-                                        {{group.optionType}}
                                         <div class="form-check form-check-inline">
                                             <input class="form-check-input" type="radio" id="Randomize{{group.id}}"
                                             [checked]="group.isRandomize == true" 
