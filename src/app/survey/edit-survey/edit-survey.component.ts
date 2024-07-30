@@ -320,7 +320,6 @@ export class EditSurveyComponent {
   }
 
   getGroupValue() {
-   debugger
     if (this.groupedOptions && Object.keys(this.groupedOptions).length > 0) {
       for (const groupKey in this.groupedOptions) {
         if (this.groupedOptions.hasOwnProperty(groupKey)) {
@@ -342,7 +341,6 @@ export class EditSurveyComponent {
           this.groups.push(newGroup); // Push newGroup to groups array
         }
       }
-     debugger
     } 
     
     else {
@@ -796,6 +794,7 @@ export class EditSurveyComponent {
       return;
     }
 
+
     const isAnyOptionNonUnique = (new Set(this.allOptions.map(option => option.option.trim()))).size !== this.allOptions.length;
     if (isAnyOptionNonUnique) {
       this.utility.showError('Duplicate option value.');
@@ -808,10 +807,12 @@ export class EditSurveyComponent {
         if (!(group.isRandomize || group.isExcluded || group.isFlipNumber || group.isRotate)) {
           // this.categoryNameChecks[i] = false;
             this.utility.showError("Select at least one radio button for group " + group.id);
+            return;
           
         }
       }
     }
+    
 
     if (this.optionExists("Other (Please specify)") || this.optionExists("Prefer not to Answer")) {
       this.question.openEndedType = "text";
@@ -885,7 +886,8 @@ export class EditSurveyComponent {
       modifiedOption.isExcluded = option.isExcluded;
       modifiedOption.isFixed = option.isFixed;
       modifiedOption.isRandomize = option.isRandomize;
-      modifiedOption.isFlipNumber = option.isFlipNumber
+      modifiedOption.isFlipNumber = option.isFlipNumber;
+      modifiedOption.isRotate = option.isRotate;
       modifiedOption.isSelected = option.isSelected;
       modifiedOption.isVisible = option.isVisible;
 
