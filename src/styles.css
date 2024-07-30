@@ -2545,3 +2545,6 @@ th:last-child, td:last-child
   right:0px;
 }
 
+.groupoption .form-check-inline{
+    display: flex;
+}

@@ -207,7 +207,6 @@ export class EditSurveyComponent {
 
       data.options.forEach((opt: any) => {
 
-       debugger
         let newOption = new serveyOption();
         newOption.id = opt.id;
         newOption.option = opt.option;
@@ -275,7 +274,6 @@ export class EditSurveyComponent {
           console.log("Updated group:", this.groupedOptions[opt.group]);
         }
 
-        debugger
 
       });
       data.matrixHeader.forEach((opt: any) => {
@@ -322,6 +320,7 @@ export class EditSurveyComponent {
   }
 
   getGroupValue() {
+   debugger
     if (this.groupedOptions && Object.keys(this.groupedOptions).length > 0) {
       for (const groupKey in this.groupedOptions) {
         if (this.groupedOptions.hasOwnProperty(groupKey)) {
@@ -343,8 +342,10 @@ export class EditSurveyComponent {
           this.groups.push(newGroup); // Push newGroup to groups array
         }
       }
-
-    } else {
+     debugger
+    } 
+    
+    else {
     }
   }
 
@@ -708,8 +709,10 @@ export class EditSurveyComponent {
 
   questions: any[] = [];
   categoryNameChecks: boolean[] = [];
+  categoryNameChecksRadio:boolean[]=[]
   initializeCategoryNameChecks() {
     this.categoryNameChecks = new Array(this.groups.length).fill(false);
+    this.categoryNameChecksRadio = new Array(this.groups.length).fill(false);
    
   }
 
@@ -725,15 +728,15 @@ export class EditSurveyComponent {
     this.questionadded = !!this.question && !!this.question.question && this.question.question.trim().length > 0;
     
 
-   debugger
 
     // Check if categoryNameCheck validation is needed (only if a group exists)
     const atLeastOneGroupExists = this.groups.length > 0;
     if (atLeastOneGroupExists) {
       for (let i = 0; i < this.groups.length; i++) {
         const group = this.groups[i];
-        if (!group.options || group.options.length === 0) {
+        if (!group.options || group.options.length === 0 ) {
           this.categoryNameChecks[i] = false;
+          
           continue; // Skip to the next iteration if group.options is undefined or empty
         }
         let hasBlankOption = false;
@@ -743,7 +746,12 @@ export class EditSurveyComponent {
             break; // Exit the loop once a blank or undefined value is found
           }
         }
-        this.categoryNameChecks[i] = !hasBlankOption; // If no blank or undefined value found, set it to true
+        this.categoryNameChecks[i] = !hasBlankOption; 
+        console.log("this.categoryNameChecks[i]",this.categoryNameChecks[i])
+        console.log("group.isRandomize",group.isRandomize)
+
+        
+        // If no blank or undefined value found, set it to true
       }
     } else {
       // this.categoryNameCheck = true;
@@ -755,8 +763,6 @@ export class EditSurveyComponent {
     const isAnyOptionEmpty = this.allOptions.some(option => !option.option || option.option.trim() === '');
  
     this.isValidSurvey = this.questionadded && this.qusstionaddednext && this.categoryNameChecks.every(check => check) && !isAnyOptionEmpty ;
-
-    debugger
 
     return this.isValidSurvey; // Return the validation result
 
@@ -781,17 +787,30 @@ export class EditSurveyComponent {
       return;
     }
 
-    const isAnyOptionNonUnique = (new Set(this.allOptions.map(option => option.option.trim()))).size !== this.allOptions.length;
-    if (isAnyOptionNonUnique) {
-      this.utility.showError('Duplicate option value.');
-      return;
-    }
+  
     
     const isSurveyValid = this.validateSurvey();
 
     if (!isSurveyValid) {
       this.utility.showError('Please fill all required fields.');
       return;
+    }
+
+    const isAnyOptionNonUnique = (new Set(this.allOptions.map(option => option.option.trim()))).size !== this.allOptions.length;
+    if (isAnyOptionNonUnique) {
+      this.utility.showError('Duplicate option value.');
+      return;
+    }
+
+    for (let i = 0; i < this.groups.length; i++) {
+      if (this.categoryNameChecks[i] === true) {
+        const group = this.groups[i];
+        if (!(group.isRandomize || group.isExcluded || group.isFlipNumber || group.isRotate)) {
+          // this.categoryNameChecks[i] = false;
+            this.utility.showError("Select at least one radio button for group " + group.id);
+          
+        }
+      }
     }
 
     if (this.optionExists("Other (Please specify)") || this.optionExists("Prefer not to Answer")) {
@@ -898,7 +917,7 @@ export class EditSurveyComponent {
             this.utility.showError('Question Created Failed')
           } else  if (resp === '"QuestionSuccessfullyUpdated"') {
             this.utility.showSuccess('Question Updated Successfully.');
-            window.location.reload();
+            // window.location.reload();
             // let url = `/survey/manage-survey/${this.crypto.encryptParam(this.surveyId)}`;
             // this.router.navigateByUrl(url);
              // window.location.reload();
@@ -978,7 +997,7 @@ export class EditSurveyComponent {
           option.isExcluded = true;
         }
       });
-    } else if (type === 'flip') {
+    } else if (type === 'flipNumber') {
       groupToUpdate.isFlipNumber = true;
       this.allOptions.forEach(option => {
         if (option.group === groupId) {

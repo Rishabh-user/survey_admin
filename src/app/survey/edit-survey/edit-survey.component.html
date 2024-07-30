@@ -595,11 +595,17 @@
                                     [(ngModel)]="option.header" (blur)="validateSurvey()" />
                                 <div *ngIf="!option.header.trim()" class="text-danger" style="position: absolute;">Option is required.</div>
                             </div>
-                            <div class="flex-2" *ngIf="optionmatrixdesc || option.headerDescription">
+                            <!-- <div class="flex-2" *ngIf="optionmatrixdesc || option.headerDescription">
+                                
+                                <input id="answer" type="text" name="answer" class="form-control" [(ngModel)]="option.headerDescription" placeholder="Option Description"  />
+                                    
+                            </div> -->
+                            <div class="flex-2" *ngIf="option.header !== 'Other' && option.header !== 'No Opinion' && (optionmatrixdesc || option.headerDescription)">
                                 
                                 <input id="answer" type="text" name="answer" class="form-control" [(ngModel)]="option.headerDescription" placeholder="Option Description"  />
                                     
                             </div>
+
                             <div class="flex-width text-end" cdkDrag>
                                 <ng-icon name="heroBars3"></ng-icon>
                             </div>
@@ -608,27 +614,7 @@
                                     <ng-icon name="heroTrash"></ng-icon>
                                 </a>
                             </div>
-                            <!-- <ng-icon *ngIf="!matrixoptiontooltip[i]" (click)="addOptionMatrixTooltip(i)" name="heroPlusCircle"></ng-icon>
-                            <ng-icon *ngIf="matrixoptiontooltip[i]" (click)="removeOptionMatrixTooltip(i)" name="heroMinusCircle"></ng-icon>
-
-                            <div *ngIf="matrixoptiontooltip[i]">
-                                <label class="mb-1">ToolTip</label>
-                                <div class="d-flex align-items-center">
-                                    
-                                    <div class="mt-2 flex-2">                                    
-                                        <input class="form-control" />
-                                    </div>
-                                    
-                                    <div class="flex-width text-end" cdkDrag>
-                                        <ng-icon name="heroBars3"></ng-icon>
-                                    </div>
-                                    <div class="flex-width text-end">
-                                        <a href="javascript:void(0);" (click)="onDeleteMatrixOption('optionmatrix',i)">
-                                            <ng-icon name="heroTrash"></ng-icon>
-                                        </a>
-                                    </div>
-                                </div>
-                            </div> -->
+                           
                             <div class="flex-width ms-3 text-end">
                                 <button *ngIf="!matrixoptiontooltip[i]" type="button" class="btn btn-primary" (click)="addOptionMatrixTooltip(i)" matTooltip="Click on '+' icon to add tooltip on option"><ng-icon name="heroPlusCircle"  style="font-size: 1.2rem;height: auto;"></ng-icon></button>
                                 <button *ngIf="matrixoptiontooltip[i]" type="button" class="btn btn-primary" (click)="removeOptionMatrixTooltip(i)" ><ng-icon name="heroMinusCircle"  style="font-size: 1.2rem;height: auto;"></ng-icon></button>
@@ -690,6 +676,114 @@
                                 </div>
                             </div>
                             
+                        </div>
+                    </div>
+                </div>
+            </li>
+            <li *ngIf="question.questionTypeName === 'Continous Sum'">
+                <div ngClass="border-top p-4">
+                    <div ngClass="select-ans-choice mb-5">
+                        <h5>Column</h5>
+                        <div class="mb-2 ms-4 d-flex align-items-center">
+                            <h6 class="mb-0 me-2">Enable Description</h6>
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" type="checkbox" role="switch" [(ngModel)]="matrixdescpisChecked"
+                                    name="isChecked" (change)="onCheckboxOptionMatrix($event)"
+                                    style="width: 2.5rem;height: 1.4rem;">
+                            </div>
+                        </div>
+
+                    </div>
+                    <div ngClass="mb-4" cdkDropList (cdkDropListDropped)="onDropOption($event)">
+                        <div class="row mb-3 border-bottom" style="font-weight: 500;">
+                            <div class="flex-width">S. No</div>
+                            <div class="flex-2">Option</div>
+                            <div class="flex-2" *ngIf="optionmatrixdesc || matrixdescpisChecked">
+                                <div class="d-flex">
+                                    <p>Option Description</p>
+                                    
+                                </div>
+                            </div>
+                            <div class="flex-width">Drag</div>
+                            <div class="flex-width">Delete</div>
+                            <div class="flex-width">Tooltip</div>
+                        </div>
+                        <div class="row g-2 align-items-center mb-3" *ngFor="let option of matrixOptions;let i=index;">
+                            <div class="flex-width">
+                                <input type="text" id="" class="form-control" value="{{i+1}}" readonly />
+                            </div>
+
+
+                            <!-- this -->
+                            
+
+                            <div class="flex-2">
+                                <input id="answer" type="number" name="answer" class="form-control"
+                                    [(ngModel)]="option.header" (blur)="validateSurvey()" />
+                                <div *ngIf="option.header === undefined || option.header.toString().trim() === ''" class="text-danger" style="position: absolute;">Option is required.</div>
+                            </div>
+                          
+                            <div class="flex-2" *ngIf="optionmatrixdesc || option.headerDescription">
+                                
+                                <input id="answer" type="text" name="answer" class="form-control" [(ngModel)]="option.headerDescription" placeholder="Option Description"  />
+                                    
+                            </div>
+
+                            <div class="flex-width text-end" cdkDrag>
+                                <ng-icon name="heroBars3"></ng-icon>
+                            </div>
+                            <div class="flex-width text-end">
+                                <a href="javascript:void(0);" (click)="onDeleteMatrixOption('optionmatrix',i)">
+                                    <ng-icon name="heroTrash"></ng-icon>
+                                </a>
+                            </div>
+                           
+                            <div class="flex-width ms-3 text-end">
+                                <button *ngIf="!matrixoptiontooltip[i]" type="button" class="btn btn-primary" (click)="addOptionMatrixTooltip(i)" matTooltip="Click on '+' icon to add tooltip on option"><ng-icon name="heroPlusCircle"  style="font-size: 1.2rem;height: auto;"></ng-icon></button>
+                                <button *ngIf="matrixoptiontooltip[i]" type="button" class="btn btn-primary" (click)="removeOptionMatrixTooltip(i)" ><ng-icon name="heroMinusCircle"  style="font-size: 1.2rem;height: auto;"></ng-icon></button>
+                            </div>
+                            <div *ngIf="matrixoptiontooltip[i] || option.headerToolTip">
+                                <label class="mb-1">ToolTip</label>
+                                <div class="d-flex align-items-center">
+                                    
+                                    <div class="mt-2 flex-2">                                    
+                                        <input class="form-control" [(ngModel)]="option.headerToolTip" id="headeroption" name="headeroption" type="text" />
+                                    </div>
+                                    
+                                </div>
+                            </div> 
+                        </div>
+                    </div>
+                    <hr *ngIf="matrixOptions.length>0" />
+                    <div ngClass="mb-4">
+                        <div class="row g-2 align-items-center mb-3" *ngFor="let option of optionsArr3;let i=index;">
+                            <div class="flex-width">
+                                <input type="text" id="" class="form-control" value="{{optionsArr1.length+1}}"
+                                    readonly />
+                            </div>
+
+                            
+                            <div class="flex-2">
+                                <input type="text" disabled id="" class="form-control" [(ngModel)]="option.header" />
+                            </div>
+
+                            <div class="flex-width text-end">
+                                <ng-icon name="heroTrash" (click)="onDeleteMatrixOption('optionmatrix2',i)"></ng-icon>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div ngClass="mb-4">
+                        <div class="row g-2 align-items-center">
+
+                            <div class="col-auto">
+                                <div ngClass="new-options">
+                                    <a herf="javascript:void(0);" (click)="hanldeAddOptionClickMatrix()"><ng-icon
+                                            name="heroPlusCircle"></ng-icon> Add Option
+                                    </a>
+                                </div>
+                            </div>
+                           
                         </div>
                     </div>
                 </div>
@@ -763,13 +857,13 @@
                                 </div>
 
                                 <div class="row">
-                                    <div class="col-md-6">
+                                    <div class="col-md-6 groupoption">
                                         <div class="form-check form-check-inline">
                                             <input class="form-check-input" type="radio" id="Randomize{{group.id}}"
                                             [checked]="group.isRandomize == true" 
                                                 name="groupOption{{group.id}}"
                                                 (change)="onGroupValueChange('randomize', group.id)">
-                                            <label class="form-check-label"
+                                            <label class="form-check-label ms-2"
                                                 for="Randomize{{group.id}}">Randomize</label>
                                         </div>
                                         <div class="form-check form-check-inline">
@@ -777,7 +871,7 @@
                                             [checked]="group.isExcluded == true"
                                             name="groupOption{{group.id}}"
                                                 (change)="onGroupValueChange('excluded',  group.id)">
-                                            <label class="form-check-label" for="Exclude{{group.id}}">Exclude</label>
+                                            <label class="form-check-label ms-2" for="Exclude{{group.id}}">Exclude</label>
                                         </div>
                                         <div class="form-check form-check-inline">
                                             <input class="form-check-input" type="radio" id="Flip{{group.id}}"
@@ -785,7 +879,7 @@
                                                 name="groupOption{{group.id}}"
                                                 (change)="onGroupValueChange('flipNumber', group.id)">
                                               
-                                            <label class="form-check-label"
+                                            <label class="form-check-label ms-2"
                                                 for="Flip{{group.id}}">Flip</label>
                                         </div>
                                         <div class="form-check form-check-inline">
@@ -793,7 +887,7 @@
                                             [checked]="group.isrotate === true"
                                                 name="groupOption{{group.id}}"
                                                 (change)="onGroupValueChange('rotate',  group.id)">
-                                            <label class="form-check-label"
+                                            <label class="form-check-label ms-2"
                                                 for="Rotate{{group.id}}">Rotate</label>
                                         </div>
                                     </div>
