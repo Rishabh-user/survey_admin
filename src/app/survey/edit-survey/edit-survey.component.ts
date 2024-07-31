@@ -784,15 +784,27 @@ export class EditSurveyComponent {
       this.utility.showError('Please fill required fields.');
       return;
     }
-
-  
+    
     
     const isSurveyValid = this.validateSurvey();
+    const isHeaderValid = this.validateHeaders()
 
-    if (!isSurveyValid) {
+    if (!isSurveyValid ) {
       this.utility.showError('Please fill all required fields.');
       return;
     }
+
+    
+    if(this.question.questionTypeName === 'Matrix Choice' || this.question.questionTypeName === 'Continous Sum'){
+      if (!this.validateHeaders()) {
+        this.utility.showError('Please fill all header fields.');
+        return;
+      }
+    }
+
+    debugger
+
+    
 
 
     const isAnyOptionNonUnique = (new Set(this.allOptions.map(option => option.option.trim()))).size !== this.allOptions.length;
@@ -871,6 +883,7 @@ export class EditSurveyComponent {
       headerOption.sort = option.sort;
       headerOption.headerToolTip = option.headerToolTip;
       headerOption.headerDescription = option.headerDescription;
+      
 
       matrixoption.push(headerOption)
 
@@ -1786,6 +1799,37 @@ export class EditSurveyComponent {
     this.matrixAllOptions = [];
 
     this.matrixAllOptions.push(...this.matrixOptions, ...this.optionsArr3);
+  }
+
+  headervalidation: boolean[] = [];
+
+  validateHeaders():boolean {
+
+    debugger
+
+    this.headervalidation = [];
+    
+    this.matrixAllOptions.forEach((option: any,index:number) => {
+
+      let headerOption = new MatrixHeader();
+      headerOption.id = option.id;
+      headerOption.header = option.header
+      headerOption.createdDate = option.createdDate;
+      headerOption.modifiedDate = option.modifiedDate;
+      headerOption.status = option.status;
+      headerOption.sort = option.sort;
+      headerOption.headerToolTip = option.headerToolTip;
+      headerOption.headerDescription = option.headerDescription;
+      
+      this.headervalidation[index] = headerOption.header === '';
+      console.log("D",headerOption.header === '')
+      console.log("Dd",this.headervalidation[index])
+
+    });
+
+    debugger
+
+    return !this.headervalidation.includes(true);
   }
 
   onAddLogic(){
