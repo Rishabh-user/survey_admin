@@ -570,6 +570,7 @@ export class EditSurveyComponent {
       this.allOptions[indexToModify].isRandomize = false;
       this.allOptions[indexToModify].isExcluded = false;
       this.allOptions[indexToModify].isFlipNumber= false;
+      this.allOptions[indexToModify].isRotate = false;
     } else {
 
     }
@@ -802,10 +803,7 @@ export class EditSurveyComponent {
       }
     }
 
-    debugger
-
-    
-
+   
 
     const isAnyOptionNonUnique = (new Set(this.allOptions.map(option => option.option.trim()))).size !== this.allOptions.length;
     if (isAnyOptionNonUnique) {
@@ -977,10 +975,16 @@ export class EditSurveyComponent {
 
 
   onGroupValueChange(type: string,  groupId: number) {
+    debugger
     // Update the specified group directly
     let groupoption = new serveyOption();
 
     const groupToUpdate = this.groups.find(group => group.id === groupId);
+
+    groupToUpdate.isRandomize = false;
+    groupToUpdate.isExcluded = false;
+    groupToUpdate.isFlipNumber = false;
+    groupToUpdate.isRotate = false;
 
 
     console.log("groupToUpdate",groupToUpdate)
@@ -991,38 +995,64 @@ export class EditSurveyComponent {
       return;
     }
 
-    
-    groupToUpdate.isRandomize = false;
-    groupToUpdate.isExcluded = false;
-    groupToUpdate.isFlipNumber = false;
-    groupToUpdate.isRotate = false;
+  
 
     if (type === 'randomize') {
       groupToUpdate.isRandomize = true;
+      groupToUpdate.isExcluded = false;
+      groupToUpdate.isFlipNumber = false;
+      groupToUpdate.isRotate = false;
 
       this.allOptions.forEach(option => {
         if (option.group === groupId) {
           option.isRandomize = true;
+          option.isExcluded = false;
+          option.isFlipNumber = false;
+          option.isRotate = false;
         }
       });
     } else if (type === 'excluded') {
+      // groupToUpdate.isExcluded = true;
+      groupToUpdate.isRandomize = false;
       groupToUpdate.isExcluded = true;
+      groupToUpdate.isFlipNumber = false;
+      groupToUpdate.isRotate = false;
       this.allOptions.forEach(option => {
         if (option.group === groupId) {
+          // option.isExcluded = true;
+          option.isRandomize = false;
           option.isExcluded = true;
+          option.isFlipNumber = false;
+          option.isRotate = false;
         }
       });
     } else if (type === 'flipNumber') {
+      // groupToUpdate.isFlipNumber = true;
+      groupToUpdate.isRandomize = false;
+      groupToUpdate.isExcluded = false;
       groupToUpdate.isFlipNumber = true;
+      groupToUpdate.isRotate = false;
       this.allOptions.forEach(option => {
         if (option.group === groupId) {
+          // option.isFlipNumber = true;
+          option.isRandomize = false;
+          option.isExcluded = false;
           option.isFlipNumber = true;
+          option.isRotate = false;
         }
       });
     } else if (type === 'rotate') {
+      // groupToUpdate.isRotate = true;
+      groupToUpdate.isRandomize = false;
+      groupToUpdate.isExcluded = false;
+      groupToUpdate.isFlipNumber = false;
       groupToUpdate.isRotate = true;
       this.allOptions.forEach(option => {
         if (option.group === groupId) {
+          // option.isRotate = true;
+          option.isRandomize = false;
+          option.isExcluded = false;
+          option.isFlipNumber = false;
           option.isRotate = true;
         }
       });
@@ -1030,8 +1060,14 @@ export class EditSurveyComponent {
 
     groupToUpdate.optionType = type;
 
+    console.log("groupToUpdate update",groupToUpdate)
+
+    
     this.allOptions = [...this.optionsArr1, ...this.optionsArr2];
 
+    console.log("groupToUpdate option",this.allOptions)
+    
+    debugger
   }
 
 
@@ -1805,8 +1841,7 @@ export class EditSurveyComponent {
 
   validateHeaders():boolean {
 
-    debugger
-
+  
     this.headervalidation = [];
     
     this.matrixAllOptions.forEach((option: any,index:number) => {
@@ -1826,8 +1861,6 @@ export class EditSurveyComponent {
       console.log("Dd",this.headervalidation[index])
 
     });
-
-    debugger
 
     return !this.headervalidation.includes(true);
   }
