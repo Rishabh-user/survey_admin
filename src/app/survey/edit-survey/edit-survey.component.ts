@@ -887,32 +887,70 @@ export class EditSurveyComponent {
 
     });
     
-    this.allOptions.forEach((option) => {
-      let modifiedOption = new serveyOption();
+    
+    
+    if(this.question.questionTypeName === 'Slider Scale') {
+      this.allOptions.forEach((option,index) => {
+        let modifiedOption = new serveyOption();
 
-      modifiedOption.createdDate = option.createdDate;
-      modifiedOption.group = option.group;
-      modifiedOption.id = option.id;
-      modifiedOption.imageAdded = option.imageAdded;
-      modifiedOption.isExcluded = option.isExcluded;
-      modifiedOption.isFixed = option.isFixed;
-      modifiedOption.isRandomize = option.isRandomize;
-      modifiedOption.isFlipNumber = option.isFlipNumber;
-      modifiedOption.isRotate = option.isRotate;
-      modifiedOption.isSelected = option.isSelected;
-      modifiedOption.isVisible = option.isVisible;
+        modifiedOption.createdDate = option.createdDate;
+        modifiedOption.group = option.group;
+        modifiedOption.id = option.id;
+        modifiedOption.imageAdded = option.imageAdded;
+        modifiedOption.isExcluded = option.isExcluded;
+        modifiedOption.isFixed = option.isFixed;
+        modifiedOption.isRandomize = option.isRandomize;
+        modifiedOption.isFlipNumber = option.isFlipNumber;
+        modifiedOption.isRotate = option.isRotate;
+        modifiedOption.isSelected = option.isSelected;
+        modifiedOption.isVisible = option.isVisible;
 
-      modifiedOption.keyword = option.keyword;
-      modifiedOption.modifiedDate = option.modifiedDate;
-      modifiedOption.option = option.option;
-      modifiedOption.selected = option.selected;
-      modifiedOption.sort = option.sort;
-      modifiedOption.status = option.status;
-      modifiedOption.optionToolTip = option.optionToolTip;
-      modifiedOption.optionDescription = option.optionDescription;
-      modifiedOption.image = option.imageAdded ? option.image : null;
-      modifiedoptions.push(modifiedOption);
-    });
+        modifiedOption.keyword = option.keyword;
+        modifiedOption.modifiedDate = option.modifiedDate;
+        modifiedOption.option = option.option;
+        modifiedOption.selected = option.selected;
+        modifiedOption.sort = option.sort;
+        modifiedOption.status = option.status;
+        modifiedOption.optionToolTip = option.optionToolTip;
+        // modifiedOption.optionDescription = option.optionDescription;
+        if (index === 0) {
+          modifiedOption.optionDescription = 'Not at all likely';
+        } else if (index === this.allOptions.length - 1) {
+          modifiedOption.optionDescription = 'Extremely likely';
+        } else {
+          modifiedOption.optionDescription = option.optionDescription;
+        }
+        modifiedOption.image = option.imageAdded ? option.image : null;
+        modifiedoptions.push(modifiedOption);
+      });
+    } else {
+      this.allOptions.forEach((option) => {
+        let modifiedOption = new serveyOption();
+  
+        modifiedOption.createdDate = option.createdDate;
+        modifiedOption.group = option.group;
+        modifiedOption.id = option.id;
+        modifiedOption.imageAdded = option.imageAdded;
+        modifiedOption.isExcluded = option.isExcluded;
+        modifiedOption.isFixed = option.isFixed;
+        modifiedOption.isRandomize = option.isRandomize;
+        modifiedOption.isFlipNumber = option.isFlipNumber;
+        modifiedOption.isRotate = option.isRotate;
+        modifiedOption.isSelected = option.isSelected;
+        modifiedOption.isVisible = option.isVisible;
+  
+        modifiedOption.keyword = option.keyword;
+        modifiedOption.modifiedDate = option.modifiedDate;
+        modifiedOption.option = option.option;
+        modifiedOption.selected = option.selected;
+        modifiedOption.sort = option.sort;
+        modifiedOption.status = option.status;
+        modifiedOption.optionToolTip = option.optionToolTip;
+        modifiedOption.optionDescription = option.optionDescription;
+        modifiedOption.image = option.imageAdded ? option.image : null;
+        modifiedoptions.push(modifiedOption);
+      });
+    }
     
 
     this.question.options = modifiedoptions;
@@ -930,10 +968,10 @@ export class EditSurveyComponent {
             this.utility.showError('Question Created Failed')
           } else  if (resp === '"QuestionSuccessfullyUpdated"') {
             this.utility.showSuccess('Question Updated Successfully.');
-            // window.location.reload();
+            window.location.reload();
             // let url = `/survey/manage-survey/${this.crypto.encryptParam(this.surveyId)}`;
             // this.router.navigateByUrl(url);
-             // window.location.reload();
+            //  window.location.reload();
             
           } 
         },
@@ -1705,6 +1743,7 @@ export class EditSurveyComponent {
       let startOption = new serveyOption();
       startOption.option = i.toString();
       startOption.id = i;
+      
       startOption.createdDate = this.getCurrentDateTime()
       this.optionsArr1.push(startOption);
     }
