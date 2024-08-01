@@ -846,7 +846,7 @@ export class EditSurveyComponent {
       this.question.openEndedType = "textarea"
       this.question.textLimit = this.textlimit
     }
-    if (this.question.questionTypeName === 'Continous Sum') {
+    if (this.question.questionTypeName === 'Auto Continues Sum') {
       this.question.textLimit = this.textlimit
     }
     // else{
