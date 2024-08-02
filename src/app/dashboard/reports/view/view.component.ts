@@ -175,6 +175,8 @@ export class ViewComponent {
         chartType = 'polarArea';
       } else if (this.graphtypevalue == 4) {
         chartType = 'line';
+      } else if (this.graphtypevalue == 5) {
+        chartType = 'scatter';
       }
 
       this.defaultchart[index] = new Chart(ctx, {
@@ -184,10 +186,23 @@ export class ViewComponent {
           datasets: datasets
         },
         options: {
-          indexAxis: 'x',
+          responsive: true,
+          
+          plugins: {
+            title: {
+              display: true,
+              text: 'Question Options',
+            },
+            legend: {
+              labels: {
+                usePointStyle: true
+              }
+            }
+          },
+          
           scales: {
             x: {
-              display: false, // Display the x-axis
+              display: true, // Display the x-axis
               title: {
                 display: true,
                 text: 'Question Options' // Add a title to the x-axis if needed
