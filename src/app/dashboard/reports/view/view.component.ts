@@ -197,7 +197,7 @@ export class ViewComponent {
               labels: {
                 usePointStyle: true
               }
-            }
+            },
           },
           
           scales: {
@@ -211,7 +211,8 @@ export class ViewComponent {
             y: {
               beginAtZero: true
             }
-          }
+          },
+          
         }
       });
     });
