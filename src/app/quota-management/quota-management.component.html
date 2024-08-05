@@ -33,7 +33,6 @@
 <div class="common-bg" [class.vendor-link]="role === 'Vendor'">
     <!-- <div>
         <div class="mb-3">
-            {{ vendorsurveydata | json }}
             <mat-form-field>
               <mat-select #selectElement>
                 <mat-option *ngFor="let option of vendorsurveydata" [value]="option.surveyId">

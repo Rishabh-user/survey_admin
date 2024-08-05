@@ -1099,7 +1099,7 @@
                                                         <div class="tab-pane active" id="branching" role="tabpanel"
                                                             aria-labelledby="branching-tab">
                                                             <div class="infocircle justify-content-start mb-4">
-                                                                <h5>Create Answer Logic</h5>
+                                                                <h5>Create Answer Logic {{i+1}}</h5>
                                                                 <div class="custom-tooltip ms-2">
                                                                     <ng-icon name="heroInformationCircle" ngClass="edit-action info-circle"
                                                                         (click)="toggleTooltip('2')"></ng-icon>
@@ -1234,7 +1234,7 @@
                                                                                         value="{{item.id}}">{{item.option}}</option>
                                                                                 </select>
                                                                             </div>
-                                                                            <div class="col-md-8">
+                                                                            <div class="col-md-4">
                                                                                 <a routerLink="javascript:"><ng-icon name="heroTrash"
                                                                                         ngClass="trash-icon"
                                                                                         (click)="createanswershidethen(i)"></ng-icon></a>
@@ -1247,8 +1247,8 @@
                                                         </div>
                     
                                                     </div>
-                                                    <div class="col-12 text-end">
-                                                        <button type="button" class="btn trash-icon px-5 ms-4" (click)="deleteOptionLogics()">Delete</button>
+                                                    <div class="col-12">
+                                                        <button type="button" class="btn trash-icon px-5 ms-4" (click)="deleteOptionLogics(i)">Delete Logic {{i+1}}</button>
                                                     </div>
                                                 </ng-container>
                                                 
@@ -1424,7 +1424,7 @@
                                                 <div class="col-12 text-end">
                                                     <button type="button" class="btn btn-primary px-5" (click)="createMatixLogic()">Save
                                                         Logic</button>
-                                                    <button type="button" class="btn trash-icon px-5 ms-4" (click)="deleteOptionLogics()">Delete</button>
+                                                    <button type="button" class="btn trash-icon px-5 ms-4" (click)="deleteMatrxiOptionLogics()">Delete</button>
                                                 </div>
                                             </div>
                                         </div>

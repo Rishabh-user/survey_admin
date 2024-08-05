@@ -384,6 +384,15 @@ export class EditSurveyComponent {
       
 
     }
+    this.logicEntries.push({
+      optionlogicquesid: null,
+      optionlogicifid: null,
+      optionlogicifexpectedid: [],
+      optionlogicthanid: null,
+      optionlogicthanexpectedid: null,
+      optionlogicelseid: null,
+      optionlogicelseexpected: null
+    });
     
     
 
@@ -1978,6 +1987,7 @@ export class EditSurveyComponent {
         }));
   
         // Initialize createanswerthenSection and selectedOptions arrays
+        console.log()
         this.createanswerthenSection = new Array(this.logicEntries.length).fill(false);
         this.selectedOptions = new Array(this.logicEntries.length).fill([]);
   
@@ -2191,9 +2201,26 @@ export class EditSurveyComponent {
   
   
   
-  
+  deleteOptionLogics(index:number): void {
+    const id = this.logicEntries[index].optionlogicid
+    console.log("id",id)
+    this.surveyservice.deleteOptionLogicById(id).subscribe({
+      next: (resp:any) => {
 
-  deleteOptionLogics(): void {
+        if(resp === '"DeletedSuccessfully"'){
+          this.utility.showSuccess("Deleted Successfully");
+          window.location.reload();
+        }
+
+      },
+      error:(err:any) => {
+        this.utility.showError("Error")
+      }
+      
+    });
+  }
+
+  deleteMatrxiOptionLogics(): void {
     this.surveyservice.deleteOptionLogicById(this.optionlogicid).subscribe({
       next: (resp:any) => {
 

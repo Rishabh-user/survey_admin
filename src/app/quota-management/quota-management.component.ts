@@ -32,6 +32,7 @@ export class QuotaManagementComponent {
   centerId: any;
   quotoid: any;
   role: any;
+  centername:any
 
   surveyQuotaJson: QuotaData;
   isEditQuota: boolean = false;
@@ -77,6 +78,7 @@ export class QuotaManagementComponent {
   ngOnInit() {
     this.centerId = this.utils.getCenterId();
     this.role = this.utils.getRole();
+    this.centername = this.utils.getCenterName();
     this.hideBreadcrumb();
     setTimeout(() => {
       this.getAllSurveyList()
@@ -875,7 +877,7 @@ activeIndicesForInterlock(interlockindex: number): number[] {
 
   generateVendorUrl(){
     this.vendorurl=true
-    this.vendorgeneratedurl = `${window.location.host}/survey/landing/live/${this.centerId}/${this.surveyId}`;
+    this.vendorgeneratedurl = `${window.location.host}/survey/landing/live/${this.centername}/${this.centerId}/${this.surveyId}`;
 
   }
 
