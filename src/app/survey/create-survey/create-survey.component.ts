@@ -24,6 +24,7 @@ import { MatChipInputEvent } from '@angular/material/chips';
 import { Option } from 'src/app/models/option';
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
+import { MatixHeaderLogics } from 'src/app/models/logic';
 // import { debug } from 'console';
 
 interface LogicQuestion {
@@ -149,6 +150,7 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
   selectedValue: any;
   defaultSelectedValue: any = null;
   questionLogic: QuestionLogic = new QuestionLogic();
+  matrixlogic: MatixHeaderLogics = new MatixHeaderLogics();
   questionCalculation: QuestionLogic = new QuestionLogic();
   pageSize: number = 10;
   pageNumber: number = 1
@@ -158,6 +160,7 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
   selectedCountryId: string | null = null;
   country: { id: string, name: string, images: string }[] = [];
   logicEntriesPerQuestion: any[] = [];
+  matrixLogicsEntriesPerQuestion:any[]=[];
   currentPage: number = 1
   files: File[] = [];
   filesImage: any;
@@ -185,6 +188,12 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
   qNo:any;
   questiontype:any
   pipingques: { [key: number]: any[] } = {}; 
+  selectedOptionsLogic: any[][] = [];
+
+  selectedMatrixHeaderLogic:any[][]=[];
+  matrixValuefilteredOptions:any[]=[];
+  isMatrixElseShow: boolean[][] = [];
+  isMatrixElseShowvalue: boolean[][] = [];
   
   
   
@@ -691,6 +700,7 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
     //this.logicIndex = index;
     if (mode === "add")
       this.addNewLogicEntry(index);
+      // this.addNewMatrixLogicEntry(index);
 
     this.questions[index].isLogicShow = !this.questions[index].isLogicShow;
     /*setTimeout(() => {
@@ -700,16 +710,7 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
     this.getLogicQuestionList(questionId);
 
 
-    setTimeout(() => { // Adding a small delay to ensure the section is rendered before scrolling
-      const sectionToScroll = this.el.nativeElement.querySelector(`#question-${questionId}`);
-
-      if (sectionToScroll) {
-        sectionToScroll.scrollIntoView({ behavior: 'smooth', block: 'start' });
-
-      } else {
-        console.warn(`Section with ID "question-${questionId}" not found.`);
-      }
-    }, 100); // Adjust the delay as needed
+    
 
   }
 
@@ -836,6 +837,7 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
 
   addNewLogicEntry(index: number): void {
     // Initialize an array for the question if not already done
+  
     if (!this.logicEntriesPerQuestion[index]) {
       this.logicEntriesPerQuestion[index] = [];
     }
@@ -2047,7 +2049,7 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
       this.showPopup = false;
     }
   }
-  selectedOptionsLogic: any[][] = [];
+ 
   selectedOptionsIFLogic(event: MatAutocompleteSelectedEvent, logicEntryIfId: any, questionIndex: number, logicIndex: number): void {
     const ifIdNumber = +logicEntryIfId;
 
@@ -3122,6 +3124,262 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
 
   }
 
+
+  //matrix logic entries
+
+  
+
+  toggleMatrixLogic(index: number, questionId: any, mode: string) {
+
+
+    if (mode === "add")
+      this.addNewMatrixLogicEntry(index);
+
+  }
+
+
+  addNewMatrixLogicEntry(index: number): void {
+
+    // Initialize an array for the question if not already done
+    if (!this.matrixLogicsEntriesPerQuestion[index]) {
+      this.matrixLogicsEntriesPerQuestion[index] = [];
+    }
+    let logicIndex = this.matrixLogicsEntriesPerQuestion.length
+    if (logicIndex > 0)
+      logicIndex = this.matrixLogicsEntriesPerQuestion.length + 1
+    // Create a new logic entry object
+    const newMatrixLogicEntry = {
+      id: 0,
+      ifId: null,
+      ifExpected: null,
+      thanId: null,
+      thanExpected: null,
+      elseId: null,
+      elseExpected: null,
+    };
+
+    this.matrixLogicsEntriesPerQuestion[index].push(newMatrixLogicEntry);
+    if (!this.showRemoveandlogicArray[index]) {
+      this.showRemoveandlogicArray[index] = [];
+    }
+    this.showRemoveandlogicArray[index][logicIndex] = false;
+    if (!this.visibleaddandlogic[index]) {
+      this.visibleaddandlogic[index] = [];
+    }
+    this.visibleaddandlogic[index][logicIndex] = false;
+    if (!this.isAndOrLogic[index]) {
+      this.isAndOrLogic[index] = [];
+    }
+    this.isAndOrLogic[index][logicIndex] = false;
+    if (!this.isMatrixElseShow[index]) {
+      this.isMatrixElseShow[index] = [];
+    }
+    this.isMatrixElseShow[index][logicIndex] = false;
+
+
+    //isElseShow
+    if (!this.isMatrixElseShowvalue[index]) {
+      this.isMatrixElseShowvalue[index] = [];
+    }
+    this.isMatrixElseShowvalue[index][logicIndex] = true;
+
+    //isElseShowCalculations
+
+
+    if (!this.selectedMatrixHeaderLogic[index]) {
+      this.selectedMatrixHeaderLogic[index] = [];
+    } if (!this.selectedMatrixHeaderLogic[index][logicIndex]) {
+      this.selectedMatrixHeaderLogic[index][logicIndex] = [];
+    }
+
+  }
+
+  onMatrixHeaderLogicEntry(questionIndex: number, logicIndex: number): void {
+    this.selectedMatrixHeaderLogic[questionIndex][logicIndex] = []; // Clear the selectedOptions array
+  }
+
+  removeMatrixOptionLogic(option: any, questionIndex: number, logicIndex: number): void {
+    const index = this.selectedMatrixHeaderLogic[questionIndex][logicIndex].indexOf(option);
+    if (index >= 0) {
+      this.selectedMatrixHeaderLogic[questionIndex][logicIndex].splice(index, 1);
+  
+      const filteredOption = this.matrixValuefilteredOptions.find(opt => opt.option === option.option);
+      if (filteredOption) {
+        filteredOption.isSelected = false;
+      }
+  
+      // Update ifExpected with the remaining selected options
+      const selectedOptionsArray = this.selectedMatrixHeaderLogic[questionIndex][logicIndex];
+      const selectedOptionsString = selectedOptionsArray.map((option: { id: any; }) => option.id).join(', ');
+  
+      // Update the ifExpected property
+      this.matrixLogicsEntriesPerQuestion[questionIndex][logicIndex].ifExpected = selectedOptionsString;
+    }
+  }
+
+  addMatrixOption(event: MatChipInputEvent, questionIndex: number, logicIndex: number): void {
+
+    const input = event.input;
+    const value = event.value.trim();
+
+    // Check if the entered value is in the available options
+    const matchingOption = this.optionListByQuestionId.find((option: Option) => option.option === value);
+
+    if (matchingOption && !this.selectedMatrixHeaderLogic.includes(matchingOption)) {
+      this.selectedMatrixHeaderLogic.push(matchingOption);
+    }
+
+    if (input) {
+      input.value = '';
+    }
+  }
+
+
+  selectedMatrixOptionsIFLogic(event: MatAutocompleteSelectedEvent, logicEntryIfId: any, questionIndex: number, logicIndex: number): void {
+    const ifIdNumber = +logicEntryIfId;
+
+    const selectedMatrixOption = event.option.value;
+
+    this.matrixLogicsEntriesPerQuestion[questionIndex][logicIndex].ifExpected = '';
+
+    if (!this.selectedMatrixHeaderLogic[questionIndex]) {
+      this.selectedMatrixHeaderLogic[questionIndex] = [];
+    }
+    if (!this.selectedMatrixHeaderLogic[questionIndex][logicIndex]) {
+      this.selectedMatrixHeaderLogic[questionIndex][logicIndex] = [];
+    }
+    
+    if (!this.selectedMatrixHeaderLogic[questionIndex][logicIndex].includes(selectedMatrixOption)) {
+      this.selectedMatrixHeaderLogic[questionIndex][logicIndex].push(selectedMatrixOption);
+
+      const selectedMatrxiOptionsArray = this.selectedMatrixHeaderLogic[questionIndex][logicIndex];
+      const selectedMatrxiOptionsString = selectedMatrxiOptionsArray.map((option: { id: any; }) => option.id).join(', ');
+
+      this.matrixLogicsEntriesPerQuestion[questionIndex][logicIndex].ifExpected = selectedMatrxiOptionsString;
+
+    }
+  }
+
+  showMatrixElse(questionIndex: number, logicIndex: number) {
+    this.isMatrixElseShow[questionIndex][logicIndex] = true
+  }
+  hideMatrixElse(questionIndex: number, logicIndex: number) {
+    this.isMatrixElseShow[questionIndex][logicIndex] = false;
+  }
+
+  onMatrixLogicEntryOrElseChange(elseIdSelect: any, questionIndex: number, logicIndex: number): void {
+    const ifIdNumber = +elseIdSelect;
+    if (ifIdNumber === 3 || ifIdNumber === 4)
+      this.isMatrixElseShowvalue[questionIndex][logicIndex] = false
+    else
+      this.isMatrixElseShowvalue[questionIndex][logicIndex] = true
+
+  }
+
+
+  createMatrixHeaderLogic(questionId: any, matrixLogicEntries: any[]): void {
+    console.log('logicEntries:', matrixLogicEntries);
+    let delayCounter = 0;
+    let sort = 0;
+
+    for (const logicEntry of matrixLogicEntries) {
+      console.log('logicEntry', logicEntry);
+
+
+      this.createMatrixHeaderLogicEntry(questionId, logicEntry, sort);
+      sort = sort + 1;
+
+      delayCounter++;
+    }
+  }
+
+  createMatrixHeaderLogicEntry(questionId: any, logicEntry: any, sort: any): void {
+    this.createLogicCount++;
+    //alert(sort);
+    console.log('Inside logicEntry', logicEntry)
+    const thanTermValue = logicEntry.thanExpected !== null ? logicEntry.thanExpected : 0;
+    const elseTermValue = logicEntry.elseExpected !== null ? logicEntry.elseExpected : 0;
+
+    if (logicEntry.elseExpected !== null && logicEntry.elseExpected !== 0) {
+      logicEntry.elseExpected = logicEntry.elseExpected.replace('Q-', '').replace('L-', '');
+    } else {
+      logicEntry.elseExpected = 0;
+    }
+
+    if (logicEntry.thanExpected !== null && logicEntry.thanExpected !== 0) {
+      logicEntry.thanExpected = logicEntry.thanExpected.replace(/Q-/g, '').replace(/L-/g, '');
+    } else {
+      logicEntry.thanExpected = 0;
+    }
+
+    const id = logicEntry.id;
+    const ifIdValue = logicEntry.ifId;
+    const ifExpectedValue = logicEntry.ifExpected;
+    const thanIdValue = logicEntry.thanId;
+    const thanExpectedValue = logicEntry.thanExpected !== null ? logicEntry.thanExpected : 0;
+    const elseIdValue = logicEntry.elseId !== null ? logicEntry.elseId : 0;
+    const elseExpectedValue = logicEntry.elseExpected !== null ? logicEntry.elseExpected : 0;
+    const nameValue = "Logic " + this.createLogicCount;
+    let popupTextValue: string = "";
+    let isEveryTimeValue: boolean = false;
+    let timesPeriodValue: number = 0;
+
+    if (thanIdValue == 5) {
+      popupTextValue = logicEntry.popupText;
+      isEveryTimeValue = logicEntry.isEveryTime;
+      timesPeriodValue = logicEntry.timesPeriod;
+    }
+    if (elseIdValue == 5) {
+      popupTextValue = logicEntry.popupTextElse;
+      isEveryTimeValue = logicEntry.isEveryTimeElse;
+      timesPeriodValue = logicEntry.timesPeriodElse;
+    }
+
+    this.matrixlogic.id = id;
+    this.matrixlogic.surveyId = this.surveyId;
+    this.matrixlogic.questionId = questionId;
+    this.matrixlogic.ifId = ifIdValue;
+    this.matrixlogic.ifExpected = ifExpectedValue;
+    this.matrixlogic.thanId = thanIdValue;
+    this.matrixlogic.thanExpected = thanExpectedValue;
+    this.matrixlogic.elseId = elseIdValue;
+    this.matrixlogic.elseExpected = elseExpectedValue;
+    this.matrixlogic.sort = sort;
+
+    const matrixLogicsArray: MatixHeaderLogics[] = [this.matrixlogic];
+
+
+  
+
+
+    //setTimeout(() => {
+    if (this.questionLogic.id > 0) {
+      this.surveyservice.updateMatrixHeaderLogics(matrixLogicsArray).subscribe(
+        response => {
+
+          this.utils.showSuccess('Logic Created Successfully.');
+          // window.location.reload();
+        },
+        error => {
+          console.error('Error occurred while sending POST request:', error);
+          this.utils.showError(error);
+        }
+      );
+    } else {
+      this.surveyservice.createMatrixHeaderLogics(matrixLogicsArray).subscribe(
+        response => {
+          this.utils.showSuccess('Logic Created Successfully.');
+          // window.location.reload();
+        },
+        error => {
+          console.error('Error occurred while sending POST request:', error);
+          this.utils.showError(error);
+        }
+      );
+    }
+    //}, 1000);
+  }
+  
 
 
 }
