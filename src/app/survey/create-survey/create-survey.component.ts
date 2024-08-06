@@ -3137,6 +3137,30 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
 
   }
 
+  matrixColumnOption:any[]=[]
+
+  // matrixcolbyquesid:any;
+  // activematriccol:any[]=[]
+  // getMatrixColumnByQuestionIdLogic(selectedQuestion: any) {
+  //   this.optionListByQuestionIdLogic = ''
+  //   this.matrixcolbyquesid=''
+
+  //   const selectedValue = selectedQuestion;
+  //   let queryParams = {
+  //     qid: selectedValue
+  //   }
+  //   this.surveyservice.getMatrixHeaderColumn(queryParams).subscribe((response: { [x: string]: any; }) => {
+  //     var result = Object.keys(response).map(e => response[e]);
+  //     console.log(response)
+  //     this.matrixcolbyquesid = response
+  //     console.log(this.matrixcolbyquesid)
+  //     this.matrixcolbyquesid = JSON.parse(this.matrixcolbyquesid)
+  //     this.activematriccol = this.matrixcolbyquesid.filter((option: { status: string; }) => option.status === 'ACT');
+  //     console.log("optionListByQuestionIdLogic", this.matrixcolbyquesid)
+  //     console.log("activematriccol", this.activematriccol)
+  //   });
+  // }
+
 
   addNewMatrixLogicEntry(index: number): void {
 
@@ -3163,14 +3187,7 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
       this.showRemoveandlogicArray[index] = [];
     }
     this.showRemoveandlogicArray[index][logicIndex] = false;
-    if (!this.visibleaddandlogic[index]) {
-      this.visibleaddandlogic[index] = [];
-    }
-    this.visibleaddandlogic[index][logicIndex] = false;
-    if (!this.isAndOrLogic[index]) {
-      this.isAndOrLogic[index] = [];
-    }
-    this.isAndOrLogic[index][logicIndex] = false;
+    
     if (!this.isMatrixElseShow[index]) {
       this.isMatrixElseShow[index] = [];
     }
@@ -3264,6 +3281,7 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
     this.isMatrixElseShow[questionIndex][logicIndex] = true
   }
   hideMatrixElse(questionIndex: number, logicIndex: number) {
+    
     this.isMatrixElseShow[questionIndex][logicIndex] = false;
   }
 
@@ -3300,17 +3318,6 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
     const thanTermValue = logicEntry.thanExpected !== null ? logicEntry.thanExpected : 0;
     const elseTermValue = logicEntry.elseExpected !== null ? logicEntry.elseExpected : 0;
 
-    if (logicEntry.elseExpected !== null && logicEntry.elseExpected !== 0) {
-      logicEntry.elseExpected = logicEntry.elseExpected.replace('Q-', '').replace('L-', '');
-    } else {
-      logicEntry.elseExpected = 0;
-    }
-
-    if (logicEntry.thanExpected !== null && logicEntry.thanExpected !== 0) {
-      logicEntry.thanExpected = logicEntry.thanExpected.replace(/Q-/g, '').replace(/L-/g, '');
-    } else {
-      logicEntry.thanExpected = 0;
-    }
 
     const id = logicEntry.id;
     const ifIdValue = logicEntry.ifId;
@@ -3319,22 +3326,7 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
     const thanExpectedValue = logicEntry.thanExpected !== null ? logicEntry.thanExpected : 0;
     const elseIdValue = logicEntry.elseId !== null ? logicEntry.elseId : 0;
     const elseExpectedValue = logicEntry.elseExpected !== null ? logicEntry.elseExpected : 0;
-    const nameValue = "Logic " + this.createLogicCount;
-    let popupTextValue: string = "";
-    let isEveryTimeValue: boolean = false;
-    let timesPeriodValue: number = 0;
-
-    if (thanIdValue == 5) {
-      popupTextValue = logicEntry.popupText;
-      isEveryTimeValue = logicEntry.isEveryTime;
-      timesPeriodValue = logicEntry.timesPeriod;
-    }
-    if (elseIdValue == 5) {
-      popupTextValue = logicEntry.popupTextElse;
-      isEveryTimeValue = logicEntry.isEveryTimeElse;
-      timesPeriodValue = logicEntry.timesPeriodElse;
-    }
-
+ 
     this.matrixlogic.id = id;
     this.matrixlogic.surveyId = this.surveyId;
     this.matrixlogic.questionId = questionId;
@@ -3349,11 +3341,7 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
     const matrixLogicsArray: MatixHeaderLogics[] = [this.matrixlogic];
 
 
-  
-
-
-    //setTimeout(() => {
-    if (this.questionLogic.id > 0) {
+    if (this.matrixlogic.id > 0) {
       this.surveyservice.updateMatrixHeaderLogics(matrixLogicsArray).subscribe(
         response => {
 
@@ -3377,7 +3365,117 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
         }
       );
     }
-    //}, 1000);
+  }
+
+
+  getMatrixLogic(index: number, questionId: number): void {
+    //alert('getQuestionLogic')
+
+    this.matrixLogicsEntriesPerQuestion[index] = []
+
+    this.getOptionsByQuestionIdLogic(questionId);
+    this.surveyservice.getMatrixHeaderLogics(this.surveyId,questionId).subscribe(
+      (response) => {
+        if (response && response.length > 0) {
+
+
+          // Iterate through each logic entry in the response
+          response.forEach((logic: any, logicIndex: number) => {
+            if (!this.selectedMatrixHeaderLogic[index]) {
+              this.selectedMatrixHeaderLogic[index] = [];
+            }
+            if (!this.selectedMatrixHeaderLogic[index][logicIndex]) {
+              this.selectedMatrixHeaderLogic[index][logicIndex] = [];
+            }
+            if (!this.selectedMatrixHeaderLogic[index]) {
+              this.selectedMatrixHeaderLogic[index] = [];
+            }
+            if (!this.selectedMatrixHeaderLogic[index][logicIndex]) {
+              this.selectedMatrixHeaderLogic[index][logicIndex] = [];
+            }
+
+
+            if (!this.isMatrixElseShow[index]) {
+              this.isMatrixElseShow[index] = [];
+            }
+            if (!this.isMatrixElseShowvalue[index]) {
+              this.isMatrixElseShowvalue[index] = [];
+            }
+
+
+
+            const newLogicEntry = {
+              id: logic.id,
+              ifId: logic.ifId,
+              ifExpected: logic.ifExpected,
+              thanId: logic.thanId,
+              thanExpected: logic.thanExpected,
+              elseId: logic.elseId,
+              elseExpected: logic.elseTerm,
+            };
+            if (newLogicEntry.elseExpected === "null")
+              newLogicEntry.elseExpected = 0
+            if (newLogicEntry.thanExpected === "null")
+              newLogicEntry.thanExpected = 0
+
+            // Initialize an array for the question if not already done
+            if (!this.matrixLogicsEntriesPerQuestion[index]) {
+              this.matrixLogicsEntriesPerQuestion[index] = [];
+            }
+
+            if (logic.ifExpected != null) {
+              let queryParams = {
+                qid: questionId
+              };
+
+              this.surveyservice.getOptionsByQuestionId(queryParams).subscribe((response: any) => {
+
+
+                const optionsArray = JSON.parse(response);
+                if (Array.isArray(optionsArray) && optionsArray.length > 0) {
+                  this.selectedMatrixHeaderLogic[index][logicIndex] = []
+                  const filteredOptions = optionsArray.filter((item: { id: number }) => logic.ifExpected.includes(item.id));
+
+
+                  this.selectedMatrixHeaderLogic[index][logicIndex].push(...filteredOptions);
+
+
+                } else {
+
+                  console.error("Response is either not an array or it's empty. Unable to filter options.");
+                }
+
+              });
+            }
+            debugger
+            // And/Or
+            if (newLogicEntry.elseId && newLogicEntry.elseExpected > 0){
+              this.isMatrixElseShow[index][logicIndex] = true;
+            }
+            else{
+              this.isMatrixElseShow[index][logicIndex] = false;
+            }
+            console.log("ids",newLogicEntry.elseId && newLogicEntry.elseExpected > 0)
+            //calculation
+
+
+            const ifIdNumber = +newLogicEntry.elseId;
+            if (ifIdNumber === 3 || ifIdNumber === 4)
+              this.isMatrixElseShowvalue[index][logicIndex] = false
+            else
+              this.isMatrixElseShowvalue[index][logicIndex] = true
+            
+            debugger
+
+           
+            this.matrixLogicsEntriesPerQuestion[index].push(newLogicEntry);
+          });
+        }
+      },
+      (error) => {
+
+      }
+    );
   }
   
 

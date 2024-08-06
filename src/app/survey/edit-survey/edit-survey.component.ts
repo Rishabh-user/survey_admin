@@ -108,7 +108,7 @@ export class EditSurveyComponent {
   imageUpdated: boolean = false;
   videoupload: any
   questionSummery: any
-  selectedifexpected:any;
+  selectedifexpected:any[]=[];
   colorCode:any
   qNo:any
   imageurl:any
@@ -356,6 +356,7 @@ export class EditSurveyComponent {
     this.getAllSurveyList();
     this.getOptionLogics();
     this.openEndedValue();
+    this.getMatrixLogic();
     
 
     if (this.mode != 'modify') {
@@ -393,11 +394,10 @@ export class EditSurveyComponent {
       optionlogicelseid: null,
       optionlogicelseexpected: null
     });
+
     
     
-
-
-
+    
   }
 
   onQuestionTypeClick(id: any) {
@@ -1923,7 +1923,14 @@ export class EditSurveyComponent {
       optionlogicelseid: null,
       optionlogicelseexpected: null
     });
+    //this.selectedifexpected = new Array(this.logicEntries.length).fill('');
 
+  }
+
+
+  onOptionLogicEntry(index:number){
+  
+    this.selectedOptions[index] = [];
   }
  
   optionlogicquesid:any;
@@ -1933,11 +1940,18 @@ export class EditSurveyComponent {
   optionlogicthanexpectedid:any;
   optionlogicelseid:any;
   optionlogicelseexpected:any;
+  createanslogic:any
 
 
   onLogicSave(): void {
     this.logicEntries.forEach((entry, index) => {
+     if(this.logicEntries[index].optionlogicid){
+      this.createanslogic = this.logicEntries[index].optionlogicid
+     }else{
+      this.createanslogic = 0
+     }
       const datatosend = {
+        id: this.createanslogic,
         questionId: entry.optionlogicquesid,
         ifId: entry.optionlogicifid,
         ifExpected: this.selectedifexpected[index] || '',
@@ -1965,6 +1979,8 @@ export class EditSurveyComponent {
       });
     });
   }
+  
+  
   
 
   getoptionlogic:any[]=[]
@@ -1996,9 +2012,12 @@ export class EditSurveyComponent {
             this.getOptionsByQuestion(entry.optionlogicquesid, index);
           }, index * 1000); // Adding delay to avoid overwhelming the server
         });
-  
+       
         this.logicEntries.forEach((entry, index) => {
-          this.createanswerthenSection[index] = true;
+          if(this.logicEntries[index].optionlogicelseid && this.logicEntries[index].optionlogicelseexpected){
+            this.createanswerthenSection[index] = true;
+          }
+            
         });
       } else {
         // Handle empty response or error
@@ -2276,8 +2295,9 @@ export class EditSurveyComponent {
     })
   }
 
+  matrixlogicquesid:any;
   matriclogicifId:any;
-  matrixlogicifexpectedid:any
+  matrixlogicifexpectedid=[]
   matrixheaderthenid:any;
   matrixlogicthanexpected:any;
   matrixlogicifexpected:any
@@ -2298,7 +2318,7 @@ export class EditSurveyComponent {
     if (input) {
       input.value = '';
     }
-    this.matrixlogicifexpectedid = '';
+    this.matrixlogicifexpectedid = [];
   }
   
   removeMatrixHeaderOption(option: any): void {
@@ -2320,10 +2340,17 @@ export class EditSurveyComponent {
   }
 
   createMatixLogic(): void {
+    let matrixid
+
+    if(this.matrixlogicquesid){
+       matrixid = this.matrixlogicquesid
+    }else{
+      matrixid = 0
+    }
 
 
     const matrixLogics: MatixHeaderLogics = {
-      id: 0,
+      id: matrixid,
       surveyId: this.surveyId,
       questionId: Number(this.questionId),
       ifId: Number(this.matriclogicifId),
@@ -2341,20 +2368,60 @@ export class EditSurveyComponent {
     console.log(JSON.stringify(matrixLogicsArray));
 
 
-
-    this.surveyservice.createMatrixHeaderLogics(matrixLogicsArray).subscribe({
-      next: (resp: any) => {
-        if(resp == '"createdSuccessfully"'){
-        this.utility.showSuccess('Created Sucessfully');
-        window.location.reload()
+    if(matrixid > 0){
+      this.surveyservice.updateMatrixHeaderLogics(matrixLogicsArray).subscribe({
+        next: (resp: any) => {
+          if(resp == '"UpdatedSuccessfully"'){
+          this.utility.showSuccess('Updated Sucessfully');
+          window.location.reload()
+          }
+        },
+        error: (err: any) => {
+          this.utility.showError("Not created")
         }
-      },
-      error: (err: any) => {
-        this.utility.showError("Not created")
-      }
-    });
+      });
+
+    }else{
+      this.surveyservice.createMatrixHeaderLogics(matrixLogicsArray).subscribe({
+        next: (resp: any) => {
+          if(resp == '"createdSuccessfully"'){
+          this.utility.showSuccess('Created Sucessfully');
+          window.location.reload()
+          }
+        },
+        error: (err: any) => {
+          this.utility.showError("Not created")
+        }
+      });
+    }
   }
 
+
+  getMatrixLogic(){
+
+    this.surveyservice.getMatrixHeaderLogics(this.surveyId,this.questionId).subscribe((data: any[]) => {
+      if (data && data.length > 0) {
+        console.log("data matrix",data)
+        this.visibleanslogic = true;
+
+        this.matrixlogicquesid = data[0]?.id,
+        this.matriclogicifId = data[0]?.ifId,
+        this.matrixlogicifexpectedid = data[0]?.ifExpected,
+        this.matrixheaderthenid=data[0]?.thanId,
+        this.matrixlogicthanexpected=data[0]?.thanExpected,
+        this.matrixlogicelseid=data[0]?.elseId,
+        this.matrixlogicelseexpected=data[0]?.elseExpected
+
+
+      } else {
+        // Handle empty response or error
+      }
+    });
+
+  }
+
+
+  
   questiontooltipadded:boolean = false;
   optiontooltipadded:boolean[] = [];
   matrixoptiontooltip:boolean[]=[];
@@ -2415,6 +2482,8 @@ export class EditSurveyComponent {
     }
 
   }
+
+
 
 
 

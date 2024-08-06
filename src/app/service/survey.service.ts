@@ -555,6 +555,11 @@ export class SurveyService {
     return this.http.delete(url, { responseType: 'text' });
   }
 
+  getMatrixHeaderColumn(questionId:any): Observable<responseDTO[]> {
+    const url = `${this.apiUrl}api/admin/${this.userId}/GeneralQuestion/GetMatrixHeadersByQuestionId?questionId=${questionId}`;
+    return  this.http.get<responseDTO[]>(url);
+  }
+
 
 
 

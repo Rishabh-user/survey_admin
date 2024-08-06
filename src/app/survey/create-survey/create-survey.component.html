@@ -535,7 +535,7 @@
 
                                 <div class="badge text-bg-primary fw-normal me-2 position-relative"
                                     *ngIf="question?.logics.length>0"
-                                    (click)="getQuestionLogic(i,question?.id);getQuestionListBranching(question?.id);toggleLogic(i,question?.id,'edit');openEndedVlaues(question?.questionType);">
+                                    (click)="getQuestionLogic(i,question?.id);getMatrixLogic(i,question?.id);getQuestionListBranching(question?.id);toggleLogic(i,question?.id,'edit');openEndedVlaues(question?.questionType);getMatrixLogic(i,question?.id)">
                                     <ng-icon class="me-1" name="heroCommandLine"></ng-icon>
                                     <span>logics</span>
                                     <span
@@ -579,7 +579,7 @@
                                         </li>
                                         <li *ngIf="question?.logics.length==0 && question?.isRequired">
                                             <a href="javascript:void(0);" class="dropdown-item"
-                                                (click)="toggleLogic(i,question?.id,'add');getQuestionListBranching(question?.id);getOptionsByQuestionIdLogic(question?.id);openEndedVlaues(question?.questionType);toggleMatrixLogic(i,question?.id,'add')">
+                                                (click)="toggleLogic(i,question?.id,'add');getQuestionListBranching(question?.id);getOptionsByQuestionIdLogic(question?.id);openEndedVlaues(question?.questionType);toggleMatrixLogic(i,question?.id,'add');getMatrixLogic(i,question?.id)">
                                                 <ng-icon name="heroCommandLine"></ng-icon>
                                                 Logic
                                             </a>
@@ -716,7 +716,7 @@
                                                         aria-selected="true"
                                                        >Branching</button>
                                                 </li>
-                                                <li class="nav-item" role="presentation">
+                                                <li class="nav-item" role="presentation" *ngIf="question?.questionType === 'Matrix Choice'" >
                                                     <button class="nav-link d-flex" id="matrix-tab"
                                                         data-bs-toggle="tab"
                                                         [attr.data-bs-target]="'#matrixheader' + question.id" role="tab"
@@ -1326,7 +1326,6 @@
                                                                     
                                                                     <span>Else {{logicEntry.elseExpected}}</span>
                                                                 </div>
-                                                                {{isMatrixElseShow[i][j]}}
                                                                 <div ngClass="mb-4"
                                                                     *ngIf="isMatrixElseShow[i][j] || logicEntry.elseId != null && question?.questionType !== 'Open Ended'">
                                                                     <div class="row g-2 align-items-center">
@@ -1376,7 +1375,7 @@
                                                                                 </label>
                                                                             </div>
                                                                         </div> -->
-
+                                                                         
                                                                         <div class="col-md-4"
                                                                             *ngIf="isMatrixElseShowvalue[i][j] && logicEntry.elseId!=5">
                                                                             <select class="form-select"

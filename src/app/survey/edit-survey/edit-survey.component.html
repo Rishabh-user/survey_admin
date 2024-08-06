@@ -1150,7 +1150,9 @@
                                                                             <div>Value</div>
                                                                         </div>
                                                                         <div class="col-md-3">
-                                                                            <select class="form-select" [(ngModel)]="logicEntry.optionlogicifid" #ifIdSelect>
+                                                                            <select class="form-select" 
+                                                                            [(ngModel)]="logicEntry.optionlogicifid" #ifIdSelect
+                                                                            (change)="onOptionLogicEntry(i)">
                                                                                 <option *ngFor="let item of logicValuesList;let i=index;"
                                                                                     value="{{item.id}}">{{item.name}}</option>
                                                                             </select>
@@ -1248,7 +1250,7 @@
                     
                                                     </div>
                                                     <div class="col-12">
-                                                        <button type="button" class="btn trash-icon px-5 ms-4" (click)="deleteOptionLogics(i)">Delete Logic {{i+1}}</button>
+                                                        <button type="button" class="btn trash-icon ms-4" (click)="deleteOptionLogics(i)">Delete Logic {{i+1}}</button>
                                                     </div>
                                                 </ng-container>
                                                 
