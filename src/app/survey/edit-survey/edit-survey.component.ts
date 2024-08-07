@@ -133,6 +133,7 @@ export class EditSurveyComponent {
   matrixdescpisChecked:boolean = false;
   optiondescpisChecked:boolean = false;
   optionaloption:boolean = true;
+  showCreateAnswerLogic:boolean = false
   
 
   constructor(public themeService: DataService, private router: Router,
@@ -2306,10 +2307,11 @@ export class EditSurveyComponent {
   selectedMatricHeaderOptions: any[] = [];
 
   addMatrixHeaderOption(event: MatChipInputEvent): void {
+
     const input = event.input;
     const value = event.value.trim();
 
-    const matchingOption = this.matrixAllOptions.find((option: Option) => option.option === value);
+    const matchingOption = this.matrixAllOptions.find((option: MatrixHeader) => option.header === value);
 
     if (matchingOption && !this.selectedMatricHeaderOptions.includes(matchingOption)) {
       this.selectedMatricHeaderOptions.push(matchingOption);
@@ -2319,6 +2321,10 @@ export class EditSurveyComponent {
       input.value = '';
     }
     this.matrixlogicifexpectedid = [];
+    console.log("matrix selected option",this.selectedMatricHeaderOptions);
+    console.log("matrix add option",matchingOption);
+    console.log("marix all",this.matrixAllOptions)
+
   }
   
   removeMatrixHeaderOption(option: any): void {
@@ -2411,6 +2417,18 @@ export class EditSurveyComponent {
         this.matrixlogicthanexpected=data[0]?.thanExpected,
         this.matrixlogicelseid=data[0]?.elseId,
         this.matrixlogicelseexpected=data[0]?.elseExpected
+
+        if (Array.isArray(this.matrixAllOptions) && this.matrixAllOptions.length > 0) {
+          this.selectedMatricHeaderOptions = []
+          const filteredOptions = this.matrixAllOptions.filter((item: { id: number }) => data[0]?.ifExpected.includes(item.id));
+
+          this.selectedMatricHeaderOptions.push(...filteredOptions);
+        }
+        if(this.matrixlogicelseid && this.matrixlogicelseexpected){
+          this.thenSection=true;
+        }else{
+          this.thenSection= false;
+        }
 
 
       } else {

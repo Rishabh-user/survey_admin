@@ -21,7 +21,7 @@ import { Question } from 'src/app/models/question';
 import { QuestionItem } from 'src/app/models/question-items';
 import { environment } from 'src/environments/environment';
 import { MatChipInputEvent } from '@angular/material/chips';
-import { Option } from 'src/app/models/option';
+import { MatrixHeader, Option } from 'src/app/models/option';
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { MatixHeaderLogics } from 'src/app/models/logic';
@@ -3139,25 +3139,55 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
 
   matrixColumnOption:any[]=[]
 
-  // matrixcolbyquesid:any;
-  // activematriccol:any[]=[]
-  // getMatrixColumnByQuestionIdLogic(selectedQuestion: any) {
-  //   this.optionListByQuestionIdLogic = ''
-  //   this.matrixcolbyquesid=''
+  matrixcolbyquesid:any;
+  activematriccol:any[]=[]
+  getMatrixColumnByQuestionIdLogic(selectedQuestion: any) {
+    this.optionListByQuestionIdLogic = ''
+    this.matrixcolbyquesid=''
 
+    const selectedValue = selectedQuestion;
+    let queryParams = {
+      questionId: selectedValue
+    }
+    this.surveyservice.getMatrixHeaderColumn(queryParams).subscribe((response: { [x: string]: any; }) => {
+      var result = Object.keys(response).map(e => response[e]);
+      console.log(response)
+      this.matrixcolbyquesid = response
+      console.log(this.matrixcolbyquesid)
+      this.matrixcolbyquesid = JSON.parse(this.matrixcolbyquesid)
+      this.activematriccol = this.matrixcolbyquesid.filter((option: { status: string; }) => option.status === 'ACT');
+      console.log("optionListByQuestionIdLogic", this.matrixcolbyquesid)
+      console.log("activematriccol", this.activematriccol)
+    });
+  }
+
+  getOptionsMatrixByQuestionId(selectedQuestion: any, questionIndex: number, logicIndex: number) {
+    this.matrixcolbyquesid = ''
+    const selectedValue = selectedQuestion;
+    let queryParams = {
+      questionId: selectedValue
+    }
+    this.surveyservice.getMatrixHeaderColumn(queryParams).subscribe((response: { [x: string]: any; }) => {
+      var result = Object.keys(response).map(e => response[e]);
+
+
+      this.matrixcolbyquesid = response
+      this.matrixcolbyquesid = JSON.parse(this.matrixcolbyquesid)
+    });
+  }
+
+  // getOptionsByQuestionId(selectedQuestion: any, questionIndex: number, logicIndex: number) {
+  //   this.optionListByQuestionId = ''
   //   const selectedValue = selectedQuestion;
   //   let queryParams = {
   //     qid: selectedValue
   //   }
-  //   this.surveyservice.getMatrixHeaderColumn(queryParams).subscribe((response: { [x: string]: any; }) => {
+  //   this.surveyservice.getOptionsByQuestionId(queryParams).subscribe((response: { [x: string]: any; }) => {
   //     var result = Object.keys(response).map(e => response[e]);
-  //     console.log(response)
-  //     this.matrixcolbyquesid = response
-  //     console.log(this.matrixcolbyquesid)
-  //     this.matrixcolbyquesid = JSON.parse(this.matrixcolbyquesid)
-  //     this.activematriccol = this.matrixcolbyquesid.filter((option: { status: string; }) => option.status === 'ACT');
-  //     console.log("optionListByQuestionIdLogic", this.matrixcolbyquesid)
-  //     console.log("activematriccol", this.activematriccol)
+
+
+  //     this.optionListByQuestionId = response
+  //     this.optionListByQuestionId = JSON.parse(this.optionListByQuestionId)
   //   });
   // }
 
@@ -3235,12 +3265,14 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
   }
 
   addMatrixOption(event: MatChipInputEvent, questionIndex: number, logicIndex: number): void {
+   
+
 
     const input = event.input;
     const value = event.value.trim();
 
     // Check if the entered value is in the available options
-    const matchingOption = this.optionListByQuestionId.find((option: Option) => option.option === value);
+    const matchingOption = this.matrixcolbyquesid.find((option: MatrixHeader) => option.header === value);
 
     if (matchingOption && !this.selectedMatrixHeaderLogic.includes(matchingOption)) {
       this.selectedMatrixHeaderLogic.push(matchingOption);
@@ -3249,6 +3281,7 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
     if (input) {
       input.value = '';
     }
+   
   }
 
 
@@ -3373,7 +3406,7 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
 
     this.matrixLogicsEntriesPerQuestion[index] = []
 
-    this.getOptionsByQuestionIdLogic(questionId);
+    this.getMatrixColumnByQuestionIdLogic(questionId);
     this.surveyservice.getMatrixHeaderLogics(this.surveyId,questionId).subscribe(
       (response) => {
         if (response && response.length > 0) {
@@ -3425,10 +3458,10 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
 
             if (logic.ifExpected != null) {
               let queryParams = {
-                qid: questionId
+                questionId: questionId
               };
 
-              this.surveyservice.getOptionsByQuestionId(queryParams).subscribe((response: any) => {
+              this.surveyservice.getMatrixHeaderColumn(queryParams).subscribe((response: any) => {
 
 
                 const optionsArray = JSON.parse(response);

@@ -555,9 +555,19 @@ export class SurveyService {
     return this.http.delete(url, { responseType: 'text' });
   }
 
-  getMatrixHeaderColumn(questionId:any): Observable<responseDTO[]> {
-    const url = `${this.apiUrl}api/admin/${this.userId}/GeneralQuestion/GetMatrixHeadersByQuestionId?questionId=${questionId}`;
-    return  this.http.get<responseDTO[]>(url);
+  // getMatrixHeaderColumn(questionId:any): Observable<responseDTO[]> {
+  //   const url = `${this.apiUrl}api/admin/${this.userId}/GeneralQuestion/GetMatrixHeadersByQuestionId?questionId=${questionId}`;
+  //   return  this.http.get<responseDTO[]>(url);
+  // }
+
+  getMatrixHeaderColumn(queryParams: any): Observable<any> {
+
+    let url = `${this.apiUrl}api/admin/${this.userId}/GeneralQuestion/GetMatrixHeadersByQuestionId`;
+    if (queryParams) {
+      const queryParamsString = new URLSearchParams(queryParams).toString();
+      url += `?${queryParamsString}`;
+    }
+    return this.http.get(url, { responseType: 'text' });
   }
 
 

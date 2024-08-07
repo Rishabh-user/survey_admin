@@ -579,7 +579,7 @@
                                         </li>
                                         <li *ngIf="question?.logics.length==0 && question?.isRequired">
                                             <a href="javascript:void(0);" class="dropdown-item"
-                                                (click)="toggleLogic(i,question?.id,'add');getQuestionListBranching(question?.id);getOptionsByQuestionIdLogic(question?.id);openEndedVlaues(question?.questionType);toggleMatrixLogic(i,question?.id,'add');getMatrixLogic(i,question?.id)">
+                                                (click)="toggleLogic(i,question?.id,'add');getQuestionListBranching(question?.id);getOptionsByQuestionIdLogic(question?.id);openEndedVlaues(question?.questionType);toggleMatrixLogic(i,question?.id,'add');getMatrixLogic(i,question?.id);getMatrixColumnByQuestionIdLogic(question?.id)">
                                                 <ng-icon name="heroCommandLine"></ng-icon>
                                                 Logic
                                             </a>
@@ -1193,8 +1193,8 @@
                                                                                         <mat-chip-grid #chipGrid
                                                                                             aria-label="City selection">
                                                                                             <mat-chip-row
-                                                                                                *ngFor="let option of selectedMatrixHeaderLogic[i][j];">
-                                                                                                {{option.option}}
+                                                                                                *ngFor="let option of selectedMatrixHeaderLogic[i][j]">
+                                                                                                {{option.header}}
                                                                                                 <button matChipRemove
                                                                                                     [attr.aria-label]="'remove'"
                                                                                                     (click)="removeMatrixOptionLogic(option,i,j)">
@@ -1212,9 +1212,9 @@
                                                                                             #auto="matAutocomplete"
                                                                                             (optionSelected)="selectedMatrixOptionsIFLogic($event,logicEntry.ifId,i,j);selectedOptionsIFLogicOneValue($event,logicEntry.ifId,i,j)">
                                                                                             <mat-option
-                                                                                                *ngFor="let option of valuefilteredOptions"
+                                                                                                *ngFor="let option of activematriccol"
                                                                                                 [value]="option" [disabled]="option.isSelected">
-                                                                                                {{option.option}}
+                                                                                                {{option.header}}
                                                                                             </mat-option>
                                                                                         </mat-autocomplete>
                                                                                     </mat-form-field>
@@ -1307,7 +1307,7 @@
                                                                                 </option>
                                                                                 <option
                                                                                     *ngFor="let item of logicQuestionList;let j=index;"
-                                                                                    [value]="item.item.charAt(0)+'-'+item.id">
+                                                                                    [value]="item.id">
                                                                                     {{item.item}}
                                                                                 </option>
                                                                             </select>
@@ -1321,13 +1321,14 @@
                                                                     </div>
                                                                 </div>
                                                                 
+                                                                
                                                                 <div ngClass="if-then" 
-                                                                    *ngIf="isMatrixElseShow[i][j] || logicEntry.elseId != null && question?.questionType !== 'Open Ended'">
+                                                                    *ngIf="isMatrixElseShow[i][j] || logicEntry.elseId > 0">
                                                                     
                                                                     <span>Else {{logicEntry.elseExpected}}</span>
                                                                 </div>
                                                                 <div ngClass="mb-4"
-                                                                    *ngIf="isMatrixElseShow[i][j] || logicEntry.elseId != null && question?.questionType !== 'Open Ended'">
+                                                                    *ngIf="isMatrixElseShow[i][j] || logicEntry.elseId > 0">
                                                                     <div class="row g-2 align-items-center">
                                                                         <div class="col-md-4">
                                                                             <!-- Use unique template reference variables by appending the index -->
@@ -1385,7 +1386,7 @@
                                                                                 </option>
                                                                                 <option
                                                                                     *ngFor="let item of logicQuestionListById;let j=index;"
-                                                                                    [value]="item.item.charAt(0)+'-'+item.id">
+                                                                                    [value]="item.id">
                                                                                     {{item.item}}
                                                                                 </option>
                                                                             </select>
@@ -1398,6 +1399,8 @@
                                                                         </div>
                                                                     </div>
                                                                 </div>
+
+
                                                             </div>
                                                             <div class="row">
                                                                 <div
