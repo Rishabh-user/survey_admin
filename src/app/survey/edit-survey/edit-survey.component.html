@@ -1197,14 +1197,14 @@
                                                                     <div ngClass="mb-4">
                                                                         <div class="row g-2 align-items-center">
                                                                             <div class="col-md-4">
-                                                                                <select class="form-select" [(ngModel)]="logicEntry.optionlogicthanid" #thanIdSelect>
+                                                                                <select class="form-select" [(ngModel)]="logicEntry.optionlogicthanid" (change)="onOptionLogicEntry(i)" #thanIdSelect >
                                                                                     <option
                                                                                         *ngFor="let item of optionLogicValuesList;let i=index;"
                                                                                         value="{{item.id}}">{{item.name}}</option>
                                                                                 </select>
                                                                             </div>
                                                                             <div class="col-md-4">
-                                                                                <select class="form-select"  [(ngModel)]="logicEntry.optionlogicthanexpectedid" #thanExpectedSelect>
+                                                                                <select class="form-select"  [(ngModel)]="logicEntry.optionlogicthanexpectedid" (change)="onOptionLogicEntry(i)" #thanExpectedSelect>
                                                                                     <option *ngFor="let item of optionsArr1;let i=index;"
                                                                                         value="{{item.id}}">{{item.option}}</option>
                                                                                 </select>
@@ -1224,14 +1224,14 @@
                                                                     <div ngClass="mb-4">
                                                                         <div class="row g-2 align-items-center">
                                                                             <div class="col-md-4">
-                                                                                <select class="form-select" [(ngModel)]="logicEntry.optionlogicelseid" #thanIdSelect>
+                                                                                <select class="form-select" [(ngModel)]="logicEntry.optionlogicelseid" (change)="onOptionLogicEntry(i)" #thanIdSelect>
                                                                                     <option
                                                                                         *ngFor="let item of optionLogicValuesList;let i=index;"
                                                                                         value="{{item.id}}">{{item.name}}</option>
                                                                                 </select>
                                                                             </div>
                                                                             <div class="col-md-4">
-                                                                                <select class="form-select"  [(ngModel)]="logicEntry.optionlogicelseexpected" #elseExpectedSelect>
+                                                                                <select class="form-select"  [(ngModel)]="logicEntry.optionlogicelseexpected"(change)="onOptionLogicEntry(i)" #elseExpectedSelect>
                                                                                     <option *ngFor="let item of optionsArr1;let i=index;"
                                                                                         value="{{item.id}}">{{item.option}}</option>
                                                                                 </select>
@@ -1323,7 +1323,7 @@
                                                                         <div>Value</div>
                                                                     </div>
                                                                     <div class="col-md-3">
-                                                                        <select class="form-select" [(ngModel)]="matriclogicifId" #ifIdSelect>
+                                                                        <select class="form-select" [(ngModel)]="matriclogicifId"  (change)="onOptionMatrixEntry()" #ifIdSelect>
                                                                             <option *ngFor="let item of logicValuesList;let i=index;"
                                                                                 value="{{item.id}}">{{item.name}}</option>
                                                                         </select>
@@ -1368,14 +1368,14 @@
                                                                 <div ngClass="mb-4">
                                                                     <div class="row g-2 align-items-center">
                                                                         <div class="col-md-4">
-                                                                            <select class="form-select" [(ngModel)]="matrixheaderthenid" #thanIdSelect>
+                                                                            <select class="form-select" [(ngModel)]="matrixheaderthenid"  (change)="onOptionMatrixEntry()" #thanIdSelect>
                                                                                 <option
                                                                                     *ngFor="let item of optionLogicValuesList;let i=index;"
                                                                                     value="{{item.id}}">{{item.name}}</option>
                                                                             </select>
                                                                         </div>
                                                                         <div class="col-md-4">
-                                                                            <select class="form-select"  [(ngModel)]="matrixlogicthanexpected" #thanExpectedSelect>
+                                                                            <select class="form-select"  [(ngModel)]="matrixlogicthanexpected"  (change)="onOptionMatrixEntry()" #thanExpectedSelect>
                                                                                 <option *ngFor="let item of optionsArr1;let i=index;"
                                                                                     value="{{item.id}}">{{item.option}}</option>
                                                                             </select>
@@ -1395,14 +1395,14 @@
                                                                 <div ngClass="mb-4">
                                                                     <div class="row g-2 align-items-center">
                                                                         <div class="col-md-4">
-                                                                            <select class="form-select" [(ngModel)]="matrixlogicelseid" #thanIdSelect>
+                                                                            <select class="form-select" [(ngModel)]="matrixlogicelseid"  (change)="onOptionMatrixEntry()" #thanIdSelect>
                                                                                 <option
                                                                                     *ngFor="let item of optionLogicValuesList;let i=index;"
                                                                                     value="{{item.id}}">{{item.name}}</option>
                                                                             </select>
                                                                         </div>
                                                                         <div class="col-md-4">
-                                                                            <select class="form-select"  [(ngModel)]="matrixlogicelseexpected" #elseExpectedSelect>
+                                                                            <select class="form-select"  [(ngModel)]="matrixlogicelseexpected"  (change)="onOptionMatrixEntry()" #elseExpectedSelect>
                                                                                 <option *ngFor="let item of optionsArr1;let i=index;"
                                                                                     value="{{item.id}}">{{item.option}}</option>
                                                                             </select>

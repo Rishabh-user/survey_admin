@@ -1970,7 +1970,7 @@ export class EditSurveyComponent {
           if (resp === '"UpdatedSuccessfully"') {
             this.utility.showSuccess('Updated Successfully');
             if (index === this.logicEntries.length - 1) {
-              // window.location.reload();
+              window.location.reload();
             }
           }
         },
@@ -2343,6 +2343,12 @@ export class EditSurveyComponent {
     this.matrixlogicifexpected = this.selectedMatricHeaderOptions.map((option: { id: any }) => option.id).join(', ');
     this.matrixlogicifexpectedid = selectedOption.option;
 
+    
+
+  }
+
+  onOptionMatrixEntry(){
+    this.selectedMatricHeaderOptions = []
   }
 
   createMatixLogic(): void {
@@ -2354,6 +2360,7 @@ export class EditSurveyComponent {
       matrixid = 0
     }
 
+    
 
     const matrixLogics: MatixHeaderLogics = {
       id: matrixid,
