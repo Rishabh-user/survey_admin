@@ -2240,22 +2240,7 @@ export class EditSurveyComponent {
     });
   }
 
-  deleteMatrxiOptionLogics(): void {
-    this.surveyservice.deleteOptionLogicById(this.optionlogicid).subscribe({
-      next: (resp:any) => {
-
-        if(resp === '"DeletedSuccessfully"'){
-          this.utility.showSuccess("Deleted Successfully");
-          window.location.reload();
-        }
-
-      },
-      error:(err:any) => {
-        this.utility.showError("Error")
-      }
-      
-    });
-  }
+ 
 
   removeAttachImage(){
     this.question.image = ''
@@ -2443,6 +2428,23 @@ export class EditSurveyComponent {
       }
     });
 
+  }
+
+  deleteMatrxiOptionLogics(): void {
+    this.surveyservice.deleteMartixLogic(this.matrixlogicquesid, this.questionId).subscribe({
+      next: (resp:any) => {
+
+        if(resp === '"LogicDeleteSuccessfully"'){
+          this.utility.showSuccess("Deleted Successfully");
+          window.location.reload();
+        }
+
+      },
+      error:(err:any) => {
+        this.utility.showError("Error")
+      }
+      
+    });
   }
 
 

@@ -570,6 +570,11 @@ export class SurveyService {
     return this.http.get(url, { responseType: 'text' });
   }
 
+  deleteMartixLogic(logicId: any,groupId:any): Observable<any> {
+    const url = `${this.apiUrl}api/admin/${this.userId}/Logics/DeleteMatrixHeaderLogic?logicId=${logicId}&groupId=${groupId}`;
+    return this.http.delete(url, { responseType: 'text' });
+  }
+
 
 
 

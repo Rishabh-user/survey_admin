@@ -3510,6 +3510,50 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
       }
     );
   }
+
+  removeMatrixLogicEntry(quesid:any,questionIndex: number, logicIndex: number): void {
+
+    if (this.matrixLogicsEntriesPerQuestion[questionIndex]) {
+      // Check if the logicIndex is within the bounds of the nested array
+      if (logicIndex >= 0 && logicIndex < this.matrixLogicsEntriesPerQuestion[questionIndex].length) {
+        const entryIdToDelete = this.matrixLogicsEntriesPerQuestion[questionIndex][logicIndex]?.id;
+
+        // Check if entryIdToDelete is defined before proceeding
+        if (entryIdToDelete !== undefined) {
+          if (entryIdToDelete == 0) {
+            this.matrixLogicsEntriesPerQuestion[questionIndex].splice(logicIndex, 1);
+          }
+          else {
+
+            this.surveyservice.deleteMartixLogic(entryIdToDelete,quesid).subscribe(
+              (resp) => {
+                if(resp === 'LogicDeleteSuccessfully'){
+                  this.utils.showSuccess("Deleted Successfully")
+                  this.matrixLogicsEntriesPerQuestion[questionIndex].splice(logicIndex, 1);
+
+
+                }
+               
+              },
+              (error) => {
+                console.error('Error deleting logic:', error);
+                // Handle error response here
+              }
+            );
+
+          }
+
+        } else {
+          console.error('Entry ID is undefined or null.');
+        }
+      } else {
+        console.error('Invalid logicIndex:', logicIndex);
+      }
+    } else {
+      console.error('No logic entries found for question index:', questionIndex);
+    }
+
+  }
   
 
 
