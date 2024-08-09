@@ -349,15 +349,20 @@ export class EditSurveyComponent {
   }
 
   ngOnInit() {
+    
     this.planid = this.utility.getPlanId();
     this.themeService.closeSideBar();
     this.getQuestionListBySurveyId();
     this.getSerialNumber();
     this.getQuestionTypes();
     this.getAllSurveyList();
-    this.getOptionLogics();
+    // this.getOptionLogics();
     this.openEndedValue();
-    this.getMatrixLogic();
+    // this.getMatrixLogic();
+    if(this.questionId > 1){
+      this.getOptionLogics();
+      this.getMatrixLogic();
+    }
     
 
     if (this.mode != 'modify') {
@@ -383,7 +388,7 @@ export class EditSurveyComponent {
       if (this.question.questionTypeName === 'Slider Scale') {
         this.addsliderscale();
       }
-      
+     
 
     }
     this.logicEntries.push({
@@ -1400,8 +1405,9 @@ export class EditSurveyComponent {
 
   optionselectedvalue:any
   getOptionsByQuestionId(selectedQuestion: any) {
+  
 
-    this.selectedOptions = [];
+    // this.selectedOptions = [];
     this.optionListByQuestionId = ''
 
     const selectedValue = selectedQuestion;
@@ -1518,7 +1524,7 @@ export class EditSurveyComponent {
 
     this.surveyservice.changeQuestionPosition(queryParams).subscribe(
       (response: String) => {
-        // window.location.reload();
+        window.location.reload();
       },
       (error) => {
         console.error('Error occurred while uploading:', error);
@@ -1929,9 +1935,12 @@ export class EditSurveyComponent {
   }
 
 
-  onOptionLogicEntry(index:number){
+  onOptionLogicEntry(index:number) {
+
+    if(this.logicEntries[index].optionlogicid) {
+      this.selectedOptions[index] = [];
+    }
   
-    this.selectedOptions[index] = [];
   }
  
   optionlogicquesid:any;
@@ -1955,7 +1964,7 @@ export class EditSurveyComponent {
         id: this.createanslogic,
         questionId: entry.optionlogicquesid,
         ifId: entry.optionlogicifid,
-        ifExpected: this.selectedifexpected[index] || '',
+        ifExpected: entry.optionlogicifexpectedid,
         thanId: entry.optionlogicthanid,
         thanExpected: entry.optionlogicthanexpectedid,
         elseId: entry.optionlogicelseid,
@@ -1986,11 +1995,12 @@ export class EditSurveyComponent {
 
   getoptionlogic:any[]=[]
   getOptionLogics(): void {
+    
     this.surveyservice.GetOptionLogic(this.questionId, this.surveyId).subscribe((data: any[]) => {
       if (data && data.length > 0) {
         this.getoptionlogic = data[0];
-        this.visibleanslogic = true;
-        console.log("data", data);
+        
+        console.log("datamk", data.length);
   
         this.logicEntries = data.map((response) => ({
           optionlogicid: response.id,
@@ -2000,21 +2010,30 @@ export class EditSurveyComponent {
           optionlogicthanid: response.thanId,
           optionlogicthanexpectedid: response.thanExpected,
           optionlogicelseid: response.elseId,
-          optionlogicelseexpected: response.elseExpected
+          optionlogicelseexpected: response.elseExpected,
+
         }));
+
+        
   
         // Initialize createanswerthenSection and selectedOptions arrays
-        console.log()
+      
         this.createanswerthenSection = new Array(this.logicEntries.length).fill(false);
         this.selectedOptions = new Array(this.logicEntries.length).fill([]);
   
+      
         this.logicEntries.forEach((entry, index) => {
           setTimeout(() => {
             this.getOptionsByQuestion(entry.optionlogicquesid, index);
-          }, index * 1000); // Adding delay to avoid overwhelming the server
+          }, index * 1000);
+          // Adding delay to avoid overwhelming the server
         });
+
+        console.log("values list",this.optionListByQuestionId)
+        
        
         this.logicEntries.forEach((entry, index) => {
+          
           if(this.logicEntries[index].optionlogicelseid && this.logicEntries[index].optionlogicelseexpected){
             this.createanswerthenSection[index] = true;
           }
@@ -2023,10 +2042,12 @@ export class EditSurveyComponent {
       } else {
         // Handle empty response or error
       }
+     
     });
   }
   
   getOptionsByQuestion(selectedQuestion: any, logicEntryIndex: number): void {
+    debugger
     const selectedValue = selectedQuestion;
     this.optionselectedvalue = selectedQuestion;
     console.log("qwerty", selectedQuestion);
@@ -2040,26 +2061,35 @@ export class EditSurveyComponent {
   
       this.optionListByQuestionId = response
       this.optionListByQuestionId = JSON.parse(this.optionListByQuestionId)
-      console.log("fff", this.optionListByQuestionId);
+      console.log("fffhhh", this.optionListByQuestionId);
   
       // Use logicEntryIndex to ensure correct entry is used
+      
       this.autoSelectQuestions(this.logicEntries[logicEntryIndex].optionlogicifexpectedid, logicEntryIndex);
     });
+    debugger
   }
   
   autoSelectQuestions(ifExpected: any, index: number): void {
+    debugger
     console.log("optionListByQuestionIdsdd", ifExpected);
     console.log("optionListByQuestionIdsdd", index);
     console.log('optionListByQuestionIdsdd', this.optionListByQuestionId);
   
-    const selectedQuestions = this.optionListByQuestionId.filter((question: { id: any; }) =>
-      ifExpected.includes(question.id)
-    );
-    console.log("optionListByQuestionIdsdd", selectedQuestions);
+    // const selectedQuestions = this.optionListByQuestionId.filter((question: { id: any; }) =>
+    //   ifExpected.includes(question.id)
+    // );
+    if (Array.isArray(this.optionListByQuestionId) && this.optionListByQuestionId.length > 0) {
+      this.selectedOptions[index] = []
+      const filteredOptions = this.optionListByQuestionId.filter((item: { id: number }) => ifExpected.includes(item.id));
+
+      this.selectedOptions[index].push(...filteredOptions);
+    }
   
     // Update selectedOptions for the correct index
-    this.selectedOptions[index] = selectedQuestions;
-    console.log("this.selectedOptions[index]", index, this.selectedOptions[index]);
+    // this.selectedOptions[index] = selectedQuestions;
+    console.log("optionListByQuestionIdsdd this.selectedOptions[index]", index, this.selectedOptions[index]);
+    debugger
   }
   
 
@@ -2159,7 +2189,7 @@ export class EditSurveyComponent {
   removeOption(option: any, index: number): void {
     console.log("option is:", option);
     console.log("selected options is:", this.selectedOptions[index]);
-    alert(option)
+   
     //const indexno= this.selectedOptions[index].indexOf(option);
     //console.log("aa",indexno)
 
@@ -2193,8 +2223,37 @@ export class EditSurveyComponent {
   
   
 
+  // selectedOption(event: MatAutocompleteSelectedEvent, index: number): void {
+  //   const selectedOption = event.option.value;
+  
+  //   if (!this.selectedOptions[index]) {
+  //     this.selectedOptions[index] = [];
+  //   }
+  
+  //   if (!this.selectedOptions[index].includes(selectedOption)) {
+  //     this.selectedOptions[index].push(selectedOption);
+  //   }
+
+  //   if (!this.logicEntries[index]) {
+  //     this.logicEntries[index] = {};
+  //   }
+
+  //   if (!this.selectedifexpected) {
+  //     this.selectedifexpected = [];
+  //   }
+  
+  //   // Update the logicEntries with the selected options
+  //   console.log("this.selectedOptions[index]",this.selectedOptions[index])
+  //   this.selectedifexpected[index] = this.selectedOptions[index].map((option: { id: any }) => option.id).join(', ');
+  //   console.log("this.selectedifexpected[index]",this.selectedifexpected[index])
+  //   this.logicEntries[index].optionlogicifexpectedid = this.selectedOptions[index].map(option => option.option).join(', ');
+  // }
+
+
   selectedOption(event: MatAutocompleteSelectedEvent, index: number): void {
     const selectedOption = event.option.value;
+
+    this.logicEntries[index].optionlogicifexpectedid=''
   
     if (!this.selectedOptions[index]) {
       this.selectedOptions[index] = [];
@@ -2202,21 +2261,12 @@ export class EditSurveyComponent {
   
     if (!this.selectedOptions[index].includes(selectedOption)) {
       this.selectedOptions[index].push(selectedOption);
+      const selectedOptionsArray = this.selectedOptions[index];
+      const selectedOptionsString = selectedOptionsArray.map((option: { id: any; }) => option.id).join(', ');
+
+      this.logicEntries[index].optionlogicifexpectedid = selectedOptionsString;
     }
 
-    if (!this.logicEntries[index]) {
-      this.logicEntries[index] = {};
-    }
-
-    if (!this.selectedifexpected) {
-      this.selectedifexpected = [];
-    }
-  
-    // Update the logicEntries with the selected options
-    console.log("this.selectedOptions[index]",this.selectedOptions[index])
-    this.selectedifexpected[index] = this.selectedOptions[index].map((option: { id: any }) => option.id).join(', ');
-    console.log("this.selectedifexpected[index]",this.selectedifexpected[index])
-    this.logicEntries[index].optionlogicifexpectedid = this.selectedOptions[index].map(option => option.option).join(', ');
   }
   
   
@@ -2248,18 +2298,6 @@ export class EditSurveyComponent {
   }
 
 
-  // // color code 
-  // applyColors(text: string): SafeHtml {
-  //   const parser = new DOMParser();
-  //   const doc = parser.parseFromString(text, 'text/html');
-  //   const spans = doc.querySelectorAll('span');
-
-  //   spans.forEach(span => {
-  //     span.style.color = this.colorCode;
-  //   });
-
-  //   return this.sanitizer.bypassSecurityTrustHtml(doc.body.innerHTML);
-  // }
   getSerialNumberreq: boolean = true
 
   validateSurveySno(): boolean {
@@ -2321,23 +2359,33 @@ export class EditSurveyComponent {
 
   selectedMatrixHeaderOption(event: MatAutocompleteSelectedEvent): void {
     const selectedOption = event.option.value;
+
+    this.matrixlogicifexpected = '';
     if (!this.selectedMatricHeaderOptions.includes(selectedOption)) {
       this.selectedMatricHeaderOptions.push(selectedOption);
-    }
-    console.log("selectedMatricHeaderOptions",this.selectedMatricHeaderOptions)
-    this.matrixlogicifexpected = this.selectedMatricHeaderOptions.map((option: { id: any }) => option.id).join(', ');
-    this.matrixlogicifexpectedid = selectedOption.option;
 
-    
+      const selectedMatrixArray = this.selectedMatricHeaderOptions;
+      const selectedMatrixString = selectedMatrixArray.map((option: { id: any; }) => option.id).join(', ');
+
+      this.matrixlogicifexpected = selectedMatrixString;
+    }
+    // console.log("selectedMatricHeaderOptions",this.selectedMatricHeaderOptions)
+    // this.matrixlogicifexpected = this.selectedMatricHeaderOptions.map((option: { id: any }) => option.id).join(', ');
+    // this.matrixlogicifexpectedid = selectedOption.option;
+
 
   }
 
   onOptionMatrixEntry(){
-    this.selectedMatricHeaderOptions = []
+    if(this.matrixlogicquesid) {
+
+      this.selectedMatricHeaderOptions = []
+
+    } 
   }
 
   createMatixLogic(): void {
-    let matrixid
+    let matrixid;
 
     if(this.matrixlogicquesid){
        matrixid = this.matrixlogicquesid
@@ -2401,6 +2449,8 @@ export class EditSurveyComponent {
       if (data && data.length > 0) {
         console.log("data matrix",data)
         this.visibleanslogic = true;
+
+        console.log("data",data.length)
 
         this.matrixlogicquesid = data[0]?.id,
         this.matriclogicifId = data[0]?.ifId,

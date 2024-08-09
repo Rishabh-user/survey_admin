@@ -2413,7 +2413,7 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
             next: (resp: any) => {
                 if (resp === '"UpdatedSuccessfully"') {
                     this.utils.showSuccess("Redirection Updated");
-                    // window.location.reload();
+                    window.location.reload();
                 }
             },
             error: (err: any) => {
@@ -2425,7 +2425,7 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
             next: (resp: any) => {
                 if (resp === '"CreatedSuccessfully"') {
                     this.utils.showSuccess("Redirection Added");
-                    // window.location.reload();
+                    window.location.reload();
                 }
             },
             error: (err: any) => {
@@ -2867,7 +2867,7 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
         next: (resp: any) => {
             if (resp === '"UpdatedSuccessfully"') {
                 this.utils.showSuccess("Updated Successfully");
-                // window.location.reload();
+                window.location.reload();
             }
         },
         error: (err: any) => {
@@ -2881,7 +2881,7 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
       next: (resp: any) => {
           if (resp === '"CreatedSuccessfully"') {
               this.utils.showSuccess("Created");
-              // window.location.reload();
+              window.location.reload();
           }
       },
       error: (err: any) => {
@@ -3266,8 +3266,6 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
 
   addMatrixOption(event: MatChipInputEvent, questionIndex: number, logicIndex: number): void {
    
-
-
     const input = event.input;
     const value = event.value.trim();
 
