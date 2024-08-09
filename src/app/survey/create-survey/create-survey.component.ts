@@ -3377,7 +3377,7 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
         response => {
 
           this.utils.showSuccess('Logic Created Successfully.');
-          window.location.reload();
+          // window.location.reload();
         },
         error => {
           console.error('Error occurred while sending POST request:', error);
@@ -3388,7 +3388,7 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
       this.surveyservice.createMatrixHeaderLogics(matrixLogicsArray).subscribe(
         response => {
           this.utils.showSuccess('Logic Created Successfully.');
-          window.location.reload();
+          // window.location.reload();
         },
         error => {
           console.error('Error occurred while sending POST request:', error);
@@ -3528,7 +3528,6 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
                 if(resp === 'LogicDeleteSuccessfully'){
                   this.utils.showSuccess("Deleted Successfully")
                   this.matrixLogicsEntriesPerQuestion[questionIndex].splice(logicIndex, 1);
-
 
                 }
                

@@ -512,14 +512,14 @@
                         <div
                             [ngClass]="{'ques-header': true, 'screening': question.isScreening,'descques': question.isRequired === false}">
 
-                            <h5 [ngClass]="'mb-0'" *ngIf="!isQNumberRequired === true">
+                            <h5  [ngClass]="'mb-0'" *ngIf="!isQNumberRequired === true">
                                 <!-- Q-{{question?.sort}} <div>{{question?.question}}</div> -->
-                                Q-{{ question?.sort }}.&nbsp;<div [innerHTML]="question?.question"></div>
+                                Q-{{ question?.sort }}.&nbsp;<div style="flex: 1;" [innerHTML]="question?.question"></div>
 
                                 <!-- <div [innerHTML]="sanitizeHtml(question?.question)"></div> -->
                             </h5>
-                            <h5 [ngClass]="'mb-0'" *ngIf="isQNumberRequired === true">
-                                {{question?.qNo}}.&nbsp;<div [innerHTML]="question?.question"></div>
+                            <h5  [ngClass]="'mb-0'" *ngIf="isQNumberRequired === true">
+                                {{question?.qNo}}.&nbsp;<div style="flex: 1;" [innerHTML]="question?.question"></div>
                             </h5>
 
                             <div class="d-flex align-items-center justify-content-end">
@@ -632,7 +632,7 @@
                                         </label>
                                     </div>
                                 </div>
-                                <div *ngIf="question?.openEndedType !== ''">
+                                <div *ngIf="question?.questionType === 'Open Ended'">
                                     <input class="form-control" type="text" />
                                 </div>
                                 <div *ngIf="question.isScreening">
