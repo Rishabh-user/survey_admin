@@ -133,7 +133,8 @@ export class EditSurveyComponent {
   matrixdescpisChecked:boolean = false;
   optiondescpisChecked:boolean = false;
   optionaloption:boolean = true;
-  showCreateAnswerLogic:boolean = false
+  showCreateAnswerLogic:boolean = false;
+  openendedquesreq:boolean = true;
   
 
   constructor(public themeService: DataService, private router: Router,
@@ -204,7 +205,11 @@ export class EditSurveyComponent {
       this.qNo = data.qNo
       this.isQNumberRequired = data.isQNumberRequired;
       this.description = data.description
-      this.questionToolTip = data.questionToolTip
+      this.questionToolTip = data.questionToolTip;
+
+      if(this.question.isRequired){
+        this.openendedquesreq = true;
+      }
 
       data.options.forEach((opt: any) => {
 
@@ -879,7 +884,8 @@ export class EditSurveyComponent {
     this.question.isNumeric =  this.numeric
     this.question.isAlphabet = this.alphabet;
     this.question.description = this.description;
-    this.question.questionToolTip = this.questionToolTip
+    this.question.questionToolTip = this.questionToolTip;
+    this.question.isRequired = this.openendedquesreq;
     
 
     let modifiedoptions: serveyOption[] = [];
@@ -2560,12 +2566,12 @@ export class EditSurveyComponent {
 
   }
 
+  onCheckboxQuesReq(event: any){
+    this.openendedquesreq = event.target.checked;
+    console.log("openendedquesreq",this.openendedquesreq)
+
+  }
 
 
-
-
-
-  
-  
 
 }

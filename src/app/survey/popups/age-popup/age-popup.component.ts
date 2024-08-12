@@ -27,6 +27,7 @@ export class AgePopupComponent {
   qNo: any;
   quesserialno:any;
   baseUrl = '';
+  openendedquesreq:boolean = false;
   constructor(private surveyservice: SurveyService, private route: ActivatedRoute, private crypto: CryptoService, private router: Router, private utility: UtilsService) {
     this.baseUrl = environment.baseURL;
     this.route.paramMap.subscribe(params => {
@@ -161,6 +162,12 @@ export class AgePopupComponent {
     if (this.currentTooltip === identifier) {
       this.currentTooltip = null;
     }
+
+  }
+
+  onCheckboxQuesReq(event: any){
+    this.openendedquesreq = event.target.checked;
+    console.log("openendedquesreq",this.openendedquesreq)
 
   }
 }

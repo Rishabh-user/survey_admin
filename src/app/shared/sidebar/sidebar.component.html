@@ -43,7 +43,7 @@
                     style="height: auto; overflow: initial;">
                     <div class="AngularCollapse-content">
                         <ul class="sub-menu">
-                            <li class="block pl-4 pr-1 first:pt-4  last:pb-4" *ngIf="!this.isvendor">
+                            <li class="block pl-4 pr-1 first:pt-4  last:pb-4" *ngIf="!this.isvendor && !isClient">
                                 <a href="javascript:void(0);" (click)="onAddNewSurveyClick()">
                                     <span class="d-flex align-items-center text-sm transition-all duration-150">
                                         <span class="menu-icon">
@@ -53,7 +53,7 @@
                                     </span>
                                 </a>
                             </li>
-                            <li class="block pl-4 pr-1 first:pt-4  last:pb-4" *ngIf="!this.isvendor">
+                            <li class="block pl-4 pr-1 first:pt-4  last:pb-4" *ngIf="!this.isvendor && !isClient">
                                 <a class="" routerLink="/survey/all-survey">
                                     <span class="d-flex align-items-center text-sm transition-all duration-150">
                                         <span class="menu-icon">
@@ -63,7 +63,7 @@
                                     </span>
                                 </a>
                             </li>
-                            <li class="block pl-4 pr-1 first:pt-4  last:pb-4" *ngIf="this.isvendor">
+                            <li class="block pl-4 pr-1 first:pt-4  last:pb-4" *ngIf="this.isvendor || isClient">
                                 <a class="" routerLink="/survey/vendar-survey-list">
                                     <span class="d-flex align-items-center text-sm transition-all duration-150">
                                         <span class="menu-icon">
@@ -78,7 +78,7 @@
                 </div>
             </li>
             <li class="single-sidebar-menu item-has-children" routerLinkActive="menu-item-active"
-                *ngIf="!this.isvendor">
+                *ngIf="!this.isvendor && !isClient">
                 <div class="menu-link collapsed" (click)="toggleSubMenu(2)">
                     <div class="flex-1 d-flex align-items-center">
                         <span class="menu-icon">
@@ -164,7 +164,7 @@
                 </div>
             </li>
             <li class="single-sidebar-menu item-has-children" routerLinkActive="menu-item-active"
-                *ngIf="!this.isvendor">
+                *ngIf="!this.isvendor && !this.isClient">
                 <div class="menu-link collapsed" (click)="toggleSubMenu(4)" routerLinkActive="active">
                     <div class="flex-1 d-flex align-items-center">
                         <span class="menu-icon">
@@ -217,10 +217,10 @@
                 </div>
             </li>
 
-            <li class="single-sidebar-menu" *ngIf="!this.isUser && !this.isvendor">
+            <li class="single-sidebar-menu" *ngIf="!this.isUser && !this.isvendor && !isClient">
                 <div class="menulabel">Pages</div>
             </li>
-            <li class="single-sidebar-menu" routerLinkActive="menu-item-active" *ngIf="!this.isUser && !this.isvendor">
+            <li class="single-sidebar-menu" routerLinkActive="menu-item-active" *ngIf="!this.isUser && !this.isvendor && !isClient">
                 <a class="menu-link" routerLink="/pages/about">
                     <span class="menu-icon flex-grow-0">
                         <ng-icon name="heroClipboardDocumentList"></ng-icon>
@@ -228,7 +228,7 @@
                     <div class="text-box flex-grow-1">About Us</div>
                 </a>
             </li>
-            <li class="single-sidebar-menu" routerLinkActive="menu-item-active" *ngIf="!this.isUser && !this.isvendor">
+            <li class="single-sidebar-menu" routerLinkActive="menu-item-active" *ngIf="!this.isUser && !this.isvendor && !isClient">
                 <a class="menu-link" routerLink="/pages/terms-condition">
                     <span class="menu-icon flex-grow-0">
                         <ng-icon name="heroClipboardDocumentCheck"></ng-icon>
@@ -236,7 +236,7 @@
                     <div class="text-box flex-grow-1">Terms & Conditions</div>
                 </a>
             </li>
-            <li class="single-sidebar-menu" routerLinkActive="menu-item-active" *ngIf="!this.isUser && !this.isvendor">
+            <li class="single-sidebar-menu" routerLinkActive="menu-item-active" *ngIf="!this.isUser && !this.isvendor && !isClient">
                 <a class="menu-link" routerLink="/pages/privacy-policy">
                     <span class="menu-icon flex-grow-0">
                         <ng-icon name="heroShieldCheck"></ng-icon>

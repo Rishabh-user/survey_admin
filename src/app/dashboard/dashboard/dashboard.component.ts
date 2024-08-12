@@ -45,7 +45,9 @@ export class DashboardComponent {
   uniqueMonths: string[];
   userId: any;
   isQNumberRequired:any;
+  totalItemsCount: number = 20
   planid:any
+  cdr: any;
   constructor(private visibilityService: DataService, private modalService: NgbModal, public themeService: DataService,
     public surveyservice: SurveyService, private auth: AuthService, private utility: UtilsService, private crypto: CryptoService, private router: Router,
     private csvService: SurveyService,
@@ -69,6 +71,7 @@ export class DashboardComponent {
   orgCreatedDate: any;
   remainingTrialDays: number;
   isPaid: any;
+  surveyData: any = "";
 
   hideHeader() {
     this.visibilityService.toggleHeaderVisibility(false);
@@ -123,19 +126,23 @@ export class DashboardComponent {
     this.auth.logout();
     modal.dismiss();
   }
+  roledashboard:any
 
   ngOnInit(): void {
+    this.roledashboard = this.utility.getRole();
     this.planid = this.utility.getPlanId();
     this.showHeader();
     this.createChart();
     this.showSideBar();
     this.hideBreadcrumb();
     this.role = localStorage.getItem("role");
+    console.log("this.role",this.roledashboard)
     this.getMyAccount();
     this.getSurveyList();
     this.getCountries();
     this.getNames();
     this.getReportForSelectedYear();
+    this.getVendarSurveyList(1,10)
   }
 
 
@@ -512,6 +519,17 @@ export class DashboardComponent {
   onCheckboxChange(event: any) {
     this.isQNumberRequired = event.target.checked;
     console.log("isQNumberRequired",this.isQNumberRequired)
+  }
+
+ 
+
+
+  getVendarSurveyList(pageNumber: number, pageSize: number) {
+    this.surveyservice.getVendarSurveyList(1, 10).subscribe((data: any) => {
+      this.surveyData = data.surveyType;
+      this.totalItemsCount = data.totalCount;
+      this.cdr.detectChanges();
+    });
   }
 
 

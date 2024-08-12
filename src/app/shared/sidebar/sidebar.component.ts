@@ -25,7 +25,7 @@ export class SidebarComponent {
   isAdmin = false;
   isUser = false;
   isClient = false;
-  isvendor = false
+  isvendor = false;
 
 
 
@@ -35,12 +35,14 @@ export class SidebarComponent {
 
 
   }
+  
   ngOnInit() {
     this.role = this.util.getRole();
     this.roleId = this.util.getRoleId()
     if (this.role) {
       this.role = this.role.toLowerCase();
     }
+    console.log("role",this.role)
     if (this.role == 'client')
       this.isClient = true;
     else if (this.role == 'superadmin')
