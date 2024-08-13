@@ -206,10 +206,8 @@ export class EditSurveyComponent {
       this.isQNumberRequired = data.isQNumberRequired;
       this.description = data.description
       this.questionToolTip = data.questionToolTip;
-
-      if(this.question.isRequired){
-        this.openendedquesreq = true;
-      }
+      this.openendedquesreq = this.question.isRequired;
+      
 
       data.options.forEach((opt: any) => {
 
@@ -989,7 +987,7 @@ export class EditSurveyComponent {
             this.utility.showError('Question Created Failed')
           } else  if (resp === '"QuestionSuccessfullyUpdated"') {
             this.utility.showSuccess('Question Updated Successfully.');
-            window.location.reload();
+            // window.location.reload();
             // let url = `/survey/manage-survey/${this.crypto.encryptParam(this.surveyId)}`;
             // this.router.navigateByUrl(url);
             //  window.location.reload();

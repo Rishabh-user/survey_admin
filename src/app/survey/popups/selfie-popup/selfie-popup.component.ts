@@ -26,6 +26,7 @@ export class SelfiePopupComponent {
   qNo: any;
   quesserialno:any;
   baseUrl = '';
+  openendedquesreq:boolean = true;
   constructor(private surveyservice: SurveyService, private route: ActivatedRoute, private crypto: CryptoService, private router: Router, private utility: UtilsService) {
     this.baseUrl = environment.baseURL;
     this.route.paramMap.subscribe(params => {
@@ -162,6 +163,11 @@ export class SelfiePopupComponent {
     if (this.currentTooltip === identifier) {
       this.currentTooltip = null;
     }
+
+  }
+
+  onCheckboxQuesReq(event: any){
+    this.openendedquesreq = event.target.checked;
 
   }
 

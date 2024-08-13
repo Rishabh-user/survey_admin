@@ -27,7 +27,7 @@ export class AgePopupComponent {
   qNo: any;
   quesserialno:any;
   baseUrl = '';
-  openendedquesreq:boolean = false;
+  openendedquesreq:boolean = true;
   constructor(private surveyservice: SurveyService, private route: ActivatedRoute, private crypto: CryptoService, private router: Router, private utility: UtilsService) {
     this.baseUrl = environment.baseURL;
     this.route.paramMap.subscribe(params => {

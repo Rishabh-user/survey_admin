@@ -510,7 +510,7 @@
                     *ngFor="let question of questions | paginate: { id: 'server', itemsPerPage: pageSize, currentPage: pageNumber, totalItems: totalItemsCount } ;let i=index;">
                     <div class="drag-item">
                         <div
-                            [ngClass]="{'ques-header': true, 'screening': question.isScreening,'descques': question.isRequired === false}">
+                            [ngClass]="{'ques-header': true, 'screening': question.isScreening,'descques': question.isRequired === false && !question.isOpenEnded}">
 
                             <h5  [ngClass]="'mb-0'" *ngIf="!isQNumberRequired === true">
                                 <!-- Q-{{question?.sort}} <div>{{question?.question}}</div> -->
@@ -570,7 +570,14 @@
                                                 Edit
                                             </a>
                                         </li>
-                                        <li *ngIf="!question?.isRequired">
+                                        <li *ngIf="!question?.isRequired && question?.isOpenEnded">
+                                            <a href="javascript:void(0);" class="dropdown-item"
+                                                (click)="onEditQuestionClick(question?.id)">
+                                                <ng-icon name="heroPencil"></ng-icon>
+                                                Edit
+                                            </a>
+                                        </li>
+                                        <li *ngIf="!question?.isRequired && !question?.isOpenEnded">
                                             <a href="javascript:void(0);" class="dropdown-item"
                                                 (click)="onEditDesc(question?.id)">
                                                 <ng-icon name="heroPencil"></ng-icon>
