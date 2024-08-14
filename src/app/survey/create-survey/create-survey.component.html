@@ -639,7 +639,7 @@
                                         </label>
                                     </div>
                                 </div>
-                                <div *ngIf="question?.questionType === 'Open Ended'">
+                                <div *ngIf="question?.questionType === 'Open Ended' && question.isOpenEnded">
                                     <input class="form-control" type="text" />
                                 </div>
                                 <div *ngIf="question.isScreening">
@@ -1662,7 +1662,7 @@
                                                                         (click)="hideTooltip('10')"></button>
                                                                 </div>
                                                                 <div class="toast-body">
-                                                                    Select questions and add a "@pipe" tag inside the same question text.
+                                                                    Select questions and add a "&#64;pipe" tag inside the same question text.
                                                                 </div>
                                                             </div>
                                                         </div>

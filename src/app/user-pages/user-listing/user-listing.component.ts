@@ -33,7 +33,9 @@ export class UserListingComponent {
   roles: any[] = [
     { id: 1, name: 'SuperAdmin' },
     { id: 2, name: 'Admin' },
-    { id: 3, name: 'User' }
+    { id: 3, name: 'User' },
+    { id: 4, name: 'Client' },
+    { id: 5, name: 'Vendor' },
   ];
 
   ngOnInit(): void {
