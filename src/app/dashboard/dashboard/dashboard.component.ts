@@ -527,6 +527,7 @@ export class DashboardComponent {
   getVendarSurveyList(pageNumber: number, pageSize: number) {
     this.surveyservice.getVendarSurveyList(1, 10).subscribe((data: any) => {
       this.surveyData = data.surveyType;
+      console.log("surveyData",this.surveyData)
       this.totalItemsCount = data.totalCount;
       this.cdr.detectChanges();
     });
