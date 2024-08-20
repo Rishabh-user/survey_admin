@@ -793,18 +793,7 @@
                                                                                         </option>
                                                                                     </select>
                                                                                 </div>
-                                                                                <div class="col-md-3" *ngIf="question?.questionType === 'Open Ended'">
-                                                                                    
-                                                                                    <select class="form-select"
-                                                                                        [(ngModel)]="logicEntry.ifId"
-                                                                                        (change)="onLogicEntryChange(i,j)">
-                                                                                        <option
-                                                                                            *ngFor="let item of openendedlist;"
-                                                                                            [ngValue]="item.id">
-                                                                                            {{item.name}}
-                                                                                        </option>
-                                                                                    </select>
-                                                                                </div>
+                                                                                
 
                                                                                 <div class="col-md-8" *ngIf="question?.questionType !== 'Open Ended'">
                                                                                     <mat-form-field
@@ -839,9 +828,23 @@
                                                                                     </mat-form-field>
                                                                                 </div>
 
-                                                                                <div class="col-md-8" *ngIf="question?.questionType === 'Open Ended'">
+                                                                                <div class="col-md-3" *ngIf="question?.questionType === 'Open Ended'">
+                                                                                    
+                                                                                    <select class="form-select"
+                                                                                        [(ngModel)]="logicEntry.ifId"
+                                                                                        (change)="onLogicEntryChange(i,j)">
+                                                                                        <option
+                                                                                            *ngFor="let item of openendedlist;"
+                                                                                            [ngValue]="item.id">
+                                                                                            {{item.name}}
+                                                                                        </option>
+                                                                                    </select>
+                                                                                </div>
+                                                                                <div class="col-md-8" *ngIf="question?.questionType === 'Open Ended' && logicEntry.ifId !== 12 && logicEntry.ifId !== 13">
                                                                                     <input id="answer" type="text" name="answer" class="form-control" [(ngModel)]="logicEntry.ifExpected"/>
                                                                                 </div> 
+
+                                                                                
 
                                                                             </div>
                                                                         </div>

@@ -366,7 +366,6 @@ export class EditSurveyComponent {
       this.getOptionLogics();
       this.getMatrixLogic();
     }
-    
 
     if (this.mode != 'modify') {
       this.intializeDefaultValue();
@@ -379,6 +378,7 @@ export class EditSurveyComponent {
         this.hanldeAddOptionClickMatrix();
 
       }
+      
       if (this.question.questionTypeName === 'Rating Scale') {
         this.addStarRating();
       }
@@ -391,6 +391,7 @@ export class EditSurveyComponent {
       if (this.question.questionTypeName === 'Slider Scale') {
         this.addsliderscale();
       }
+
      
 
     }
