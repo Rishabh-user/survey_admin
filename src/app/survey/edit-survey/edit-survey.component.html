@@ -797,7 +797,7 @@
                     </div>
                 </div>
             </li>
-            <!-- <li>
+            <li *ngIf="question.questionTypeName === 'Maxdiff'">
                 <div ngClass="border-top p-4">
                     <div ngClass="select-ans-choice mb-5">
                         <h5>Column</h5>
@@ -825,14 +825,14 @@
                             <div class="flex-width">Delete</div>
                             <div class="flex-width">Tooltip</div>
                         </div>
+                        
                         <div class="row g-2 align-items-center mb-3" *ngFor="let option of matrixOptions;let i=index;">
                             <div class="flex-width">
                                 <input type="text" id="" class="form-control" value="{{i+1}}" readonly />
                             </div>
 
-
-
                             <div class="flex-2">
+                                
                                 <input id="answer" type="text" name="answer" class="form-control"
                                     [(ngModel)]="option.header" (blur)="validateSurvey()" />
                                 <div *ngIf="!option.header.trim()" class="text-danger" style="position: absolute;">Option is required.</div>
@@ -869,7 +869,7 @@
                         </div>
                     </div>
                     <hr *ngIf="matrixOptions.length>0" />
-                    <div ngClass="mb-4">
+                    <!-- <div ngClass="mb-4">
                         <div class="row g-2 align-items-center mb-3" *ngFor="let option of optionsArr3;let i=index;">
                             <div class="flex-width">
                                 <input type="text" id="" class="form-control" value="{{optionsArr1.length+1}}"
@@ -885,10 +885,10 @@
                                 <ng-icon name="heroTrash" (click)="onDeleteMatrixOption('optionmatrix2',i)"></ng-icon>
                             </div>
                         </div>
-                    </div>
+                    </div> -->
                    
                 </div>
-            </li> -->
+            </li>
             <!-- <li *ngIf="question.questionTypeName === 'Auto Continues Sum'">
                 <div ngClass="border-top p-4">
                     <div ngClass="select-ans-choice mb-5">

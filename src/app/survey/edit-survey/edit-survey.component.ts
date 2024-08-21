@@ -378,6 +378,9 @@ export class EditSurveyComponent {
         this.hanldeAddOptionClickMatrix();
 
       }
+      if(this.question.questionTypeName === 'Maxdiff'){
+         this.hanldeAddOptionDiffQues();
+      }
       
       if (this.question.questionTypeName === 'Rating Scale') {
         this.addStarRating();
@@ -2569,6 +2572,50 @@ export class EditSurveyComponent {
     this.openendedquesreq = event.target.checked;
     console.log("openendedquesreq",this.openendedquesreq)
 
+  }
+
+
+  hanldeAddOptionDiffQues(type: string | null = null) {
+  
+    // let newOption = new MatrixHeader();
+
+    // newOption.createdDate = this.getCurrentDateTime();
+    // newOption.modifiedDate = this.getCurrentDateTime();
+     debugger
+    const qwert = [
+      { header: "least appealing" ,sort: 0, createdDate: this.getCurrentDateTime(), modifiedDate: this.getCurrentDateTime(),status: 'ACT'},
+      { header: "most appealing" ,sort: 1, createdDate: this.getCurrentDateTime(), modifiedDate: this.getCurrentDateTime(),status: 'ACT'}
+    ];
+
+    this.matrixOptions=[...qwert]
+    
+    
+
+    let sort = 0;
+
+    if (this.matrixOptions.length > 0) {
+      // Find the maximum sort value in optionsArr1
+      const maxSortValue1 = Math.max(...this.matrixOptions.map(option => option.sort));
+      const maxSortValue2 = Math.max(...this.matrixOptions.map(option => option.sort));
+      sort = (maxSortValue2 > maxSortValue1 ? maxSortValue2 : maxSortValue1) + 1;
+    }
+
+    // newOption.sort = sort;
+
+    // this.matrixOptions.push(newOption);
+
+
+    this.newoptionImages = [];
+
+    this.matrixFilteredOptions = [];
+    this.matrixFilteredOptions.push(...this.matrixOptions, ...this.optionsArr3);
+
+
+
+    this.matrixAllOptions = [];
+    this.matrixAllOptions.push(...this.matrixOptions, ...this.optionsArr3);
+    console.log("matrixAllOptions",this.matrixAllOptions)
+   debugger
   }
 
 
