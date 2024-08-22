@@ -194,7 +194,7 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
   matrixValuefilteredOptions:any[]=[];
   isMatrixElseShow: boolean[][] = [];
   isMatrixElseShowvalue: boolean[][] = [];
-  
+  numberage:number=0;
   
   
 
@@ -1353,7 +1353,7 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
         response => {
 
           this.utils.showSuccess('Logic Created Successfully.');
-          window.location.reload();
+          // window.location.reload();
         },
         error => {
           console.error('Error occurred while sending POST request:', error);
@@ -1364,7 +1364,7 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
       this.surveyservice.createLogic(this.questionLogic).subscribe(
         response => {
           this.utils.showSuccess('Logic Created Successfully.');
-          window.location.reload();
+          // window.location.reload();
         },
         error => {
           console.error('Error occurred while sending POST request:', error);
@@ -2061,17 +2061,29 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
     if (!this.selectedOptionsLogic[questionIndex][logicIndex]) {
       this.selectedOptionsLogic[questionIndex][logicIndex] = [];
     }
+
     
-    if (!this.selectedOptionsLogic[questionIndex][logicIndex].includes(selectedOption)) {
-      this.selectedOptionsLogic[questionIndex][logicIndex].push(selectedOption);
+      if (!this.selectedOptionsLogic[questionIndex][logicIndex].includes(selectedOption)) {
+        this.selectedOptionsLogic[questionIndex][logicIndex].push(selectedOption);
+  
+        const selectedOptionsArray = this.selectedOptionsLogic[questionIndex][logicIndex];
+        const selectedOptionsString = selectedOptionsArray.map((option: { id: any; }) => option.id).join(', ');
+  
+        this.logicEntriesPerQuestion[questionIndex][logicIndex].ifExpected = selectedOptionsString;
+  
+      }
 
-      const selectedOptionsArray = this.selectedOptionsLogic[questionIndex][logicIndex];
-      const selectedOptionsString = selectedOptionsArray.map((option: { id: any; }) => option.id).join(', ');
-
-      this.logicEntriesPerQuestion[questionIndex][logicIndex].ifExpected = selectedOptionsString;
-
-    }
+  
   }
+
+  onInputChange(logicEntryIfId: any, questionIndex: number, logicIndex: number): void {
+    
+    
+      this.logicEntriesPerQuestion[questionIndex][logicIndex].ifExpected = '0';
+    
+  
+  }
+
    
   selectedOptionsIFLogicOneValue(event: MatAutocompleteSelectedEvent, logicEntryIfId: any, questionIndex: number, logicIndex: number): void {
     const selectedOption = event.option.value;

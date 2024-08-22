@@ -832,7 +832,7 @@
                                                                                     
                                                                                     <select class="form-select"
                                                                                         [(ngModel)]="logicEntry.ifId"
-                                                                                        (change)="onLogicEntryChange(i,j)">
+                                                                                        (change)="onLogicEntryChange(i,j);onInputChange(logicEntry.ifId, i, j)">
                                                                                         <option
                                                                                             *ngFor="let item of openendedlist;"
                                                                                             [ngValue]="item.id">
@@ -843,6 +843,18 @@
                                                                                 <div class="col-md-8" *ngIf="question?.questionType === 'Open Ended' && logicEntry.ifId !== 12 && logicEntry.ifId !== 13">
                                                                                     <input id="answer" type="text" name="answer" class="form-control" [(ngModel)]="logicEntry.ifExpected"/>
                                                                                 </div> 
+                                                                                <div style="display: none;" 
+                                                                                    class="col-md-8" 
+                                                                                    *ngIf="question?.questionType === 'Open Ended' && (logicEntry.ifId == 12 || logicEntry.ifId == 13)">
+                                                                                    <input id="answer" 
+                                                                                        type="text" 
+                                                                                        name="answer" 
+                                                                                        class="form-control" 
+                                                                                        [(ngModel)]="logicEntry.ifExpected" 
+                                                                                        (change)="onInputChange(logicEntry.ifId, i, j)" />
+                                                                                </div>
+
+                                                                                
 
                                                                                 
 
