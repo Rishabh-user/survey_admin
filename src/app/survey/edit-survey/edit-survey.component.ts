@@ -207,6 +207,7 @@ export class EditSurveyComponent {
       this.description = data.description
       this.questionToolTip = data.questionToolTip;
       this.openendedquesreq = this.question.isRequired;
+      this.question.openEndedType = data.openEndedType
       
 
       data.options.forEach((opt: any) => {
@@ -864,7 +865,7 @@ export class EditSurveyComponent {
     if (this.questionId > 0) {
       this.question.id = this.questionId;
     }
-    if (this.question.questionTypeName === 'Open Ended') {
+    if (this.question.questionTypeName === 'Open Ended' && this.question.openEndedType === '') {
       this.question.openEndedType = "textarea"
       this.question.textLimit = this.textlimit
     }
@@ -991,7 +992,7 @@ export class EditSurveyComponent {
             this.utility.showError('Question Created Failed')
           } else  if (resp === '"QuestionSuccessfullyUpdated"') {
             this.utility.showSuccess('Question Updated Successfully.');
-            // window.location.reload();
+            window.location.reload();
             // let url = `/survey/manage-survey/${this.crypto.encryptParam(this.surveyId)}`;
             // this.router.navigateByUrl(url);
             //  window.location.reload();

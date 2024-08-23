@@ -567,21 +567,28 @@
                                             <a href="javascript:void(0);" class="dropdown-item"
                                                 (click)="onEditQuestionClick(question?.id)">
                                                 <ng-icon name="heroPencil"></ng-icon>
-                                                Edit
+                                                Edit 
                                             </a>
                                         </li>
+                                        <!-- <li *ngIf="question?.genericType === 'Age' || question?.genericType === 'Selfie' || question?.genericType === 'email' || question?.genericType === 'Name' || question?.genericType === 'Pincode / Zip Code'">
+                                            <a href="javascript:void(0);" class="dropdown-item"
+                                                (click)="onGenericQuestionClick(question?.genericType)">
+                                                <ng-icon name="heroPencil"></ng-icon>
+                                                Edit 
+                                            </a>
+                                        </li> -->
                                         <li *ngIf="!question?.isRequired && question?.isOpenEnded">
                                             <a href="javascript:void(0);" class="dropdown-item"
                                                 (click)="onEditQuestionClick(question?.id)">
                                                 <ng-icon name="heroPencil"></ng-icon>
-                                                Edit
+                                                Edit 
                                             </a>
                                         </li>
                                         <li *ngIf="!question?.isRequired && !question?.isOpenEnded">
                                             <a href="javascript:void(0);" class="dropdown-item"
                                                 (click)="onEditDesc(question?.id)">
                                                 <ng-icon name="heroPencil"></ng-icon>
-                                                Edit
+                                                Edit 
                                             </a>
                                         </li>
                                         <li *ngIf="question?.logics.length==0 && question?.isRequired">
@@ -843,7 +850,7 @@
                                                                                 <div class="col-md-8" *ngIf="question?.questionType === 'Open Ended' && logicEntry.ifId !== 12 && logicEntry.ifId !== 13">
                                                                                     <input id="answer" type="text" name="answer" class="form-control" [(ngModel)]="logicEntry.ifExpected"/>
                                                                                 </div> 
-                                                                                <div style="display: none;" 
+                                                                                <!-- <div style="display: none;" 
                                                                                     class="col-md-8" 
                                                                                     *ngIf="question?.questionType === 'Open Ended' && (logicEntry.ifId == 12 || logicEntry.ifId == 13)">
                                                                                     <input id="answer" 
@@ -852,7 +859,7 @@
                                                                                         class="form-control" 
                                                                                         [(ngModel)]="logicEntry.ifExpected" 
                                                                                         (change)="onInputChange(logicEntry.ifId, i, j)" />
-                                                                                </div>
+                                                                                </div> -->
 
                                                                                 
 

@@ -91,7 +91,8 @@ export class AgePopupComponent {
       currentQuestion.createdDate = this.getCurrentDateTime()
       currentQuestion.modifiedDate = this.getCurrentDateTime();
       currentQuestion.genericTypeId = this.typeid
-      currentQuestion.openEndedType = "date"
+      currentQuestion.openEndedType = "date";
+      currentQuestion.isRequired = this.openendedquesreq;
 
       this.surveyservice.CreateGeneralQuestion(currentQuestion).subscribe({
         next: (resp: any) => {

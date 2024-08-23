@@ -91,7 +91,8 @@ export class SelfiePopupComponent {
       currentQuestion.createdDate = this.getCurrentDateTime()
       currentQuestion.modifiedDate = this.getCurrentDateTime();
       currentQuestion.genericTypeId = this.typeid
-      currentQuestion.openEndedType = "file"
+      currentQuestion.openEndedType = "file";
+      currentQuestion.isRequired = this.openendedquesreq;
 
       this.surveyservice.CreateGeneralQuestion(currentQuestion).subscribe({
         next: (resp: any) => {

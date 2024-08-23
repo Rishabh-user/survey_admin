@@ -93,7 +93,8 @@ export class EmailAddressPopupComponent {
       currentQuestion.createdDate = this.getCurrentDateTime()
       currentQuestion.modifiedDate = this.getCurrentDateTime();
       currentQuestion.genericTypeId = this.typeid
-      currentQuestion.openEndedType = "email"
+      currentQuestion.openEndedType = "email";
+      currentQuestion.isRequired = this.openendedquesreq;
 
       this.surveyservice.CreateGeneralQuestion(currentQuestion).subscribe({
         next: (resp: any) => {
