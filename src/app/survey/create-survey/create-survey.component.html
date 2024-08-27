@@ -591,7 +591,15 @@
                                                 Edit 
                                             </a>
                                         </li>
-                                        <li *ngIf="question?.logics.length==0 && question?.isRequired">
+                                        <li *ngIf="question?.logics?.length==0 && question?.isRequired">
+                                            <a href="javascript:void(0);" class="dropdown-item"
+                                                (click)="toggleLogic(i,question?.id,'add');getQuestionListBranching(question?.id);getOptionsByQuestionIdLogic(question?.id);openEndedVlaues(question?.questionType);toggleMatrixLogic(i,question?.id,'add');getMatrixLogic(i,question?.id);getMatrixColumnByQuestionIdLogic(question?.id)">
+                                                <ng-icon name="heroCommandLine"></ng-icon>
+                                                Logic
+                                            </a>
+
+                                        </li>
+                                        <li *ngIf="question?.logics?.length==0 && !question?.isRequired && question?.isOpenEnded">
                                             <a href="javascript:void(0);" class="dropdown-item"
                                                 (click)="toggleLogic(i,question?.id,'add');getQuestionListBranching(question?.id);getOptionsByQuestionIdLogic(question?.id);openEndedVlaues(question?.questionType);toggleMatrixLogic(i,question?.id,'add');getMatrixLogic(i,question?.id);getMatrixColumnByQuestionIdLogic(question?.id)">
                                                 <ng-icon name="heroCommandLine"></ng-icon>

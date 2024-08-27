@@ -135,6 +135,7 @@ export class EditSurveyComponent {
   optionaloption:boolean = true;
   showCreateAnswerLogic:boolean = false;
   openendedquesreq:boolean = true;
+  minLimit:any;
   
 
   constructor(public themeService: DataService, private router: Router,
@@ -208,6 +209,7 @@ export class EditSurveyComponent {
       this.questionToolTip = data.questionToolTip;
       this.openendedquesreq = this.question.isRequired;
       this.question.openEndedType = data.openEndedType
+      this.minLimit = data.minLimit;
       
 
       data.options.forEach((opt: any) => {
@@ -889,6 +891,7 @@ export class EditSurveyComponent {
     this.question.description = this.description;
     this.question.questionToolTip = this.questionToolTip;
     this.question.isRequired = this.openendedquesreq;
+    this.question.minLimit = this.minLimit;
     
 
     let modifiedoptions: serveyOption[] = [];

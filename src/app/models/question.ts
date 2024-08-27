@@ -33,7 +33,8 @@ export class Question {
     public genericKey: number = 0
     public isNumeric: boolean = false
     public isAlphabet: boolean = false
-    public textLimit: number = 0
+    public textLimit: number = 0;
+    public minLimit: number = 0;
     public questionSummery: string = ''
     public matrixHeader: MatrixHeader[]=[]
     public questionToolTip: string = ''

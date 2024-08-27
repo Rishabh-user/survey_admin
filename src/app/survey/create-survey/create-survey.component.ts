@@ -1749,6 +1749,7 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
         if (response != '' && response != undefined) {
           this.selectedAutoCodeOption = response;
           this.isDivVisible = true;
+          console.log("loopong",this.isDivVisible)
         }
         // this.isDivVisible = true;
       },
@@ -2223,9 +2224,11 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
 
     this.surveyservice.getLogicCount(this.surveyId).subscribe({
       next: (resp: any) => {
-
-        this.logiccount = resp
-        console.log("logiccount", this.logiccount)
+        if(resp > 0)
+        { 
+           this.logiccount = resp
+          console.log("logiccount", this.logiccount)
+        }
       },
       error: (err: any) => {
       }
@@ -3094,8 +3097,12 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
        
        next: (resp: any) => {
        
-         this.endscreenid = resp.id;
-         this.isDivVisible = true;
+         this.endscreenid = resp?.id;
+         if(this.endscreenid){
+          this.isDivVisible = true;
+         }
+         
+         console.log("endscrn",this.isDivVisible)
         
        },
        error: (err:any) =>{
