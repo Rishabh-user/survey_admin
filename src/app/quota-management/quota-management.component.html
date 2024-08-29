@@ -32,25 +32,30 @@
 </div>
 <div [class.vendor-link]="role === 'Vendor' || role === 'Client'">
 
-    <div class="common-bg" >
-        <!-- <div>
+    <div class="common-bg">
+        <div>
             <div class="mb-3">
+                <label class="form-label">Vendor List</label>
+               
                 <mat-form-field>
-                <mat-select #selectElement>
-                    <mat-option *ngFor="let option of vendorsurveydata" [value]="option.surveyId">
-                    {{ option.name }}
-                    </mat-option>
-                </mat-select>
+                    <mat-select [(ngModel)]="vendorid" #selectElement >
+                        <mat-option *ngFor="let option of vendorsurveydata" [value]="option.id" (onSelectionChange)="vendorSelectId($event,option.id)">
+                        {{ option.firstName }} {{option.lastName}}
+                        </mat-option>
+                    </mat-select>
                 </mat-form-field>
             </div>
-            <div class="mb-3">
+            <!-- <div class="mb-3">
                 <button type="button"  class="btn btn-primary" (click)="generateVendorUrl()">Generate Url</button>
                 <div *ngIf="vendorurl" class="mt-3">
                     <input class="form-control" [(ngModel)]="vendorgeneratedurl" #linkInput/>
 
                 </div>
-            </div>
-        </div> -->
+            </div> -->
+        </div>
+    </div>
+
+    <div class="common-bg">
         <div class="common-heading">
             <div class="row">
                 <div class="col-md-6">

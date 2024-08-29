@@ -43,6 +43,8 @@ export class QuotaManagementComponent {
   vendorurl: boolean=false;
   vendorgeneratedurl: string;
   uid: any;
+  vendorid:number
+  router: any;
   //QuotaData: QuotaData;
 
 
@@ -55,6 +57,7 @@ export class QuotaManagementComponent {
         let _queryDecodedData = this.crypto.decryptQueryParam(_queryData);
         let _data = _queryDecodedData.split('_');
         this.quotoid = _data[0];
+        console.log("this.quotoid",this.quotoid)
       }
     })
 
@@ -66,6 +69,7 @@ export class QuotaManagementComponent {
     this.surveyQuotaJson.createdDate = new Date();
     this.surveyQuotaJson.surveyId = this.surveyId;
     this.surveyQuotaJson.status = this.status;
+    this.surveyQuotaJson.vendarId = this.vendorid;
   }
 
 
@@ -81,7 +85,7 @@ export class QuotaManagementComponent {
     this.centername = this.utils.getCenterName();
     this.hideBreadcrumb();
     setTimeout(() => {
-      this.getAllSurveyList()
+      this.getAllVendorSurveyList()
     }, 1000);
     // get surveydata
     this.route.paramMap.subscribe(_params => {
@@ -504,6 +508,7 @@ activeIndicesForInterlock(interlockindex: number): number[] {
       totalUsers: this.surveycount,
       centerId: this.centerId,
       status: "ACT",
+      vendarId: this.vendorid,
       createdDate: this.getCurrentDateTime(),
       questionDto: {
         quotaQuestionsId: 0,
@@ -617,6 +622,7 @@ activeIndicesForInterlock(interlockindex: number): number[] {
   questionjson: QuestionDto
   selectedques:any[]=[]
   getQuotaBySurveyId() {
+    
     console.log("hh", this.questionList);
     this.surveyservice.getQuotaBySurveyId(this.quotoid).subscribe({
       next: (data: any) => {
@@ -655,6 +661,7 @@ activeIndicesForInterlock(interlockindex: number): number[] {
         });
 
         this.quotaid = data.quotaId
+
         console.log("Quotas:", this.quotas);
       },
       error: (err: any) => {
@@ -707,9 +714,11 @@ activeIndicesForInterlock(interlockindex: number): number[] {
   manageQuota() {
 
     let isEdit = false;
+    this.surveyQuotaJson.vendarId = this.vendorid
     if (this.surveyQuotaJson.quotaId > 0) {
       isEdit = true;
     }
+    console.log("vendorid",this.vendorid)
 
     this.surveyservice.manageQuota(this.surveyQuotaJson, isEdit).subscribe({
       next: (response: any) => {
@@ -808,13 +817,14 @@ activeIndicesForInterlock(interlockindex: number): number[] {
 
 
   saveCount() {
-    
+    alert("sdfghj")
     const dataToSend = {
       quotaId: 0,
       surveyId: this.surveyId,
       totalUsers: this.surveycount,
       centerId: this.centerId,
       status: "ACT",
+      vendarId: this.vendorid,
       createdDate: this.getCurrentDateTime(),
       questionDto: {
         quotaQuestionsId: 0,
@@ -867,12 +877,14 @@ activeIndicesForInterlock(interlockindex: number): number[] {
 
   vendorsurveydata:any[]=[]
 
-  getAllSurveyList() {
-    this.surveyservice.GetSurveyList().subscribe((data: any) => {
-      this.vendorsurveydata = data.surveyType;
+  getAllVendorSurveyList() {
+    
+    this.surveyservice.getVendorList(this.quotoid).subscribe((data: any) => {
+      this.vendorsurveydata = data
       console.log("ertyu",this.vendorsurveydata)
 
     });
+   
   }
 
   generateVendorUrl(){
@@ -886,6 +898,11 @@ activeIndicesForInterlock(interlockindex: number): number[] {
     document.execCommand('copy');
     // alert('Link copied to clipboard');
     this.utility.showSuccess('Link copied to clipboard')
+  }
+
+  
+  vendorSelectId(event:any,vendorid:any){
+ 
   }
   
   

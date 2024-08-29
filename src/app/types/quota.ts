@@ -5,6 +5,7 @@ export class QuotaData {
     createdDate: Date;
     centerId: number;
     status: string;
+    vendarId: number;
     questionDto: QuestionDto[];
   
     constructor() {
@@ -14,6 +15,7 @@ export class QuotaData {
       this.createdDate = new Date();
       this.centerId = 0;
       this.status = '';
+      this.vendarId = 0;
       this.questionDto = [];
     }
   }
