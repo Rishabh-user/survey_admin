@@ -10,9 +10,11 @@
                     <span class="input-group-text" id="addon-wrapping">Sort By:</span>
                     <select class="form-select" [(ngModel)]="selectedCategory">
                         <option selected value="All Roles">All Roles</option>
-                        <option value="Admin">Admin</option>
                         <option value="SuperAdmin">Super Admin</option>
+                        <option value="Admin">Admin</option>
                         <option value="User">User</option>
+                        <option value="Vendor">Vendor</option>
+                        <option value="Client">Client</option>
                     </select>
                 </div>
             </div>
@@ -95,13 +97,13 @@
                     <div class="row">
                         <div class="col-md-6 mb-3">
                             <label for="">First Name</label>
-                            <input type="text" name="firstName" id="" class="form-control" [(ngModel)]="firstName"
+                            <input type="text" name="firstName" id="" class="form-control" [(ngModel)]="firstName" [ngModelOptions]="{standalone: true}"
                                 (blur)="validateSurvey()">
                             <div *ngIf="!firstNamerequired" class="text-danger">First Name is required.</div>
                         </div>
                         <div class="col-md-6 mb-3">
                             <label for="">Last Name</label>
-                            <input type="text" name="lastName" id="" class="form-control" [(ngModel)]="lastname"
+                            <input type="text" name="lastName" id="" class="form-control" [(ngModel)]="lastname" [ngModelOptions]="{standalone: true}"
                                 (blur)="validateSurvey()" />
                             <div *ngIf="!lastNamerequired" class="text-danger">Last Name is required.</div>
                         </div>
@@ -109,13 +111,13 @@
                     <div class="row">
                         <div class="col-md-6 mb-3">
                             <label for="">Email</label>
-                            <input type="email" class="form-control" [(ngModel)]="email" name="email"
+                            <input type="email" class="form-control" [(ngModel)]="email" name="email" [ngModelOptions]="{standalone: true}"
                                 (blur)="validateSurvey()">
                             <div *ngIf="!emailaddress" class="text-danger">Email is required.</div>
                         </div>
                         <div class="col-md-6 mb-3">
                             <label for="">Phone No.</label>
-                            <input type="number" class="form-control" [(ngModel)]="contactNo" name="contactNo"
+                            <input type="number" class="form-control" [(ngModel)]="contactNo" name="contactNo" [ngModelOptions]="{standalone: true}"
                                 (blur)="validateSurvey()">
                             <div *ngIf="!contactNo || !phoneLengthError" class="text-danger">
                                 <ng-container *ngIf="!contactNo && touched">Phone Number is required.</ng-container>
@@ -133,21 +135,28 @@
                                     <option *ngFor="let item of optionsArr1;let i=index;"
                                         value="{{item.id}}">{{item.option}}</option>
                                 </select> -->
+                                
+                                {{(userroledata)}}
+                                
                                 <select class="form-select" [(ngModel)]="userroledata" (change)="userrole($event)">
-                                    <option *ngFor="let role of userroles" [value]="role">{{role}}</option>
+                                    
+                                    <option *ngFor="let role of roles" [value]="role.name">
+                                       
+                                        {{role.name}}
+                                    </option>
                                 </select>
                             <div *ngIf="!roletype" class="text-danger">Role is required.</div>
                         </div>
                         <div class="col-md-6 mb-3">
                             <label for="">Created Date</label>
-                            <input type="text" name="createddate" id="" class="form-control"
+                            <input type="text" name="createddate" id="" class="form-control" [ngModelOptions]="{standalone: true}"
                                 [(ngModel)]="usercreateddate" />
                         </div>
                     </div>
                     <div class="d-flex lign-items-center gap-2">
                         <label for="">Status</label>
                         <div class="form-check form-switch">
-                            <input class="form-check-input" type="checkbox" role="switch" [(ngModel)]="isChecked"
+                            <input class="form-check-input" type="checkbox" role="switch" [(ngModel)]="isChecked" 
                                 name="isChecked" (change)="onCheckboxChange($event)">
                         </div>
                     </div>

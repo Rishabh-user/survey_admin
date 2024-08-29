@@ -337,7 +337,7 @@ activeIndicesForInterlock(interlockindex: number): number[] {
 
   GetSurveyDetails() {
 
-    this.surveyservice.getSurveyDetailsById(this.pageNumber, this.pageSize, this.surveyId).subscribe((data: any) => {
+    this.surveyservice.getSurveyDetailsById(this.pageNumber, this.pageSize, this.quotoid).subscribe((data: any) => {
       this.questionList = data;
       console.log("gg  questionList", this.questionList);
 
@@ -618,7 +618,7 @@ activeIndicesForInterlock(interlockindex: number): number[] {
   selectedques:any[]=[]
   getQuotaBySurveyId() {
     console.log("hh", this.questionList);
-    this.surveyservice.getQuotaBySurveyId(this.surveyId).subscribe({
+    this.surveyservice.getQuotaBySurveyId(this.quotoid).subscribe({
       next: (data: any) => {
         this.isQuotasVisible = true;
 

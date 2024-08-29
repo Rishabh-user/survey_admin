@@ -71,9 +71,10 @@
                     [ngClass]="{'recent-project-list': true, 'online': list.status === 'ACT', 'offline': list.status !== 'ACT'}">
                     <div class="d-flex justify-content-between">
                         <div class="col-md-8">
-                            <h5 class="mb-2">
-                                <ng-container *ngIf="list.status !== 'ACT' && list.status !== 'HOL'; else disabledLink">
-                                    <a style="color: #000;"
+                            <h5 class="mb-2" >
+                                <ng-container  *ngIf="list.status !== 'ACT' && list.status !== 'HOL'; else disabledLink">
+                                    
+                                    <a  style="color: #888; pointer-events: none; "
                                         [routerLink]="'/survey/manage-survey/' + (list.surveyId | encrypt)"
                                         href="javascript:">
                                         {{ list.name }}

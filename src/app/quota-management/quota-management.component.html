@@ -30,185 +30,189 @@
     </div> -->
 
 </div>
-<div class="common-bg" [class.vendor-link]="role === 'Vendor'">
-    <!-- <div>
-        <div class="mb-3">
-            <mat-form-field>
-              <mat-select #selectElement>
-                <mat-option *ngFor="let option of vendorsurveydata" [value]="option.surveyId">
-                  {{ option.name }}
-                </mat-option>
-              </mat-select>
-            </mat-form-field>
-        </div>
-        <div class="mb-3">
-            <button type="button"  class="btn btn-primary" (click)="generateVendorUrl()">Generate Url</button>
-            <div *ngIf="vendorurl" class="mt-3">
-                <input class="form-control" [(ngModel)]="vendorgeneratedurl" #linkInput/>
+<div [class.vendor-link]="role === 'Vendor' || role === 'Client'">
 
-            </div>
-        </div>
-    </div> -->
-    <div class="common-heading">
-        <div class="row">
-            <div class="col-md-6">
-                <h4>Add Quotas</h4>
-                <p class="mb-0">Quota Operation</p>
-            </div>
-            <div class="col-md-6 text-end">
-                <button type="button" (click)="getQuotaBySurveyId()" class="btn btn-primary">Refresh Quota</button>
-                <button type="button" (click)="onDeleteQuota()" class="ms-2 btn btn-danger">Delete Quota</button>
-            </div>
-        </div>
-    </div>
-    <div class="mb-4 quota-operation">
-
-        <label class="form-label">Total Count</label>
-        <div class="row g-3 mb-4">
-            <div class="col-11">
-                <input type="number" class="form-control" name="surveycount" [(ngModel)]="surveyQuotaJson.totalUsers"
-                    (blur)="showQuotas()">
-                <div *ngIf="showCountError" class="text-danger">Please enter a valid survey count.</div>
-            </div>
-            <div class="col-1 text-end">
-                <button type="button" class="btn btn-primary w-100" (click)="manageQuota()">Save</button>
-            </div>
-        </div>
-    </div>
-    <div class="mt-4">
-        <button type="button" class="btn btn-primary" (click)="addQuota()">Add Quota</button>
-    </div>
-</div>
-<div class="common-bg" *ngIf="surveyQuotaJson.questionDto.length>0">
-    <div class="quota-management">
-        <h4>Quotas </h4>
-        <p>Quotas help you split the completes into group of specific age, gender, regions and/or profiling. To
-            interlock quotas click new interlocked quota below.</p>
-
-        <div>
-            <!-- {{surveyQuotaJson | json}} -->
-
-            <div *ngFor="let question of surveyQuotaJson?.questionDto; let i = index" class="add-quota">
-                <label class="form-label">Select Question </label>
-                <!-- <select class="form-select" [(ngModel)]="quota.selectedQuestion"
-                    (change)="showQuestionQuotas(i);selectedOptionDetails(quota.selectedQuestion,i)" >
-                    <option value="" disabled>Select Question</option>
-                    <option *ngFor="let ques of questionList.questions" [value]="ques.id">{{ ques.question }}</option>
-                </select> -->
+    <div class="common-bg" >
+        <!-- <div>
+            <div class="mb-3">
                 <mat-form-field>
-                    <mat-select [(ngModel)]="question.questionId" 
-                        (ngModelChange)="showQuestionQptions(i,question.questionId);"  #selectElement>
-                        <mat-option [disabled]="true" [value]="0"> Select Question</mat-option>
-                        <mat-option *ngFor="let ques of questionList.questions;let i=index" [value]="ques.id" [disabled]="isQuestionSelected(ques.id)">
-                            Q-{{i+1}} {{ ques.question }}
-                        </mat-option>
-                    </mat-select>
+                <mat-select #selectElement>
+                    <mat-option *ngFor="let option of vendorsurveydata" [value]="option.surveyId">
+                    {{ option.name }}
+                    </mat-option>
+                </mat-select>
                 </mat-form-field>
+            </div>
+            <div class="mb-3">
+                <button type="button"  class="btn btn-primary" (click)="generateVendorUrl()">Generate Url</button>
+                <div *ngIf="vendorurl" class="mt-3">
+                    <input class="form-control" [(ngModel)]="vendorgeneratedurl" #linkInput/>
 
-                <!-- <div class="quotas" *ngIf="question.showQuotasDiv"> -->
-                <div class="quotas" *ngIf="question.questionId != 0">
-                    <h5>Add Distribution</h5>
+                </div>
+            </div>
+        </div> -->
+        <div class="common-heading">
+            <div class="row">
+                <div class="col-md-6">
+                    <h4>Add Quotas</h4>
+                    <p class="mb-0">Quota Operation</p>
+                </div>
+                <div class="col-md-6 text-end">
+                    <button type="button" (click)="getQuotaBySurveyId()" class="btn btn-primary">Refresh Quota</button>
+                    <button type="button" (click)="onDeleteQuota()" class="ms-2 btn btn-danger">Delete Quota</button>
+                </div>
+            </div>
+        </div>
+        <div class="mb-4 quota-operation">
 
-                    <div class="add-distribution">
-                        <div class="question-type">
-                            <div>
-                                <h6 >
-                                    {{ getQuestionDetail(question.questionId, questionList.questions)?.genericType 
-                                        ? getQuestionDetail(question.questionId, questionList.questions)?.genericType 
-                                        : getQuestionDetail(question.questionId, questionList.questions)?.questionType }}<span>{{getQuestionDetail(question.questionId,
-                                        questionList.questions)?.genericType}}</span></h6>
+            <label class="form-label">Total Count</label>
+            <div class="row g-3 mb-4">
+                <div class="col-11">
+                    <input type="number" class="form-control" name="surveycount" [(ngModel)]="surveyQuotaJson.totalUsers"
+                        (blur)="showQuotas()">
+                    <div *ngIf="showCountError" class="text-danger">Please enter a valid survey count.</div>
+                </div>
+                <div class="col-1 text-end">
+                    <button type="button" class="btn btn-primary w-100" (click)="manageQuota()">Save</button>
+                </div>
+            </div>
+        </div>
+        <div class="mt-4">
+            <button type="button" class="btn btn-primary" (click)="addQuota()">Add Quota</button>
+        </div>
+    </div>
+    <div class="common-bg" *ngIf="surveyQuotaJson.questionDto.length>0">
+        <div class="quota-management">
+            <h4>Quotas </h4>
+            <p>Quotas help you split the completes into group of specific age, gender, regions and/or profiling. To
+                interlock quotas click new interlocked quota below.</p>
+
+            <div>
+                <!-- {{surveyQuotaJson | json}} -->
+
+                <div *ngFor="let question of surveyQuotaJson?.questionDto; let i = index" class="add-quota">
+                    <label class="form-label">Select Question </label>
+                    <!-- <select class="form-select" [(ngModel)]="quota.selectedQuestion"
+                        (change)="showQuestionQuotas(i);selectedOptionDetails(quota.selectedQuestion,i)" >
+                        <option value="" disabled>Select Question</option>
+                        <option *ngFor="let ques of questionList.questions" [value]="ques.id">{{ ques.question }}</option>
+                    </select> -->
+                    <mat-form-field>
+                        <mat-select [(ngModel)]="question.questionId" 
+                            (ngModelChange)="showQuestionQptions(i,question.questionId);"  #selectElement>
+                            <mat-option [disabled]="true" [value]="0"> Select Question</mat-option>
+                            <mat-option *ngFor="let ques of questionList.questions;let i=index" [value]="ques.id" [disabled]="isQuestionSelected(ques.id)">
+                                Q-{{i+1}} {{ ques.question }}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+
+                    <!-- <div class="quotas" *ngIf="question.showQuotasDiv"> -->
+                    <div class="quotas" *ngIf="question.questionId != 0">
+                        <h5>Add Distribution</h5>
+
+                        <div class="add-distribution">
+                            <div class="question-type">
+                                <div>
+                                    <h6 >
+                                        {{ getQuestionDetail(question.questionId, questionList.questions)?.genericType 
+                                            ? getQuestionDetail(question.questionId, questionList.questions)?.genericType 
+                                            : getQuestionDetail(question.questionId, questionList.questions)?.questionType }}<span>{{getQuestionDetail(question.questionId,
+                                            questionList.questions)?.genericType}}</span></h6>
+                                </div>
+                                <div class="implement-quota">
+                                    <!-- <span [class.active]="!censusActive[i] && !customActive[i]"
+                                        (click)="toggleNone(i)">None</span>
+                                    <span [class.active]="censusActive[i]" (click)="toggleCensus(i)">Census</span>
+                                    <span [class.active]="customActive[i]" (click)="toggleCustom(i)">Custom</span> -->
+
+                                    <span [ngClass]="{'active': question.type === 'none'}"
+                                        (click)="toggleCustom(i,'none')">None</span>
+                                    <span [ngClass]="{'active': question.type === 'census'}"
+                                        (click)="toggleCustom(i,'census')">Census</span>
+                                    <span [ngClass]="{'active': question.type === 'custom'}"
+                                        (click)="toggleCustom(i,'custom')">Custom</span>
+
+                                </div>
                             </div>
-                            <div class="implement-quota">
-                                <!-- <span [class.active]="!censusActive[i] && !customActive[i]"
-                                    (click)="toggleNone(i)">None</span>
-                                <span [class.active]="censusActive[i]" (click)="toggleCensus(i)">Census</span>
-                                <span [class.active]="customActive[i]" (click)="toggleCustom(i)">Custom</span> -->
-
-                                <span [ngClass]="{'active': question.type === 'none'}"
-                                    (click)="toggleCustom(i,'none')">None</span>
-                                <span [ngClass]="{'active': question.type === 'census'}"
-                                    (click)="toggleCustom(i,'census')">Census</span>
-                                <span [ngClass]="{'active': question.type === 'custom'}"
-                                    (click)="toggleCustom(i,'custom')">Custom</span>
-
-                            </div>
-                        </div>
-                        <!-- <h4>Q. Select your gender.</h4> -->
-                        <h4>{{getQuestionDetail(question.questionId, questionList.questions)?.question}}</h4>
-                        <!-- <div class="display:none;" *ngIf="showCensusDiv[i] || showCustomDiv[i]"> -->
-                        <div class="display:none;" *ngIf="question.type =='census' || question.type =='custom'">
-                            <ul class="question-options">
-                                <li *ngFor="let options of question?.optionsDto; let j = index">
-                                    <ng-container
-                                        *ngIf="getOptionDetail(options?.optionId,question.questionId,questionList.questions)?.option">
-                                        <span>{{
-                                            getOptionDetail(options?.optionId,question.questionId,questionList.questions)?.option
-                                            }}</span>
-                                        <input type="number" min="0" class="form-control"
-                                            [(ngModel)]="options.userCount" [disabled]="question.type !='custom'">
-                                    </ng-container>
-                                </li>
-                            </ul>
-                            <div class="total-count">
-                                <button type="button" class="btn btn-outline-primary "
-                                    (click)="open(contentInterlock, i,question.questionId)"><ng-icon name="heroLink"></ng-icon></button>
-
-                                <div class="mt-4 d-flex gap-3 align-items-center">
-                                    <p class="mb-0"><strong>Total : </strong> <span>
-                                            {{getTotalSum(question?.optionsDto)}}</span></p>
+                            <!-- <h4>Q. Select your gender.</h4> -->
+                            <h4>{{getQuestionDetail(question.questionId, questionList.questions)?.question}}</h4>
+                            <!-- <div class="display:none;" *ngIf="showCensusDiv[i] || showCustomDiv[i]"> -->
+                            <div class="display:none;" *ngIf="question.type =='census' || question.type =='custom'">
+                                <ul class="question-options">
+                                    <li *ngFor="let options of question?.optionsDto; let j = index">
+                                        <ng-container
+                                            *ngIf="getOptionDetail(options?.optionId,question.questionId,questionList.questions)?.option">
+                                            <span>{{
+                                                getOptionDetail(options?.optionId,question.questionId,questionList.questions)?.option
+                                                }}</span>
+                                            <input type="number" min="0" class="form-control"
+                                                [(ngModel)]="options.userCount" [disabled]="question.type !='custom'">
+                                        </ng-container>
+                                    </li>
+                                </ul>
+                                <div class="total-count">
                                     <button type="button" class="btn btn-outline-primary "
-                                        (click)="onDeleteQuestion(i)">Delete</button>
-                                    <button type="button" class="btn btn-primary " (click)="manageQuota()">Save</button>
-                                    <!-- <button type="button" class="btn btn-success" (click)="updateQuota(i)">Update</button> -->
+                                        (click)="open(contentInterlock, i,question.questionId)"><ng-icon name="heroLink"></ng-icon></button>
+
+                                    <div class="mt-4 d-flex gap-3 align-items-center">
+                                        <p class="mb-0"><strong>Total : </strong> <span>
+                                                {{getTotalSum(question?.optionsDto)}}</span></p>
+                                        <button type="button" class="btn btn-outline-primary "
+                                            (click)="onDeleteQuestion(i)">Delete</button>
+                                        <button type="button" class="btn btn-primary " (click)="manageQuota()">Save</button>
+                                        <!-- <button type="button" class="btn btn-success" (click)="updateQuota(i)">Update</button> -->
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
 
+                </div>
+            </div>
+
+
+            <div class="mt-4">
+                <button type="button" class="btn btn-primary" (click)="addQuota()">Add Quota</button>
+                <button type="button" class="btn btn-primary ms-3 float-end" (click)="manageQuota()">Save</button>
             </div>
         </div>
+    </div>
 
-
-        <div class="mt-4">
-            <button type="button" class="btn btn-primary" (click)="addQuota()">Add Quota</button>
-            <button type="button" class="btn btn-primary ms-3 float-end" (click)="manageQuota()">Save</button>
+    <div class="common-bg">
+        <h4>Interlocked Quotas</h4>
+        <div class="interlocked-quotas" [style.display]="showInterlockedQuotas ? 'block' : 'none'">
+        <!-- <div class="interlocked-quotas" > -->
+            <ul>
+                <ng-container *ngFor="let question of surveyQuotaJson?.questionDto; let i = index">
+                <li *ngFor="let generictype of genericlist; let i= index ">
+                    <span>{{generictype}}</span>
+                    <p class="mb-0" *ngFor="let options of selectedoptions">{{options.option}}</p>
+                </li></ng-container>
+                
+            </ul>
+            <table class="table table-bordered mt-5">
+                <tbody>
+                    <tr>
+                        <td>Male, 18-24, Central India</td>
+                        <td><input type="number" class="form-control" value="30"></td>
+                    </tr>
+                    <tr>
+                        <td>Female, 18-24, Central India</td>
+                        <td><input type="number" class="form-control" value="30"></td>
+                    </tr>
+                    <tr>
+                        <td>Male, 18-24, Central India</td>
+                        <td><input type="number" class="form-control" value="30"></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="blanked-interlocked">
+            <ng-icon name="heroPlus" style="font-size: .875rem;"></ng-icon><span>Interlock Quotas</span>
         </div>
     </div>
-</div>
 
-<div class="common-bg">
-    <h4>Interlocked Quotas</h4>
-    <div class="interlocked-quotas" [style.display]="showInterlockedQuotas ? 'block' : 'none'">
-    <!-- <div class="interlocked-quotas" > -->
-        <ul>
-            <ng-container *ngFor="let question of surveyQuotaJson?.questionDto; let i = index">
-            <li *ngFor="let generictype of genericlist; let i= index ">
-                <span>{{generictype}}</span>
-                <p class="mb-0" *ngFor="let options of selectedoptions">{{options.option}}</p>
-            </li></ng-container>
-            
-        </ul>
-        <table class="table table-bordered mt-5">
-            <tbody>
-                <tr>
-                    <td>Male, 18-24, Central India</td>
-                    <td><input type="number" class="form-control" value="30"></td>
-                </tr>
-                <tr>
-                    <td>Female, 18-24, Central India</td>
-                    <td><input type="number" class="form-control" value="30"></td>
-                </tr>
-                <tr>
-                    <td>Male, 18-24, Central India</td>
-                    <td><input type="number" class="form-control" value="30"></td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
-    <div class="blanked-interlocked">
-        <ng-icon name="heroPlus" style="font-size: .875rem;"></ng-icon><span>Interlock Quotas</span>
-    </div>
 </div>
 
 <ng-template #contentInterlock let-modal>

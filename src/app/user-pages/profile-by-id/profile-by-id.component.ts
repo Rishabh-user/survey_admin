@@ -35,16 +35,18 @@ export class ProfileByIdComponent {
   createdDate: any;
   roleId: number = 0;
   centerId: number = this.utility.getCenterId();
+  
 
 
   roles: any[] = [
-    { id: 1, name: 'SuperAdmin' },
+    { id: 1, name: 'SuperAdmin'},
     { id: 2, name: 'Admin' },
     { id: 3, name: 'User' },
+    { id: 4, name: 'Client' },
     { id: 5, name: 'Vendor' }
   ];
 
-  userroles: string[] = ['superadmin', 'Admin', 'User'];
+  userroles: string[] = ['SuperAdmin', 'Admin', 'User'];
 
   isSuperAdmin = false;
   isAdmin = false;
@@ -99,10 +101,12 @@ export class ProfileByIdComponent {
   lastname: any
   userroledata: any
   usercreateddate: any
-  userstatus: any
+  userstatus: any;
+  filteruserroleid:any
 
   getUserDetails(userId: any): void {
-
+    
+    
     const filteredUser = this.UserData.find((user: any) => user.id === userId);
     
     if (filteredUser) {
@@ -111,12 +115,15 @@ export class ProfileByIdComponent {
       this.email = filteredUser.email;
       this.contactNo = filteredUser.contactNo;
       this.userroledata = filteredUser.role;
+      this.filteruserroleid = filteredUser.roleId
       this.usercreateddate = filteredUser.createdDate;
       this.id = userId;
       this.userstatus = filteredUser.status
 
 
       this.isChecked = this.userstatus === 'ACT';
+
+      console.log("userroledata",this.filteruserroleid)
 
 
     } else {

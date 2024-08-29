@@ -69,7 +69,7 @@
                                         <span class="menu-icon">
                                             <ng-icon name="heroStopCircle"></ng-icon>
                                         </span>
-                                        <span class="flex-1">View All Survey vendor</span>
+                                        <span class="flex-1">View All Survey</span>
                                     </span>
                                 </a>
                             </li>
@@ -106,7 +106,7 @@
                                     </span>
                                 </a>
                             </li>
-                            <li class="block pl-4 pr-1 first:pt-4  last:pb-4" *ngIf="this.isSuperAdmin">
+                            <li class="block pl-4 pr-1 first:pt-4  last:pb-4" *ngIf="!this.isSuperAdmin">
                                 <a class="" routerLink="/user-pages/all-users">
                                     <span class="d-flex align-items-center text-sm transition-all duration-150">
                                         <span class="menu-icon">
@@ -116,7 +116,7 @@
                                     </span>
                                 </a>
                             </li>
-                            <li class="block pl-4 pr-1 first:pt-4  last:pb-4" *ngIf="!this.isSuperAdmin">
+                            <li class="block pl-4 pr-1 first:pt-4  last:pb-4" *ngIf="this.isSuperAdmin">
                                 <a class="" routerLink="/user-pages/profile-id">
                                     <span class="d-flex align-items-center text-sm transition-all duration-150">
                                         <span class="menu-icon">
