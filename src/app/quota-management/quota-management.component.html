@@ -39,7 +39,7 @@
                
                 <mat-form-field>
                     <mat-select [(ngModel)]="vendorid" #selectElement >
-                        <mat-option *ngFor="let option of vendorsurveydata" [value]="option.id" (onSelectionChange)="vendorSelectId($event,option.id)">
+                        <mat-option *ngFor="let option of vendorsurveydata" [value]="option.id" (onSelectionChange)="vendorSelectId($event)">
                         {{ option.firstName }} {{option.lastName}}
                         </mat-option>
                     </mat-select>

@@ -901,8 +901,9 @@ activeIndicesForInterlock(interlockindex: number): number[] {
   }
 
   
-  vendorSelectId(event:any,vendorid:any){
- 
+  vendorSelectId(event:any){
+    this.surveyQuotaJson.totalUsers=0;
+    this.surveyQuotaJson.questionDto=[]
   }
   
   
