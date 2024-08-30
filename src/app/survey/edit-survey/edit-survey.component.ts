@@ -1015,7 +1015,7 @@ export class EditSurveyComponent {
           // this.router.navigateByUrl(url);
           // this.onSaveEvent.emit();
           if (resp == '"QuestionCreateFailed"') {
-            this.utility.showSuccess('Failed to Create Question');
+            this.utility.showError('Failed to Create Question');
           } else if('"QuestionSuccessfullyCreated"') {
             this.utility.showSuccess('Question Generated Successfully.');
             let url = `/survey/manage-survey/${this.crypto.encryptParam(this.surveyId)}`;

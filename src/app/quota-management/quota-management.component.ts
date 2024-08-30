@@ -767,6 +767,7 @@ activeIndicesForInterlock(interlockindex: number): number[] {
         this.selectedQuestionIds.splice(indexInSelected, 1);
     }
     this.selectedQuestionIds.push(...this.selectedques);
+    console.log("selected ques",this.selectedQuestionIds)
 
 
   }
@@ -903,7 +904,11 @@ activeIndicesForInterlock(interlockindex: number): number[] {
   
   vendorSelectId(event:any){
     this.surveyQuotaJson.totalUsers=0;
-    this.surveyQuotaJson.questionDto=[]
+    this.surveyQuotaJson.questionDto=[];
+    this.surveyQuotaJson.quotaId=0;
+    this.selectedques=[];
+    this.selectedQuestionIds=[];
+    console.log("selected ques clear",this.selectedQuestionIds)
   }
   
   
