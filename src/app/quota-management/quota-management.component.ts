@@ -500,64 +500,7 @@ activeIndicesForInterlock(interlockindex: number): number[] {
     return currentDateTime.substring(0, currentDateTime.length - 1) + 'Z';
   }
 
-  saveQuota(index: number) {
-    console.log("saving quota", [index])
-    const dataToSend = {
-      quotaId: 0,
-      surveyId: this.surveyId,
-      totalUsers: this.surveycount,
-      centerId: this.centerId,
-      status: "ACT",
-      vendarId: this.vendorid,
-      createdDate: this.getCurrentDateTime(),
-      questionDto: {
-        quotaQuestionsId: 0,
-        quotaId: 0,
-        questionId: this.selectedquestionid,
-        type: this.activeValue,
-        interlock: 0,
-        isOpenEnded: false,
-        optionsDto: [] as { quotaOptionsId: number; quotaQuestionId: number; optionId: any; userCount: number }[]
-      }
-    };
 
-
-    const options = this.selectedoptionid[index];
-
-    options.forEach((optionId: any) => {
-      const optionsDto = {
-        quotaOptionsId: 0,
-        quotaQuestionId: 0,
-        optionId: optionId,
-        userCount: this.dividedValue
-      }
-      dataToSend.questionDto.optionsDto.push(optionsDto);
-    });
-    if (this.quotaid > 0) {
-      this.surveyservice.updateQuota(dataToSend).subscribe(
-        resp => {
-          console.log("updateQuota ", resp)
-          this.utility.showSuccess('Quota updated Successfully.');
-        },
-        error => {
-          console.log("err create", error)
-          this.utility.showError('error');
-        }
-      )
-    } else {
-      this.surveyservice.createQuota(dataToSend).subscribe(
-        resp => {
-          console.log("create quota", resp)
-          this.utility.showSuccess('Quota Created Successfully.');
-        },
-        error => {
-          console.log("err create", error)
-          this.utility.showError('error');
-        }
-      )
-    }
-
-  }
   // updateQuota(index: number) {
   //   console.log("updating quota", index);
 
@@ -694,6 +637,7 @@ activeIndicesForInterlock(interlockindex: number): number[] {
         this.surveyQuotaJson = data as QuotaData;
         this.quotaid = data.quotaId
         this.surveycount = data.totalUsers;
+        this.vendorid = 390
 
         console.log("quotabyid json", this.surveyQuotaJson)
         console.log("quotabyid id", this.quotaid)
@@ -903,12 +847,17 @@ activeIndicesForInterlock(interlockindex: number): number[] {
 
   
   vendorSelectId(event:any){
+  
     this.surveyQuotaJson.totalUsers=0;
     this.surveyQuotaJson.questionDto=[];
     this.surveyQuotaJson.quotaId=0;
+    // this.surveyQuotaJson.status=''
+    // this.surveyQuotaJson.createdDate= new Date;
+    // this.surveyQuotaJson.surveyId=0;
     this.selectedques=[];
     this.selectedQuestionIds=[];
     console.log("selected ques clear",this.selectedQuestionIds)
+   
   }
   
   

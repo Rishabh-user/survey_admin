@@ -46,6 +46,8 @@ export class ProfileByIdComponent {
     { id: 5, name: 'Vendor' }
   ];
 
+  
+
   userroles: string[] = ['SuperAdmin', 'Admin', 'User'];
 
   isSuperAdmin = false;
@@ -56,6 +58,7 @@ export class ProfileByIdComponent {
   ngOnInit(): void {
     this.role = this.utility.getRole()
     this.getAllUser()
+    this.userstring()
 
     this.roleId = this.utility.getRoleId()
     if (this.role) {
@@ -271,6 +274,21 @@ export class ProfileByIdComponent {
       this.phoneLengthError
     );
   }
+
+  userstring(){
+    
+    for (const name of this.roles){
+      console.log("ishu",name.id)
+      console.log("ishu",typeof(name.name))
+    }
+  }
+
+  // userstring(){
+    
+  //   for (const role of this.roles) {
+  //     console.log(`ID: ${role.id}, Name: ${role.name}`);
+  // }
+  // }
 
 
 }

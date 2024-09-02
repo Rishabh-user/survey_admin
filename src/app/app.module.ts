@@ -74,6 +74,7 @@ import { LoginFormComponent } from './user-pages/loginForm/loginForm.component';
 import { PaymentThankyouComponent } from './payment-thankyou/payment-thankyou.component';
 import { QuotaManagementComponent } from './quota-management/quota-management.component';
 import { SupportComponent } from './support/support.component';
+import { SharedModule } from "./shared/shared.module";
 
 @NgModule({
   declarations: [
@@ -110,38 +111,38 @@ import { SupportComponent } from './support/support.component';
     HttpClientModule,
     MatSelectModule,
     NgIconsModule.withIcons({
-      heroHome,
-      heroCommandLine,
-      heroUsers,
-      heroChevronRight,
-      heroStopCircle,
-      heroClipboardDocumentList,
-      heroQuestionMarkCircle,
-      heroClipboardDocumentCheck,
-      heroShieldCheck,
-      heroUser,
-      heroLockClosed,
-      heroBell,
-      heroArrowLongRight,
-      heroBars3,
-      heroXMark,
-      heroMagnifyingGlass,
-      heroTrash,
-      heroShoppingBag,
-      heroInformationCircle,
-      heroLink,
-      heroPlus,
-      heroChartPie,
-      heroTicket,
-      heroChatBubbleBottomCenter
+        heroHome,
+        heroCommandLine,
+        heroUsers,
+        heroChevronRight,
+        heroStopCircle,
+        heroClipboardDocumentList,
+        heroQuestionMarkCircle,
+        heroClipboardDocumentCheck,
+        heroShieldCheck,
+        heroUser,
+        heroLockClosed,
+        heroBell,
+        heroArrowLongRight,
+        heroBars3,
+        heroXMark,
+        heroMagnifyingGlass,
+        heroTrash,
+        heroShoppingBag,
+        heroInformationCircle,
+        heroLink,
+        heroPlus,
+        heroChartPie,
+        heroTicket,
+        heroChatBubbleBottomCenter
     }),
     BrowserAnimationsModule,
     RecaptchaModule,
     RecaptchaFormsModule,
     NgxPaginationModule,
     ToastrModule.forRoot(),
-
-  ],
+    // SharedModule
+],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   providers: [
     LoaderService,

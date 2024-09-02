@@ -140,10 +140,7 @@
                                 
                                 <select class="form-select" [(ngModel)]="userroledata" (change)="userrole($event)">
                                     
-                                    <option *ngFor="let role of roles" [value]="role.name">
-                                       
-                                        {{role.name}}
-                                    </option>
+                                    <option *ngFor="let role of roles" value="{{role.name}}">{{role.name}}</option>
                                 </select>
                             <div *ngIf="!roletype" class="text-danger">Role is required.</div>
                         </div>

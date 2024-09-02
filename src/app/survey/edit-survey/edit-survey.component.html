@@ -478,7 +478,7 @@
                         <textarea [(ngModel)]="screeningRedirectUrl" class="form-control">
                         </textarea>
                     </div>
-                    <div *ngIf="question.questionTypeName === 'Open Ended' && question.openEndedType == ''">
+                    <div *ngIf="question.questionTypeName === 'Open Ended' && (question.openEndedType == '' || question.openEndedType == 'textarea')">
 
                         <div class="mb-3">
 
