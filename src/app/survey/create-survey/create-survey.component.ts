@@ -195,6 +195,7 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
   isMatrixElseShow: boolean[][] = [];
   isMatrixElseShowvalue: boolean[][] = [];
   numberage:number=0;
+  isopenendedvalue:boolean[][] = []
   
   
 
@@ -1253,8 +1254,15 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
 
     for (const logicEntry of logicEntries) {
       console.log('logicEntry', logicEntry);
-
-
+     
+      const index = logicEntries.indexOf(logicEntry);
+      
+      // console.log("this.isopenendedvalue[index][quesid]",this.isopenendedvalue[index][questionId],index,questionId)
+      // if(this.isopenendedvalue[index][questionId]){
+      //   alert("STOP")
+      //   break;
+      // }
+   
       this.createSingleLogicEntry(questionId, logicEntry, sort);
       sort = sort + 1;
 
@@ -1353,7 +1361,7 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
         response => {
 
           this.utils.showSuccess('Logic Created Successfully.');
-          window.location.reload();
+          // window.location.reload();
         },
         error => {
           console.error('Error occurred while sending POST request:', error);
@@ -1364,7 +1372,7 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
       this.surveyservice.createLogic(this.questionLogic).subscribe(
         response => {
           this.utils.showSuccess('Logic Created Successfully.');
-          window.location.reload();
+          // window.location.reload();
         },
         error => {
           console.error('Error occurred while sending POST request:', error);
@@ -3570,6 +3578,32 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
     }
 
   }
+
+  // validateOpenendedValue(index:number,quesid:number,value:number){
+  //   console.log("qwerty",index,quesid,value)
+
+
+  //   if(!!value && value.toString().trim().length > 0){
+  //     this.isopenendedvalue[index] = true;
+  //   } else {
+  //     this.isopenendedvalue[index] = false;
+  //   }
+
+  // }
+
+  validateOpenendedValue(index: number, quesid: number, value: any) {
+
+    console.log("qq",index,quesid,value)
+   
+    if (!this.isopenendedvalue[index]) {
+      this.isopenendedvalue[index] = [];
+    }
+  
+    this.isopenendedvalue[index][quesid] = !value;
+
+    console.log("ahk",this.isopenendedvalue[index][quesid])
+  }
+
   
 
 

@@ -399,7 +399,6 @@ export class EditSurveyComponent {
       if (this.question.questionTypeName === 'Slider Scale') {
         this.addsliderscale();
       }
-
      
 
     }
@@ -869,12 +868,15 @@ export class EditSurveyComponent {
       this.question.id = this.questionId;
     }
     if (this.question.questionTypeName === 'Open Ended' && (this.question.openEndedType === '' || this.question.openEndedType === 'textarea')) {
+
+      this.allOptions = []
+
       this.question.openEndedType = "textarea"
 
       if(this.textlimit === ''){
         this.question.textLimit = null;
       } else{
-        this.question.textLimit = this.textlimit
+        this.question.textLimit = this.textlimit;
       }
       // this.question.textLimit = this.textlimit
     }
@@ -1493,7 +1495,11 @@ export class EditSurveyComponent {
     this.questionTypeId = ques.id;
     this.question.questionTypeId = ques.id
     this.optionsArr1 = [];
-    this.optionsArr2 = []
+    this.optionsArr2 = [];
+    this.textlimit ='';
+    this.minLimit ='';
+    this.numeric = false;
+    this.alphabet = false;
 
 
     if (this.question.questionTypeName !== 'Rating Scale' && this.question.questionTypeName !== 'Boolean' && this.question.questionTypeName !== 'Image Selection' && this.question.questionTypeName !== 'NPS' && this.question.questionTypeName !== 'Open Ended' && this.question.questionTypeName !== 'Slider Scale') {
@@ -1518,7 +1524,6 @@ export class EditSurveyComponent {
     }
     this.question.isNumeric = this.numeric;
     this.question.isAlphabet = this.alphabet;
-
 
   }
 
