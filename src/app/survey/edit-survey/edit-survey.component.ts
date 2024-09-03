@@ -136,6 +136,8 @@ export class EditSurveyComponent {
   showCreateAnswerLogic:boolean = false;
   openendedquesreq:boolean = true;
   minLimit:any;
+  textlimit: any;
+
   
 
   constructor(public themeService: DataService, private router: Router,
@@ -794,8 +796,7 @@ export class EditSurveyComponent {
     
   }
 
-  textlimit: any;
-
+ 
   optionExists(optionText: string): boolean {
     // Check if the option already exists in optionsArr1 or optionsArr2
     return this.optionsArr1.some(option => option.option === optionText) ||
@@ -867,9 +868,15 @@ export class EditSurveyComponent {
     if (this.questionId > 0) {
       this.question.id = this.questionId;
     }
-    if (this.question.questionTypeName === 'Open Ended' && this.question.openEndedType === '') {
+    if (this.question.questionTypeName === 'Open Ended' && (this.question.openEndedType === '' || this.question.openEndedType === 'textarea')) {
       this.question.openEndedType = "textarea"
-      this.question.textLimit = this.textlimit
+
+      if(this.textlimit === ''){
+        this.question.textLimit = null;
+      } else{
+        this.question.textLimit = this.textlimit
+      }
+      // this.question.textLimit = this.textlimit
     }
     if (this.question.questionTypeName === 'Auto Continues Sum') {
       this.question.textLimit = this.textlimit
