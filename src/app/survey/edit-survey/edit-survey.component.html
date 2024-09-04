@@ -1202,6 +1202,10 @@
                                         <button (click)="getAllSurveyList();getMatrixLogic()" class="nav-link" id="matrixlogic-tab" data-bs-toggle="tab"
                                             data-bs-target="#matrixlogic" role="tab" aria-selected="false">Create Matrix Logic</button>
                                     </li>
+                                    <li class="nav-item" role="presentation">
+                                        <button  class="nav-link" id="answerselection-tab" data-bs-toggle="tab"
+                                            data-bs-target="#ansselection" role="tab" aria-selected="false">Question Limit</button>
+                                    </li>
                                 </ul>
                                 <div class="tab-content p-4">
                                     <div class="tab-pane active" id="answerlogic" role="tabpanel"
@@ -1531,6 +1535,90 @@
                 
                                                                 </div>
                                                             </div>
+                                                        </div>
+                                                    </div>
+                
+                                                </div>
+                
+                                            </div>
+                                            <div class="row mt-3">
+                                                <div class="col-12 text-end">
+                                                    <button type="button" class="btn btn-primary px-5" (click)="createMatixLogic()">Save
+                                                        Logic</button>
+                                                    <button type="button" class="btn trash-icon px-5 ms-4" (click)="deleteMatrxiOptionLogics()">Delete</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="tab-pane" id="ansselection" role="tabpanel" aria-labelledby="answerselection-tab">
+                                        <!-- <h5 ngClass="mb-4">Matrix Logic</h5> -->
+                                        <div ngClass="mb-4">
+                                            <div class="logic-tab">
+                                                <!-- Logic Question -->
+                                                <div class="tab-content p-4" >
+                                                    <div class="tab-pane active" id="branching" role="tabpanel"
+                                                        aria-labelledby="branching-tab">
+                                                        <div class="infocircle justify-content-start mb-4">
+                                                            <h5>Create Answer selection Limit</h5>
+                                                            <div class="custom-tooltip ms-2">
+                                                                <ng-icon name="heroInformationCircle" ngClass="edit-action info-circle"
+                                                                    (click)="toggleTooltip('7')"></ng-icon>
+                                                                <div class="toast show" *ngIf="showTooltip['7']">
+                                                                    <div class="toast-header">
+                                                                        <img [src]="baseUrl + '/assets/images/icons/Add-new-question.png'"
+                                                                            class="rounded me-2" width="30" height="30" />
+                                                                        <h6 class="mb-0 me-auto">Create Answer selection Limit
+                                                                        </h6>
+                                                                        <button type="button" class="btn-close" data-bs-dismiss="toast"
+                                                                            aria-label="Close" (click)="hideTooltip('7')"></button>
+                                                                    </div>
+                                                                    <div class="toast-body">
+                                                                        By implementing Matrix Header Logic, you can dynamically show or hide
+                                                                        answer options based on the respondents' answers. This feature
+                                                                        not only streamlines the survey-taking process but also ensures that
+                                                                        respondents are presented with relevant questions, leading to
+                                                                        more
+                                                                        accurate and insightful data.
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div ngClass="d-flex justify-content-between mb-3">
+                                                            <h6>Redirect to different questions based on user's answer.</h6>
+                
+                                                        </div>
+                                                        <!-- <div class="alert alert-danger"
+                                                        role="alert" *ngIf="filteredQuestionList.length == 0">
+                                                          <p>Option Logic can not apply to this Question</p>
+                                                        </div> -->
+                                                        <div ngClass="logic-ques" >
+                                                            <div class="input-group flex-nowrap">
+                                                                <span class="input-group-text" id="addon-wrapping">In</span>
+                                                                <input id="question" type="text" [(ngModel)]="question.question" class="form-control"
+                                                                name="question" />
+                                                            </div>
+                                                            <div ngClass="if-then">
+                                                                <span>If</span>
+                                                            </div>
+                                                            <div ngClass="mb-4">
+                                                                <div class="row g-2 align-items-center">
+                                                                    <div class="col-md-1">
+                                                                        <div>Value</div>
+                                                                    </div>
+                                                                    <div class="col-md-3">
+                                                                        <select class="form-select" [(ngModel)]="matriclogicifId"  (change)="onOptionMatrixEntry()" #ifIdSelect>
+                                                                            <option *ngFor="let item of logicValuesList;let i=index;"
+                                                                                value="{{item.id}}">{{item.name}}</option>
+                                                                        </select>
+                                                                    </div>
+                                                                    <div class="col-md-3">
+                                                                       
+                                                                       <input class="form-control" type="number" id="ansselection" name="ansselection"/>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            
                                                         </div>
                                                     </div>
                 

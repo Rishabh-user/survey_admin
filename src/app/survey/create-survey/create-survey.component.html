@@ -856,13 +856,14 @@
                                                                                     </select>
                                                                                 </div>
                                                                                 <div class="col-md-8" *ngIf="question?.questionType === 'Open Ended' && logicEntry.ifId !== 12 && logicEntry.ifId !== 13">
-                                                                                    <input id="answer" type="text" name="answer" class="form-control" [(ngModel)]="logicEntry.ifExpected" (blur)="validateOpenendedValue(j,question?.id,logicEntry.ifExpected)"/>
+                                                                                    <input id="answer" type="text" name="answer" class="form-control" [(ngModel)]="logicEntry.ifExpected" (blur)="validateOpenendedValue(i, j,question?.id,logicEntry.ifExpected)"/>
+                                                                                    <div *ngIf="isopenendedvalue[j]?.[question?.id]" class="text-danger">
+                                                                                        Field is required
+                                                                                    </div>
                                                                                 </div> 
                                                                                
                                                                                 
-                                                                                <div *ngIf="isopenendedvalue[j]?.[question?.id]" class="text-danger">
-                                                                                    Field is required
-                                                                                </div>
+                                                                                
                                                                                 <!-- <div style="display: none;" 
                                                                                     class="col-md-8" 
                                                                                     *ngIf="question?.questionType === 'Open Ended' && (logicEntry.ifId == 12 || logicEntry.ifId == 13)">

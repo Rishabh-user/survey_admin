@@ -922,6 +922,7 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
               () => {
 
                 this.logicEntriesPerQuestion[questionIndex].splice(logicIndex, 1);
+                window.location.reload();
               },
               (error) => {
                 console.error('Error deleting logic:', error);
@@ -1247,28 +1248,76 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
   //   }
 
   // }
+  // createLogic(questionId: any, logicEntries: any[]): void {
+  //   console.log('logicEntries:', logicEntries);
+  //   let delayCounter = 0;
+  //   let sort = 0;
+  //   let index = 0;
+
+  //   for (const logicEntry of logicEntries) {
+  //     debugger
+  //     console.log('logicEntry', logicEntry);
+     
+      
+  //     console.log("this.isopenendedvalue[index][quesid]",this.isopenendedvalue[index][questionId],index,questionId)
+
+  //     if (!this.isopenendedvalue[index]) {
+  //       this.isopenendedvalue[index] = [];
+  //     }
+  //     if(this.isopenendedvalue[index][questionId]){
+  //       this.utils.showError("Fill the Required Field")
+  //        index++;
+  //       continue;
+  //     }
+   
+  //     this.createSingleLogicEntry(questionId, logicEntry, sort);
+  //     sort = sort + 1;
+
+  //     delayCounter++;
+  //     index++;
+  //     debugger
+  //   }
+  // }
+
   createLogic(questionId: any, logicEntries: any[]): void {
     console.log('logicEntries:', logicEntries);
     let delayCounter = 0;
     let sort = 0;
-
+    let index = 0;
+    let hasEmptyFields = false; 
+    
     for (const logicEntry of logicEntries) {
-      console.log('logicEntry', logicEntry);
-     
-      const index = logicEntries.indexOf(logicEntry);
-      
-      // console.log("this.isopenendedvalue[index][quesid]",this.isopenendedvalue[index][questionId],index,questionId)
-      // if(this.isopenendedvalue[index][questionId]){
-      //   alert("STOP")
-      //   break;
-      // }
-   
-      this.createSingleLogicEntry(questionId, logicEntry, sort);
-      sort = sort + 1;
+        console.log('logicEntry', logicEntry);
 
-      delayCounter++;
+       
+        if (!this.isopenendedvalue[index]) {
+            this.isopenendedvalue[index] = [];
+        }
+
+        if (this.isopenendedvalue[index][questionId]) {
+            // this.utils.showError("Fill the Required Field");
+            hasEmptyFields = true; 
+        }
+
+        index++;
     }
+
+    if (!hasEmptyFields) {
+        index = 0; 
+        for (const logicEntry of logicEntries) {
+            this.createSingleLogicEntry(questionId, logicEntry, sort);
+            sort++;
+            delayCounter++;
+            index++;
+        }
+    } else {
+        this.utils.showError("Fill the Required Field");
+    }
+    
   }
+
+
+
 
   createSingleLogicEntry(questionId: any, logicEntry: any, sort: any): void {
     this.createLogicCount++;
@@ -3591,18 +3640,18 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
 
   // }
 
-  validateOpenendedValue(index: number, quesid: number, value: any) {
+  validateOpenendedValue(i_index: number, index: number, quesid: number, value: any) {
+    console.log("qq", i_index, index, quesid, value);
 
-    console.log("qq",index,quesid,value)
-   
     if (!this.isopenendedvalue[index]) {
-      this.isopenendedvalue[index] = [];
+        this.isopenendedvalue[index] = [];
     }
-  
+
     this.isopenendedvalue[index][quesid] = !value;
 
-    console.log("ahk",this.isopenendedvalue[index][quesid])
-  }
+    console.log("ahk", this.isopenendedvalue[index][quesid]);
+}
+
 
   
 
