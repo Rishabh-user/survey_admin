@@ -137,6 +137,8 @@ export class EditSurveyComponent {
   openendedquesreq:boolean = true;
   minLimit:any;
   textlimit: any;
+  muiltiselectanslimit:number;
+  multiselectlimit:number;
 
   
 
@@ -411,8 +413,8 @@ export class EditSurveyComponent {
       optionlogicelseid: null,
       optionlogicelseexpected: null
     });
-
     
+    this.getMultiAnsLimitValues();
     
     
   }
@@ -2597,7 +2599,7 @@ export class EditSurveyComponent {
 
     // newOption.createdDate = this.getCurrentDateTime();
     // newOption.modifiedDate = this.getCurrentDateTime();
-     debugger
+
     const qwert = [
       { header: "least appealing" ,sort: 0, createdDate: this.getCurrentDateTime(), modifiedDate: this.getCurrentDateTime(),status: 'ACT'},
       { header: "most appealing" ,sort: 1, createdDate: this.getCurrentDateTime(), modifiedDate: this.getCurrentDateTime(),status: 'ACT'}
@@ -2631,7 +2633,38 @@ export class EditSurveyComponent {
     this.matrixAllOptions = [];
     this.matrixAllOptions.push(...this.matrixOptions, ...this.optionsArr3);
     console.log("matrixAllOptions",this.matrixAllOptions)
-   debugger
+   
+  }
+
+  anslimit:boolean=true;
+  anslimitvalues:any[]=[]
+
+  getMultiAnsLimitValues(){
+    this.surveyservice.getMultiSelectValues(false).subscribe((data:any[]) => {
+      if(data && data.length > 0){
+        
+        this.anslimitvalues = data;
+        console.log("qqqq",this.anslimitvalues);
+      }
+    })
+  }
+
+  validateAnsLimit(): boolean {
+
+    return this.anslimit = Boolean(this.muiltiselectanslimit?.toString().trim());
+  }
+
+  multiSelectAnsLimit(){
+
+    if(!this.validateAnsLimit()){
+      this.utility.showError("Fill the required field")
+      return
+    }
+
+  }
+
+  deleteSelectAnsLimit(){
+    
   }
 
 

@@ -1692,8 +1692,15 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
         // Store the API response
         this.apiResponseRandomization = response;
         if (response.length > 0) {
+          debugger
           this.randomizegroupid = response[0].groupNumber;
+          this.isRandomizationChecked = response[0].isRandomize
+          this.randormizeEntries = response.map(randomization => ({
+            isRandomizationChecked: randomization.isRandomize
+          }))
+          debugger
         }
+        console.log("randormizeEntries",this.randormizeEntries.length)
 
         // Handle the response from the API
         this.handleApiData();
@@ -1717,6 +1724,7 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
       this.randormizeEntries.push({
         fromQuestion: null,
         toQuestion: null,
+        isRandomizationChecked: null
       });
     } else {
       this.isDivVisible = true;
@@ -1764,9 +1772,12 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
           const fromQuestion = Math.min(...numericValues);
           const toQuestion = Math.max(...numericValues);
 
+          // const isRandomizationChecked = group[0].isRandomize; 
+
           transformedData.push({
             fromQuestion,
             toQuestion,
+            // isRandomizationChecked
           });
         } else {
           console.warn('No valid numeric values found for groupNumber:', groupNumber);

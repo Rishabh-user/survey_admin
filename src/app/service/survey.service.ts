@@ -575,10 +575,14 @@ export class SurveyService {
     return this.http.delete(url, { responseType: 'text' });
   }
 
-  
-
+ 
   getVendorList(surveyId: any): Observable<responseDTO[]> {
     const url = `${this.apiUrl}api/admin/${this.userId}/Profile/GetProfileBySurveyId?surveyId=${surveyId}`;
+    return this.http.get<responseDTO[]>(url);
+  }
+
+  getMultiSelectValues(isOpenEnded:boolean): Observable<responseDTO[]> {
+    const url = `${this.apiUrl}api/admin/${this.userId}/Logics/GetMultiSelectValues?isOpenEnded=${isOpenEnded}`;
     return this.http.get<responseDTO[]>(url);
   }
 

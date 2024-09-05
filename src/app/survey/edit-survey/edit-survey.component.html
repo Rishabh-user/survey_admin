@@ -1607,14 +1607,16 @@
                                                                         <div>Value</div>
                                                                     </div>
                                                                     <div class="col-md-3">
-                                                                        <select class="form-select" [(ngModel)]="matriclogicifId"  (change)="onOptionMatrixEntry()" #ifIdSelect>
-                                                                            <option *ngFor="let item of logicValuesList;let i=index;"
+                                                                        {{multiselectlimit}}
+                                                                        <select class="form-select" [(ngModel)]="multiselectlimit"  (change)="onOptionMatrixEntry()" #ifIdSelect>
+                                                                            <option *ngFor="let item of anslimitvalues;let i=index;"
                                                                                 value="{{item.id}}">{{item.name}}</option>
                                                                         </select>
                                                                     </div>
                                                                     <div class="col-md-3">
                                                                        
-                                                                       <input class="form-control" type="number" id="ansselection" name="ansselection"/>
+                                                                       <input class="form-control" type="number" min="0" [(ngModel)]="muiltiselectanslimit" id="ansselection" name="ansselection" (blur)="validateAnsLimit()"/>
+                                                                       <div *ngIf="!anslimit" class="text-danger">Field is required</div>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -1627,9 +1629,9 @@
                                             </div>
                                             <div class="row mt-3">
                                                 <div class="col-12 text-end">
-                                                    <button type="button" class="btn btn-primary px-5" (click)="createMatixLogic()">Save
+                                                    <button type="button" class="btn btn-primary px-5" (click)="multiSelectAnsLimit()">Save
                                                         Logic</button>
-                                                    <button type="button" class="btn trash-icon px-5 ms-4" (click)="deleteMatrxiOptionLogics()">Delete</button>
+                                                    <button type="button" class="btn trash-icon px-5 ms-4" (click)="deleteSelectAnsLimit()">Delete</button>
                                                 </div>
                                             </div>
                                         </div>
