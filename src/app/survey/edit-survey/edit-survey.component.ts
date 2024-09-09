@@ -214,6 +214,13 @@ export class EditSurveyComponent {
       this.openendedquesreq = this.question.isRequired;
       this.question.openEndedType = data.openEndedType
       this.minLimit = data.minLimit;
+
+      if(this.questionSummery){
+        this.descriptionadded = true
+        this.descaddededitor = true
+      }else{
+        this.descaddededitor = false
+      }
       
 
       data.options.forEach((opt: any) => {
@@ -927,7 +934,7 @@ export class EditSurveyComponent {
     
     
     
-    if(this.question.questionTypeName === 'Slider Scale') {
+    if(this.question.questionTypeName === 'Slider Scale' && this.questionId == 0) {
       this.allOptions.forEach((option,index) => {
         let modifiedOption = new serveyOption();
 
@@ -961,6 +968,42 @@ export class EditSurveyComponent {
         modifiedOption.image = option.imageAdded ? option.image : null;
         modifiedoptions.push(modifiedOption);
       });
+    } else if(this.question.questionTypeName === 'Slider Scale' && this.questionId >0){
+      
+      this.allOptions.forEach((option,index) => {
+        let modifiedOption = new serveyOption();
+
+        modifiedOption.createdDate = option.createdDate;
+        modifiedOption.group = option.group;
+        modifiedOption.id = option.id;
+        modifiedOption.imageAdded = option.imageAdded;
+        modifiedOption.isExcluded = option.isExcluded;
+        modifiedOption.isFixed = option.isFixed;
+        modifiedOption.isRandomize = option.isRandomize;
+        modifiedOption.isFlipNumber = option.isFlipNumber;
+        modifiedOption.isRotate = option.isRotate;
+        modifiedOption.isSelected = option.isSelected;
+        modifiedOption.isVisible = option.isVisible;
+
+        modifiedOption.keyword = option.keyword;
+        modifiedOption.modifiedDate = option.modifiedDate;
+        modifiedOption.option = option.option;
+        modifiedOption.selected = option.selected;
+        modifiedOption.sort = option.sort;
+        modifiedOption.status = option.status;
+        modifiedOption.optionToolTip = option.optionToolTip;
+        modifiedOption.optionDescription = option.optionDescription;
+        // if (index === 0) {
+        //   modifiedOption.optionDescription = 'Not at all likely';
+        // } else if (index === this.allOptions.length - 1) {
+        //   modifiedOption.optionDescription = 'Extremely likely';
+        // } else {
+        //   modifiedOption.optionDescription = option.optionDescription;
+        // }
+        modifiedOption.image = option.imageAdded ? option.image : null;
+        modifiedoptions.push(modifiedOption);
+      });
+      
     } else {
       this.allOptions.forEach((option) => {
         let modifiedOption = new serveyOption();
@@ -1625,6 +1668,7 @@ export class EditSurveyComponent {
   VisibilityAnsLogic() {
     this.isLogicShow = true
     this.visibleanslogic = !this.visibleanslogic;
+    console.log("this.visibleanslogic",this.visibleanslogic)
     this.getLogicQuestionList(this.questionId)
   }
 
@@ -2025,6 +2069,7 @@ export class EditSurveyComponent {
     this.surveyservice.GetOptionLogic(this.questionId, this.surveyId).subscribe((data: any[]) => {
       if (data && data.length > 0) {
         this.getoptionlogic = data[0];
+        this.visibleanslogic = true
         
         console.log("datamk", data.length);
   
@@ -2037,6 +2082,7 @@ export class EditSurveyComponent {
           optionlogicthanexpectedid: response.thanExpected,
           optionlogicelseid: response.elseId,
           optionlogicelseexpected: response.elseExpected,
+          
 
         }));
 
@@ -2470,11 +2516,10 @@ export class EditSurveyComponent {
 
 
   getMatrixLogic(){
-
     this.surveyservice.getMatrixHeaderLogics(this.surveyId,this.questionId).subscribe((data: any[]) => {
       if (data && data.length > 0) {
         console.log("data matrix",data)
-        this.visibleanslogic = true;
+        // this.visibleanslogic = true;
 
         console.log("data",data.length)
 
@@ -2485,6 +2530,10 @@ export class EditSurveyComponent {
         this.matrixlogicthanexpected=data[0]?.thanExpected,
         this.matrixlogicelseid=data[0]?.elseId,
         this.matrixlogicelseexpected=data[0]?.elseExpected
+
+        if(this.matrixlogicquesid){
+          this.visibleanslogic = true;
+        }
 
         if (Array.isArray(this.matrixAllOptions) && this.matrixAllOptions.length > 0) {
           this.selectedMatricHeaderOptions = []

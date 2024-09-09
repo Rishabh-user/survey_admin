@@ -19,10 +19,20 @@
                     and download the list of surveys.</p>
 
             </div>
-            <div class="col-md-4 text-lg-end mt-lg-0 mt-3">
+            <div class="col-md-4 text-lg-end mt-lg-0 mt-3" *ngIf="roledashboard !== 'Client' && roledashboard !== 'Vendor'">
                 <a href="javascript:void(0);" (click)="openLg(sidecontent)" class="btn btn-primary btn-lg">Add New
                     Survey <ng-icon class="ms-3" name="heroArrowLongRight"></ng-icon></a>
             </div>
+            <div class="col-md-4 text-lg-end mt-lg-0 mt-3"  *ngIf="roledashboard == 'Client' || roledashboard == 'Vendor'">
+                <a href="javascript:void(0);" 
+                   (click)="!isDisabled && openLg(sidecontent)" 
+                   class="btn btn-primary btn-lg" 
+                   [class.disabled]="isDisabled" 
+                   [attr.aria-disabled]="isDisabled ? true : null">Add New Survey 
+                  <ng-icon class="ms-3" name="heroArrowLongRight"></ng-icon>
+                </a>
+              </div>
+              
         </div>
     </div>
 

@@ -2541,7 +2541,7 @@ figure.image-figure {
 }
 th:last-child, td:last-child
 {
-  position:sticky;
+  /* position:sticky; */
   right:0px;
 }
 

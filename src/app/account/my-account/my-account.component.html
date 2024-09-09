@@ -103,7 +103,7 @@
                         name="heroArrowLongRight" class="ms-5"></ng-icon></button>
             </div>
         </form>
-        <div class="my-4">
+        <div class="my-4" *ngIf="role !== 'Client' && role !== 'Vendor'">
             <div ngbAccordion>
                 <div ngbAccordionItem [collapsed]="true">
                     <h4 ngbAccordionHeader>

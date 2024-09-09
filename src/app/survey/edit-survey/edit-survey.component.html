@@ -144,7 +144,7 @@
                                 <div class="mb-0 ms-4">
                                     <div class="form-check form-switch">
                                         <input class="form-check-input" type="checkbox" role="switch"
-                                            name="isChecked" (change)="onCheckboxChange($event)"
+                                            name="isChecked" (change)="onCheckboxChange($event)" [(ngModel)]="descriptionadded"
                                             style="width: 2.5rem;height: 1.4rem;">
                                     </div>
                                 </div>
@@ -1188,6 +1188,7 @@
                     </div>
                 </div>
                 <div>
+                    
                     <div ngClass="pt-4 add-new-logic" *ngIf="visibleanslogic">
                         <div ngClass="mb-4">
                             <div class="logic-tab">
@@ -1203,7 +1204,7 @@
                                             data-bs-target="#matrixlogic" role="tab" aria-selected="false">Create Matrix Logic</button>
                                     </li>
                                     <li class="nav-item" role="presentation">
-                                        <button  class="nav-link" id="answerselection-tab" data-bs-toggle="tab"
+                                        <button  class="nav-link" id="answerselection-tab" data-bs-toggle="tab" *ngIf="question.questionTypeName == 'Multi-Select'|| question.questionTypeId == 10"
                                             data-bs-target="#ansselection" role="tab" aria-selected="false">Question Limit</button>
                                     </li>
                                 </ul>

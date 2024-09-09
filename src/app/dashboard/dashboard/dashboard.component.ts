@@ -48,6 +48,7 @@ export class DashboardComponent {
   totalItemsCount: number = 20
   planid:any
   cdr: any;
+  isDisabled: boolean = true;
   constructor(private visibilityService: DataService, private modalService: NgbModal, public themeService: DataService,
     public surveyservice: SurveyService, private auth: AuthService, private utility: UtilsService, private crypto: CryptoService, private router: Router,
     private csvService: SurveyService,
