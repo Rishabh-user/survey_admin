@@ -32,8 +32,8 @@
 </div>
 <div [class.vendor-link]="role === 'Vendor' || role === 'Client'">
 
-    <div class="common-bg">
-        <div>
+    <div class="common-bg" *ngIf="role === 'Client'">
+        <div >
             <div class="mb-3">
                 <div class="d-flex justify-content-between align-items-center">
                     <label class="form-label">Vendor List</label>
