@@ -2155,6 +2155,7 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
 
    
   selectedOptionsIFLogicOneValue(event: MatAutocompleteSelectedEvent, logicEntryIfId: any, questionIndex: number, logicIndex: number): void {
+   
     const selectedOption = event.option.value;
   
     if (logicEntryIfId === 1 || logicEntryIfId === 2) {
