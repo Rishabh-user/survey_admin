@@ -20,6 +20,7 @@ import { environment } from 'src/environments/environment';
 export class HeaderComponent {
   showNotification: boolean = false;
   baseUrl: any;
+  role:any;
   toggleNotification() {
     this.showNotification = !this.showNotification;
   }
@@ -39,6 +40,7 @@ export class HeaderComponent {
     this.getNotification()
     this.getMyAccount()
     this.getAllSurveyList()
+    this.role = this.util.getRole()
     this.surveyControl.valueChanges
       .pipe(
         debounceTime(300),

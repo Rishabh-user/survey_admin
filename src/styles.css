@@ -599,6 +599,7 @@ article {
     filter: invert(1) brightness(0);
     opacity: 0.6;
     width: auto;
+    object-fit: none;
 
 }
 
@@ -629,7 +630,9 @@ article {
     border: 2px dashed var(--primary);
     color: var(--primary);
 }
-
+.update-ques-type.generic-ques ul li a figure img {
+    object-fit: contain;
+}
 
 .survey-name {
     display: flex;

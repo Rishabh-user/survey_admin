@@ -67,7 +67,7 @@
                     <h4>Add Quotas</h4>
                     <p class="mb-0">Quota Operation</p>
                 </div>
-                <div class="col-md-6 text-end">
+                <div class="col-md-6 text-end" *ngIf="role != 'Client' && role !='Vendor'">
                     <button type="button" (click)="getQuotaBySurveyId()" class="btn btn-primary">Refresh Quota</button>
                     <button type="button" (click)="onDeleteQuota()" class="ms-2 btn btn-danger">Delete Quota</button>
                 </div>
@@ -82,12 +82,12 @@
                         (blur)="showQuotas()">
                     <div *ngIf="showCountError" class="text-danger">Please enter a valid survey count.</div>
                 </div>
-                <div class="col-1 text-end">
+                <div class="col-1 text-end" *ngIf="role != 'Client' && role !='Vendor'">
                     <button type="button" class="btn btn-primary w-100" (click)="manageQuota()">Save</button>
                 </div>
             </div>
         </div>
-        <div class="mt-4">
+        <div class="mt-4" *ngIf="role != 'Client' && role !='Vendor'">
             <button type="button" class="btn btn-primary" (click)="addQuota()">Add Quota</button>
         </div>
     </div>

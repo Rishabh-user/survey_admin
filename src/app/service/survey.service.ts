@@ -586,5 +586,11 @@ export class SurveyService {
     return this.http.get<responseDTO[]>(url);
   }
 
+  deleteAnwerGroup(groupId:any,quesId:any):Observable<any> {
+    const url=`${this.apiUrl}api/admin/${this.userId}/GeneralQuestion/DeleteAnswerGroup?groupId=${groupId}&questionId=${quesId}`;
+    return this.http.post(url, { responseType: 'text' });
+    
+  }
+
 
 }

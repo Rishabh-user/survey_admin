@@ -23,6 +23,7 @@ import { serveyOption } from 'src/app/models/serveyOption';
 import { DomSanitizer,SafeHtml } from '@angular/platform-browser';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import { MatixHeaderLogics } from 'src/app/models/logic';
+import { QuestionLogic } from 'src/app/models/question-logic';
 
 @Component({
   selector: 'app-edit-survey',
@@ -138,7 +139,9 @@ export class EditSurveyComponent {
   minLimit:any;
   textlimit: any;
   muiltiselectanslimit:number;
-  multiselectlimit:number;
+  multiselectlimitifid:number;
+  answergroupid:any;
+  multiselctanslogicid:any;
 
   
 
@@ -373,6 +376,7 @@ export class EditSurveyComponent {
     this.getSerialNumber();
     this.getQuestionTypes();
     this.getAllSurveyList();
+    this.getMultiSelectAnsLogic();
     // this.getOptionLogics();
     this.openEndedValue();
     // this.getMatrixLogic();
@@ -1049,7 +1053,7 @@ export class EditSurveyComponent {
             this.utility.showError('Question Created Failed')
           } else  if (resp === '"QuestionSuccessfullyUpdated"') {
             this.utility.showSuccess('Question Updated Successfully.');
-            // window.location.reload();
+            window.location.reload();
             // let url = `/survey/manage-survey/${this.crypto.encryptParam(this.surveyId)}`;
             // this.router.navigateByUrl(url);
             //  window.location.reload();
@@ -1305,9 +1309,23 @@ export class EditSurveyComponent {
 
   }
 
-  onDeleteGroup(index: number) {
+  onDeleteGroup(index: number,groupid:any) {
     this.groups.splice(index, 1);
     this.categoryNameCheck = false;
+ 
+    this.surveyservice.deleteAnwerGroup(groupid,this.questionId).subscribe({
+      next: (resp:any)=> {
+        if(resp === 'DeletedSuccessfully'){
+            this.utility.showSuccess("Group Deleted");
+            window.location.reload();
+          }
+        else
+          this.utility.showError("Group not Deleted")
+      },
+      error: (err:any) => {
+        this.utility.showError(err)
+      }
+    });
   }
 
  
@@ -1626,6 +1644,7 @@ export class EditSurveyComponent {
   }
 
   getFilteredOptions() {
+    
     this.filteredOptions = [];
     this.filteredOptions.push(...this.optionsArr1, ...this.optionsArr2);
     return this.filteredOptions.filter(option => option.option.trim() !== '');
@@ -2007,8 +2026,10 @@ export class EditSurveyComponent {
 
   onOptionLogicEntry(index:number) {
 
-    if(this.logicEntries[index].optionlogicid) {
+    if(this.logicEntries[index]?.optionlogicid) {
       this.selectedOptions[index] = [];
+      this.logicEntries[index].optionlogicifexpectedid = []
+     
     }
   
   }
@@ -2030,6 +2051,7 @@ export class EditSurveyComponent {
      }else{
       this.createanslogic = 0
      }
+     console.log("value saving 3",this.logicEntries[index].optionlogicifexpectedid)
       const datatosend = {
         id: this.createanslogic,
         questionId: entry.optionlogicquesid,
@@ -2164,25 +2186,54 @@ export class EditSurveyComponent {
    
   }
 
-  selectOptionOneVlaue(event:any,index:any,optionlogicifid:any){
+  selectOptionOneValue(event:any,index:any,optionlogicifid:any){
 
+    
     const selectedOption = event.option.value;
   
-    if (optionlogicifid === 1 || optionlogicifid === 2) {
+   
+    console.log('optionListByQuestionId',this.optionListByQuestionId)
+  
+    if (optionlogicifid == 1 || optionlogicifid == 2) {
       // Clear previous selections
       this.selectedOptions[index] = [];
-      this.selectedOptions[index].forEach(option => {
-        option.isSelected = (option.option === selectedOption);
-      });
-    } else {
+      console.log("this.optionListByQuestionId[index]", this.optionListByQuestionId[index]);
+      console.log("selectedOption", selectedOption);
+      this.optionListByQuestionId[index].option;
       selectedOption.isSelected = true;
+      
+      this.logicEntries[index].optionlogicifexpectedid = selectedOption.id.toString();
+    } else {
+      
+      this.logicEntries[index].optionlogicifexpectedid = selectedOption.id.toString();
+      selectedOption.isSelected = true;
+      console.log("value saving",this.logicEntries[index].optionlogicifexpectedid)
     }
     
     // Update the selection
-    this.addOption(event, index, );
-
+    this.selectedOption(event, index);
   }
   
+  selectedOption(event: MatAutocompleteSelectedEvent, index: number): void {
+   
+    const selectedOption = event.option.value;
+
+    this.logicEntries[index].optionlogicifexpectedid=''
+  
+    if (!this.selectedOptions[index]) {
+      this.selectedOptions[index] = [];
+    }
+  
+    if (!this.selectedOptions[index].includes(selectedOption)) {
+      this.selectedOptions[index].push(selectedOption);
+      const selectedOptionsArray = this.selectedOptions[index];
+      const selectedOptionsString = selectedOptionsArray.map((option: { id: any; }) => option.id).join(', ');
+
+      this.logicEntries[index].optionlogicifexpectedid = selectedOptionsString;
+      console.log("value saving 2",this.logicEntries[index].optionlogicifexpectedid)
+    }
+
+  }
 
   addOption(event: MatChipInputEvent, index: number): void {
     const input = event.input;
@@ -2232,25 +2283,6 @@ export class EditSurveyComponent {
   }
   
 
-
-  selectedOption(event: MatAutocompleteSelectedEvent, index: number): void {
-    const selectedOption = event.option.value;
-
-    this.logicEntries[index].optionlogicifexpectedid=''
-  
-    if (!this.selectedOptions[index]) {
-      this.selectedOptions[index] = [];
-    }
-  
-    if (!this.selectedOptions[index].includes(selectedOption)) {
-      this.selectedOptions[index].push(selectedOption);
-      const selectedOptionsArray = this.selectedOptions[index];
-      const selectedOptionsString = selectedOptionsArray.map((option: { id: any; }) => option.id).join(', ');
-
-      this.logicEntries[index].optionlogicifexpectedid = selectedOptionsString;
-    }
-
-  }
   
   
   
@@ -2621,7 +2653,57 @@ export class EditSurveyComponent {
       return
     }
 
+    let multiselectans = new QuestionLogic();
+
+    multiselectans.surveyId = this.surveyId;
+    multiselectans.questionId = this.questionId;
+    multiselectans.ifId = this.multiselectlimitifid;
+    multiselectans.ifExpected = this.muiltiselectanslimit.toString();
+    if(this.multiselctanslogicid>0){
+      multiselectans.id = this.multiselctanslogicid
+      this.surveyservice.updateLogic(multiselectans).subscribe({
+        next: (resp:any) =>{
+          if(resp === 'UpdatedSuccessfully'){
+            this.utility.showSuccess("Logic Updated Successfully");
+            window.location.reload();
+          }else{
+            this.utility.showError("Logic not Updated Successfully")
+          }
+          
+        },
+        error: (err:any) =>{
+          this.utility.showError(err)
+        }
+      })
+
+    }else{
+      this.surveyservice.createLogic(multiselectans).subscribe({
+        next: (resp:any) =>{
+          this.utility.showSuccess("Logic Created Successfully")
+          window.location.reload();
+        },
+        error: (err:any) =>{
+          this.utility.showError(err)
+        }
+      })
+
+    }
+    
   }
+
+  getMultiSelectAnsLogic(){
+    this.surveyservice.getQuestionLogics(this.questionId,this.surveyId).subscribe((data:any[])=>{
+      if(data && data.length > 0){
+        this.visibleanslogic = true
+        this.multiselectlimitifid = data[0].ifId;
+        this.muiltiselectanslimit = data[0].ifExpected
+        this.multiselctanslogicid = data[0].id;
+
+      }
+     
+    })
+  }
+
 
   deleteSelectAnsLimit(){
     

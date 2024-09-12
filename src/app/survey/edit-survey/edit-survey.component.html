@@ -1129,7 +1129,7 @@
                                     </div>
                                     <div class="col-md-6 text-end">
                                         <button type="button" class="btn btn-primary btn-sm"
-                                            (click)="onDeleteGroup(groupIndex)">Delete</button>
+                                            (click)="onDeleteGroup(groupIndex,group.id)">Delete</button>
                                     </div>
                                 </div>
 
@@ -1285,6 +1285,7 @@
                                                                         <div class="col-md-1">
                                                                             <div>Value</div>
                                                                         </div>
+                                                                        
                                                                         <div class="col-md-3">
                                                                             <select class="form-select" 
                                                                             [(ngModel)]="logicEntry.optionlogicifid" #ifIdSelect
@@ -1624,8 +1625,7 @@
                                                                         <div>Value</div>
                                                                     </div>
                                                                     <div class="col-md-3">
-                                                                        {{multiselectlimit}}
-                                                                        <select class="form-select" [(ngModel)]="multiselectlimit"  (change)="onOptionMatrixEntry()" #ifIdSelect>
+                                                                        <select class="form-select" [(ngModel)]="multiselectlimitifid"  (change)="onOptionMatrixEntry()" #ifIdSelect>
                                                                             <option *ngFor="let item of anslimitvalues;let i=index;"
                                                                                 value="{{item.id}}">{{item.name}}</option>
                                                                         </select>

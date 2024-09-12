@@ -2119,31 +2119,7 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
     }
   }
  
-  selectedOptionsIFLogic(event: MatAutocompleteSelectedEvent, logicEntryIfId: any, questionIndex: number, logicIndex: number): void {
-    const ifIdNumber = +logicEntryIfId;
-
-    const selectedOption = event.option.value;
-
-    if (!this.selectedOptionsLogic[questionIndex]) {
-      this.selectedOptionsLogic[questionIndex] = [];
-    }
-    if (!this.selectedOptionsLogic[questionIndex][logicIndex]) {
-      this.selectedOptionsLogic[questionIndex][logicIndex] = [];
-    }
-
-    
-      if (!this.selectedOptionsLogic[questionIndex][logicIndex].includes(selectedOption)) {
-        this.selectedOptionsLogic[questionIndex][logicIndex].push(selectedOption);
   
-        const selectedOptionsArray = this.selectedOptionsLogic[questionIndex][logicIndex];
-        const selectedOptionsString = selectedOptionsArray.map((option: { id: any; }) => option.id).join(', ');
-  
-        this.logicEntriesPerQuestion[questionIndex][logicIndex].ifExpected = selectedOptionsString;
-  
-      }
-
-  
-  }
 
   onInputChange(logicEntryIfId: any, questionIndex: number, logicIndex: number): void {
     
@@ -2170,6 +2146,32 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
     
     // Update the selection
     this.selectedOptionsIFLogic(event, logicEntryIfId, questionIndex, logicIndex);
+  }
+
+  selectedOptionsIFLogic(event: MatAutocompleteSelectedEvent, logicEntryIfId: any, questionIndex: number, logicIndex: number): void {
+    const ifIdNumber = +logicEntryIfId;
+
+    const selectedOption = event.option.value;
+
+    if (!this.selectedOptionsLogic[questionIndex]) {
+      this.selectedOptionsLogic[questionIndex] = [];
+    }
+    if (!this.selectedOptionsLogic[questionIndex][logicIndex]) {
+      this.selectedOptionsLogic[questionIndex][logicIndex] = [];
+    }
+
+    
+      if (!this.selectedOptionsLogic[questionIndex][logicIndex].includes(selectedOption)) {
+        this.selectedOptionsLogic[questionIndex][logicIndex].push(selectedOption);
+  
+        const selectedOptionsArray = this.selectedOptionsLogic[questionIndex][logicIndex];
+        const selectedOptionsString = selectedOptionsArray.map((option: { id: any; }) => option.id).join(', ');
+  
+        this.logicEntriesPerQuestion[questionIndex][logicIndex].ifExpected = selectedOptionsString;
+  
+      }
+
+  
   }
   
   

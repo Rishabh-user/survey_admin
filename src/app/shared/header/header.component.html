@@ -7,7 +7,7 @@
                             name="heroBars3"></ng-icon></button>
                 </div>
             </div>
-            <div class="search-bar">
+            <div class="search-bar" [class.vendor-link]="role === 'Vendor' || role === 'Client'">
                 <mat-form-field class="search-bar">
                     <input type="text" matInput [formControl]="surveyControl" placeholder="Search Survey"
                         [matAutocomplete]="auto">
