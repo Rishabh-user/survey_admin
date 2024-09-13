@@ -142,6 +142,8 @@ export class EditSurveyComponent {
   multiselectlimitifid:number;
   answergroupid:any;
   multiselctanslogicid:any;
+  multiselecttab:boolean= false;
+  createanswertab:boolean= false;
 
   
 
@@ -1098,7 +1100,7 @@ export class EditSurveyComponent {
 
 
   onGroupValueChange(type: string,  groupId: number) {
-    debugger
+
     // Update the specified group directly
     let groupoption = new serveyOption();
 
@@ -1190,7 +1192,6 @@ export class EditSurveyComponent {
 
     console.log("groupToUpdate option",this.allOptions)
     
-    debugger
   }
 
 
@@ -2045,6 +2046,7 @@ export class EditSurveyComponent {
 
 
   onLogicSave(): void {
+    
     this.logicEntries.forEach((entry, index) => {
      if(this.logicEntries[index].optionlogicid){
       this.createanslogic = this.logicEntries[index].optionlogicid
@@ -2065,7 +2067,7 @@ export class EditSurveyComponent {
         onLogicQuestionId: this.questionId,
         surveyId: this.surveyId
       };
-  
+      
       this.surveyservice.optionLogics(datatosend).subscribe({
         next: (resp: any) => {
           if (resp === '"UpdatedSuccessfully"') {
@@ -2092,6 +2094,7 @@ export class EditSurveyComponent {
       if (data && data.length > 0) {
         this.getoptionlogic = data[0];
         this.visibleanslogic = true
+        this.createanswertab = true;
         
         console.log("datamk", data.length);
   
@@ -2141,7 +2144,7 @@ export class EditSurveyComponent {
   }
   
   getOptionsByQuestion(selectedQuestion: any, logicEntryIndex: number): void {
-    debugger
+
     const selectedValue = selectedQuestion;
     this.optionselectedvalue = selectedQuestion;
     console.log("qwerty", selectedQuestion);
@@ -2161,7 +2164,7 @@ export class EditSurveyComponent {
       
       this.autoSelectQuestions(this.logicEntries[logicEntryIndex].optionlogicifexpectedid, logicEntryIndex);
     });
-    debugger
+   
   }
   
   autoSelectQuestions(ifExpected: any, index: number): void {
@@ -2188,9 +2191,7 @@ export class EditSurveyComponent {
 
   selectOptionOneValue(event:any,index:any,optionlogicifid:any){
 
-    
     const selectedOption = event.option.value;
-  
    
     console.log('optionListByQuestionId',this.optionListByQuestionId)
   
@@ -2203,19 +2204,21 @@ export class EditSurveyComponent {
       selectedOption.isSelected = true;
       
       this.logicEntries[index].optionlogicifexpectedid = selectedOption.id.toString();
+      this.selectedOption(event, index);
     } else {
-      
-      this.logicEntries[index].optionlogicifexpectedid = selectedOption.id.toString();
+      console.log("this.optionListByQuestionId[index]", this.optionListByQuestionId[index]);
+      console.log("selectedOption", selectedOption);
+      this.optionListByQuestionId[index].option;
       selectedOption.isSelected = true;
-      console.log("value saving",this.logicEntries[index].optionlogicifexpectedid)
+      this.logicEntries[index].optionlogicifexpectedid = selectedOption.id.toString().join(', ');
     }
-    
+ 
     // Update the selection
-    this.selectedOption(event, index);
+    // this.selectedOption(event, index);
   }
   
   selectedOption(event: MatAutocompleteSelectedEvent, index: number): void {
-   
+
     const selectedOption = event.option.value;
 
     this.logicEntries[index].optionlogicifexpectedid=''
@@ -2232,6 +2235,7 @@ export class EditSurveyComponent {
       this.logicEntries[index].optionlogicifexpectedid = selectedOptionsString;
       console.log("value saving 2",this.logicEntries[index].optionlogicifexpectedid)
     }
+
 
   }
 
@@ -2703,7 +2707,8 @@ export class EditSurveyComponent {
   getMultiSelectAnsLogic(){
     this.surveyservice.getQuestionLogics(this.questionId,this.surveyId).subscribe((data:any[])=>{
       if(data && data.length > 0){
-        this.visibleanslogic = true
+        this.visibleanslogic = true;
+        this.multiselecttab = true;
         this.multiselectlimitifid = data[0].ifId;
         this.muiltiselectanslimit = data[0].ifExpected
         this.multiselctanslogicid = data[0].id;
