@@ -922,7 +922,7 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
               () => {
 
                 this.logicEntriesPerQuestion[questionIndex].splice(logicIndex, 1);
-                window.location.reload();
+                // window.location.reload();
               },
               (error) => {
                 console.error('Error deleting logic:', error);

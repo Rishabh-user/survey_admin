@@ -2663,9 +2663,12 @@ export class EditSurveyComponent {
       multiselectans.id = this.multiselctanslogicid
       this.surveyservice.updateLogic(multiselectans).subscribe({
         next: (resp:any) =>{
-          if(resp === 'UpdatedSuccessfully'){
+          if(resp == '"UpdatedSuccessfully"'){
             this.utility.showSuccess("Logic Updated Successfully");
-            window.location.reload();
+            setTimeout(() => {
+              window.location.reload();
+            }, 500);
+            
           }else{
             this.utility.showError("Logic not Updated Successfully")
           }
@@ -2679,8 +2682,14 @@ export class EditSurveyComponent {
     }else{
       this.surveyservice.createLogic(multiselectans).subscribe({
         next: (resp:any) =>{
-          this.utility.showSuccess("Logic Created Successfully")
-          window.location.reload();
+          if(resp === '"CreatedSuccessfully"'){
+            this.utility.showSuccess("Logic Created Successfully")
+            setTimeout(() => {
+              window.location.reload();
+            }, 500);
+          }else{
+            this.utility.showError("Logic not created")
+          }
         },
         error: (err:any) =>{
           this.utility.showError(err)
@@ -2706,6 +2715,17 @@ export class EditSurveyComponent {
 
 
   deleteSelectAnsLimit(){
+    this.surveyservice.deleteQuestionLogicById(this.multiselctanslogicid).subscribe({
+      next: (resp)=> {
+          this.utility.showSuccess("Logic Deleted Successfully");
+          setTimeout(() => {
+            window.location.reload();
+          }, 500);
+      },
+      error: (err)=>{
+        this.utility.showError(err);
+      }
+    })
     
   }
 
