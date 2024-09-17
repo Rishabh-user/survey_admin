@@ -436,9 +436,12 @@
                                 </div>
                                 <div class="row">
                                     <div class="col-12 text-end d-flex justify-content-end">
-                                        <button type="button" class="btn btn-primary btn-sm"
+                                        <button type="button" class="btn btn-primary btn-sm me-3"
                                             (click)="saveAutoCode()">Save</button>
+                                            <button type="button" class="btn btn-danger btn-sm"
+                                            >Delete</button>
                                     </div>
+                                    
                                 </div>
                             </div>
                         </div>
@@ -492,7 +495,7 @@
                                     <div class="col-12 text-end d-flex justify-content-end">
                                         <button type="button" class="btn btn-primary btn-sm me-3"
                                             (click)="saveEndScreen()">Save</button>
-                                        <button type="button" class="btn btn-primary btn-sm"
+                                        <button type="button" class="btn btn-danger btn-sm"
                                             (click)="deleteEndScreen()">Delete</button>
                                     </div>
                                 </div>
@@ -703,14 +706,14 @@
                                             <h5 ngClass="mb-4">Logic</h5>
                                             <div class="custom-tooltip ms-2">
                                                 <ng-icon name="heroInformationCircle" ngClass="edit-action info-circle"
-                                                    (click)="toggleTooltip('6')"></ng-icon>
-                                                <div class="toast show" *ngIf="showTooltip['6']">
+                                                    (click)="toggleTooltip('15')"></ng-icon>
+                                                <div class="toast show" *ngIf="showTooltip['15']">
                                                     <div class="toast-header">
                                                         <img [src]="baseUrl + '/assets/images/icons/Add-new-question.png'"
                                                             class="rounded me-2" width="30" height="30" />
                                                         <h6 class="mb-0 me-auto">Question Logic</h6>
                                                         <button type="button" class="btn-close" data-bs-dismiss="toast"
-                                                            aria-label="Close" (click)="hideTooltip('6')"></button>
+                                                            aria-label="Close" (click)="hideTooltip('15')"></button>
                                                     </div>
                                                     <div class="toast-body">
                                                         By incorporating various types of logic, you can greatly enhance
