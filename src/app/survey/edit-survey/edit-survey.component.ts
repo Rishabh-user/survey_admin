@@ -2073,7 +2073,7 @@ export class EditSurveyComponent {
           if (resp === '"UpdatedSuccessfully"') {
             this.utility.showSuccess('Updated Successfully');
             if (index === this.logicEntries.length - 1) {
-              // window.location.reload();
+              window.location.reload();
             }
           }
         },
