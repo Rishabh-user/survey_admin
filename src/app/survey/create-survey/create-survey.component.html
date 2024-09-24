@@ -759,7 +759,7 @@
                                                         aria-selected="false"
                                                         (click)="getLogicQuestionListForCalculation(question?.id,question?.sort);getQuestionListAgeCalculation(question?.id)">Calculations</button>
                                                 </li>
-                                                <li class="nav-item" role="presentation" *ngIf="planid == 2500">
+                                                <li class="nav-item" role="presentation" *ngIf="planid == 2500 || planid == 0">
                                                     <button class="nav-link" id="piping-tab" data-bs-toggle="tab"
                                                         [attr.data-bs-target]="'#piping' + question.id" role="tab"
                                                         aria-selected="false"
@@ -1983,7 +1983,7 @@
                     [ngModelOptions]="{standalone: true}" name="otherCategoryName" />
             </div>
             <hr>
-            <div class="d-flex justify-content-between align-items-center" *ngIf="planid == 2500">
+            <div class="d-flex justify-content-between align-items-center" *ngIf="planid == 2500 || planid == 0">
                 <div class="">
                     <h5 for="">Add Custom Serial Number</h5>
                     <div class="mt-2">
