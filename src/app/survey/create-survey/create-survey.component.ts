@@ -25,6 +25,7 @@ import { MatrixHeader, Option } from 'src/app/models/option';
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { MatixHeaderLogics } from 'src/app/models/logic';
+
 // import { debug } from 'console';
 
 interface LogicQuestion {
@@ -1588,7 +1589,7 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
     this.surveyservice.surveyLooping(surveyId, dummySurveyId).subscribe(
       response => {
         this.utils.showSuccess('Auto Code Created Successfully.');
-
+        window.location.reload()
 
       },
       error => {
@@ -3666,8 +3667,18 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
     console.log("ahk", this.isopenendedvalue[index][quesid]);
 }
 
+deleteAutoCode(){
+  this.surveyservice.deleteAutoCode(this.surveyId).subscribe({
+    next: (resp:any) => {
+        this.utils.showSuccess("Autocode Deleted Successfully")
+        window.location.reload()
+    },
+    error: (err) => {
+        console.warn(err)
+    }
+  });
+}
 
-  
 
 
 }

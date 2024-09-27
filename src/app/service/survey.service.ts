@@ -592,5 +592,10 @@ export class SurveyService {
     
   }
 
+  deleteAutoCode(surveyId:any):Observable<any> {
+    const url=`${this.apiUrl}DeleteAutocode?surveyId=${surveyId}`;
+    return this.http.post(url, { responseType: 'text' });
+  }
+
 
 }
