@@ -35,7 +35,15 @@ export class CreateSurveyPopupComponent {
   filteredOptions: Observable<{ id: number, name: string }[]> | undefined;
   selectedCategory: { id: number, name: string } | null = null;
   selectedCountry: { id: string, name: string, images: string } | null = null;
+  //selectedCountry: { id: string; name: string; images: string }[]  = [];
+  
   selectedCountryId: string | null = null;
+  
+
+  // getCountryNames(): string {
+  //   return this.selectedCountry.map(c => c.name).join(', ');
+  // }
+  
 
 
   userId = 0;
@@ -55,7 +63,7 @@ export class CreateSurveyPopupComponent {
   }
 
   ngOnInit() {
-    this.planid = this.utility.getPlanId()
+    this.planid = this.utility.getPlanId();
   }
 
   show() {
@@ -119,14 +127,39 @@ export class CreateSurveyPopupComponent {
 
   }
   validateSurvey() {
+    debugger
     this.surveyNameCheck = !!this.surveyName && this.surveyName.length >= 3;
     this.categoryNameCheck = !!this.categoryId && this.categoryId !== 0;
     this.otherCategoryCheck = this.categoryId !== 10 || (!!this.categoryName && this.categoryName.length >= 3);
     this.selectedCountryId = this.selectedCountry ? this.selectedCountry.id : null;
+    
     this.countryNameCheck = !!this.selectedCountryId;
+    debugger
 
     this.isValidSurvey = this.surveyNameCheck && this.categoryNameCheck && this.otherCategoryCheck && this.countryNameCheck;
   }
+
+
+  // validateSurvey() {
+  //   debugger
+  //   this.surveyNameCheck = !!this.surveyName && this.surveyName.length >= 3;
+  //   this.categoryNameCheck = !!this.categoryId && this.categoryId !== 0;
+  //   this.otherCategoryCheck =
+  //     this.categoryId !== 10 || (!!this.categoryName && this.categoryName.length >= 3);
+    
+  //   // Validate that at least one country is selected
+  //   this.countryNameCheck = this.selectedCountry.length > 0;
+  
+  //   this.isValidSurvey =
+  //     this.surveyNameCheck &&
+  //     this.categoryNameCheck &&
+  //     this.otherCategoryCheck &&
+  //     this.countryNameCheck;
+
+  //   debugger
+   
+  // }
+  
 
   createSurvey() {
 

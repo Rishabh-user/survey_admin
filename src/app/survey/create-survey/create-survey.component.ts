@@ -1805,6 +1805,7 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
   //     }
   //   );
   // }
+  autocodecount:any
 
   getSurveyLooping(): void {
     this.surveyservice.getSurveyLooping(this.surveyId).subscribe(
@@ -1818,6 +1819,7 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
         if (response != '' && response != undefined) {
           this.selectedAutoCodeOption = response;
           this.isDivVisible = true;
+          this.autocodecount=1
           console.log("loopong",this.isDivVisible)
         }
         // this.isDivVisible = true;

@@ -23,16 +23,53 @@
                                     <img *ngIf="selectedCountry && selectedCountry.images"
                                         [src]="baseUrl + '/assets/images/country-flag/' + selectedCountry.images"
                                         class="me-2 rounded-circle" style="width: 30px;height: 30px;" />
-                                    {{selectedCountry ? selectedCountry.name : ''}}
+                                        {{selectedCountry ? selectedCountry.name : ''}}
                                 </mat-select-trigger>
-                                <mat-option *ngFor="let item of country" [value]="item">
+                                <mat-option *ngFor="let item of country" [value]="item" >
                                     <img *ngIf="item.images"
                                         [src]="baseUrl + '/assets/images/country-flag/' + item.images"
                                         class="me-2 rounded-circle" style="width: 30px;height: 30px;" />
-                                    {{item.name}}
+                                   {{item.name}}
                                 </mat-option>
                             </mat-select>
                         </mat-form-field>
+
+                        <!-- <mat-form-field>
+                            <mat-select
+                              name="countryString"
+                              [(ngModel)]="selectedCountry"
+                              placeholder="Country"
+                              multiple
+                            >
+                              <mat-select-trigger>
+                                <ng-container>
+                                   
+                                    <ng-container *ngFor="let country of selectedCountry">
+                                      <img
+                                        *ngIf="country.images"
+                                        [src]="baseUrl + '/assets/images/country-flag/' + country.images"
+                                        class="me-2 rounded-circle"
+                                        style="width: 30px; height: 30px;"
+                                      />
+                                    </ng-container>
+                                    {{ getCountryNames() }}
+                                  </ng-container>
+                                  
+                              </mat-select-trigger>
+                          
+                              <mat-option *ngFor="let item of country" [value]="item">
+                                <img
+                                  *ngIf="item.images"
+                                  [src]="baseUrl + '/assets/images/country-flag/' + item.images"
+                                  class="me-2 rounded-circle"
+                                  style="width: 30px; height: 30px;"
+                                />
+                                {{ item.name }}
+                              </mat-option>
+                            </mat-select>
+                        </mat-form-field> -->
+                          
+                          
 
                         <div *ngIf="!countryNameCheck" class="text-danger">Country is required.</div>
                     </div>
