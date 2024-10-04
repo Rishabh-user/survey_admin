@@ -1474,12 +1474,19 @@
 
                                                 <div class="tab-pane" [id]="'customLogic' + question.id" role="tabpanel"
                                                     aria-labelledby="customLogic-tab">
-                                                    <div class="alert alert-success p-5" role="alert">
+                                                    <!-- <div class="alert alert-success p-5" role="alert">
                                                         <h4 class="alert-heading">Custom Logic !</h4>
                                                         <p>For Adding new custom logic, connect to our developer.</p>
                                                         <hr>
                                                         <p class="mb-0">Whenever you need to, be sure to use margin
                                                             utilities to keep things nice and tidy.</p>
+                                                    </div> -->
+                                                    <div>
+                                                        <h4 class="alert-heading">Custom Logic !</h4>
+                                                        <p class="alert alert-success">This editor supports HTML, CSS, and JavaScript</p>
+                                                        <hr>
+                                                        <ckeditor  [editor]="Editor"  name="questionSummery" class="large-editor">
+                                                        </ckeditor>
                                                     </div>
                                                 </div>
                                                 <div class="tab-pane" [id]="'calculator' + question.id" role="tabpanel"

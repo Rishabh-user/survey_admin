@@ -17,7 +17,7 @@
                     <div class="mb-4">
                         <label class="form-label">Select Your Country</label>
 
-                        <mat-form-field>
+                        <!-- <mat-form-field>
                             <mat-select name="countryString" [(value)]="selectedCountry" placeholder="Country">
                                 <mat-select-trigger>
                                     <img *ngIf="selectedCountry && selectedCountry.images"
@@ -32,12 +32,13 @@
                                    {{item.name}}
                                 </mat-option>
                             </mat-select>
-                        </mat-form-field>
+                        </mat-form-field> -->
 
-                        <!-- <mat-form-field>
+                        <mat-form-field>
                             <mat-select
                               name="countryString"
                               [(ngModel)]="selectedCountry"
+                              (ngModelChange)="onCountrySelectionChange($event)"
                               placeholder="Country"
                               multiple
                             >
@@ -67,7 +68,7 @@
                                 {{ item.name }}
                               </mat-option>
                             </mat-select>
-                        </mat-form-field> -->
+                        </mat-form-field>
                           
                           
 

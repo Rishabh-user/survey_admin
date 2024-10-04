@@ -34,15 +34,28 @@ export class CreateSurveyPopupComponent {
   country: { id: string, name: string, images: string }[] = [];
   filteredOptions: Observable<{ id: number, name: string }[]> | undefined;
   selectedCategory: { id: number, name: string } | null = null;
-  selectedCountry: { id: string, name: string, images: string } | null = null;
-  //selectedCountry: { id: string; name: string; images: string }[]  = [];
+  //selectedCountry: { id: string, name: string, images: string } | null = null;
+  selectedCountry: { id: string; name: string; images: string }[]  = [];
   
+  //selectedCountryId: string | null = null;
+
+
   selectedCountryId: string | null = null;
+  joinedCountryIds: string = '';
+  
+  onCountrySelectionChange(selectedCountries: { id: string; name: string; images: string }[]) {
+    this.selectedCountry = selectedCountries;
+  
+    this.selectedCountryId = selectedCountries.length > 0 ? selectedCountries[0].id : null;
+  
+    this.joinedCountryIds = selectedCountries.map(country => country.id).join(', ');
+  }
+
   
 
-  // getCountryNames(): string {
-  //   return this.selectedCountry.map(c => c.name).join(', ');
-  // }
+  getCountryNames(): string {
+    return this.selectedCountry.map(c => c.name).join(', ');
+  }
   
 
 
@@ -126,39 +139,39 @@ export class CreateSurveyPopupComponent {
     this.selectedOption = e.option.viewValue;
 
   }
-  validateSurvey() {
-    debugger
-    this.surveyNameCheck = !!this.surveyName && this.surveyName.length >= 3;
-    this.categoryNameCheck = !!this.categoryId && this.categoryId !== 0;
-    this.otherCategoryCheck = this.categoryId !== 10 || (!!this.categoryName && this.categoryName.length >= 3);
-    this.selectedCountryId = this.selectedCountry ? this.selectedCountry.id : null;
-    
-    this.countryNameCheck = !!this.selectedCountryId;
-    debugger
-
-    this.isValidSurvey = this.surveyNameCheck && this.categoryNameCheck && this.otherCategoryCheck && this.countryNameCheck;
-  }
-
-
   // validateSurvey() {
   //   debugger
   //   this.surveyNameCheck = !!this.surveyName && this.surveyName.length >= 3;
   //   this.categoryNameCheck = !!this.categoryId && this.categoryId !== 0;
-  //   this.otherCategoryCheck =
-  //     this.categoryId !== 10 || (!!this.categoryName && this.categoryName.length >= 3);
+  //   this.otherCategoryCheck = this.categoryId !== 10 || (!!this.categoryName && this.categoryName.length >= 3);
+  //   this.selectedCountryId = this.selectedCountry ? this.selectedCountry.id : null;
     
-  //   // Validate that at least one country is selected
-  //   this.countryNameCheck = this.selectedCountry.length > 0;
-  
-  //   this.isValidSurvey =
-  //     this.surveyNameCheck &&
-  //     this.categoryNameCheck &&
-  //     this.otherCategoryCheck &&
-  //     this.countryNameCheck;
-
+  //   this.countryNameCheck = !!this.selectedCountryId;
   //   debugger
-   
+
+  //   this.isValidSurvey = this.surveyNameCheck && this.categoryNameCheck && this.otherCategoryCheck && this.countryNameCheck;
   // }
+
+
+  validateSurvey() {
+    debugger
+    this.surveyNameCheck = !!this.surveyName && this.surveyName.length >= 3;
+    this.categoryNameCheck = !!this.categoryId && this.categoryId !== 0;
+    this.otherCategoryCheck =
+      this.categoryId !== 10 || (!!this.categoryName && this.categoryName.length >= 3);
+    
+    // Validate that at least one country is selected
+    this.countryNameCheck = this.selectedCountry.length > 0;
+  
+    this.isValidSurvey =
+      this.surveyNameCheck &&
+      this.categoryNameCheck &&
+      this.otherCategoryCheck &&
+      this.countryNameCheck;
+
+    debugger
+   
+  }
   
 
   createSurvey() {
@@ -169,7 +182,8 @@ export class CreateSurveyPopupComponent {
         name: this.surveyName,
         categoryId: this.categoryId,
         otherCategory: this.categoryName,
-        countryId: this.selectedCountryId,
+        // countryId: this.selectedCountryId,
+        countryId: this.joinedCountryIds,
         isQNumberRequired: this.isQNumberRequired
       };
 
@@ -184,15 +198,15 @@ export class CreateSurveyPopupComponent {
 
           if (result !== null) {
             this.newsurveyId = result
-            const encryptedId = this.crypto.encryptParam(`${this.newsurveyId}`);
-            const url = `/survey/manage-survey/${encryptedId}`;
-            this.modal.hide();
-            this.router.navigateByUrl(url);
-            if (this.router.url.includes('/manage-survey')) {
-              setTimeout(() => {
-                window.location.reload();
-              }, 100);
-            }
+            // const encryptedId = this.crypto.encryptParam(`${this.newsurveyId}`);
+            // const url = `/survey/manage-survey/${encryptedId}`;
+            // this.modal.hide();
+            // this.router.navigateByUrl(url);
+            // if (this.router.url.includes('/manage-survey')) {
+            //   setTimeout(() => {
+            //     window.location.reload();
+            //   }, 100);
+            // }
           }
         },
         error => {

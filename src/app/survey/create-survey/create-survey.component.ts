@@ -25,6 +25,7 @@ import { MatrixHeader, Option } from 'src/app/models/option';
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { MatixHeaderLogics } from 'src/app/models/logic';
+import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 
 // import { debug } from 'console';
 
@@ -124,6 +125,8 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
   @ViewChild('OccupationModal', { static: true }) occupationModal!: ModalDirective;
   @ViewChild('MonthlyIncomeModalforeign', { static: true }) monthlyincomeforeignModal!: ModalDirective;
   @ViewChild('DescriptionScreenModal', { static: true }) DescriptionScreenModal!: ModalDirective;
+
+  public Editor = ClassicEditor;
 
   @Output() onSaveEvent = new EventEmitter();
   isActive: boolean = false;
