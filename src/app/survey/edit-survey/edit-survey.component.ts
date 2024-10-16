@@ -144,6 +144,7 @@ export class EditSurveyComponent {
   multiselctanslogicid:any;
   multiselecttab:boolean= false;
   createanswertab:boolean= false;
+  isHidden: boolean = false;
 
   
 
@@ -219,6 +220,7 @@ export class EditSurveyComponent {
       this.openendedquesreq = this.question.isRequired;
       this.question.openEndedType = data.openEndedType
       this.minLimit = data.minLimit;
+      this.isHidden = data.isHidden;
 
       if(this.questionSummery){
         this.descriptionadded = true
@@ -685,7 +687,7 @@ export class EditSurveyComponent {
       newOption.isFixed = true;
     }
     else if (type == 'noneOfAbove') {
-      newOption.option = "None of above";
+      newOption.option = "None of the above";
       newOption.isFixed = true;
     }
     else if (type == 'dontKnow') {
@@ -916,6 +918,7 @@ export class EditSurveyComponent {
     this.question.questionToolTip = this.questionToolTip;
     this.question.isRequired = this.openendedquesreq;
     this.question.minLimit = this.minLimit;
+    this.question.isHidden = this.isHidden;
     
 
     let modifiedoptions: serveyOption[] = [];
@@ -1076,7 +1079,7 @@ export class EditSurveyComponent {
           // this.onSaveEvent.emit();
           if (resp == '"QuestionCreateFailed"') {
             this.utility.showError('Failed to Create Question');
-          } else if('"QuestionSuccessfullyCreated"') {
+          } else if(resp == '"QuestionSuccessfullyCreated"') {
             this.utility.showSuccess('Question Generated Successfully.');
             let url = `/survey/manage-survey/${this.crypto.encryptParam(this.surveyId)}`;
             this.router.navigateByUrl(url);
@@ -2732,6 +2735,11 @@ export class EditSurveyComponent {
       }
     })
     
+  }
+
+  enableHiddenQues(event:any){
+    this.isHidden = event.target.checked;
+    console.log("isHidden",this.isHidden)
   }
 
 

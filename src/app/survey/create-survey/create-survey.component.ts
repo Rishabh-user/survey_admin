@@ -199,7 +199,8 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
   isMatrixElseShow: boolean[][] = [];
   isMatrixElseShowvalue: boolean[][] = [];
   numberage:number=0;
-  isopenendedvalue:boolean[][] = []
+  isopenendedvalue:boolean[][] = [];
+  isHidden:boolean;
   
   
 
@@ -548,7 +549,8 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
         this.countryId = data.countryId
         this.totalItemsCount = data.totalQuestionCount
         this.categoryId = data.categoryId
-        this.isQNumberRequired = data.isQNumberRequired
+        this.isQNumberRequired = data.isQNumberRequired;
+        this.isHidden = data.isHidden;
         this.selectedCountry = this.country.find(country => country.id === this.countryId) || null;
 
 
@@ -1679,10 +1681,14 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
     );
   }
   showBranchingElse(questionIndex: number, logicIndex: number) {
-    this.isBranchingElseShow[questionIndex][logicIndex] = true
+    this.isBranchingElseShow[questionIndex][logicIndex] = true;
   }
   hideBranchingElse(questionIndex: number, logicIndex: number) {
-    this.isBranchingElseShow[questionIndex][logicIndex] = false
+    this.isBranchingElseShow[questionIndex][logicIndex] = false;
+    
+    if(this.questiontype !== 'Open Ended'){
+      this.questiontype =''
+    }
   }
   //getQuestionListRandomization
   apiResponseRandomization: any[] = [];

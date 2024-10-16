@@ -513,7 +513,7 @@
                     *ngFor="let question of questions | paginate: { id: 'server', itemsPerPage: pageSize, currentPage: pageNumber, totalItems: totalItemsCount } ;let i=index;">
                     <div class="drag-item">
                         <div
-                            [ngClass]="{'ques-header': true, 'screening': question.isScreening,'descques': question.isRequired === false && !question.isOpenEnded}">
+                            [ngClass]="{'ques-header': true, 'screening': question.isScreening,'descques': question.isRequired === false && !question.isOpenEnded,'hiddenques': question.isHidden }">
 
                             <h5  [ngClass]="'mb-0'" *ngIf="!isQNumberRequired === true">
                                 <!-- Q-{{question?.sort}} <div>{{question?.question}}</div> -->
@@ -1088,12 +1088,12 @@
                                                                 </div>
                                                                 
                                                                 <div ngClass="if-then" 
-                                                                    *ngIf="isBranchingElseShow[i][j] || logicEntry.elseId != null && question?.questionType !== 'Open Ended'">
+                                                                    *ngIf="isBranchingElseShow[i][j] || logicEntry.elseId != null">
                                                                     
                                                                     <span>Else 11{{logicEntry.elseExpected}}</span>
                                                                 </div>
                                                                 <div ngClass="mb-4"
-                                                                    *ngIf="isBranchingElseShow[i][j] || logicEntry.elseId != null && question?.questionType !== 'Open Ended'">
+                                                                    *ngIf="isBranchingElseShow[i][j] || logicEntry.elseId != null">
                                                                     <div class="row g-2 align-items-center">
                                                                         <div class="col-md-4">
                                                                             <!-- Use unique template reference variables by appending the index -->
@@ -1156,8 +1156,83 @@
                                                                                 </option>
                                                                             </select>
                                                                         </div>
+                                                                        <div class="col-md-1" >
+                                                                            <button type="button"
+                                                                                class="btn btn-outline-primary btn-sm"
+                                                                                (click)="hideBranchingElse(i,j)">Remove</button>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div ngClass="if-then" 
+                                                                    *ngIf="isBranchingElseShow[i][j] || logicEntry.elseId != ''">
+                                                                    
+                                                                    <span>Else 11{{logicEntry.elseExpected}}</span>
+                                                                </div>
+                                                                <div ngClass="mb-4"
+                                                                    *ngIf="isBranchingElseShow[i][j] || logicEntry.elseId != ''">
+                                                                    <div class="row g-2 align-items-center">
+                                                                        <div class="col-md-4">
+                                                                            <!-- Use unique template reference variables by appending the index -->
+                                                                            <select class="form-select"
+                                                                                #elseIdSelect="ngModel"
+                                                                                [(ngModel)]="logicEntry.elseId"
+                                                                                (change)="onLogicEntryOrElseChange(elseIdSelect.value,i,j)">
 
-                                                                        <div class="col-md-1">
+                                                                                <option
+                                                                                    *ngFor="let item of logicThensList;let j=index;"
+                                                                                    [value]="item.id">{{item.name}}
+                                                                                </option>
+                                                                            </select>
+                                                                        </div>
+                                                                        <div class="col-md-6"
+                                                                            *ngIf="logicEntry.elseId==5">
+                                                                            <div class="d-flex gap-2">
+                                                                                <label class="">
+                                                                                    <span class="w-100">Every
+                                                                                        Time</span>
+                                                                                    <input type="radio"
+                                                                                        class="form-input"
+                                                                                        name="frequencyElse"
+                                                                                        [(ngModel)]="logicEntry.isEveryTimeElse" />
+                                                                                </label>
+
+                                                                                <label class="">
+                                                                                    <span class="w-100">Times</span>
+                                                                                    <div class="d-flex">
+                                                                                        <input type="radio"
+                                                                                            class="form-input"
+                                                                                            name="frequencyElse" />
+                                                                                        <input type="text"
+                                                                                            class="form-input"
+                                                                                            style="width: 50px;"
+                                                                                            [(ngModel)]="logicEntry.timesPeriodElse" />
+                                                                                    </div>
+                                                                                </label>
+                                                                                <label class="">
+                                                                                    <span class="w-100">Enter Popup
+                                                                                        Text</span>
+                                                                                    <input type="text"
+                                                                                        class="form-input"
+                                                                                        [(ngModel)]="logicEntry.popupTextElse" />
+                                                                                </label>
+                                                                            </div>
+                                                                        </div>
+
+                                                                        <div class="col-md-4"
+                                                                            *ngIf="isElseShow[i][j] && logicEntry.elseId!=5">
+                                                                            <select class="form-select"
+                                                                                #thanExpectedSelect="ngModel"
+                                                                                [(ngModel)]="logicEntry.elseExpected">
+                                                                                <option value="null">Select Question
+                                                                                </option>
+                                                                                <option
+                                                                                    *ngFor="let item of logicQuestionListById;let j=index;"
+                                                                                    [value]="item.item.charAt(0)+'-'+item.id">
+                                                                                    {{item.item}}
+                                                                                </option>
+                                                                            </select>
+                                                                        </div>
+                                                                        <div class="col-md-1" >
                                                                             <button type="button"
                                                                                 class="btn btn-outline-primary btn-sm"
                                                                                 (click)="hideBranchingElse(i,j)">Remove</button>

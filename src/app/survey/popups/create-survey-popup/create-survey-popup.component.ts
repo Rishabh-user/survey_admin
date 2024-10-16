@@ -48,7 +48,8 @@ export class CreateSurveyPopupComponent {
   
     this.selectedCountryId = selectedCountries.length > 0 ? selectedCountries[0].id : null;
   
-    this.joinedCountryIds = selectedCountries.map(country => country.id).join(', ');
+    this.joinedCountryIds = selectedCountries.map(country => country.id.trim()).join(', ');
+    console.log("joinedCountryIds",this.joinedCountryIds)
   }
 
   
@@ -154,7 +155,6 @@ export class CreateSurveyPopupComponent {
 
 
   validateSurvey() {
-    debugger
     this.surveyNameCheck = !!this.surveyName && this.surveyName.length >= 3;
     this.categoryNameCheck = !!this.categoryId && this.categoryId !== 0;
     this.otherCategoryCheck =
@@ -168,8 +168,6 @@ export class CreateSurveyPopupComponent {
       this.categoryNameCheck &&
       this.otherCategoryCheck &&
       this.countryNameCheck;
-
-    debugger
    
   }
   
@@ -182,7 +180,7 @@ export class CreateSurveyPopupComponent {
         name: this.surveyName,
         categoryId: this.categoryId,
         otherCategory: this.categoryName,
-        // countryId: this.selectedCountryId,
+        //countryId: this.selectedCountryId,
         countryId: this.joinedCountryIds,
         isQNumberRequired: this.isQNumberRequired
       };
@@ -197,16 +195,21 @@ export class CreateSurveyPopupComponent {
           const result = this.convertStringToNumber(this.removeQuotes(response));
 
           if (result !== null) {
+            
             this.newsurveyId = result
-            // const encryptedId = this.crypto.encryptParam(`${this.newsurveyId}`);
-            // const url = `/survey/manage-survey/${encryptedId}`;
-            // this.modal.hide();
-            // this.router.navigateByUrl(url);
-            // if (this.router.url.includes('/manage-survey')) {
-            //   setTimeout(() => {
-            //     window.location.reload();
-            //   }, 100);
-            // }
+            const encryptedId = this.crypto.encryptParam(`${this.newsurveyId}`);
+            const url = `/survey/manage-survey/${encryptedId}`;
+            this.modal.hide();
+            this.router.navigateByUrl(url);
+            setTimeout(() => {
+              if (this.router.url.includes('/manage-survey')) {
+                setTimeout(() => {
+                  window.location.reload();
+                }, 100);
+              }
+          },100)
+            
+            
           }
         },
         error => {

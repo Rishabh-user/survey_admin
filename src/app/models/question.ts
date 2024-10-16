@@ -35,6 +35,7 @@ export class Question {
     public isAlphabet: boolean = false
     public textLimit: any = 0;
     public minLimit: number = 0;
+    public isHidden: boolean= false;
     public questionSummery: string = ''
     public matrixHeader: MatrixHeader[]=[]
     public questionToolTip: string = ''

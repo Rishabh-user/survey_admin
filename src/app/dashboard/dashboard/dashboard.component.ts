@@ -394,8 +394,28 @@ export class DashboardComponent {
   country: { id: string, name: string, images: string }[] = [];
   filteredOptions: Observable<{ id: number, name: string }[]> | undefined;
   selectedCategory: { id: number, name: string } | null = null;
-  selectedCountry: { id: string, name: string, images: string } | null = null;
+  // selectedCountry: { id: string, name: string, images: string } | null = null;
+  // selectedCountryId: string | null = null;
+
+  selectedCountry: { id: string; name: string; images: string }[]  = [];
+
   selectedCountryId: string | null = null;
+  joinedCountryIds: string = '';
+  
+  onCountrySelectionChange(selectedCountries: { id: string; name: string; images: string }[]) {
+    this.selectedCountry = selectedCountries;
+  
+    this.selectedCountryId = selectedCountries.length > 0 ? selectedCountries[0].id : null;
+  
+    this.joinedCountryIds = selectedCountries.map(country => country.id.trim()).join(', ');
+    console.log("joinedCountryIds",this.joinedCountryIds)
+  }
+
+  
+
+  getCountryNames(): string {
+    return this.selectedCountry.map(c => c.name).join(', ');
+  }
 
 
   surveyNameCheck: boolean = true
@@ -460,14 +480,30 @@ export class DashboardComponent {
     this.selectedOption = e.option.viewValue;
 
   }
+  // validateSurvey() {
+  //   this.surveyNameCheck = !!this.surveyName && this.surveyName.length >= 3;
+  //   this.categoryNameCheck = !!this.categoryId && this.categoryId !== 0;
+  //   this.otherCategoryCheck = this.categoryId !== 10 || (!!this.categoryName && this.categoryName.length >= 3);
+  //   this.selectedCountryId = this.selectedCountry ? this.selectedCountry.id : null;
+  //   this.countryNameCheck = !!this.selectedCountryId;
+
+  //   this.isValidSurvey = this.surveyNameCheck && this.categoryNameCheck && this.otherCategoryCheck && this.countryNameCheck;
+  // }
+
   validateSurvey() {
     this.surveyNameCheck = !!this.surveyName && this.surveyName.length >= 3;
     this.categoryNameCheck = !!this.categoryId && this.categoryId !== 0;
-    this.otherCategoryCheck = this.categoryId !== 10 || (!!this.categoryName && this.categoryName.length >= 3);
-    this.selectedCountryId = this.selectedCountry ? this.selectedCountry.id : null;
-    this.countryNameCheck = !!this.selectedCountryId;
-
-    this.isValidSurvey = this.surveyNameCheck && this.categoryNameCheck && this.otherCategoryCheck && this.countryNameCheck;
+    this.otherCategoryCheck =
+      this.categoryId !== 10 || (!!this.categoryName && this.categoryName.length >= 3);
+    
+    this.countryNameCheck = this.selectedCountry.length > 0;
+  
+    this.isValidSurvey =
+      this.surveyNameCheck &&
+      this.categoryNameCheck &&
+      this.otherCategoryCheck &&
+      this.countryNameCheck;
+   
   }
 
   createSurvey() {
@@ -478,7 +514,8 @@ export class DashboardComponent {
         name: this.surveyName,
         categoryId: this.categoryId,
         otherCategory: this.categoryName,
-        countryId: this.selectedCountryId,
+       // countryId: this.selectedCountryId,
+        countryId: this.joinedCountryIds,
         isQNumberRequired: this.isQNumberRequired
       };
 

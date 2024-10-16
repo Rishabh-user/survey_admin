@@ -140,6 +140,19 @@
                         </div>
                         <div class="mt-3">
                             <div class="d-flex align-items-center mb-3">
+                                <h6 class="mb-0">Enable Hidden Question</h6>
+                                <div class="mb-0 ms-4">
+                                    <div class="form-check form-switch">
+                                        <input class="form-check-input" type="checkbox" role="switch"
+                                            name="isChecked" (change)="enableHiddenQues($event)" [(ngModel)]="isHidden"
+                                            style="width: 2.5rem;height: 1.4rem;">
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- <textarea class="form-control" [(ngModel)]="questionSummery" rows="5"></textarea> -->
+                        </div>
+                        <div class="mt-3">
+                            <div class="d-flex align-items-center mb-3">
                                 <h6 class="mb-0">Description</h6>
                                 <div class="mb-0 ms-4">
                                     <div class="form-check form-switch">
@@ -398,7 +411,7 @@
                                     <input id="answer" type="text" name="answer"  class="form-control" [(ngModel)]="option.optionDescription" placeholder="Option Description" [ngModelOptions]="{standalone: true}" />
                                         
                                 </div> -->
-                                <div class="flex-2" *ngIf="option.option !== 'Prefer not to Answer' && option.option !== 'Other (Please specify)' && option.option !== 'None of above' && option.option !== 'Other' && option.option !== 'Don\'t know /Can\'t say' && (optiondescp || option.optionDescription)">
+                                <div class="flex-2" *ngIf="option.option !== 'Prefer not to Answer' && option.option !== 'Other (Please specify)' && option.option !== 'None of the above' && option.option !== 'Other' && option.option !== 'Don\'t know /Can\'t say' && (optiondescp || option.optionDescription)">
                                     <input id="answer" type="text" name="answer" class="form-control" [(ngModel)]="option.optionDescription" placeholder="Option Description" [ngModelOptions]="{standalone: true}" />
                                 </div>
                                 
@@ -561,7 +574,7 @@
                             <div class="col-auto">
                                 <div ngClass="new-options">
                                     <a herf="javascript:void(0);" (click)="hanldeAddOptionClick('noneOfAbove')"><ng-icon
-                                            name="heroPlusCircle"></ng-icon> Add "None of
+                                            name="heroPlusCircle"></ng-icon> Add "None of the
                                         above"
                                         Option</a>
                                 </div>
@@ -1384,7 +1397,7 @@
                                                                 </div>
 
                                                             </div>
-                                                            <div class="col-12">
+                                                            <div class="col-12" [ngClass]="{'disablebutton':getoptionlogic.length == 0}">
                                                                 <button type="button" class="btn trash-icon" (click)="deleteOptionLogics(i)">Delete Logic {{i+1}}</button>
                                                             </div>
                                                         </div>

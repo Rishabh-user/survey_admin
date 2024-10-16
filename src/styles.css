@@ -2542,6 +2542,11 @@ figure.image-figure {
 .descques{
     background-color: #08b7f0;
 }
+
+.hiddenques{
+    background-color: #b16a54;
+}
+
 th:last-child, td:last-child
 {
   /* position:sticky; */
@@ -2550,4 +2555,9 @@ th:last-child, td:last-child
 
 .groupoption .form-check-inline{
     display: flex;
+}
+
+.disablebutton{
+    pointer-events: none;
+    opacity: 0.5;
 }
