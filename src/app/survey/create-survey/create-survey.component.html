@@ -392,15 +392,16 @@
                                                 </ng-container>
                                             </mat-select>
                                         </mat-form-field>
+                                        <input type="number" id="randamizeno" name="randamizeno"  [(ngModel)]="randomization.randomizeNumber"/>
 
                                         <button type="button" class="btn btn-primary btn-sm"
                                             (click)="removeRandomizationSection(i)">Remove</button>
                                     </div>
                                     <div class="mt-3 ms-4 form-check checking">
                                         <input class="form-check-input" type="checkbox"
-                                            [(ngModel)]="randomization.isRandomizationChecked" id="Randomise"
+                                            [(ngModel)]="randomization.isRandomizationChecked" [id]="'Randomise' + i"
                                             (blur)="validateSurvey()">
-                                        <label class="form-check-label" for="Randomise">
+                                        <label class="form-check-label" [for]="'Randomise' + i">
                                             Randomization these question
                                         </label>
 

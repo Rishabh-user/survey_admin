@@ -1497,12 +1497,13 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
 
 
 
-    const formattedData: { surveyId: string, questionId: string, isRandomize: boolean, groupNumber: number }[] = [];
+    const formattedData: { surveyId: string, questionId: string, isRandomize: boolean, groupNumber: number,randomizeNumber:number }[] = [];
 
     for (let i = 0; i < this.randormizeEntries.length; i++) {
       const randomization = this.randormizeEntries[i];
       const fromQuestionId = randomization.fromQuestion;
       const toQuestionId = randomization.toQuestion;
+      const randomizeNumber = randomization.randomizeNumber
 
 
 
@@ -1515,7 +1516,8 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
             surveyId: this.surveyId.toString(), // Convert surveyId to string
             questionId: question.id.toString(), // Convert questionId to string
             isRandomize: true,
-            groupNumber: i + 1 // Add groupNumber based on the index of randormizeEntries
+            groupNumber: i + 1 ,
+            randomizeNumber: randomizeNumber// Add groupNumber based on the index of randormizeEntries
           };
         });
 
@@ -1531,6 +1533,10 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
       serviceCall.subscribe(
         response => {
           this.utils.showSuccess('Randomization Created Successfully.');
+          setTimeout(() => {
+            window.location.reload();
+          }, 200);
+          
         },
         error => {
           this.utils.showError('Please confirm you want to randomize these questions');
@@ -1699,7 +1705,8 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
   //getQuestionListRandomization
   apiResponseRandomization: any[] = [];
   groupedDataRandomization: { [key: string]: any[] } = {};
-  randomizegroupid: any
+  randomizegroupid: any;
+  randomizeNumber:any
 
   getRandomization(): void {
 
@@ -1711,6 +1718,7 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
           debugger
           this.randomizegroupid = response[0].groupNumber;
           this.isRandomizationChecked = response[0].isRandomize
+          this.randomizeNumber = response[0].randomizeNumber
           this.randormizeEntries = response.map(randomization => ({
             isRandomizationChecked: randomization.isRandomize
           }))
@@ -1740,7 +1748,8 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
       this.randormizeEntries.push({
         fromQuestion: null,
         toQuestion: null,
-        isRandomizationChecked: null
+        isRandomizationChecked: null,
+        randomizeNumber: null,
       });
     } else {
       this.isDivVisible = true;
@@ -1788,12 +1797,14 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
           const fromQuestion = Math.min(...numericValues);
           const toQuestion = Math.max(...numericValues);
 
-          // const isRandomizationChecked = group[0].isRandomize; 
+          const isRandomizationChecked = group[0].isRandomize; 
+          const randomizeNumber = group[0].randomizeNumber; 
 
           transformedData.push({
             fromQuestion,
             toQuestion,
-            // isRandomizationChecked
+            randomizeNumber,
+            isRandomizationChecked
           });
         } else {
           console.warn('No valid numeric values found for groupNumber:', groupNumber);
