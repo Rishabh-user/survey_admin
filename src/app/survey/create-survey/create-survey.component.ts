@@ -1102,6 +1102,10 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
               });
             }
 
+            if (newLogicEntry.elseId === 0) {
+              newLogicEntry.elseId = null;
+            }
+
             if (newLogicEntry.isAnd || newLogicEntry.isOr) {
               this.visibleaddandlogic[index][logicIndex] = true;
               this.showRemoveandlogicArray[index][logicIndex] = true;
@@ -1683,8 +1687,10 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
   showBranchingElse(questionIndex: number, logicIndex: number) {
     this.isBranchingElseShow[questionIndex][logicIndex] = true;
   }
-  hideBranchingElse(questionIndex: number, logicIndex: number) {
+  hideBranchingElse(questionIndex: number, logicIndex: number,logicEntry:any) {
     this.isBranchingElseShow[questionIndex][logicIndex] = false;
+    logicEntry.elseId = null
+    console.log("logicid",logicEntry.elseId)
     
     if(this.questiontype !== 'Open Ended'){
       this.questiontype =''
