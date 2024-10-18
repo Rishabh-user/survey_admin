@@ -1457,10 +1457,11 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
 
   removeRandomizationSection(index: number) {
     this.randormizeEntries.splice(index, 1);
+    console.log("randomizegroupid",this.randomizegroupid)
     this.surveyservice.deleteRandomizedQuestions(this.surveyId, this.randomizegroupid).subscribe(
       (data: any) => {
         this.utils.showSuccess('Question Deleted.');
-        window.location.reload();
+        //window.location.reload();
       },
       (error: any) => {
         this.utils.showError('Error deleting question.');
@@ -1505,6 +1506,8 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
       const toQuestionId = randomization.toQuestion;
       const randomizeNumber = randomization.randomizeNumber
 
+      console.log("randomization",randomization)
+
 
 
       if (fromQuestionId && toQuestionId && randomization.isRandomizationChecked) {
@@ -1522,6 +1525,7 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
         });
 
         formattedData.push(...formattedQuestions);
+        console.log("formattedData",formattedData)
       } else {
         console.warn('From Question and To Question must be selected and checkbox must be checked for each randomization entry.');
       }
@@ -1534,7 +1538,7 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
         response => {
           this.utils.showSuccess('Randomization Created Successfully.');
           setTimeout(() => {
-            window.location.reload();
+            //window.location.reload();
           }, 200);
           
         },

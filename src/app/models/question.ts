@@ -28,15 +28,17 @@ export class Question {
     public isScreening: boolean = false
     public screeningRedirectUrl: string = ""
     public openEndedType: string = ""
-    public youtubeUrl: string = ''
-    public description: string = ''
-    public genericKey: number = 0
-    public isNumeric: boolean = false
-    public isAlphabet: boolean = false
+    public youtubeUrl: string = '';
+    public description: string = '';
+    public genericKey: number = 0;
+    public isNumeric: boolean = false;
+    public isAlphabet: boolean = false;
     public textLimit: any = 0;
     public minLimit: number = 0;
     public isHidden: boolean= false;
-    public questionSummery: string = ''
-    public matrixHeader: MatrixHeader[]=[]
-    public questionToolTip: string = ''
+    public questionSummery: string = '';
+    public matrixHeader: MatrixHeader[]=[];
+    public questionToolTip: string = '';
+    public inputTextArea: boolean = false;
+    public inputTextType: boolean = false;
 }

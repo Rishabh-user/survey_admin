@@ -34,6 +34,7 @@
                         <th scope="col">Reports Name</th>
                         <th scope="col">Survey ID</th>
                         <th scope="col">Category</th>
+                        <th scope="col">Complete</th>
                         <th scope="col">Creator Name</th>
                         <th scope="col">Last Modification</th>
                         <th scope="col">Status</th>
@@ -48,6 +49,7 @@
                         <td>{{item?.surveyId}}</td>
                         <td *ngIf="item?.categoryName !='Others'">{{item.categoryName}}</td>
                         <td *ngIf="item?.categoryName =='Others'">{{item.otherCategory}}</td>
+                        <td>{{item.surveyResponseCount}}</td>
                         <td>
 
                             <div class="d-flex align-items-center">

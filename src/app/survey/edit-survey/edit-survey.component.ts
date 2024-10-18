@@ -145,6 +145,9 @@ export class EditSurveyComponent {
   multiselecttab:boolean= false;
   createanswertab:boolean= false;
   isHidden: boolean = false;
+  inputtype:any;
+  inputTextArea:any;
+  inputTextType:any
 
   
 
@@ -221,6 +224,11 @@ export class EditSurveyComponent {
       this.question.openEndedType = data.openEndedType
       this.minLimit = data.minLimit;
       this.isHidden = data.isHidden;
+      if(data.inputTextArea){
+        this.inputtype = 'textarea'
+      }else{
+        this.inputtype ='textfield'
+      }
 
       if(this.questionSummery){
         this.descriptionadded = true
@@ -877,6 +885,8 @@ export class EditSurveyComponent {
       countryId: this.question.questionTypeName
     };
 
+    this.checkInputType();
+
     // Update the question properties if necessary
     if (this.groups.length > 0) {
       this.question.isGrouping = true;
@@ -914,6 +924,8 @@ export class EditSurveyComponent {
     this.question.qNo = this.qNo
     this.question.isNumeric =  this.numeric
     this.question.isAlphabet = this.alphabet;
+    // this.question.inputTextArea = this.inputTextArea;
+    // this.question.inputTextType = this.inputTextType;
     this.question.description = this.description;
     this.question.questionToolTip = this.questionToolTip;
     this.question.isRequired = this.openendedquesreq;
@@ -1588,6 +1600,7 @@ export class EditSurveyComponent {
     }
     if (this.question.questionTypeName === 'Open Ended'){
       this.openEndedValue();
+      this.checkInputType();
     }
     this.question.isNumeric = this.numeric;
     this.question.isAlphabet = this.alphabet;
@@ -2740,6 +2753,16 @@ export class EditSurveyComponent {
   enableHiddenQues(event:any){
     this.isHidden = event.target.checked;
     console.log("isHidden",this.isHidden)
+  }
+
+  checkInputType(){
+    if(this.inputtype == 'textarea'){
+      this.question.inputTextArea= true;
+      this.question.inputTextType = false;
+    }else{
+      this.question.inputTextType = true;
+      this.question.inputTextArea= false;
+    }
   }
 
 
