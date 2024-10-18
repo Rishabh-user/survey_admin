@@ -1451,17 +1451,18 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
   addRandomizationSection() {
     this.randormizeEntries.push({
       fromQuestion: null,
-      toQuestion: null, isRandomizationChecked: false
+      toQuestion: null, isRandomizationChecked: false, groupNumber: null
     });
   }
 
   removeRandomizationSection(index: number) {
     this.randormizeEntries.splice(index, 1);
     console.log("randomizegroupid",this.randomizegroupid)
-    this.surveyservice.deleteRandomizedQuestions(this.surveyId, this.randomizegroupid).subscribe(
+    console.log("index",index)
+    this.surveyservice.deleteRandomizedQuestions(this.surveyId, index).subscribe(
       (data: any) => {
         this.utils.showSuccess('Question Deleted.');
-        //window.location.reload();
+        window.location.reload();
       },
       (error: any) => {
         this.utils.showError('Error deleting question.');
@@ -1511,9 +1512,12 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
 
 
       if (fromQuestionId && toQuestionId && randomization.isRandomizationChecked) {
+    
+        console.log("logicQuestionListById",this.logicQuestionListById)
         const filteredQuestions = this.logicQuestionListById.filter((question: { id: number; }) => question.id >= fromQuestionId && question.id <= toQuestionId);
 
-
+        console.log("filteredQuestions",filteredQuestions)
+       
         const formattedQuestions = filteredQuestions.map((question: { id: { toString: () => any; }; }) => {
           return {
             surveyId: this.surveyId.toString(), // Convert surveyId to string
@@ -1753,6 +1757,7 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
         fromQuestion: null,
         toQuestion: null,
         isRandomizationChecked: null,
+        groupNumber: null,
         randomizeNumber: null,
       });
     } else {
@@ -1803,12 +1808,14 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
 
           const isRandomizationChecked = group[0].isRandomize; 
           const randomizeNumber = group[0].randomizeNumber; 
+          const groupNumber = group[0].groupNumber;
 
           transformedData.push({
             fromQuestion,
             toQuestion,
             randomizeNumber,
-            isRandomizationChecked
+            isRandomizationChecked,
+            groupNumber
           });
         } else {
           console.warn('No valid numeric values found for groupNumber:', groupNumber);
