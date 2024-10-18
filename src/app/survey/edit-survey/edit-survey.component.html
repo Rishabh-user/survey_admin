@@ -374,7 +374,7 @@
                             <div class="flex-width">Tooltip</div>
                         </div>
                         <ng-contaniner *ngIf="question.questionTypeName !== 'Open Ended'">
-                            <div class="row g-2 align-items-center mb-3" *ngFor="let option of optionsArr1;let i=index;">
+                            <div class="row g-2 align-items-center mb-3" *ngFor="let option of optionsArr1;let i=index;" cdkDrag>
                                 <div class="flex-width">
                                     <input type="text" id="" class="form-control" value="{{i+1}}" readonly />
                                 </div>
@@ -418,7 +418,7 @@
                                 
                                 
 
-                                <div class="flex-width text-end" cdkDrag>
+                                <div class="flex-width text-end">
                                     <ng-icon name="heroBars3"></ng-icon>
                                 </div>
                                 <div class="flex-width text-end">
