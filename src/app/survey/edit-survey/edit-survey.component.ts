@@ -147,7 +147,8 @@ export class EditSurveyComponent {
   isHidden: boolean = false;
   inputtype:any;
   inputTextArea:any;
-  inputTextType:any
+  inputTextType:any;
+  isvalidopenended:boolean=false;
 
   
 
@@ -839,6 +840,13 @@ export class EditSurveyComponent {
     
     const isSurveyValid = this.validateSurvey();
     const isHeaderValid = this.validateHeaders()
+    this.isvalidopenended = this.validateOpenEnded();
+
+    if(!this.isvalidopenended && (this.question.questionTypeName === 'Open Ended' && (this.question.openEndedType === '' || this.question.openEndedType === 'textarea'))){
+      this.utility.showError("Checkbox is required");
+      console.log("isvalidopenended",this.isvalidopenended)
+      return
+    }
 
     if (!isSurveyValid ) {
       this.utility.showError('Please fill all required fields.');
@@ -2763,6 +2771,17 @@ export class EditSurveyComponent {
       this.question.inputTextType = true;
       this.question.inputTextArea= false;
     }
+  }
+
+  checkednumeric:boolean=false;
+  checkedalphabet:boolean = false;
+
+  validateOpenEnded():boolean{
+    this.checkednumeric = !!this.numeric;
+    this.checkedalphabet = !!this.alphabet;
+
+    return this.checkednumeric || this.checkedalphabet
+
   }
 
 
