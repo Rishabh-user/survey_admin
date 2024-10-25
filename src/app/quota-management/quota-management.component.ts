@@ -51,7 +51,7 @@ export class QuotaManagementComponent {
   currentinterlockoptionlist:any[]=[];
   currentinterlockoptionid:any[]=[];
   interlockoptionlist:any[]=[];
-  interlockoptionid:any[]=[];
+  interlockoptionid:{ quesId: number; optionId: number }[] = [];
   previousItemIds: any[]=[];
   quotainterlockdata:any[]=[];
   interlockusercount:any;
@@ -893,10 +893,11 @@ activeIndicesForInterlock(interlockindex: number): number[] {
     );
     console.log("interlockoptionlist",this.interlockoptionlist[0].options)
 
-    this.interlockoptionlist[0].options.forEach((item:any) => {
-      this.interlockoptionid.push(item.id);
-      console.log("interlockoptionlist",this.interlockoptionid)
+    this.interlockoptionlist[0].options.forEach((item: any) => {
+      this.interlockoptionid.push({ quesId: quesid, optionId: item.id });
+      console.log("interlockoptionid", this.interlockoptionid);
     });
+    
   }
 
   getCurrentOptionId(quesid:any){
@@ -937,9 +938,9 @@ activeIndicesForInterlock(interlockindex: number): number[] {
       interlockPayload.push({
         id: 0,
         quotaId: this.quotaid,
-        questionId: this.interlockquesid,
+        questionId: item.quesId,
         isInterlock: true,
-        optionId: item,
+        optionId: item.optionId,
         userCount: usercount
       });
     });
@@ -948,9 +949,9 @@ activeIndicesForInterlock(interlockindex: number): number[] {
       next: (resp) => {
         console.log("API response:", resp);
         this.utility.showSuccess("Successfully");
-        setTimeout(() => {
-          window.location.reload();
-        }, 200);
+        // setTimeout(() => {
+        //   window.location.reload();
+        // }, 200);
       },
       error: (err) => {
         console.error("API error:", err);
