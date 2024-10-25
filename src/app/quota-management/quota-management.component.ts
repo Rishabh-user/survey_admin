@@ -949,9 +949,9 @@ activeIndicesForInterlock(interlockindex: number): number[] {
       next: (resp) => {
         console.log("API response:", resp);
         this.utility.showSuccess("Successfully");
-        // setTimeout(() => {
-        //   window.location.reload();
-        // }, 200);
+        setTimeout(() => {
+          window.location.reload();
+        }, 200);
       },
       error: (err) => {
         console.error("API error:", err);
