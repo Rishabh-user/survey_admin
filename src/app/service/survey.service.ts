@@ -596,6 +596,20 @@ export class SurveyService {
     const url=`${this.apiUrl}DeleteAutocode?surveyId=${surveyId}`;
     return this.http.post(url, { responseType: 'text' });
   }
+  
+  interlockQuota(data:any):Observable<any> {
+    const url = `${this.apiUrl}api/admin/${this.userId}/Quota/QuotaInterlock`;
+    return this.http.post(url, data, { responseType: 'text' });
+  }
 
+  getQuotaInterlock(quotaId:any): Observable<responseDTO[]> {
+    const url = `${this.apiUrl}api/admin/${this.userId}/Quota/ParingOptions?quotaId=${quotaId}`;
+    return this.http.get<responseDTO[]>(url);
+  }
+
+  deleteInterlockQuota(quotaId:any):Observable<any> {
+    const url = `${this.apiUrl}api/admin/${this.userId}/Quota/DeleteInterlock?quotaId=${quotaId}`;
+    return this.http.delete(url, { responseType: 'text' });
+  }
 
 }

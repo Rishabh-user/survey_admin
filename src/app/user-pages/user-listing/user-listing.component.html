@@ -61,10 +61,12 @@
                         <td>{{ item.email }}</td>
                         <td>{{ item.contactNo }}</td>
                         <td>{{ item.createdDate | date:'dd-MM-yyyy | HH:mm' }}</td>
-                        <td
+                        <td 
                             [ngClass]="{'done donestatus': item.status === 'ACT', 'paused status': item.status !== 'ACT'}">
                             <span>{{ item.status === 'ACT' ? 'Active' : 'Deactive' }}</span>
                         </td>
+                      
+
                     </tr>
                 </tbody>
             </table>

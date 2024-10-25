@@ -191,8 +191,8 @@
 
     <div class="common-bg">
         <h4>Interlocked Quotas</h4>
-        <div class="interlocked-quotas" [style.display]="showInterlockedQuotas ? 'block' : 'none'">
-        <!-- <div class="interlocked-quotas" > -->
+        <!-- <div class="interlocked-quotas" [style.display]="showInterlockedQuotas ? 'block' : 'none'"> -->
+        <div class="interlocked-quotas" >
             <ul>
                 <ng-container *ngFor="let question of surveyQuotaJson?.questionDto; let i = index">
                 <li *ngFor="let generictype of genericlist; let i= index ">
@@ -201,22 +201,17 @@
                 </li></ng-container>
                 
             </ul>
-            <table class="table table-bordered mt-5">
+            <table class="table table-bordered mt-5" *ngFor="let item of quotainterlockdata">
                 <tbody>
                     <tr>
-                        <td>Male, 18-24, Central India</td>
-                        <td><input type="number" class="form-control" value="30"></td>
-                    </tr>
-                    <tr>
-                        <td>Female, 18-24, Central India</td>
-                        <td><input type="number" class="form-control" value="30"></td>
-                    </tr>
-                    <tr>
-                        <td>Male, 18-24, Central India</td>
+                        <td>{{item.firstOptionName}}, {{item.secondOptionName}}</td>
                         <td><input type="number" class="form-control" value="30"></td>
                     </tr>
                 </tbody>
             </table>
+        </div>
+        <div class="text-end mt-3">
+            <button type="button" (click)="deleteInterlockquota()" class="btn btn-danger">Delete Interlock</button>
         </div>
         <div class="blanked-interlocked">
             <ng-icon name="heroPlus" style="font-size: .875rem;"></ng-icon><span>Interlock Quotas</span>
@@ -227,19 +222,20 @@
 
 <ng-template #contentInterlock let-modal>
     <div class="modal-header">
-      <h4 class="modal-title" id="modal-basic-title">Interlock Quota for Item {{ itemindex }} </h4>
+      <h4 class="modal-title" id="modal-basic-title">Interlock Quota for Item {{ itemindex+1 }} </h4>
       <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
     </div>
     <div class="modal-body">
       <ul class="interlock-quota">
         <li *ngFor="let item of itemques; let i = index" [class.active]="activeIndicesForInterlock(itemindex).includes(i)" [ngClass]="{'active':(i == itemindex)}"
-            (click)="toggleActive(i, itemindex,item.id)">
+            (click)="toggleActive(i, itemindex,item.id);getAllOptionId(item.id)">
               {{item.id}}{{ item.question}}
         </li>
       </ul>
     </div>
     <div class="modal-footer">
-      <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">Update</button>
+      <!-- <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">Update</button> -->
+      <button type="button" class="btn btn-outline-dark" (click)="saveInterlock()">Update</button>
     </div>
 </ng-template>
 

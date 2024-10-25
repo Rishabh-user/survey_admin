@@ -6,7 +6,7 @@ import { responseDTO } from '../types/responseDTO';
 import { ActivatedRoute } from '@angular/router';
 import { environment } from 'src/environments/environment';
 import { UtilsService } from '../service/utils.service';
-import { OptionDto, QuestionDto, QuotaData } from '../types/quota';
+import { OptionDto, QuestionDto, QuotaData, QuotaInterlock } from '../types/quota';
 import { CryptoService } from 'src/app/service/crypto.service';
 import { MatSelect, MatSelectChange } from '@angular/material/select';
 
@@ -45,6 +45,16 @@ export class QuotaManagementComponent {
   uid: any;
   vendorid:number
   router: any;
+  quotainterlock: QuotaInterlock = new QuotaInterlock();
+  interlockquesid:any;
+  currentinterlockid:any;
+  currentinterlockoptionlist:any[]=[];
+  currentinterlockoptionid:any[]=[];
+  interlockoptionlist:any[]=[];
+  interlockoptionid:any[]=[];
+  previousItemIds: any[]=[];
+  quotainterlockdata:any[]=[];
+  interlockusercount:any;
   //QuotaData: QuotaData;
 
 
@@ -117,8 +127,6 @@ export class QuotaManagementComponent {
     this.getQuotaBySurveyId();
     console.log("step3", this.questionList)
     this.quotaById();
-
-    
     
   }
 
@@ -283,11 +291,17 @@ export class QuotaManagementComponent {
 
 // Initialize activeIndices as an object
 activeIndices: number[][] = [];
-selectedinterlockid:any[]=[]
+selectedinterlockid:any[][]=[]
 
 toggleActive(index: number, interlockindex: number, itemid: number) {
   const itemId = itemid;
-  console.log("itemId", itemId);
+  if(index == interlockindex){
+     this.currentinterlockid = itemid
+  }
+  console.log("itemId khk", itemId);
+  console.log("interlockindex",interlockindex)
+  console.log("interlockquesid",this.currentinterlockid)
+  console.log("index",index)
 
   // Ensure selectedinterlockid is initialized properly
   if (!this.selectedinterlockid[interlockindex]) {
@@ -310,9 +324,14 @@ toggleActive(index: number, interlockindex: number, itemid: number) {
   } else {
     indices.push(index);
   }
-  if (this.selectedinterlockid.some(innerArray => innerArray.length > 1)) {
-    this.selectedInterlockQues(this.selectedinterlockid);
-  }
+  // if (this.selectedinterlockid.some(innerArray => innerArray.length > 1)) {
+  //   this.selectedInterlockQues(this.selectedinterlockid);
+  // }
+  // if(index == interlockindex){
+  //   this.getAllOptionId(itemId)
+  // }
+  this.getCurrentOptionId(this.currentinterlockid)
+  
   
 }
 
@@ -364,8 +383,10 @@ activeIndicesForInterlock(interlockindex: number): number[] {
         });
         console.log("optioneee", this.optionlist);
       }
+      console.log("qewr",this.quotaid)
 
       this.getQuotaBySurveyId();
+      this.getQuotaInterlock(this.quotaid);
 
     });
   }
@@ -590,7 +611,9 @@ activeIndicesForInterlock(interlockindex: number): number[] {
           console.log("Filtered Questiongg:", this.filteredQuestions);
             
 
-          this.itemques.push(...this.filteredQuestions)
+          ///this.itemques=[...new Set(this.filteredQuestions)]
+         this.itemques = Array.from(new Set([...this.itemques, ...this.filteredQuestions]));
+
 
           console.log("qwertygshd",this.itemques)
 
@@ -642,6 +665,7 @@ activeIndicesForInterlock(interlockindex: number): number[] {
         console.log("quotabyid json", this.surveyQuotaJson)
         console.log("quotabyid id", this.quotaid)
         console.log("Quotas: quotabyid", this.quotas);
+        this.getQuotaInterlock(this.quotaid)
       },
       error: (err: any) => {
         this.initializeQuotaData();
@@ -723,12 +747,10 @@ activeIndicesForInterlock(interlockindex: number): number[] {
 
   selectedInterlockQues(interlockid: any[]) {
     debugger
-    alert("work")
     const matchingQuestions = this.surveyQuotaJson.questionDto.filter((question: any) =>
       interlockid.includes(question.questionId)
     );
   
-    alert("work1")
     matchingQuestions.forEach((question: any) => {
       const options = question.optionsDto;
       // Generate all possible combinations of options
@@ -859,6 +881,110 @@ activeIndicesForInterlock(interlockindex: number): number[] {
     console.log("selected ques clear",this.selectedQuestionIds)
    
   }
+
+  getAllOptionId(quesid:any){
+    console.log("quesid",quesid)
+
+    this.interlockquesid = quesid;
+    //this.interlockoptionid = this.filteredQuestions.filter(item => item === quesid);
+    
+    this.interlockoptionlist = this.questionList.questions.filter((question: any) =>
+      question.id == quesid
+    );
+    console.log("interlockoptionlist",this.interlockoptionlist[0].options)
+
+    this.interlockoptionlist[0].options.forEach((item:any) => {
+      this.interlockoptionid.push(item.id);
+      console.log("interlockoptionlist",this.interlockoptionid)
+    });
+  }
+
+  getCurrentOptionId(quesid:any){
+    console.log("quesid",quesid)
+
+    //this.interlockoptionid = this.filteredQuestions.filter(item => item === quesid);
+    
+    this.currentinterlockoptionlist = this.questionList.questions.filter((question: any) =>
+      question.id == quesid
+    );
+    console.log("currentinterlockoptionlist",this.currentinterlockoptionlist[0].options)
+
+    this.currentinterlockoptionlist[0].options.forEach((item:any) => {
+      console.log(" currentinterlockoptionid option",item.id);
+      
+      this.currentinterlockoptionid.push(item.id);
+      this.currentinterlockoptionid = Array.from(new Set(this.currentinterlockoptionid));
+      console.log("currentinterlockoptionid",this.currentinterlockoptionid)
+    });
+  }
+  
+  saveInterlock() {
+    const interlockPayload: any[] = [];
+    const usercount = Math.floor(this.surveyQuotaJson.totalUsers / (this.currentinterlockoptionid.length * this.interlockoptionid.length));
+  
+    this.currentinterlockoptionid.forEach((item: any) => {
+      interlockPayload.push({
+        id: 0,
+        quotaId: this.quotaid,
+        questionId: this.currentinterlockid,
+        isInterlock: true,
+        optionId: item,
+        userCount: usercount
+      });
+    });
+  
+    this.interlockoptionid.forEach((item: any) => {
+      interlockPayload.push({
+        id: 0,
+        quotaId: this.quotaid,
+        questionId: this.interlockquesid,
+        isInterlock: true,
+        optionId: item,
+        userCount: usercount
+      });
+    });
+  
+    this.surveyservice.interlockQuota(interlockPayload).subscribe({
+      next: (resp) => {
+        console.log("API response:", resp);
+        this.utility.showSuccess("Successfully");
+        setTimeout(() => {
+          window.location.reload();
+        }, 200);
+      },
+      error: (err) => {
+        console.error("API error:", err);
+      }
+    });
+  }
+
+  getQuotaInterlock(quotaid:any){
+    this.surveyservice.getQuotaInterlock(quotaid).subscribe({
+      next: (resp) => {
+          this.quotainterlockdata = resp
+          console.log("resp",resp);
+          console.log("get interlo",this.quotainterlockdata)
+      },
+      error: (err) =>{
+          console.log("error",err)
+      }
+    })
+  }
+
+  deleteInterlockquota(){
+    this.surveyservice.deleteInterlockQuota(this.quotaid).subscribe({
+      next: (resp) => {
+        this.utility.showSuccess("Interlock deleted successfully");
+        window.location.reload();
+
+      },
+      error: (err) =>{
+
+      }
+    })
+  }
+
+  
   
   
  

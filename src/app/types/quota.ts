@@ -53,4 +53,13 @@ export class QuotaData {
       this.userCount = 0;
     }
   }
+
+  export class QuotaInterlock {
+    id: number=0;
+    quotaId: number;
+    questionId: number;
+    isInterlock:boolean= true;
+    optionId: number;
+    userCount: number;
+  }
   
