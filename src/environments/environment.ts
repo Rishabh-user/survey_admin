@@ -3,6 +3,9 @@ export const environment = {
   apiUrl: 'https://beta.angular.opinionest.com/',
   CryptoKey: 'SurveyAdmin@2023',
 
+  LINKEDIN_API_KEY: '86eis8gtexue3g',
+  LINKEDIN_REDIRECT_URL: 'https://opinionest.com/dashboard/profile-settings', // replace with your redirect URI
+
   recaptcha: {
     siteKey: '6LeBkKoUAAAAAMRcP2yPpPCpbDP-TCEYj7f0IhVd',
   },
