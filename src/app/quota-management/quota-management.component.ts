@@ -183,7 +183,7 @@ export class QuotaManagementComponent {
 
 
   showQuestionQptions(index: number, questionId: any) {
-
+   
     const question = this.questionList.questions.filter((x: any) => x.id == questionId)[0];
 
     if (question) {
@@ -199,12 +199,14 @@ export class QuotaManagementComponent {
         option.quotaOptionsId = item.id;
         option.quotaQuestionId = questionId;
         option.userCount = usercount;
+        console.log("option.userCount",option.userCount)
 
         if (_reminder < (2 * option.userCount)) {
           option.userCount = _reminder;
         } else {
           _reminder = _reminder - usercount;
         }
+        console.log("option.userCount 2",option.userCount)
         this.surveyQuotaJson.questionDto[index].optionsDto.push(option);
       });
 
@@ -784,7 +786,6 @@ activeIndicesForInterlock(interlockindex: number): number[] {
 
 
   saveCount() {
-    alert("sdfghj")
     const dataToSend = {
       quotaId: 0,
       surveyId: this.surveyId,
@@ -903,7 +904,6 @@ activeIndicesForInterlock(interlockindex: number): number[] {
   getCurrentOptionId(quesid:any){
     console.log("quesid",quesid)
 
-    //this.interlockoptionid = this.filteredQuestions.filter(item => item === quesid);
     
     this.currentinterlockoptionlist = this.questionList.questions.filter((question: any) =>
       question.id == quesid
@@ -919,45 +919,104 @@ activeIndicesForInterlock(interlockindex: number): number[] {
     });
   }
   
+  // saveInterlock() {
+  //   const interlockPayload: any[] = [];
+  //   const usercount = Math.floor(this.surveyQuotaJson.totalUsers / (this.currentinterlockoptionid.length * this.interlockoptionid.length));
+  //   console.log("usercount",usercount,this.surveyQuotaJson.totalUsers)
+  
+  //   this.currentinterlockoptionid.forEach((item: any) => {
+  //     interlockPayload.push({
+  //       id: 0,
+  //       quotaId: this.quotaid,
+  //       questionId: this.currentinterlockid,
+  //       isInterlock: true,
+  //       optionId: item,
+  //       userCount: usercount
+  //     });
+  //   });
+  
+  //   this.interlockoptionid.forEach((item: any) => {
+  //     interlockPayload.push({
+  //       id: 0,
+  //       quotaId: this.quotaid,
+  //       questionId: item.quesId,
+  //       isInterlock: true,
+  //       optionId: item.optionId,
+  //       userCount: usercount
+  //     });
+  //   });
+  
+  //   this.surveyservice.interlockQuota(interlockPayload).subscribe({
+  //     next: (resp) => {
+  //       console.log("API response:", resp);
+  //       this.utility.showSuccess("Successfully");
+  //       // setTimeout(() => {
+  //       //   window.location.reload();
+  //       // }, 200);
+  //     },
+  //     error: (err) => {
+  //       console.error("API error:", err);
+  //     }
+  //   });
+  // }
+
   saveInterlock() {
     const interlockPayload: any[] = [];
-    const usercount = Math.floor(this.surveyQuotaJson.totalUsers / (this.currentinterlockoptionid.length * this.interlockoptionid.length));
+    const totalUsers = this.surveyQuotaJson.totalUsers;
+    const totalOptions = this.currentinterlockoptionid.length * this.interlockoptionid.length;
+    let usercount = Math.floor(totalUsers / totalOptions); 
+    let remainingUsers = totalUsers; 
   
-    this.currentinterlockoptionid.forEach((item: any) => {
+    // Process current interlock options
+    this.currentinterlockoptionid.forEach((item: any, index: number) => {
+      const isLast = index === this.currentinterlockoptionid.length - 1 && this.interlockoptionid.length === 0;
+      const count = isLast ? remainingUsers : usercount;
+      
       interlockPayload.push({
         id: 0,
         quotaId: this.quotaid,
         questionId: this.currentinterlockid,
         isInterlock: true,
         optionId: item,
-        userCount: usercount
+        userCount: count,
       });
+  
+      remainingUsers -= count; 
     });
   
-    this.interlockoptionid.forEach((item: any) => {
+    // Process additional interlock options
+    this.interlockoptionid.forEach((item: any, index: number) => {
+      const isLast = index === this.interlockoptionid.length - 1;
+      const count = isLast ? remainingUsers : usercount;
+  
       interlockPayload.push({
         id: 0,
         quotaId: this.quotaid,
         questionId: item.quesId,
         isInterlock: true,
         optionId: item.optionId,
-        userCount: usercount
+        userCount: count,
       });
+  
+      remainingUsers -= count;
     });
   
+    // Send interlockPayload to the API
     this.surveyservice.interlockQuota(interlockPayload).subscribe({
       next: (resp) => {
         console.log("API response:", resp);
         this.utility.showSuccess("Successfully");
-        setTimeout(() => {
-          window.location.reload();
-        }, 200);
+        // Uncomment if page reload is needed
+        // setTimeout(() => {
+        //   window.location.reload();
+        // }, 200);
       },
       error: (err) => {
         console.error("API error:", err);
-      }
+      },
     });
   }
+  
 
   getQuotaInterlock(quotaid:any){
     this.surveyservice.getQuotaInterlock(quotaid).subscribe({

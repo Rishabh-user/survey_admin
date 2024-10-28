@@ -229,7 +229,7 @@
       <ul class="interlock-quota">
         <li *ngFor="let item of itemques; let i = index" [class.active]="activeIndicesForInterlock(itemindex).includes(i)" [ngClass]="{'active':(i == itemindex)}"
             (click)="toggleActive(i, itemindex,item.id);getAllOptionId(item.id)">
-              {{item.id}}{{ item.question}}
+              {{ item.question}}
         </li>
       </ul>
     </div>
