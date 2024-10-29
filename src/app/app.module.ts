@@ -2,7 +2,7 @@ import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { RECAPTCHA_SETTINGS, RecaptchaFormsModule, RecaptchaModule, RecaptchaSettings } from 'ng-recaptcha';
 
-import { HashLocationStrategy, LocationStrategy } from '@angular/common';
+import { HashLocationStrategy, LocationStrategy, PathLocationStrategy } from '@angular/common';
 
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
@@ -150,7 +150,7 @@ import { SharedModule } from "./shared/shared.module";
       size: '1.8em',
     }),
     { provide: HTTP_INTERCEPTORS, useClass: HttpInterceptorService, multi: true },
-    { provide: LocationStrategy, useClass: HashLocationStrategy },
+    [Location, {provide: LocationStrategy, useClass: PathLocationStrategy}],
     {
       provide: RECAPTCHA_SETTINGS,
       useValue: {
