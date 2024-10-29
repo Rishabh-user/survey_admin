@@ -44,9 +44,9 @@ export class DashboardComponent {
   uniqueDates: any[];
   uniqueMonths: string[];
   userId: any;
-  isQNumberRequired:any;
+  isQNumberRequired: any;
   totalItemsCount: number = 20
-  planid:any
+  planid: any
   cdr: any;
   isDisabled: boolean = true;
   constructor(private visibilityService: DataService, private modalService: NgbModal, public themeService: DataService,
@@ -127,7 +127,7 @@ export class DashboardComponent {
     this.auth.logout();
     modal.dismiss();
   }
-  roledashboard:any
+  roledashboard: any
 
   ngOnInit(): void {
     this.roledashboard = this.utility.getRole();
@@ -137,13 +137,13 @@ export class DashboardComponent {
     this.showSideBar();
     this.hideBreadcrumb();
     this.role = localStorage.getItem("role");
-    console.log("this.role",this.roledashboard)
+    console.log("this.role", this.roledashboard)
     this.getMyAccount();
     this.getSurveyList();
     this.getCountries();
     this.getNames();
     this.getReportForSelectedYear();
-    this.getVendarSurveyList(1,10)
+    this.getVendarSurveyList(1, 10)
   }
 
 
@@ -397,21 +397,21 @@ export class DashboardComponent {
   // selectedCountry: { id: string, name: string, images: string } | null = null;
   // selectedCountryId: string | null = null;
 
-  selectedCountry: { id: string; name: string; images: string }[]  = [];
+  selectedCountry: { id: string; name: string; images: string }[] = [];
 
   selectedCountryId: string | null = null;
   joinedCountryIds: string = '';
-  
+
   onCountrySelectionChange(selectedCountries: { id: string; name: string; images: string }[]) {
     this.selectedCountry = selectedCountries;
-  
+
     this.selectedCountryId = selectedCountries.length > 0 ? selectedCountries[0].id : null;
-  
+
     this.joinedCountryIds = selectedCountries.map(country => country.id.trim()).join(', ');
-    console.log("joinedCountryIds",this.joinedCountryIds)
+    console.log("joinedCountryIds", this.joinedCountryIds)
   }
 
-  
+
 
   getCountryNames(): string {
     return this.selectedCountry.map(c => c.name).join(', ');
@@ -495,15 +495,15 @@ export class DashboardComponent {
     this.categoryNameCheck = !!this.categoryId && this.categoryId !== 0;
     this.otherCategoryCheck =
       this.categoryId !== 10 || (!!this.categoryName && this.categoryName.length >= 3);
-    
+
     this.countryNameCheck = this.selectedCountry.length > 0;
-  
+
     this.isValidSurvey =
       this.surveyNameCheck &&
       this.categoryNameCheck &&
       this.otherCategoryCheck &&
       this.countryNameCheck;
-   
+
   }
 
   createSurvey() {
@@ -514,7 +514,7 @@ export class DashboardComponent {
         name: this.surveyName,
         categoryId: this.categoryId,
         otherCategory: this.categoryName,
-       // countryId: this.selectedCountryId,
+        // countryId: this.selectedCountryId,
         countryId: this.joinedCountryIds,
         isQNumberRequired: this.isQNumberRequired
       };
@@ -556,20 +556,26 @@ export class DashboardComponent {
 
   onCheckboxChange(event: any) {
     this.isQNumberRequired = event.target.checked;
-    console.log("isQNumberRequired",this.isQNumberRequired)
+    console.log("isQNumberRequired", this.isQNumberRequired)
   }
 
- 
+
 
 
   getVendarSurveyList(pageNumber: number, pageSize: number) {
     this.surveyservice.getVendarSurveyList(1, 10).subscribe((data: any) => {
       this.surveyData = data.surveyType;
-      console.log("surveyData",this.surveyData)
+      console.log("surveyData", this.surveyData)
       this.totalItemsCount = data.totalCount;
       this.cdr.detectChanges();
     });
   }
 
+
+  signUpWithLinkedin() {
+    const authUrl = `https://www.linkedin.com/oauth/v2/authorization?response_type=code&state=true&client_id=${environment.LINKEDIN_API_KEY}&redirect_uri=${environment.LINKEDIN_REDIRECT_URL}&scope=r_liteprofile%20r_emailaddress`;
+    console.log("LinkedIn Auth URL:", authUrl); // For debugging
+    window.location.href = authUrl;
+  }
 
 }
