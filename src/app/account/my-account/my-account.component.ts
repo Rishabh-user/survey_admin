@@ -306,7 +306,7 @@ export class MyAccountComponent {
 
   private clientId = '86bqb3tew6sdh1'; // Replace with your actual Client ID
   private clientSecret = 'WPL_AP1.ApgenIgywItFaMvK.VL10XQ=='; // Replace with your actual Client Secret
-  private redirectUri = 'http://localhost:4200/';
+  private redirectUri = 'http://localhost:4200/account/auth/linkedin/callback';
   private stateid = '3Q657QSqmKJxIwhx'; // Replace with a unique state for security
   private scope = 'email'; // Scope for profile and email permissions
 
