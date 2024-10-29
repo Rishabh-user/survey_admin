@@ -30,7 +30,7 @@ export class MyAccountComponent {
   planName: any;
   planAmount: any;
   plans: any;
-  constructor(private utils: UtilsService, public themeService: DataService, private modalService: NgbModal, private authService: AuthService, private cdr: ChangeDetectorRef, private util: UtilsService, private fb: FormBuilder,private http: HttpClient,
+  constructor(private utils: UtilsService, public themeService: DataService, private modalService: NgbModal, private authService: AuthService, private cdr: ChangeDetectorRef, private util: UtilsService, private fb: FormBuilder, private http: HttpClient,
     private route: ActivatedRoute,
     private router: Router) {
     this.baseUrl = environment.baseURL;
@@ -306,26 +306,27 @@ export class MyAccountComponent {
 
   private clientId = '86bqb3tew6sdh1'; // Replace with your actual Client ID
   private clientSecret = 'WPL_AP1.ApgenIgywItFaMvK.VL10XQ=='; // Replace with your actual Client Secret
-  private redirectUri = 'http://localhost:4200/#/account/my-account';
-  private stateid = '3Q657QSqmKJxIwhY'; // Replace with a unique state for security
-  private scope = 'r_liteprofile r_emailaddress'; // Scope for profile and email permissions
+  private redirectUri = 'http://localhost:4200/';
+  private stateid = '3Q657QSqmKJxIwhx'; // Replace with a unique state for security
+  private scope = 'email'; // Scope for profile and email permissions
 
 
   loginWithLinkedIn() {
     // Generate a unique state value (e.g., using a random string or UUID)
-    const state = this.generateRandomState(); 
-    const scope = 'r_liteprofile';
-    
-    const authUrl = `https://www.linkedin.com/oauth/v2/authorization?response_type=code&client_id=${this.clientId}&redirect_uri=https://www.targeticon.com&state=${state}&scope=${encodeURIComponent(scope)}`;
-     console.log("authUrl",authUrl)
-    window.open(authUrl, '_blank'); 
+    const state = this.generateRandomState();
+    const scope = 'email';
+
+    const authUrl = `https://www.linkedin.com/oauth/v2/authorization?response_type=code&client_id=${this.clientId}&redirect_uri=${this.redirectUri}&state=${state}&scope=${encodeURIComponent(scope)}`;
+    console.log("authUrl", authUrl)
+    window.open(authUrl, '_blank');
   }
-  
+
+
   private generateRandomState(): string {
     return Math.random().toString(36).substring(2, 15);
   }
-  
-  
+
+
 
   exchangeCodeForToken(code: string) {
     const tokenUrl = 'https://www.linkedin.com/oauth/v2/accessToken';
