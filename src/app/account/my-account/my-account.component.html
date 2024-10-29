@@ -102,6 +102,8 @@
                 <a class="btn" style="border: 1px solid #f05e16; color: #f05e16;" routerLink="javascript:" (click)="openLg(content)">Change Password</a>
                 <button type="button" class="btn btn-primary" (click)="postData()">Update<ng-icon
                         name="heroArrowLongRight" class="ms-5"></ng-icon></button>
+                <button type="button" class="btn btn-primary"  (click)="loginWithLinkedIn()">profile<ng-icon
+                    name="heroArrowLongRight" class="ms-5"></ng-icon></button>
             </div>
         </form>
         <div class="my-4" *ngIf="role !== 'Client' && role !== 'Vendor'">

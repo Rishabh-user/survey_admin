@@ -7,6 +7,8 @@ import { UtilsService } from 'src/app/service/utils.service';
 import { environment } from 'src/environments/environment';
 import { FormGroup, FormBuilder, Validators, AbstractControl, ValidationErrors } from '@angular/forms';
 import { AuthService } from 'src/app/service/auth.service';
+import { ActivatedRoute, Router } from '@angular/router';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 
 @Component({
@@ -28,7 +30,9 @@ export class MyAccountComponent {
   planName: any;
   planAmount: any;
   plans: any;
-  constructor(private utils: UtilsService, public themeService: DataService, private modalService: NgbModal, private authService: AuthService, private cdr: ChangeDetectorRef, private util: UtilsService, private fb: FormBuilder) {
+  constructor(private utils: UtilsService, public themeService: DataService, private modalService: NgbModal, private authService: AuthService, private cdr: ChangeDetectorRef, private util: UtilsService, private fb: FormBuilder,private http: HttpClient,
+    private route: ActivatedRoute,
+    private router: Router) {
     this.baseUrl = environment.baseURL;
     this.centerName = this.utils.getCenterName();
   }
@@ -66,6 +70,12 @@ export class MyAccountComponent {
       newPassword: ['', [Validators.required, Validators.minLength(8)]],
       confirmPassword: ['', Validators.required]
     }, { validator: this.passwordMatchValidator });
+
+    this.route.queryParams.subscribe(params => {
+      if (params['code']) {
+        this.exchangeCodeForToken(params['code']);
+      }
+    });
   }
 
   getCurrentDateTime(): string {
@@ -294,4 +304,65 @@ export class MyAccountComponent {
     );
   }
 
+  private clientId = '86bqb3tew6sdh1'; // Replace with your actual Client ID
+  private clientSecret = 'WPL_AP1.ApgenIgywItFaMvK.VL10XQ=='; // Replace with your actual Client Secret
+  private redirectUri = 'http://localhost:4200/#/account/my-account';
+  private stateid = '3Q657QSqmKJxIwhY'; // Replace with a unique state for security
+  private scope = 'r_liteprofile r_emailaddress'; // Scope for profile and email permissions
+
+
+  loginWithLinkedIn() {
+    // Generate a unique state value (e.g., using a random string or UUID)
+    const state = this.generateRandomState(); 
+    const scope = 'r_liteprofile';
+    
+    const authUrl = `https://www.linkedin.com/oauth/v2/authorization?response_type=code&client_id=${this.clientId}&redirect_uri=https://www.targeticon.com&state=${state}&scope=${encodeURIComponent(scope)}`;
+     console.log("authUrl",authUrl)
+    window.open(authUrl, '_blank'); 
+  }
+  
+  private generateRandomState(): string {
+    return Math.random().toString(36).substring(2, 15);
+  }
+  
+  
+
+  exchangeCodeForToken(code: string) {
+    const tokenUrl = 'https://www.linkedin.com/oauth/v2/accessToken';
+
+    // Set up the data required by LinkedIn's API for token exchange
+    const body = new URLSearchParams();
+    body.set('grant_type', 'authorization_code');
+    body.set('code', code);
+    body.set('redirect_uri', this.redirectUri);
+    body.set('client_id', this.clientId);
+    body.set('client_secret', this.clientSecret);
+
+    this.http.post(tokenUrl, body.toString(), {
+      headers: new HttpHeaders({ 'Content-Type': 'application/x-www-form-urlencoded' })
+    }).subscribe(
+      (response: any) => {
+        const accessToken = response.access_token;
+        this.getUserProfile(accessToken);
+      },
+      error => {
+        console.error('Error exchanging code for token', error);
+      }
+    );
+  }
+
+  getUserProfile(token: string) {
+    const profileUrl = 'https://api.linkedin.com/v2/me';
+
+    this.http.get(profileUrl, {
+      headers: { 'Authorization': `Bearer ${token}` }
+    }).subscribe(
+      profile => {
+        console.log('User profile:', profile); // Handle or display user profile data
+      },
+      error => {
+        console.error('Error fetching profile', error);
+      }
+    );
+  }
 }
