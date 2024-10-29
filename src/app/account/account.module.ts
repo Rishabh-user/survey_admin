@@ -9,11 +9,13 @@ import { heroHome } from '@ng-icons/heroicons/outline';
 import { heroArrowLongRight } from '@ng-icons/heroicons/outline';
 
 import { FormsModule } from '@angular/forms';
+import { LinkedinProfileComponent } from './linkedin-profile/linkedin-profile.component';
 
 
 @NgModule({
   declarations: [
-    MyAccountComponent
+    MyAccountComponent,
+    LinkedinProfileComponent
   ],
   imports: [
     CommonModule,

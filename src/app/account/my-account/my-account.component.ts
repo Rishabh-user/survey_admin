@@ -71,11 +71,11 @@ export class MyAccountComponent {
       confirmPassword: ['', Validators.required]
     }, { validator: this.passwordMatchValidator });
 
-    this.route.queryParams.subscribe(params => {
-      if (params['code']) {
-        this.exchangeCodeForToken(params['code']);
-      }
-    });
+    // this.route.queryParams.subscribe(params => {
+    //   if (params['code']) {
+    //     this.exchangeCodeForToken(params['code']);
+    //   }
+    // });
   }
 
   getCurrentDateTime(): string {
@@ -306,7 +306,7 @@ export class MyAccountComponent {
 
   private clientId = '86bqb3tew6sdh1'; // Replace with your actual Client ID
   private clientSecret = 'WPL_AP1.ApgenIgywItFaMvK.VL10XQ=='; // Replace with your actual Client Secret
-  private redirectUri = 'http://localhost:4200/#/account/my-account';
+  private redirectUri = 'https://www.targeticon.com';
   private stateid = '3Q657QSqmKJxIwhY'; // Replace with a unique state for security
   private scope = 'r_liteprofile r_emailaddress'; // Scope for profile and email permissions
 

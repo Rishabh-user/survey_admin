@@ -1,4 +1,4 @@
-import { HttpClient, HttpErrorResponse, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { BehaviorSubject, Observable, map } from 'rxjs';
@@ -132,6 +132,26 @@ export class AuthService {
   verifyEmailAndResetPassword(data: any) {
     const url = `${this.apiUrl}EmailVerifyForgetPassword`;
     return this.http.post(url, data, { responseType: 'text' });
+  }
+
+  private clientId = 'YOUR_CLIENT_ID';
+  private clientSecret = 'YOUR_CLIENT_SECRET';
+  private redirectUri = 'https://opinionest.com/dashboard/profile-settings';
+  private tokenUrl = 'https://www.linkedin.com/oauth/v2/accessToken';
+
+  getAccessToken(code: string): Observable<any> {
+    const body = new URLSearchParams();
+    body.set('grant_type', 'authorization_code');
+    body.set('code', code);
+    body.set('redirect_uri', this.redirectUri);
+    body.set('client_id', this.clientId);
+    body.set('client_secret', this.clientSecret);
+
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/x-www-form-urlencoded'
+    });
+
+    return this.http.post(this.tokenUrl, body.toString(), { headers });
   }
 
 }
