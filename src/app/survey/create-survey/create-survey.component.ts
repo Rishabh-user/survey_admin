@@ -532,6 +532,7 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
         this.countryName = data[0]?.countryName;
         this.countryId = data[0]?.countryId
         this.totalItemsCount = data[0]?.totalQuestionCount
+        this.isHidden = data[0]?.isHidden
         // this.selectedCountry = this.countryId
         this.selectedCountry = this.country.find(country => country.id === this.countryId) || null;
         this.categoryId = data[0]?.categoryId
@@ -1470,91 +1471,176 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
     );
   }
 
-  saveRandomization(): void {
-    const anyCheckboxChecked = this.randormizeEntries.some(entry => entry.isRandomizationChecked);
+  // saveRandomization(): void {
+  //   const anyCheckboxChecked = this.randormizeEntries.some(entry => entry.isRandomizationChecked);
 
 
-    const anyUncheckedNewEntries = this.randormizeEntries.slice(-1 * (this.randormizeEntries.length - this.initialLength))
-      .some(entry => !entry.isRandomizationChecked);
+  //   const anyUncheckedNewEntries = this.randormizeEntries.slice(-1 * (this.randormizeEntries.length - this.initialLength))
+  //     .some(entry => !entry.isRandomizationChecked);
 
-    if (!anyCheckboxChecked || anyUncheckedNewEntries) {
-      this.utils.showError('Checked Checkbox.');
-      return;
-    }
-
-
-    // checking remain checked
-    this.randormizeEntries.forEach(entry => {
-      if (entry.isRandomizationChecked) {
-        entry.isRandomizationChecked = true;
-      }
-    });
-
-    for (let i = this.initialLength; i < this.randormizeEntries.length; i++) {
-      if (this.randormizeEntries[i].isRandomizationChecked === undefined) {
-        this.randormizeEntries[i].isRandomizationChecked = true; // or false depending on your logic
-      }
-    }
+  //   if (!anyCheckboxChecked || anyUncheckedNewEntries) {
+  //     this.utils.showError('Checked Checkbox.');
+  //     return;
+  //   }
 
 
+  //   // checking remain checked
+  //   this.randormizeEntries.forEach(entry => {
+  //     if (entry.isRandomizationChecked) {
+  //       entry.isRandomizationChecked = true;
+  //     }
+  //   });
 
-
-    const formattedData: { surveyId: string, questionId: string, isRandomize: boolean, groupNumber: number,randomizeNumber:number }[] = [];
-
-    for (let i = 0; i < this.randormizeEntries.length; i++) {
-      const randomization = this.randormizeEntries[i];
-      const fromQuestionId = randomization.fromQuestion;
-      const toQuestionId = randomization.toQuestion;
-      const randomizeNumber = randomization.randomizeNumber
-
-      console.log("randomization",randomization)
+  //   for (let i = this.initialLength; i < this.randormizeEntries.length; i++) {
+  //     if (this.randormizeEntries[i].isRandomizationChecked === undefined) {
+  //       this.randormizeEntries[i].isRandomizationChecked = true; // or false depending on your logic
+  //     }
+  //   }
 
 
 
-      if (fromQuestionId && toQuestionId && randomization.isRandomizationChecked) {
+
+  //   const formattedData: { surveyId: string, questionId: string, isRandomize: boolean, groupNumber: number,randomizeNumber?:number }[] = [];
+
+  //   for (let i = 0; i < this.randormizeEntries.length; i++) {
+  //     const randomization = this.randormizeEntries[i];
+  //     const fromQuestionId = randomization.fromQuestion;
+  //     const toQuestionId = randomization.toQuestion;
+  //     const randomizeNumber = randomization.randomizeNumber
+
+  //     console.log("randomization",randomization)
+
+
+
+  //     if (fromQuestionId && toQuestionId && randomization.isRandomizationChecked) {
     
-        console.log("logicQuestionListById",this.logicQuestionListById)
-        const filteredQuestions = this.logicQuestionListById.filter((question: { id: number; }) => question.id >= fromQuestionId && question.id <= toQuestionId);
+  //       console.log("logicQuestionListById",this.logicQuestionListById)
+  //       const filteredQuestions = this.logicQuestionListById.filter((question: { id: number; }) => question.id >= fromQuestionId && question.id <= toQuestionId);
 
-        console.log("filteredQuestions",filteredQuestions)
+  //       console.log("filteredQuestions",filteredQuestions)
        
-        const formattedQuestions = filteredQuestions.map((question: { id: { toString: () => any; }; }) => {
-          return {
-            surveyId: this.surveyId.toString(), // Convert surveyId to string
-            questionId: question.id.toString(), // Convert questionId to string
-            isRandomize: true,
-            groupNumber: i + 1 ,
-            randomizeNumber: randomizeNumber// Add groupNumber based on the index of randormizeEntries
-          };
-        });
+  //       const formattedQuestions = filteredQuestions.map((question: { id: { toString: () => any; }; }) => {
+  //         return {
+  //           surveyId: this.surveyId.toString(), // Convert surveyId to string
+  //           questionId: question.id.toString(), // Convert questionId to string
+  //           isRandomize: true,
+  //           groupNumber: i + 1 ,
+  //           randomizeNumber: randomizeNumber// Add groupNumber based on the index of randormizeEntries
+  //         };
+  //       });
 
-        formattedData.push(...formattedQuestions);
-        console.log("formattedData",formattedData)
-      } else {
-        console.warn('From Question and To Question must be selected and checkbox must be checked for each randomization entry.');
-      }
-    }
+  //       formattedData.push(...formattedQuestions);
+  //       console.log("formattedData",formattedData.length)
+  //     } else {
+  //       console.warn('From Question and To Question must be selected and checkbox must be checked for each randomization entry.');
+  //     }
+  //   }
 
-    if (formattedData.length > 0) {
-      const serviceCall = this.isAddRandomizationMode ? this.surveyservice.postRandomizedQuestions(formattedData) : this.surveyservice.postRandomizedQuestionsUpdate(formattedData);
+  //   if (formattedData.length > 0) {
+  //     const serviceCall = this.isAddRandomizationMode ? this.surveyservice.postRandomizedQuestions(formattedData) : this.surveyservice.postRandomizedQuestionsUpdate(formattedData);
 
-      serviceCall.subscribe(
-        response => {
-          this.utils.showSuccess('Randomization Created Successfully.');
-          setTimeout(() => {
-            //window.location.reload();
-          }, 200);
+  //     serviceCall.subscribe(
+  //       response => {
+  //         this.utils.showSuccess('Randomization Created Successfully.');
+  //         // setTimeout(() => {
+  //         //   window.location.reload();
+  //         // }, 200);
           
-        },
-        error => {
-          this.utils.showError('Please confirm you want to randomize these questions');
-        }
-      );
-    } else {
-      console.warn('No valid range found for randomization.');
-    }
+  //       },
+  //       error => {
+  //         this.utils.showError('Please confirm you want to randomize these questions');
+  //       }
+  //     );
+  //   } else {
+  //     console.warn('No valid range found for randomization.');
+  //   }
    
+  // }
+
+
+  
+
+ saveRandomization(): void {
+  
+  const anyCheckboxChecked = this.randormizeEntries.some(entry => entry.isRandomizationChecked);
+
+  const anyUncheckedNewEntries = this.randormizeEntries.slice(-1 * (this.randormizeEntries.length - this.initialLength))
+    .some(entry => !entry.isRandomizationChecked);
+
+  if (!anyCheckboxChecked || anyUncheckedNewEntries) {
+    this.utils.showError('Please ensure at least one checkbox is checked.');
+    return;
   }
+
+  // Ensuring any selected checkbox remains checked
+  this.randormizeEntries.forEach(entry => {
+    if (entry.isRandomizationChecked) {
+      entry.isRandomizationChecked = true;
+    }
+  });
+
+  // Initializing unchecked new entries
+  for (let i = this.initialLength; i < this.randormizeEntries.length; i++) {
+    if (this.randormizeEntries[i].isRandomizationChecked === undefined) {
+      this.randormizeEntries[i].isRandomizationChecked = true;
+    }
+  }
+
+  const formattedData: { surveyId: string, questionId: string, isRandomize: boolean, groupNumber: number, randomizeNumber?: number }[] = [];
+
+  // Populate formattedData with each valid entry
+  for (let i = 0; i < this.randormizeEntries.length; i++) {
+    const randomization = this.randormizeEntries[i];
+    const fromQuestionId = randomization.fromQuestion;
+    const toQuestionId = randomization.toQuestion;
+    const randomizeNumber = randomization.randomizeNumber;
+
+    console.log("randomizeNumber",randomizeNumber)
+
+    if (fromQuestionId && toQuestionId && randomization.isRandomizationChecked) {
+      const filteredQuestions = this.logicQuestionListById.filter((question: { id: number; }) => question.id >= fromQuestionId && question.id <= toQuestionId);
+
+      const formattedQuestions = filteredQuestions.map((question: { id: { toString: () => any; }; }) => {
+        // Create an entry without randomizeNumber if it's undefined
+        const formattedEntry: { surveyId: string, questionId: string, isRandomize: boolean, groupNumber: number, randomizeNumber?: number } = {
+          surveyId: this.surveyId.toString(),
+          questionId: question.id.toString(),
+          isRandomize: true,
+          groupNumber: i + 1
+        };
+
+        // Add randomizeNumber only if it exists
+        if (randomizeNumber !== null) {
+          formattedEntry.randomizeNumber = randomizeNumber;
+        }
+
+        return formattedEntry;
+      });
+
+      formattedData.push(...formattedQuestions);
+    } else {
+      console.warn('From Question and To Question must be selected, and checkbox must be checked for each randomization entry.');
+    }
+  }
+
+  // Perform save operation if there is valid data
+  if (formattedData.length > 0) {
+    const serviceCall = this.isAddRandomizationMode 
+      ? this.surveyservice.postRandomizedQuestions(formattedData) 
+      : this.surveyservice.postRandomizedQuestionsUpdate(formattedData);
+
+    serviceCall.subscribe(
+      response => {
+        this.utils.showSuccess('Randomization Created Successfully.');
+      },
+      error => {
+        this.utils.showError('Please confirm you want to randomize these questions');
+      }
+    );
+  } else {
+    console.warn('No valid range found for randomization.');
+  }
+}
 
 
 

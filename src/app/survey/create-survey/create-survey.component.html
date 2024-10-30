@@ -550,7 +550,7 @@
 
                                 </div>
 
-                                <mat-form-field>
+                                <mat-form-field *ngIf="!question?.isHidden">
                                     <mat-select #selectElement placeholder="Set to"
                                         (selectionChange)="onSelectChange($event, question?.sort, question?.id)">
                                         <mat-option *ngFor="let item of logicQuestionListById" [value]="item.sort"
