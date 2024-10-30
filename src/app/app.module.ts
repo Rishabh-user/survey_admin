@@ -2,7 +2,7 @@ import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { RECAPTCHA_SETTINGS, RecaptchaFormsModule, RecaptchaModule, RecaptchaSettings } from 'ng-recaptcha';
 
-import { HashLocationStrategy, LocationStrategy, PathLocationStrategy } from '@angular/common';
+import { HashLocationStrategy, LocationStrategy } from '@angular/common';
 
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
@@ -111,30 +111,30 @@ import { SharedModule } from "./shared/shared.module";
     HttpClientModule,
     MatSelectModule,
     NgIconsModule.withIcons({
-        heroHome,
-        heroCommandLine,
-        heroUsers,
-        heroChevronRight,
-        heroStopCircle,
-        heroClipboardDocumentList,
-        heroQuestionMarkCircle,
-        heroClipboardDocumentCheck,
-        heroShieldCheck,
-        heroUser,
-        heroLockClosed,
-        heroBell,
-        heroArrowLongRight,
-        heroBars3,
-        heroXMark,
-        heroMagnifyingGlass,
-        heroTrash,
-        heroShoppingBag,
-        heroInformationCircle,
-        heroLink,
-        heroPlus,
-        heroChartPie,
-        heroTicket,
-        heroChatBubbleBottomCenter
+      heroHome,
+      heroCommandLine,
+      heroUsers,
+      heroChevronRight,
+      heroStopCircle,
+      heroClipboardDocumentList,
+      heroQuestionMarkCircle,
+      heroClipboardDocumentCheck,
+      heroShieldCheck,
+      heroUser,
+      heroLockClosed,
+      heroBell,
+      heroArrowLongRight,
+      heroBars3,
+      heroXMark,
+      heroMagnifyingGlass,
+      heroTrash,
+      heroShoppingBag,
+      heroInformationCircle,
+      heroLink,
+      heroPlus,
+      heroChartPie,
+      heroTicket,
+      heroChatBubbleBottomCenter
     }),
     BrowserAnimationsModule,
     RecaptchaModule,
@@ -142,7 +142,7 @@ import { SharedModule } from "./shared/shared.module";
     NgxPaginationModule,
     ToastrModule.forRoot(),
     // SharedModule
-],
+  ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   providers: [
     LoaderService,
@@ -150,7 +150,7 @@ import { SharedModule } from "./shared/shared.module";
       size: '1.8em',
     }),
     { provide: HTTP_INTERCEPTORS, useClass: HttpInterceptorService, multi: true },
-    [Location, {provide: LocationStrategy, useClass: PathLocationStrategy}],
+    { provide: LocationStrategy, useClass: HashLocationStrategy },
     {
       provide: RECAPTCHA_SETTINGS,
       useValue: {

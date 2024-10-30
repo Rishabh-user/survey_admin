@@ -571,11 +571,4 @@ export class DashboardComponent {
     });
   }
 
-
-  signUpWithLinkedin() {
-    const authUrl = `https://www.linkedin.com/oauth/v2/authorization?response_type=code&state=true&client_id=${environment.LINKEDIN_API_KEY}&redirect_uri=${environment.LINKEDIN_REDIRECT_URL}&scope=r_liteprofile%20r_emailaddress`;
-    console.log("LinkedIn Auth URL:", authUrl); // For debugging
-    window.location.href = authUrl;
-  }
-
 }
