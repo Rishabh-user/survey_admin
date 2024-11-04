@@ -32,7 +32,7 @@ export class QuotaManagementComponent {
   centerId: any;
   quotoid: any;
   role: any;
-  centername:any
+  centername:any;
 
   surveyQuotaJson: QuotaData;
   isEditQuota: boolean = false;
