@@ -2561,3 +2561,7 @@ th:last-child, td:last-child
     pointer-events: none;
     opacity: 0.5;
 }
+
+.mat-mdc-chip-row.mdc-evolution-chip{ height: auto; }
+.mdc-evolution-chip__action--primary{ overflow-x: hidden !important;}
+.mdc-evolution-chip__text-label{ white-space: normal !important;}
