@@ -163,7 +163,8 @@
 
             <div class="common-ques"
                 [class.disabled-link]="(totalItemsCount == 20 && planid == '500') || (totalItemsCount == 50 && planid == '1200')">
-                <a routerLink="javascript:" (click)="toggleDivVisibility();getRandomization();getSurveyLooping();getEndScreen()"
+                <a routerLink="javascript:"
+                    (click)="toggleDivVisibility();getRandomization();getSurveyLooping();getEndScreen()"
                     [class.active]='isActive || isDivVisible'>
                     <figure><img [src]="baseUrl + '/assets/images/icons/Add-new-logic.png'" width="30" height="30" />
                     </figure>
@@ -348,8 +349,8 @@
                                 role="tab" aria-selected="false">Logics</button>
                         </li>
                         <li class="nav-item" role="presentation">
-                            <button (click)="getEndScreen()" class="nav-link" id="blank-tab" data-bs-toggle="tab" data-bs-target="#blank"
-                                role="tab" aria-selected="false">End Screen</button>
+                            <button (click)="getEndScreen()" class="nav-link" id="blank-tab" data-bs-toggle="tab"
+                                data-bs-target="#blank" role="tab" aria-selected="false">End Screen</button>
                         </li>
                     </ul>
                     <div class="tab-content p-4">
@@ -392,7 +393,8 @@
                                                 </ng-container>
                                             </mat-select>
                                         </mat-form-field>
-                                        <input type="number" id="randamizeno" name="randamizeno" class="form-control" [(ngModel)]="randomization.randomizeNumber"/>
+                                        <input type="number" id="randamizeno" name="randamizeno" class="form-control"
+                                            [(ngModel)]="randomization.randomizeNumber" />
 
                                         <button type="button" class="btn btn-primary btn-sm"
                                             (click)="removeRandomizationSection(randomization.groupNumber)">Remove</button>
@@ -439,10 +441,11 @@
                                     <div class="col-12 text-end d-flex justify-content-end">
                                         <button type="button" class="btn btn-primary btn-sm "
                                             (click)="saveAutoCode()">Save</button>
-                                        <button *ngIf="autocodecount == 1" type="button" class="btn btn-danger btn-sm ms-3" (click)="deleteAutoCode()"
-                                        >Delete</button>
+                                        <button *ngIf="autocodecount == 1" type="button"
+                                            class="btn btn-danger btn-sm ms-3"
+                                            (click)="deleteAutoCode()">Delete</button>
                                     </div>
-                                    
+
                                 </div>
                             </div>
                         </div>
@@ -455,37 +458,37 @@
                         </div>
 
                         <div class="tab-pane" id="blank" role="tabpanel" aria-labelledby="blank-tab">
-                            
-                                <div class="d-flex mb-2">
-                                    <h5 ngClass="mb-4 me-2">End Screen</h5>
-                                    <div class="custom-tooltip">
-                                        <ng-icon name="heroInformationCircle" ngClass="edit-action info-circle"
-                                            (click)="toggleTooltip('9')"></ng-icon>
-                                        <div class="toast show" *ngIf="showTooltip['9']">
-                                            <div class="toast-header">
-                                                <img [src]="baseUrl + '/assets/images/icons/Add-new-question.png'" class="rounded me-2"
-                                                    width="30" height="30" />
-                                                <h6 class="mb-0 me-auto">Add End Screen Logic</h6>
-                                                <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"
-                                                    (click)="hideTooltip('9')"></button>
-                                            </div>
-                                            <div class="toast-body">
-                                                Add End Screen Logic
-                                            </div>
+
+                            <div class="d-flex mb-2">
+                                <h5 ngClass="mb-4 me-2">End Screen</h5>
+                                <div class="custom-tooltip">
+                                    <ng-icon name="heroInformationCircle" ngClass="edit-action info-circle"
+                                        (click)="toggleTooltip('9')"></ng-icon>
+                                    <div class="toast show" *ngIf="showTooltip['9']">
+                                        <div class="toast-header">
+                                            <img [src]="baseUrl + '/assets/images/icons/Add-new-question.png'"
+                                                class="rounded me-2" width="30" height="30" />
+                                            <h6 class="mb-0 me-auto">Add End Screen Logic</h6>
+                                            <button type="button" class="btn-close" data-bs-dismiss="toast"
+                                                aria-label="Close" (click)="hideTooltip('9')"></button>
+                                        </div>
+                                        <div class="toast-body">
+                                            Add End Screen Logic
                                         </div>
                                     </div>
-                    
                                 </div>
-                                
-                            
+
+                            </div>
+
+
                             <div ngClass="mb-3 row">
 
                                 <div class="mb-3">
                                     <mat-form-field>
-                                        <mat-select [(ngModel)]="endscreenid" #selectElement (selectionChange)="onSelectionEndScreen($event)">
+                                        <mat-select [(ngModel)]="endscreenid" #selectElement
+                                            (selectionChange)="onSelectionEndScreen($event)">
                                             <ng-container *ngFor="let option of pipingQuestionById">
-                                                <mat-option 
-                                                    [value]="option.id">
+                                                <mat-option [value]="option.id">
                                                     {{ option.item }}
                                                 </mat-option>
                                             </ng-container>
@@ -516,13 +519,14 @@
                         <div
                             [ngClass]="{'ques-header': true, 'screening': question.isScreening,'descques': question.isRequired === false && !question.isOpenEnded,'hiddenques': question.isHidden }">
 
-                            <h5  [ngClass]="'mb-0'" *ngIf="!isQNumberRequired === true">
+                            <h5 [ngClass]="'mb-0'" *ngIf="!isQNumberRequired === true">
                                 <!-- Q-{{question?.sort}} <div>{{question?.question}}</div> -->
-                                Q-{{ question?.sort }}.&nbsp;<div style="flex: 1;" [innerHTML]="question?.question"></div>
+                                Q-{{ question?.sort }}.&nbsp;<div style="flex: 1;" [innerHTML]="question?.question">
+                                </div>
 
                                 <!-- <div [innerHTML]="sanitizeHtml(question?.question)"></div> -->
                             </h5>
-                            <h5  [ngClass]="'mb-0'" *ngIf="isQNumberRequired === true">
+                            <h5 [ngClass]="'mb-0'" *ngIf="isQNumberRequired === true">
                                 {{question?.qNo}}.&nbsp;<div style="flex: 1;" [innerHTML]="question?.question"></div>
                             </h5>
 
@@ -571,7 +575,7 @@
                                             <a href="javascript:void(0);" class="dropdown-item"
                                                 (click)="onEditQuestionClick(question?.id)">
                                                 <ng-icon name="heroPencil"></ng-icon>
-                                                Edit 
+                                                Edit
                                             </a>
                                         </li>
                                         <!-- <li *ngIf="question?.genericType === 'Age' || question?.genericType === 'Selfie' || question?.genericType === 'email' || question?.genericType === 'Name' || question?.genericType === 'Pincode / Zip Code'">
@@ -585,14 +589,14 @@
                                             <a href="javascript:void(0);" class="dropdown-item"
                                                 (click)="onEditQuestionClick(question?.id)">
                                                 <ng-icon name="heroPencil"></ng-icon>
-                                                Edit 
+                                                Edit
                                             </a>
                                         </li>
                                         <li *ngIf="!question?.isRequired && !question?.isOpenEnded">
                                             <a href="javascript:void(0);" class="dropdown-item"
                                                 (click)="onEditDesc(question?.id)">
                                                 <ng-icon name="heroPencil"></ng-icon>
-                                                Edit 
+                                                Edit
                                             </a>
                                         </li>
                                         <li *ngIf="question?.logics?.length==0 && question?.isRequired">
@@ -603,7 +607,8 @@
                                             </a>
 
                                         </li>
-                                        <li *ngIf="question?.logics?.length==0 && !question?.isRequired && question?.isOpenEnded">
+                                        <li
+                                            *ngIf="question?.logics?.length==0 && !question?.isRequired && question?.isOpenEnded">
                                             <a href="javascript:void(0);" class="dropdown-item"
                                                 (click)="toggleLogic(i,question?.id,'add');getQuestionListBranching(question?.id);getOptionsByQuestionIdLogic(question?.id);openEndedVlaues(question?.questionType);toggleMatrixLogic(i,question?.id,'add');getMatrixLogic(i,question?.id);getMatrixColumnByQuestionIdLogic(question?.id)">
                                                 <ng-icon name="heroCommandLine"></ng-icon>
@@ -678,10 +683,10 @@
                                         *ngIf="question.image !== (imageurl + 'Files/Images/')"
                                         [src]="question.image" />
                                     <!-- <p>{{question.description}}</p> -->
-                                     
+
                                     <div class="mt-2" [innerHTML]="question.description"></div>
-                                    
-                                    
+
+
                                     <div class="ques-radio mb-3" *ngFor="let option of question?.options; let i=index;">
                                         <label *ngIf="option.option.trim() !== ''">
                                             <input type="radio" [id]="'question_option_' + i" name="question_option">
@@ -691,7 +696,7 @@
                                             <!-- <span class="checked"><div> {{option.option}}</div></span> -->
                                         </label>
                                     </div>
-                                    
+
                                 </div>
                                 <div *ngIf="planid =='500' && question?.isLogicShow" class="alert alert-danger"
                                     role="alert">
@@ -739,14 +744,13 @@
                                                     <button class="nav-link active d-flex" id="branching-tab"
                                                         data-bs-toggle="tab"
                                                         [attr.data-bs-target]="'#branching' + question.id" role="tab"
-                                                        aria-selected="true"
-                                                       >Branching</button>
+                                                        aria-selected="true">Branching</button>
                                                 </li>
-                                                <li class="nav-item" role="presentation" *ngIf="question?.questionType === 'Matrix Choice'" >
-                                                    <button class="nav-link d-flex" id="matrix-tab"
-                                                        data-bs-toggle="tab"
-                                                        [attr.data-bs-target]="'#matrixheader' + question.id" role="tab"
-                                                       >Matrix Logic</button>
+                                                <li class="nav-item" role="presentation"
+                                                    *ngIf="question?.questionType === 'Matrix Choice'">
+                                                    <button class="nav-link d-flex" id="matrix-tab" data-bs-toggle="tab"
+                                                        [attr.data-bs-target]="'#matrixheader' + question.id"
+                                                        role="tab">Matrix Logic</button>
                                                 </li>
                                                 <li class="nav-item" role="presentation">
                                                     <button class="nav-link" id="customLogic-tab" data-bs-toggle="tab"
@@ -760,7 +764,8 @@
                                                         aria-selected="false"
                                                         (click)="getLogicQuestionListForCalculation(question?.id,question?.sort);getQuestionListAgeCalculation(question?.id)">Calculations</button>
                                                 </li>
-                                                <li class="nav-item" role="presentation" *ngIf="planid == 2500 || planid == 0">
+                                                <li class="nav-item" role="presentation"
+                                                    *ngIf="planid == 2500 || planid == 0">
                                                     <button class="nav-link" id="piping-tab" data-bs-toggle="tab"
                                                         [attr.data-bs-target]="'#piping' + question.id" role="tab"
                                                         aria-selected="false"
@@ -787,7 +792,9 @@
                                                                         <span class="input-group-text"
                                                                             id="addon-wrapping">In</span>
                                                                         <select class="form-select">
-                                                                            <option selected><div [innerHTML]="question?.question"></div>
+                                                                            <option selected>
+                                                                                <div [innerHTML]="question?.question">
+                                                                                </div>
                                                                             </option>
                                                                         </select>
                                                                     </div>
@@ -800,8 +807,9 @@
                                                                                 <div class="col-md-1">
                                                                                     <div>Value</div>
                                                                                 </div>
-                                                                                <div class="col-md-3" *ngIf="question?.questionType !== 'Open Ended'">
-                                                                                    
+                                                                                <div class="col-md-3"
+                                                                                    *ngIf="question?.questionType !== 'Open Ended'">
+
                                                                                     <select class="form-select"
                                                                                         [(ngModel)]="logicEntry.ifId"
                                                                                         (change)="onLogicEntryChange(i,j)">
@@ -812,9 +820,10 @@
                                                                                         </option>
                                                                                     </select>
                                                                                 </div>
-                                                                                
 
-                                                                                <div class="col-md-8" *ngIf="question?.questionType !== 'Open Ended'">
+
+                                                                                <div class="col-md-8"
+                                                                                    *ngIf="question?.questionType !== 'Open Ended'">
                                                                                     <mat-form-field
                                                                                         class="example-chip-list">
                                                                                         <mat-chip-grid #chipGrid
@@ -838,17 +847,23 @@
                                                                                         <mat-autocomplete
                                                                                             #auto="matAutocomplete"
                                                                                             (optionSelected)="selectedOptionsIFLogic($event,logicEntry.ifId,i,j);selectedOptionsIFLogicOneValue($event,logicEntry.ifId,i,j)">
-                                                                                            <mat-option
+                                                                                            <!-- <mat-option
                                                                                                 *ngFor="let option of valuefilteredOptions"
                                                                                                 [value]="option" [disabled]="option.isSelected">
+                                                                                                {{option.option}}
+                                                                                            </mat-option> -->
+                                                                                            <mat-option
+                                                                                                *ngFor="let option of valuefilteredOptions"
+                                                                                                [value]="option">
                                                                                                 {{option.option}}
                                                                                             </mat-option>
                                                                                         </mat-autocomplete>
                                                                                     </mat-form-field>
                                                                                 </div>
 
-                                                                                <div class="col-md-3" *ngIf="question?.questionType === 'Open Ended'">
-                                                                                    
+                                                                                <div class="col-md-3"
+                                                                                    *ngIf="question?.questionType === 'Open Ended'">
+
                                                                                     <select class="form-select"
                                                                                         [(ngModel)]="logicEntry.ifId"
                                                                                         (change)="onLogicEntryChange(i,j);onInputChange(logicEntry.ifId, i, j)">
@@ -859,15 +874,21 @@
                                                                                         </option>
                                                                                     </select>
                                                                                 </div>
-                                                                                <div class="col-md-8" *ngIf="question?.questionType === 'Open Ended' && logicEntry.ifId !== 12 && logicEntry.ifId !== 13">
-                                                                                    <input id="answer" type="text" name="answer" class="form-control" [(ngModel)]="logicEntry.ifExpected" (blur)="validateOpenendedValue(i, j,question?.id,logicEntry.ifExpected)"/>
-                                                                                    <div *ngIf="isopenendedvalue[j]?.[question?.id]" class="text-danger">
+                                                                                <div class="col-md-8"
+                                                                                    *ngIf="question?.questionType === 'Open Ended' && logicEntry.ifId !== 12 && logicEntry.ifId !== 13">
+                                                                                    <input id="answer" type="text"
+                                                                                        name="answer"
+                                                                                        class="form-control"
+                                                                                        [(ngModel)]="logicEntry.ifExpected"
+                                                                                        (blur)="validateOpenendedValue(i, j,question?.id,logicEntry.ifExpected)" />
+                                                                                    <div *ngIf="isopenendedvalue[j]?.[question?.id]"
+                                                                                        class="text-danger">
                                                                                         Field is required
                                                                                     </div>
-                                                                                </div> 
-                                                                               
-                                                                                
-                                                                                
+                                                                                </div>
+
+
+
                                                                                 <!-- <div style="display: none;" 
                                                                                     class="col-md-8" 
                                                                                     *ngIf="question?.questionType === 'Open Ended' && (logicEntry.ifId == 12 || logicEntry.ifId == 13)">
@@ -879,9 +900,9 @@
                                                                                         (change)="onInputChange(logicEntry.ifId, i, j)" />
                                                                                 </div> -->
 
-                                                                                
 
-                                                                                
+
+
 
                                                                             </div>
                                                                         </div>
@@ -1087,10 +1108,10 @@
                                                                         </div>
                                                                     </div>
                                                                 </div>
-                                                                
-                                                                <div ngClass="if-then" 
+
+                                                                <div ngClass="if-then"
                                                                     *ngIf="isBranchingElseShow[i][j] || logicEntry.elseId != null">
-                                                                    
+
                                                                     <span>Else 11{{logicEntry.elseExpected}}</span>
                                                                 </div>
                                                                 <div ngClass="mb-4"
@@ -1157,7 +1178,7 @@
                                                                                 </option>
                                                                             </select>
                                                                         </div>
-                                                                        <div class="col-md-1" >
+                                                                        <div class="col-md-1">
                                                                             <button type="button"
                                                                                 class="btn btn-outline-primary btn-sm"
                                                                                 (click)="hideBranchingElse(i,j,logicEntry)">Remove</button>
@@ -1208,7 +1229,9 @@
                                                                         <span class="input-group-text"
                                                                             id="addon-wrapping">In</span>
                                                                         <select class="form-select">
-                                                                            <option selected><div [innerHTML]="question?.question"></div>
+                                                                            <option selected>
+                                                                                <div [innerHTML]="question?.question">
+                                                                                </div>
                                                                             </option>
                                                                         </select>
                                                                     </div>
@@ -1221,7 +1244,8 @@
                                                                                 <div class="col-md-1">
                                                                                     <div>Value</div>
                                                                                 </div>
-                                                                                <div class="col-md-3" *ngIf="question?.questionType !== 'Open Ended'">
+                                                                                <div class="col-md-3"
+                                                                                    *ngIf="question?.questionType !== 'Open Ended'">
                                                                                     <select class="form-select"
                                                                                         [(ngModel)]="logicEntry.ifId"
                                                                                         (change)="onMatrixHeaderLogicEntry(i,j)">
@@ -1232,8 +1256,9 @@
                                                                                         </option>
                                                                                     </select>
                                                                                 </div>
-                                                                                
-                                                                                <div class="col-md-8" *ngIf="question?.questionType !== 'Open Ended'">
+
+                                                                                <div class="col-md-8"
+                                                                                    *ngIf="question?.questionType !== 'Open Ended'">
                                                                                     <mat-form-field
                                                                                         class="example-chip-list">
                                                                                         <mat-chip-grid #chipGrid
@@ -1259,15 +1284,17 @@
                                                                                             (optionSelected)="selectedMatrixOptionsIFLogic($event,logicEntry.ifId,i,j);selectedOptionsIFLogicOneValue($event,logicEntry.ifId,i,j)">
                                                                                             <mat-option
                                                                                                 *ngFor="let option of activematriccol"
-                                                                                                [value]="option" [disabled]="option.isSelected">
+                                                                                                [value]="option"
+                                                                                                [disabled]="option.isSelected">
                                                                                                 {{option.header}}
                                                                                             </mat-option>
                                                                                         </mat-autocomplete>
                                                                                     </mat-form-field>
                                                                                 </div>
 
-                                                                                <div class="col-md-3" *ngIf="question?.questionType === 'Open Ended'">
-                                                                                    
+                                                                                <div class="col-md-3"
+                                                                                    *ngIf="question?.questionType === 'Open Ended'">
+
                                                                                     <select class="form-select"
                                                                                         [(ngModel)]="logicEntry.ifId"
                                                                                         (change)="onMatrixHeaderLogicEntry(i,j)">
@@ -1279,9 +1306,13 @@
                                                                                     </select>
                                                                                 </div>
 
-                                                                                <div class="col-md-8" *ngIf="question?.questionType === 'Open Ended'">
-                                                                                    <input id="answer" type="text" name="answer" class="form-control" [(ngModel)]="logicEntry.ifExpected"/>
-                                                                                </div> 
+                                                                                <div class="col-md-8"
+                                                                                    *ngIf="question?.questionType === 'Open Ended'">
+                                                                                    <input id="answer" type="text"
+                                                                                        name="answer"
+                                                                                        class="form-control"
+                                                                                        [(ngModel)]="logicEntry.ifExpected" />
+                                                                                </div>
 
                                                                             </div>
                                                                         </div>
@@ -1299,7 +1330,7 @@
                                                                             <select class="form-select"
                                                                                 #thanIdSelect="ngModel"
                                                                                 [(ngModel)]="logicEntry.thanId"
-                                                                                (change)="onLogicEntryOrThanChange(thanIdSelect.value)" >
+                                                                                (change)="onLogicEntryOrThanChange(thanIdSelect.value)">
                                                                                 <option
                                                                                     *ngFor="let item of logicThensList;let j=index;"
                                                                                     [value]="item.id">{{item.name}}
@@ -1347,8 +1378,7 @@
 
                                                                             <select class="form-select"
                                                                                 #thanExpectedSelect="ngModel"
-                                                                                [(ngModel)]="logicEntry.thanExpected"
-                                                                                >
+                                                                                [(ngModel)]="logicEntry.thanExpected">
                                                                                 <option value="null">Select Question
                                                                                 </option>
                                                                                 <option
@@ -1366,11 +1396,11 @@
                                                                         </div>
                                                                     </div>
                                                                 </div>
-                                                                
-                                                                
-                                                                <div ngClass="if-then" 
+
+
+                                                                <div ngClass="if-then"
                                                                     *ngIf="isMatrixElseShow[i][j] || logicEntry.elseId > 0">
-                                                                    
+
                                                                     <span>Else {{logicEntry.elseExpected}}</span>
                                                                 </div>
                                                                 <div ngClass="mb-4"
@@ -1422,7 +1452,7 @@
                                                                                 </label>
                                                                             </div>
                                                                         </div> -->
-                                                                         
+
                                                                         <div class="col-md-4"
                                                                             *ngIf="isMatrixElseShowvalue[i][j] && logicEntry.elseId!=5">
                                                                             <select class="form-select"
@@ -1452,7 +1482,8 @@
                                                                 <div
                                                                     class="col-12 text-end d-flex justify-content-between">
                                                                     <button type="button" class="btn btn-primary btn-sm"
-                                                                        (click)="removeMatrixLogicEntry(question?.id,i,j)">Remove Logic
+                                                                        (click)="removeMatrixLogicEntry(question?.id,i,j)">Remove
+                                                                        Logic
                                                                         {{j+1}}</button>
 
                                                                 </div>
@@ -1465,7 +1496,8 @@
                                                     <div class="row">
                                                         <div class="col-12 text-end d-flex justify-content-between">
                                                             <button type="button" class="btn btn-primary btn-sm"
-                                                                (click)="addNewMatrixLogicEntry(i)">Add New Matrix Logic</button>
+                                                                (click)="addNewMatrixLogicEntry(i)">Add New Matrix
+                                                                Logic</button>
                                                             <button type="button" class="btn btn-primary btn-sm"
                                                                 (click)="createMatrixHeaderLogic(question?.id, matrixLogicsEntriesPerQuestion[i])">Save</button>
                                                         </div>
@@ -1483,14 +1515,17 @@
                                                     </div> -->
                                                     <div>
                                                         <h4 class="alert-heading">Custom Logic !</h4>
-                                                        <p class="alert alert-success">This editor supports HTML, CSS, and JavaScript</p>
+                                                        <p class="alert alert-success">This editor supports HTML, CSS,
+                                                            and JavaScript</p>
                                                         <hr>
-                                                        <ckeditor  [editor]="Editor"  name="questionSummery" class="large-editor">
+                                                        <ckeditor [editor]="Editor" name="questionSummery"
+                                                            class="large-editor">
                                                         </ckeditor>
                                                     </div>
                                                 </div>
                                                 <div class="tab-pane" [id]="'calculator' + question.id" role="tabpanel"
-                                                    aria-labelledby="calculator-tab" *ngIf="checkgenerictype === true && question?.genericType !='Age'">
+                                                    aria-labelledby="calculator-tab"
+                                                    *ngIf="checkgenerictype === true && question?.genericType !='Age'">
                                                     <h5 ngClass="mb-4">Calculations</h5>
                                                     <div ngClass="d-flex justify-content-between mb-3">
                                                         <h6>Find current age of respondent given his/her year of birth
@@ -1510,7 +1545,7 @@
                                                             <div class="col-md-9">
                                                                 <div [innerHTML]="question?.question"></div>
                                                             </div>
-                                                            
+
                                                         </div>
                                                     </div>
 
@@ -1678,7 +1713,8 @@
 
                                                 </div>
                                                 <div class="tab-pane" [id]="'calculator' + question.id" role="tabpanel"
-                                                    aria-labelledby="calculator-tab" *ngIf="checkgenerictype === true && question?.genericType =='Age'">
+                                                    aria-labelledby="calculator-tab"
+                                                    *ngIf="checkgenerictype === true && question?.genericType =='Age'">
                                                     <div class="alert alert-danger" role="alert">
                                                         Calculation is not avaliable for this Question
                                                     </div>
@@ -1693,40 +1729,43 @@
                                                 </div>
                                                 <div class="tab-pane" [id]="'piping' + question.id" role="tabpanel"
                                                     aria-labelledby="piping-tab">
-                                                    
+
                                                     <div class="d-flex mb-2">
                                                         <h5 ngClass="mb-4 me-2">Piping</h5>
                                                         <div class="custom-tooltip">
-                                                            <ng-icon name="heroInformationCircle" ngClass="edit-action info-circle"
+                                                            <ng-icon name="heroInformationCircle"
+                                                                ngClass="edit-action info-circle"
                                                                 (click)="toggleTooltip('10')"></ng-icon>
                                                             <div class="toast show" *ngIf="showTooltip['10']">
                                                                 <div class="toast-header">
-                                                                    <img [src]="baseUrl + '/assets/images/icons/Add-new-question.png'" class="rounded me-2"
-                                                                        width="30" height="30" />
+                                                                    <img [src]="baseUrl + '/assets/images/icons/Add-new-question.png'"
+                                                                        class="rounded me-2" width="30" height="30" />
                                                                     <h6 class="mb-0 me-auto">Add Piping</h6>
-                                                                    <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"
+                                                                    <button type="button" class="btn-close"
+                                                                        data-bs-dismiss="toast" aria-label="Close"
                                                                         (click)="hideTooltip('10')"></button>
                                                                 </div>
                                                                 <div class="toast-body">
-                                                                    Select questions and add a "&#64;pipe" tag inside the same question text.
+                                                                    Select questions and add a "&#64;pipe" tag inside
+                                                                    the same question text.
                                                                 </div>
                                                             </div>
                                                         </div>
-                                        
+
                                                     </div>
                                                     <div ngClass="d-flex justify-content-between mb-3">
                                                         <h6>Set Values for Piping</h6>
                                                     </div>
 
                                                     <div class="input-group flex-nowrap mb-3">
-                                                        <span class="input-group-text"
-                                                            id="addon-wrapping">In</span>
+                                                        <span class="input-group-text" id="addon-wrapping">In</span>
                                                         <select class="form-select">
-                                                            <option selected><div [innerHTML]="question?.question"></div>
+                                                            <option selected>
+                                                                <div [innerHTML]="question?.question"></div>
                                                             </option>
                                                         </select>
                                                     </div>
-                                                    
+
                                                     <!-- {{ question | json }} -->
                                                     <!-- <form>
                                                         {{questionIds}}
@@ -1743,40 +1782,38 @@
 
                                                     <mat-form-field class="example-chip-list">
                                                         <mat-chip-grid #chipGrid aria-label="City selection">
-                                                          <mat-chip-row *ngFor="let option of pipingques[question?.id]">
-                                                            {{option.item}}
-                                                            <button matChipRemove
-                                                            [attr.aria-label]="'remove'"
-                                                            (click)="remove(option, question?.id)">
-                                                              <mat-icon>cancel</mat-icon>
-                                                            </button>
-                                                          </mat-chip-row>
-                                                          <input
-                                                            [(ngModel)]="pipequestion"
-                                                            [matChipInputFor]="chipGrid"
-                                                            [matAutocomplete]="auto"
-                                                            [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
-                                                            (matChipInputTokenEnd)="add($event, question?.id)">
+                                                            <mat-chip-row
+                                                                *ngFor="let option of pipingques[question?.id]">
+                                                                {{option.item}}
+                                                                <button matChipRemove [attr.aria-label]="'remove'"
+                                                                    (click)="remove(option, question?.id)">
+                                                                    <mat-icon>cancel</mat-icon>
+                                                                </button>
+                                                            </mat-chip-row>
+                                                            <input [(ngModel)]="pipequestion"
+                                                                [matChipInputFor]="chipGrid" [matAutocomplete]="auto"
+                                                                [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                                                                (matChipInputTokenEnd)="add($event, question?.id)">
                                                         </mat-chip-grid>
-                                                        <mat-autocomplete
-                                                          #auto="matAutocomplete"
-                                                          (optionSelected)="onSelectionChangepiping($event, question?.id)">
-                                                          <mat-option *ngFor="let name of nextQuestions" [value]="name">
-                                                            {{name.item}}
-                                                          </mat-option>
+                                                        <mat-autocomplete #auto="matAutocomplete"
+                                                            (optionSelected)="onSelectionChangepiping($event, question?.id)">
+                                                            <mat-option *ngFor="let name of nextQuestions"
+                                                                [value]="name">
+                                                                {{name.item}}
+                                                            </mat-option>
                                                         </mat-autocomplete>
                                                     </mat-form-field>
-                                                      
-                                                      
 
-                                                    <div  class="row mt-3">
+
+
+                                                    <div class="row mt-3">
                                                         <div class="col-6 d-flex ">
                                                             <button type="button" class="btn btn-primary"
                                                                 (click)="deletePiping(question?.id,i)">Delete</button>
                                                         </div>
                                                         <div class="col-6 text-end d-flex justify-content-end">
                                                             <button type="button" class="btn btn-primary"
-                                                            (click)="savePiping(question?.id,i)">Save</button>
+                                                                (click)="savePiping(question?.id,i)">Save</button>
                                                         </div>
 
                                                     </div>
@@ -2048,7 +2085,7 @@
             <!-- Logic Question -->
             <div class="tab-content p-4">
                 <div class="tab-pane" id="addText" role="tabpanel" aria-labelledby="addText-tab">
-                    
+
                     <div class="infocircle justify-content-start">
                         <h5 ngClass="mb-4">Add Text</h5>
                         <div class="mb-4" *ngIf="isQNumberRequired == true">
@@ -2057,20 +2094,21 @@
                                     (click)="toggleTooltip('11')"></ng-icon>
                                 <div class="toast show" *ngIf="showTooltip['11']">
                                     <div class="toast-header">
-                                        <img [src]="baseUrl + '/assets/images/icons/Add-new-question.png'" class="rounded me-2"
-                                            width="30" height="30" />
+                                        <img [src]="baseUrl + '/assets/images/icons/Add-new-question.png'"
+                                            class="rounded me-2" width="30" height="30" />
                                         <h6 class="mb-0 me-auto">Add Custom Serial Number</h6>
-                                        <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"
-                                            (click)="hideTooltip('11')"></button>
+                                        <button type="button" class="btn-close" data-bs-dismiss="toast"
+                                            aria-label="Close" (click)="hideTooltip('11')"></button>
                                     </div>
                                     <div class="toast-body">
-                                        S.no will only indicate the question numbers and will not determine the position of the question in the survey.
+                                        S.no will only indicate the question numbers and will not determine the position
+                                        of the question in the survey.
 
                                     </div>
                                 </div>
                             </div>
                         </div>
-        
+
                     </div>
                     <div class="mb-3">
                         <div ngClass="d-flex align-items-center justify-content-between">
@@ -2086,13 +2124,15 @@
                     <div class="mb-3">
                         <div class="d-flex gap-2">
                             <div class="flex-1" *ngIf="isQNumberRequired === true">
-                                <input type="text" id="qNo" name="qNo" class="form-control" [(ngModel)]="qNo" placeholder="S.No" placeholder="S.No" (blur)="validateSerialNumber('text')" [ngModelOptions]="{standalone: true}"/>
+                                <input type="text" id="qNo" name="qNo" class="form-control" [(ngModel)]="qNo"
+                                    placeholder="S.No" placeholder="S.No" (blur)="validateSerialNumber('text')"
+                                    [ngModelOptions]="{standalone: true}" />
                                 <div *ngIf="!getSerialNumberreq" class="text-danger">S.no is required.</div>
                             </div>
                             <div class="flex-5">
                                 <input type="text" class="form-control" placeholder="Insert Heading for Image Screen"
-                                [(ngModel)]="screenQuestion" [ngModelOptions]="{standalone: true}"
-                                (blur)="validateAddScreen('text')" />
+                                    [(ngModel)]="screenQuestion" [ngModelOptions]="{standalone: true}"
+                                    (blur)="validateAddScreen('text')" />
                                 <div *ngIf="!headingrequired" class="text-danger">Heading is required.</div>
                             </div>
                         </div>
@@ -2127,7 +2167,7 @@
                 </div>
 
                 <div class="tab-pane active" id="addImage" role="tabpanel" aria-labelledby="addImage-tab">
-                    
+
                     <div class="infocircle justify-content-start">
                         <h5 ngClass="mb-4">Add an Image</h5>
                         <div class="mb-4" *ngIf="isQNumberRequired == true">
@@ -2136,20 +2176,21 @@
                                     (click)="toggleTooltip('12')"></ng-icon>
                                 <div class="toast show" *ngIf="showTooltip['12']">
                                     <div class="toast-header">
-                                        <img [src]="baseUrl + '/assets/images/icons/Add-new-question.png'" class="rounded me-2"
-                                            width="30" height="30" />
+                                        <img [src]="baseUrl + '/assets/images/icons/Add-new-question.png'"
+                                            class="rounded me-2" width="30" height="30" />
                                         <h6 class="mb-0 me-auto">Add Custom Serial Number</h6>
-                                        <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"
-                                            (click)="hideTooltip('12')"></button>
+                                        <button type="button" class="btn-close" data-bs-dismiss="toast"
+                                            aria-label="Close" (click)="hideTooltip('12')"></button>
                                     </div>
                                     <div class="toast-body">
-                                        S.no will only indicate the question numbers and will not determine the position of the question in the survey.
+                                        S.no will only indicate the question numbers and will not determine the position
+                                        of the question in the survey.
 
                                     </div>
                                 </div>
                             </div>
                         </div>
-        
+
                     </div>
                     <div class="mb-3">
                         <div ngClass="d-flex align-items-center justify-content-between">
@@ -2159,7 +2200,9 @@
                     <div class="mb-3">
                         <div class="d-flex gap-2">
                             <div class="flex-1" *ngIf="isQNumberRequired === true">
-                                <input type="text" id="qNo" name="qNo" class="form-control" [(ngModel)]="qNo" placeholder="S.No" placeholder="S.No" (blur)="validateSerialNumber('image')" [ngModelOptions]="{standalone: true}"/>
+                                <input type="text" id="qNo" name="qNo" class="form-control" [(ngModel)]="qNo"
+                                    placeholder="S.No" placeholder="S.No" (blur)="validateSerialNumber('image')"
+                                    [ngModelOptions]="{standalone: true}" />
                                 <div *ngIf="!getSerialNumberreq" class="text-danger">S.no is required.</div>
                             </div>
                             <div class="flex-5">
@@ -2169,7 +2212,7 @@
                                 <div *ngIf="!headingrequired" class="text-danger">Heading is required.</div>
                             </div>
                         </div>
-                        
+
                     </div>
                     <div class="mb-3">
                         <ngx-dropzone (change)="onSelect($event)" [ngClass]="'drop-file'">
@@ -2208,7 +2251,7 @@
 
                 </div>
                 <div class="tab-pane" id="addVideo" role="tabpanel" aria-labelledby="addVideo-tab">
-                  
+
                     <div class="infocircle justify-content-start">
                         <h5 ngClass="mb-4">Add Video</h5>
                         <div class="mb-4" *ngIf="isQNumberRequired == true">
@@ -2217,20 +2260,21 @@
                                     (click)="toggleTooltip('13')"></ng-icon>
                                 <div class="toast show" *ngIf="showTooltip['13']">
                                     <div class="toast-header">
-                                        <img [src]="baseUrl + '/assets/images/icons/Add-new-question.png'" class="rounded me-2"
-                                            width="30" height="30" />
+                                        <img [src]="baseUrl + '/assets/images/icons/Add-new-question.png'"
+                                            class="rounded me-2" width="30" height="30" />
                                         <h6 class="mb-0 me-auto">Add Custom Serial Number</h6>
-                                        <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"
-                                            (click)="hideTooltip('13')"></button>
+                                        <button type="button" class="btn-close" data-bs-dismiss="toast"
+                                            aria-label="Close" (click)="hideTooltip('13')"></button>
                                     </div>
                                     <div class="toast-body">
-                                        S.no will only indicate the question numbers and will not determine the position of the question in the survey.
+                                        S.no will only indicate the question numbers and will not determine the position
+                                        of the question in the survey.
 
                                     </div>
                                 </div>
                             </div>
                         </div>
-        
+
                     </div>
                     <div class="mb-3">
                         <div ngClass="d-flex align-items-center justify-content-between">
@@ -2240,7 +2284,9 @@
                     <div class="mb-3">
                         <div class="d-flex gap-2">
                             <div class="flex-1" *ngIf="isQNumberRequired === true">
-                                <input type="text" id="qNo" name="qNo" class="form-control" [(ngModel)]="qNo" placeholder="S.No" placeholder="S.No" (blur)="validateSerialNumber('Video')" [ngModelOptions]="{standalone: true}"/>
+                                <input type="text" id="qNo" name="qNo" class="form-control" [(ngModel)]="qNo"
+                                    placeholder="S.No" placeholder="S.No" (blur)="validateSerialNumber('Video')"
+                                    [ngModelOptions]="{standalone: true}" />
                                 <div *ngIf="!getSerialNumberreq" class="text-danger">S.no is required.</div>
                             </div>
                             <div class="flex-5">
@@ -2250,7 +2296,7 @@
                                 <div *ngIf="!headingrequired" class="text-danger">Heading is required.</div>
                             </div>
                         </div>
-                        
+
                     </div>
                     <div class="mb-3">
                         <ngx-dropzone (change)="onSelectVideo($event)" [ngClass]="'drop-file'">
@@ -2289,7 +2335,7 @@
 
                 </div>
                 <div class="tab-pane" id="addiFrame" role="tabpanel" aria-labelledby="addiFrame-tab">
-                    
+
                     <div class="infocircle justify-content-start">
                         <h5 ngClass="mb-4">Add iFrame</h5>
                         <div class="mb-4" *ngIf="isQNumberRequired == true">
@@ -2298,20 +2344,21 @@
                                     (click)="toggleTooltip('14')"></ng-icon>
                                 <div class="toast show" *ngIf="showTooltip['14']">
                                     <div class="toast-header">
-                                        <img [src]="baseUrl + '/assets/images/icons/Add-new-question.png'" class="rounded me-2"
-                                            width="30" height="30" />
+                                        <img [src]="baseUrl + '/assets/images/icons/Add-new-question.png'"
+                                            class="rounded me-2" width="30" height="30" />
                                         <h6 class="mb-0 me-auto">Add Custom Serial Number</h6>
-                                        <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"
-                                            (click)="hideTooltip('14')"></button>
+                                        <button type="button" class="btn-close" data-bs-dismiss="toast"
+                                            aria-label="Close" (click)="hideTooltip('14')"></button>
                                     </div>
                                     <div class="toast-body">
-                                        S.no will only indicate the question numbers and will not determine the position of the question in the survey.
+                                        S.no will only indicate the question numbers and will not determine the position
+                                        of the question in the survey.
 
                                     </div>
                                 </div>
                             </div>
                         </div>
-        
+
                     </div>
                     <div class="mb-3">
                         <div ngClass="d-flex align-items-center justify-content-between">
@@ -2321,18 +2368,20 @@
                     <div class="mb-3">
                         <div class="d-flex gap-2">
                             <div class="flex-1" *ngIf="isQNumberRequired === true">
-                                <input type="text" id="qNo" name="qNo" class="form-control" [(ngModel)]="qNo" placeholder="S.No" placeholder="S.No" (blur)="validateSerialNumber('iframe')" [ngModelOptions]="{standalone: true}"/>
+                                <input type="text" id="qNo" name="qNo" class="form-control" [(ngModel)]="qNo"
+                                    placeholder="S.No" placeholder="S.No" (blur)="validateSerialNumber('iframe')"
+                                    [ngModelOptions]="{standalone: true}" />
                                 <div *ngIf="!getSerialNumberreq" class="text-danger">S.no is required.</div>
                             </div>
                             <div class="flex-5">
                                 <input type="text" class="form-control" placeholder="Insert Heading for iFrame"
-                                [(ngModel)]="screenQuestion" [ngModelOptions]="{standalone: true}"
-                                (blur)="validateAddScreen('iframe')" />
+                                    [(ngModel)]="screenQuestion" [ngModelOptions]="{standalone: true}"
+                                    (blur)="validateAddScreen('iframe')" />
                                 <div *ngIf="!headingrequired" class="text-danger">Heading is required.</div>
                             </div>
                         </div>
                     </div>
-                    
+
                     <div class="mb-3">
                         <textarea type="text" class="form-control" rows="6" col="20" placeholder="Insert iFrame"
                             [(ngModel)]="youtubeUrl" [ngModelOptions]="{standalone: true}"
@@ -2373,18 +2422,18 @@
 
 <!-- redirection -->
 <ng-template #redirection let-modal>
-    <div class="modal-header">        
+    <div class="modal-header">
         <h4 class="modal-title">Redirection</h4>
         <button type="button" class="btn-close" aria-label="Close"
-            (click)="modal.dismiss('Cross click'); isActivescreen = false;"></button>          
-        
+            (click)="modal.dismiss('Cross click'); isActivescreen = false;"></button>
+
     </div>
     <div class="modal-body popup-ques">
         <div>
             <div class="mb-3">
                 <label for="uid" class="form-label">Enter Your User ID</label>
-                <input type="text" class="form-control" name="uid" placeholder="UID" [(ngModel)]="uid" (blur)="validateUID()"
-                    [ngModelOptions]="{standalone: true}"/>
+                <input type="text" class="form-control" name="uid" placeholder="UID" [(ngModel)]="uid"
+                    (blur)="validateUID()" [ngModelOptions]="{standalone: true}" />
                 <div *ngIf="!uidreq" class="text-danger">UID is required.</div>
             </div>
         </div>
@@ -2392,28 +2441,28 @@
             <!-- Nav tabs -->
             <ul class="nav flex-column nav-tabs" id="myTab" role="tablist">
                 <li class="nav-item" role="presentation">
-                    <button class="nav-link active" id="addcompletelink-tab" data-bs-toggle="tab" data-bs-target="#addcompletelink" role="tab"
-                        aria-selected="false">Complete Link</button>
+                    <button class="nav-link active" id="addcompletelink-tab" data-bs-toggle="tab"
+                        data-bs-target="#addcompletelink" role="tab" aria-selected="false">Complete Link</button>
                 </li>
                 <li class="nav-item" role="presentation">
                     <button class="nav-link" id="addquotalink-tab" data-bs-toggle="tab" data-bs-target="#addquotalink"
                         role="tab" aria-selected="false">Quota Full Link</button>
                 </li>
                 <li class="nav-item" role="presentation">
-                    <button class="nav-link" id="addterminatelink-tab" data-bs-toggle="tab" data-bs-target="#addterminatelink"
-                        role="tab" aria-selected="false">Terminate Link</button>
+                    <button class="nav-link" id="addterminatelink-tab" data-bs-toggle="tab"
+                        data-bs-target="#addterminatelink" role="tab" aria-selected="false">Terminate Link</button>
                 </li>
                 <li class="nav-item" role="presentation">
-                    <button class="nav-link" id="addnosurveylink-tab" data-bs-toggle="tab" data-bs-target="#addnosurveylink"
-                        role="tab" aria-selected="false">No Survey Link</button>
+                    <button class="nav-link" id="addnosurveylink-tab" data-bs-toggle="tab"
+                        data-bs-target="#addnosurveylink" role="tab" aria-selected="false">No Survey Link</button>
                 </li>
                 <li class="nav-item" role="presentation">
-                    <button class="nav-link" id="addduplicatelink-tab" data-bs-toggle="tab" data-bs-target="#addduplicatelink"
-                        role="tab" aria-selected="false">Duplicate Link</button>
+                    <button class="nav-link" id="addduplicatelink-tab" data-bs-toggle="tab"
+                        data-bs-target="#addduplicatelink" role="tab" aria-selected="false">Duplicate Link</button>
                 </li>
                 <li class="nav-item" role="presentation">
-                    <button class="nav-link" id="addsecuritylink-tab" data-bs-toggle="tab" data-bs-target="#addsecuritylink"
-                        role="tab" aria-selected="false">Security Link</button>
+                    <button class="nav-link" id="addsecuritylink-tab" data-bs-toggle="tab"
+                        data-bs-target="#addsecuritylink" role="tab" aria-selected="false">Security Link</button>
                 </li>
             </ul>
             <!-- Logic Question -->
@@ -2425,17 +2474,17 @@
                             <h6>Please add values for redirection.</h6>
                         </div>
                     </div>
-                   
+
                     <div class="mb-3">
                         <label for="uid" class="form-label">Enter Your complete Link</label>
                         <input type="text" class="form-control" placeholder="complete link" [(ngModel)]="completelink"
-                            [ngModelOptions]="{standalone: true}" (blur)="validateRedirectLink('completelink')"/>
+                            [ngModelOptions]="{standalone: true}" (blur)="validateRedirectLink('completelink')" />
                     </div>
                     <div *ngIf="!completelinkreq" class="text-danger">Link is required.</div>
                     <div class="mb-3">
                         <label for="uid" class="form-label">Enter Your Complete UserID</label>
                         <input type="text" class="form-control" placeholder="complete UID" [(ngModel)]="completeuid"
-                            [ngModelOptions]="{standalone: true}" (blur)="validateRedirectLink('completelink')"/>
+                            [ngModelOptions]="{standalone: true}" (blur)="validateRedirectLink('completelink')" />
                     </div>
                     <div *ngIf="!completeuidreq" class="text-danger">UID is required.</div>
                     <div *ngIf="!uidvalidate" class="text-danger">UID is must be there in Link.</div>
@@ -2451,20 +2500,21 @@
                         <div ngClass="d-flex align-items-center justify-content-between">
                             <h6>Please add values for redirection.</h6>
                         </div>
-                    </div> <div class="mb-3">
+                    </div>
+                    <div class="mb-3">
                         <label for="uid" class="form-label">Enter Your Quota Link</label>
                         <input type="text" class="form-control" placeholder="Quota Link UID" [(ngModel)]="quotalink"
-                            [ngModelOptions]="{standalone: true}" (blur)="validateRedirectLink('quotalink')"/>
+                            [ngModelOptions]="{standalone: true}" (blur)="validateRedirectLink('quotalink')" />
                     </div>
                     <div *ngIf="!quotalinkreq" class="text-danger">Link is required.</div>
                     <div class="mb-3">
                         <label for="uid" class="form-label">Enter Your Quota UserID</label>
                         <input type="text" class="form-control" placeholder="Quota UID" [(ngModel)]="quotauid"
-                            [ngModelOptions]="{standalone: true}" (blur)="validateRedirectLink('quotalink')"/>
+                            [ngModelOptions]="{standalone: true}" (blur)="validateRedirectLink('quotalink')" />
                     </div>
                     <div *ngIf="!quotauidreq" class="text-danger">UID is required.</div>
                     <div *ngIf="!uidquotavalidate" class="text-danger">UID is must be there in Link.</div>
-                   
+
                     <div class="mb-3">
                         <button type="button" class="btn btn-primary btn-sm"
                             (click)="addRedirection('quotalink')">Save</button>
@@ -2481,13 +2531,13 @@
                     <div class="mb-3">
                         <label for="uid" class="form-label">Enter Your Terminate Link</label>
                         <input type="text" class="form-control" placeholder="Terminate link" [(ngModel)]="terminatelink"
-                            [ngModelOptions]="{standalone: true}" (blur)="validateRedirectLink('terminatelink')"/>
+                            [ngModelOptions]="{standalone: true}" (blur)="validateRedirectLink('terminatelink')" />
                     </div>
                     <div *ngIf="!terminatelinkreq" class="text-danger">Link is required.</div>
                     <div class="mb-3">
                         <label for="uid" class="form-label">Enter Your Terminate Link UserID</label>
                         <input type="text" class="form-control" placeholder="Terminate UID" [(ngModel)]="terminateuid"
-                            [ngModelOptions]="{standalone: true}" (blur)="validateRedirectLink('terminatelink')"/>
+                            [ngModelOptions]="{standalone: true}" (blur)="validateRedirectLink('terminatelink')" />
                     </div>
                     <div *ngIf="!termeinateuidreq" class="text-danger">UID is required.</div>
                     <div *ngIf="!uidterminatevalidate" class="text-danger">UID is must be there in Link.</div>
@@ -2507,13 +2557,13 @@
                     <div class="mb-3">
                         <label for="uid" class="form-label">Enter Your No Survey Link</label>
                         <input type="text" class="form-control" placeholder="No Survey Link" [(ngModel)]="nosurveylink"
-                            [ngModelOptions]="{standalone: true}" (blur)="validateRedirectLink('nosurveylink')"/>
+                            [ngModelOptions]="{standalone: true}" (blur)="validateRedirectLink('nosurveylink')" />
                     </div>
                     <div *ngIf="!nosurveylinkreq" class="text-danger">Link is required.</div>
                     <div class="mb-3">
                         <label for="uid" class="form-label">Enter Your No Survey Link UserID</label>
                         <input type="text" class="form-control" placeholder="No Survey UID" [(ngModel)]="nosurveyuid"
-                            [ngModelOptions]="{standalone: true}" (blur)="validateRedirectLink('nosurveylink')"/>
+                            [ngModelOptions]="{standalone: true}" (blur)="validateRedirectLink('nosurveylink')" />
                     </div>
                     <div *ngIf="!nosurveyuidreq" class="text-danger">UID is required.</div>
                     <div *ngIf="!uidnosurveyvalidate" class="text-danger">UID is must be there in Link.</div>
@@ -2533,11 +2583,11 @@
                     <div class="mb-3">
                         <label for="uid" class="form-label">Enter Your Duplicate Link</label>
                         <input type="text" class="form-control" placeholder="Duplicate Link" [(ngModel)]="duplicatelink"
-                            [ngModelOptions]="{standalone: true}" (blur)="validateRedirectLink('duplicatelink')"/>
+                            [ngModelOptions]="{standalone: true}" (blur)="validateRedirectLink('duplicatelink')" />
                     </div>
                     <div *ngIf="!duplicatelinkreq" class="text-danger">Link is required.</div>
                     <div class="mb-3">
-                        <label for="uid" class="form-label">Enter Your  Duplicate Link UserID</label>
+                        <label for="uid" class="form-label">Enter Your Duplicate Link UserID</label>
                         <input type="text" class="form-control" placeholder=" Duplicate  UID" [(ngModel)]="duplicateuid"
                             [ngModelOptions]="{standalone: true}" (blur)="validateRedirectLink('duplicatelink')" />
                     </div>
@@ -2559,13 +2609,13 @@
                     <div class="mb-3">
                         <label for="uid" class="form-label">Enter Your Security Link</label>
                         <input type="text" class="form-control" placeholder="Security Link" [(ngModel)]="securitylink"
-                            [ngModelOptions]="{standalone: true}" (blur)="validateRedirectLink('securitylink')"/>
+                            [ngModelOptions]="{standalone: true}" (blur)="validateRedirectLink('securitylink')" />
                     </div>
                     <div *ngIf="!securitylinkreq" class="text-danger">Link is required.</div>
                     <div class="mb-3">
                         <label for="uid" class="form-label">Enter Your Security Link UserID</label>
                         <input type="text" class="form-control" placeholder="Security  UID" [(ngModel)]="securityuid"
-                            [ngModelOptions]="{standalone: true}" (blur)="validateRedirectLink('securitylink')"/>
+                            [ngModelOptions]="{standalone: true}" (blur)="validateRedirectLink('securitylink')" />
                     </div>
                     <div *ngIf="!securityuidreq" class="text-danger">UID is required.</div>
                     <div *ngIf="!uidsecurityvalidate" class="text-danger">UID is must be there in Link.</div>
