@@ -150,6 +150,13 @@ export class QuotaManagementComponent {
     this.toggleActive(index,this.itemindex,quesid)
     modalRef.componentInstance.itemindex = index;
    
+  }
+  contentasd:any
+
+  openInterlock(questionvideo: any) {
+    
+    this.modalService.open(questionvideo, { size: 'lg', centered: true });
+   
     
   }
   // Show add quotas
@@ -370,7 +377,7 @@ activeIndicesForInterlock(interlockindex: number): number[] {
         if (question.genericType) {
           this.genericlist.push(question.genericType);
         }
-        console.log("qwerty", this.genericlist)
+        console.log("genericlist", this.genericlist)
       });
       this.questionList.questions.forEach((question: any) => {
 
@@ -963,14 +970,16 @@ activeIndicesForInterlock(interlockindex: number): number[] {
   saveInterlock() {
     const interlockPayload: any[] = [];
     const totalUsers = this.surveyQuotaJson.totalUsers;
+    debugger
     const totalOptions = this.currentinterlockoptionid.length * this.interlockoptionid.length;
     let usercount = Math.floor(totalUsers / totalOptions); 
     let remainingUsers = totalUsers; 
   
-    // Process current interlock options
     this.currentinterlockoptionid.forEach((item: any, index: number) => {
       const isLast = index === this.currentinterlockoptionid.length - 1 && this.interlockoptionid.length === 0;
       const count = isLast ? remainingUsers : usercount;
+      console.log("isLast",isLast)
+      console.log("isLast count",count)
       
       interlockPayload.push({
         id: 0,
@@ -984,7 +993,6 @@ activeIndicesForInterlock(interlockindex: number): number[] {
       remainingUsers -= count; 
     });
   
-    // Process additional interlock options
     this.interlockoptionid.forEach((item: any, index: number) => {
       const isLast = index === this.interlockoptionid.length - 1;
       const count = isLast ? remainingUsers : usercount;
@@ -1000,13 +1008,12 @@ activeIndicesForInterlock(interlockindex: number): number[] {
   
       remainingUsers -= count;
     });
+    debugger
   
-    // Send interlockPayload to the API
     this.surveyservice.interlockQuota(interlockPayload).subscribe({
       next: (resp) => {
         console.log("API response:", resp);
         this.utility.showSuccess("Successfully");
-        // Uncomment if page reload is needed
         // setTimeout(() => {
         //   window.location.reload();
         // }, 200);

@@ -64,7 +64,7 @@
     <div class="common-bg">
         <div class="common-heading">
             <ng-container *ngIf="role === 'Vendor' || role === 'Client'">
-                <div *ngIf="surveyQuotaJson.status =='DEL'" class="alert alert-danger py-2 px-3" role="alert">
+                <div *ngIf="questionList.status !=='ACT'" class="alert alert-danger py-2 px-3" role="alert">
                     Currently this survey is closed.
                 </div>
             </ng-container>
@@ -199,26 +199,29 @@
     <div class="common-bg">
         <h4>Interlocked Quotas</h4>
         <!-- <div class="interlocked-quotas" [style.display]="showInterlockedQuotas ? 'block' : 'none'"> -->
-        <div class="interlocked-quotas" >
-            <ul>
-                <ng-container *ngFor="let question of surveyQuotaJson?.questionDto; let i = index">
-                <li *ngFor="let generictype of genericlist; let i= index ">
-                    <span>{{generictype}}</span>
-                    <p class="mb-0" *ngFor="let options of selectedoptions">{{options.option}}</p>
-                </li></ng-container>
-                
-            </ul>
-            <table class="table table-bordered mt-5" *ngFor="let item of quotainterlockdata">
-                <tbody>
-                    <tr>
-                        <td>{{item.firstOptionName}}, {{item.secondOptionName}}</td>
-                        <td><input type="number" class="form-control" value="30"></td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-        <div class="text-end mt-3">
-            <button type="button" (click)="deleteInterlockquota()" class="btn btn-danger">Delete Interlock</button>
+        <div  *ngIf="quotainterlockdata.length > 0">
+            <div class="interlocked-quotas" >
+                <ul>
+                    
+                    <li *ngFor="let generictype of genericlist; let i= index ">
+                        <span>{{generictype}}</span>
+                        <p class="mb-0" *ngFor="let options of selectedoptions">{{options.option}}</p>
+                    </li>
+                    
+                </ul>
+                <table class="table table-bordered mt-5">
+                    <tbody>
+                        <tr *ngFor="let item of quotainterlockdata">
+                            <td>{{item.firstOptionName}}, {{item.secondOptionName}}</td>
+                            <td><input type="number" class="form-control" value="30"></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="text-end mt-3">
+
+                <button type="button" (click)="deleteInterlockquota()" class="btn btn-danger">Delete Interlock</button>
+            </div>
         </div>
         <div class="blanked-interlocked">
             <ng-icon name="heroPlus" style="font-size: .875rem;"></ng-icon><span>Interlock Quotas</span>
