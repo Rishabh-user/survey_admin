@@ -7,12 +7,43 @@
             </div>
             <div class="modal-body popup-ques">
                 <form>
-                    <div class="mb-4">
+                    <!-- <div class="mb-4">
                         <label for="surveyname" class="form-label">Enter Your Survey Name</label>
                         <input id="surveyname" type="text" class="form-control" [(ngModel)]="surveyName"
                             [ngModelOptions]="{standalone: true}" name="surveyName" (blur)="validateSurvey()" />
                         <div *ngIf="!surveyNameCheck" class="text-danger">Survey Name is required.</div>
+                    </div> -->
+
+                    <div class="mb-4">
+                        <label for="surveyname" class="form-label">Enter Your Survey Name</label>
+                        <div class="position-relative">
+                            <input
+                                id="surveyname"
+                                type="text"
+                                class="form-control"
+                                [(ngModel)]="surveyName"
+                                [ngModelOptions]="{ standalone: true }"
+                                name="surveyName"
+                                (blur)="validateSurvey()"
+                                (input)="onSurveyNameInput(surveyName)"  
+                            />
+                            <div *ngIf="!surveyNameCheck" class="text-danger">Survey Name is required.</div>
+                        
+                            <!-- Suggestions Dropdown -->
+                            <div *ngIf="suggestions.length > 0" class="suggestions-dropdown">
+                                <div class="suggestion-item">
+                                    <span
+                                        *ngFor="let suggestion of suggestions"
+                                        (click)="selectSuggestion(suggestion)"
+                                        
+                                    >
+                                        {{ suggestion }}
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
                     </div>
+                    
 
                     <div class="mb-4">
                         <label class="form-label">Select Your Country</label>

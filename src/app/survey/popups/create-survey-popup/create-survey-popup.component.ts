@@ -11,6 +11,7 @@ import { ModalDirective } from 'ngx-bootstrap/modal';
 import { UtilsService } from 'src/app/service/utils.service';
 import { environment } from 'src/environments/environment';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+import { WordSuggestionService } from 'src/app/service/word-suggestion.service';
 
 @Component({
   selector: 'app-create-survey-popup',
@@ -36,6 +37,7 @@ export class CreateSurveyPopupComponent {
   selectedCategory: { id: number, name: string } | null = null;
   //selectedCountry: { id: string, name: string, images: string } | null = null;
   selectedCountry: { id: string; name: string; images: string }[]  = [];
+  suggestions: any[] = [];
   
   //selectedCountryId: string | null = null;
 
@@ -70,7 +72,8 @@ export class CreateSurveyPopupComponent {
     private router: Router,
     private crypto: CryptoService,
     private auth: AuthService,
-    private utility: UtilsService) {
+    private utility: UtilsService,
+    private wordsuggestion: WordSuggestionService) {
     this.baseUrl = environment.baseURL;
 
 
@@ -226,4 +229,31 @@ export class CreateSurveyPopupComponent {
   removeQuotes(str: string): string {
     return str.replace(/"/g, '');
   }
+
+  onSurveyNameInput(query: string) {
+    // Extract the last word from the input
+    const lastWord = query.split(' ').pop() || '';
+  
+    if (lastWord) {
+      this.wordsuggestion.getSuggestions(lastWord)
+        .subscribe((suggestions:any) => {
+          this.suggestions = suggestions;
+        });
+    } else {
+      this.suggestions = [];
+    }
+  }
+  
+
+  selectSuggestion(suggestion: string) {
+    const words = this.surveyName.split(' ');
+    // Replace the last word with the selected suggestion
+    words[words.length - 1] = suggestion;
+    this.surveyName = words.join(' ');
+    
+    // Clear suggestions after selection
+    this.suggestions = [];
+    this.validateSurvey(); // Re-validate input after selection
+  }
+  
 }
