@@ -75,8 +75,8 @@
                     <p class="mb-0">Quota Operation</p>
                 </div>
                 <div class="col-md-6 text-end" *ngIf="role != 'Client' && role !='Vendor'">
-                    <button type="button" (click)="getQuotaBySurveyId()" class="btn btn-primary">Refresh Quota</button>
-                    <button type="button" (click)="onDeleteQuota()" class="ms-2 btn btn-danger">Delete Quota</button>
+                    <!-- <button type="button" (click)="getQuotaBySurveyId()" class="btn btn-primary">Refresh Quota</button> -->
+                    <!-- <button type="button" (click)="onDeleteQuota()" class="ms-2 btn btn-danger">Delete Quota</button> -->
                 </div>
             </div>
         </div>
@@ -85,12 +85,14 @@
             <label class="form-label">Total Count</label>
             <div class="row g-3 mb-4">
                 <div class="col-11">
-                    <input type="number" class="form-control" name="surveycount" [(ngModel)]="surveyQuotaJson.totalUsers"
-                        (blur)="showQuotas()">
+                        <input type="number" class="form-control" name="surveycount" [(ngModel)]="surveyQuotaJson.totalUsers"
+                        (blur)="showQuotas()" (ngModelChange)="changeUserCount();">
+                    
                     <div *ngIf="showCountError" class="text-danger">Please enter a valid survey count.</div>
                 </div>
-                <div class="col-1 text-end" *ngIf="role != 'Client' && role !='Vendor'">
+                <div class="col-1 text-end d-flex gap-2" *ngIf="role != 'Client' && role !='Vendor'">
                     <button type="button" class="btn btn-primary w-100" (click)="manageQuota()">Save</button>
+                    <button type="button" class="btn btn-danger" (click)="onDeleteQuota()"><ng-icon name="heroTrash"></ng-icon></button>
                 </div>
             </div>
         </div>
@@ -134,8 +136,11 @@
                                     <h6 >
                                         {{ getQuestionDetail(question.questionId, questionList.questions)?.genericType 
                                             ? getQuestionDetail(question.questionId, questionList.questions)?.genericType 
-                                            : getQuestionDetail(question.questionId, questionList.questions)?.questionType }}<span>{{getQuestionDetail(question.questionId,
-                                            questionList.questions)?.genericType}}</span></h6>
+                                            : getQuestionDetail(question.questionId, questionList.questions)?.questionType }}
+                                            <!-- <span>
+                                                {{getQuestionDetail(question.questionId,questionList.questions)?.genericType}}
+                                            </span> -->
+                                    </h6>
                                 </div>
                                 <div class="implement-quota">
                                     <!-- <span [class.active]="!censusActive[i] && !customActive[i]"
@@ -160,11 +165,12 @@
                                     <li *ngFor="let options of question?.optionsDto; let j = index">
                                         <ng-container
                                             *ngIf="getOptionDetail(options?.optionId,question.questionId,questionList.questions)?.option">
-                                            <span>{{
-                                                getOptionDetail(options?.optionId,question.questionId,questionList.questions)?.option
-                                                }}</span>
+                                            <span>
+                                                {{ getOptionDetail(options?.optionId,question.questionId,questionList.questions)?.option }}
+                                            </span>
+                                            
                                             <input type="number" min="0" class="form-control"
-                                                [(ngModel)]="options.userCount" [disabled]="question.type !='custom'">
+                                                [(ngModel)]="options.userCount"  [disabled]="question.type !='custom'">
                                         </ng-container>
                                     </li>
                                 </ul>
@@ -172,12 +178,13 @@
                                     <button type="button" class="btn btn-outline-primary "
                                         (click)="open(contentInterlock, i,question.questionId)"><ng-icon name="heroLink"></ng-icon></button>
 
-                                    <div class="mt-4 d-flex gap-3 align-items-center">
+                                    <div class="mt-4 d-flex gap-2 align-items-center">
                                         <p class="mb-0"><strong>Total : </strong> <span>
                                                 {{getTotalSum(question?.optionsDto)}}</span></p>
-                                        <button type="button" class="btn btn-outline-primary "
-                                            (click)="onDeleteQuestion(i)">Delete</button>
-                                        <button type="button" class="btn btn-primary " (click)="manageQuota()">Save</button>
+                                        <!-- <button type="button" class="btn btn-outline-primary "
+                                            (click)="onDeleteQuestion(i)">Delete</button> -->
+                                        <button type="button" class="btn btn-primary" (click)="manageQuota()">Save</button>
+                                        <button type="button" class="btn btn-danger" (click)="onDeleteQuestion(i)"><ng-icon name="heroTrash"></ng-icon></button>
                                         <!-- <button type="button" class="btn btn-success" (click)="updateQuota(i)">Update</button> -->
                                     </div>
                                 </div>
@@ -203,9 +210,19 @@
             <div class="interlocked-quotas" >
                 <ul>
                     
-                    <li *ngFor="let generictype of genericlist; let i= index ">
-                        <span>{{generictype}}</span>
-                        <p class="mb-0" *ngFor="let options of selectedoptions">{{options.option}}</p>
+                    <li *ngFor="let question of surveyQuotaJson?.questionDto; let i = index">
+                        <span>{{ getQuestionDetail(question.questionId, questionList.questions)?.genericType 
+                            ? getQuestionDetail(question.questionId, questionList.questions)?.genericType 
+                            : getQuestionDetail(question.questionId, questionList.questions)?.questionType }}</span>
+                        <div class="d-flex align-items-center">
+                            <ng-container *ngFor="let options of question?.optionsDto; let j = index">
+                                <p class="mb-0">{{ getOptionDetail(options?.optionId,question.questionId,questionList.questions)?.option }}</p>
+                               
+                                <ng-container *ngIf="j < (question?.optionsDto?.length || 0) - 1"> -- </ng-container>
+                            </ng-container>
+                        </div>
+                       
+                        
                     </li>
                     
                 </ul>
@@ -223,7 +240,7 @@
                 <button type="button" (click)="deleteInterlockquota()" class="btn btn-danger">Delete Interlock</button>
             </div>
         </div>
-        <div class="blanked-interlocked">
+        <div class="blanked-interlocked" (click)="openInterlock(contentInterlock)">
             <ng-icon name="heroPlus" style="font-size: .875rem;"></ng-icon><span>Interlock Quotas</span>
         </div>
     </div>
@@ -232,7 +249,8 @@
 
 <ng-template #contentInterlock let-modal>
     <div class="modal-header">
-      <h4 class="modal-title" id="modal-basic-title">Interlock Quota for Item {{ itemindex+1 }} </h4>
+      <!-- <h4 class="modal-title" id="modal-basic-title">Interlock Quota for Item {{ itemindex+1 }} </h4> -->
+      <h4 class="modal-title" id="modal-basic-title">Interlock Quota for Item {{itemindex !== undefined ? itemindex +1 :'' }}</h4>
       <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
     </div>
     <div class="modal-body">

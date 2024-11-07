@@ -151,12 +151,9 @@ export class QuotaManagementComponent {
     modalRef.componentInstance.itemindex = index;
    
   }
-  contentasd:any
 
-  openInterlock(questionvideo: any) {
-    
-    this.modalService.open(questionvideo, { size: 'lg', centered: true });
-   
+  openInterlock(contentInterlock: any) {
+    const modalRef = this.modalService.open(contentInterlock);
     
   }
   // Show add quotas
@@ -223,6 +220,38 @@ export class QuotaManagementComponent {
 
 
   }
+
+  changeUserCount() {
+    debugger
+    this.surveyQuotaJson.questionDto.forEach((question: any) => {
+      const options = question.optionsDto;
+      const totalOptions = options.length;
+      console.log("options",options)
+      console.log("totalOptions",totalOptions)
+
+      if (totalOptions === 0) {
+          console.log("no option");
+          return;
+      }
+
+      const userCountPerOption = Math.floor(this.surveyQuotaJson.totalUsers / totalOptions);
+      let remainingUsers = this.surveyQuotaJson.totalUsers;
+
+      options.forEach((option: any, index: number) => {
+          if (index === totalOptions - 1) {
+              option.userCount = remainingUsers;
+          } else {
+              option.userCount = userCountPerOption;
+              remainingUsers -= userCountPerOption;
+          }
+      });
+
+      console.log(`count no ${question.questionId}`, options);
+      this.manageQuota();
+    });
+  }
+
+
 
   // calculateQuotaCount():number{
 
@@ -302,14 +331,16 @@ export class QuotaManagementComponent {
 activeIndices: number[][] = [];
 selectedinterlockid:any[][]=[]
 
-toggleActive(index: number, interlockindex: number, itemid: number) {
+toggleActive(index: number, interlockindex: any, itemid: number) {
   const itemId = itemid;
   if(index == interlockindex){
-     this.currentinterlockid = itemid
+     this.currentinterlockid = itemid;
+  } else if(interlockindex == undefined){
+    this.currentinterlockid = itemid
   }
   console.log("itemId khk", itemId);
   console.log("interlockindex",interlockindex)
-  console.log("interlockquesid",this.currentinterlockid)
+  console.log("currentinterlockid",this.currentinterlockid)
   console.log("index",index)
 
   // Ensure selectedinterlockid is initialized properly
@@ -377,7 +408,6 @@ activeIndicesForInterlock(interlockindex: number): number[] {
         if (question.genericType) {
           this.genericlist.push(question.genericType);
         }
-        console.log("genericlist", this.genericlist)
       });
       this.questionList.questions.forEach((question: any) => {
 
@@ -755,7 +785,7 @@ activeIndicesForInterlock(interlockindex: number): number[] {
   }
 
   selectedInterlockQues(interlockid: any[]) {
-    debugger
+    
     const matchingQuestions = this.surveyQuotaJson.questionDto.filter((question: any) =>
       interlockid.includes(question.questionId)
     );
@@ -766,7 +796,6 @@ activeIndicesForInterlock(interlockindex: number): number[] {
       const combinations = this.getCombinations(options);
       console.log(`Combinations for questionId ${question.questionId}:`, combinations);
     });
-    debugger
   }
   
   // Function to generate combinations
@@ -909,7 +938,7 @@ activeIndicesForInterlock(interlockindex: number): number[] {
   }
 
   getCurrentOptionId(quesid:any){
-    console.log("quesid",quesid)
+    console.log("currentinterlockid quesid",quesid)
 
     
     this.currentinterlockoptionlist = this.questionList.questions.filter((question: any) =>
