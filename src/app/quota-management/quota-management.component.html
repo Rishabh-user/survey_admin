@@ -147,7 +147,7 @@
                                         (click)="toggleNone(i)">None</span>
                                     <span [class.active]="censusActive[i]" (click)="toggleCensus(i)">Census</span>
                                     <span [class.active]="customActive[i]" (click)="toggleCustom(i)">Custom</span> -->
-
+                                    
                                     <span [ngClass]="{'active': question.type === 'none'}"
                                         (click)="toggleCustom(i,'none')">None</span>
                                     <span [ngClass]="{'active': question.type === 'census'}"

@@ -222,7 +222,6 @@ export class QuotaManagementComponent {
   }
 
   changeUserCount() {
-    debugger
     this.surveyQuotaJson.questionDto.forEach((question: any) => {
       const options = question.optionsDto;
       const totalOptions = options.length;
@@ -284,6 +283,7 @@ export class QuotaManagementComponent {
     // console.log("activewer", this.activeValue)
 
     this.surveyQuotaJson.questionDto[index].type = type;
+    this.changeUserCount();
   }
   getQuestionDetail(quesId: any, questionList: any) {
     return questionList?.filter((ques: any) => ques.id == quesId)[0];
@@ -332,12 +332,16 @@ activeIndices: number[][] = [];
 selectedinterlockid:any[][]=[]
 
 toggleActive(index: number, interlockindex: any, itemid: number) {
+  debugger
   const itemId = itemid;
   if(index == interlockindex){
      this.currentinterlockid = itemid;
-  } else if(interlockindex == undefined){
+     interlockindex = undefined
+  } 
+  if(interlockindex === undefined){
     this.currentinterlockid = itemid
   }
+  debugger
   console.log("itemId khk", itemId);
   console.log("interlockindex",interlockindex)
   console.log("currentinterlockid",this.currentinterlockid)
