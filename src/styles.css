@@ -2589,3 +2589,11 @@ th:last-child, td:last-child
     align-items: center;cursor: pointer;transition: .5s;
 }
 .suggestions-dropdown .suggestion-item span:hover{background-color: var(--primary);color: var(--white);transition: .5s;}
+
+.audio-recording{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 2rem;
+    padding: 3rem;
+}

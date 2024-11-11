@@ -333,6 +333,22 @@
                                     </div>
                                 </div>
                             </li>
+                            <li (click)="openLgAudioRecording(audiorecording)">
+                                <div class="youtubeurl">
+                                    <div class="videourl" *ngIf="!youtubeUrl">
+                                        <figure><img [src]="baseUrl+'/assets/images/icons/videourl.png'" width="64"
+                                                height="58" /></figure>
+                                        <figcaption>Audio Recording</figcaption>
+                                    </div>
+                                    <div *ngIf="youtubeUrl " class="videourl" (mouseover)="showiframeCaption = true" (mouseleave)="showiframeCaption = false">
+                                        <figure><img [src]="baseUrl+'/assets/images/icons/videourl.png'" width="64"
+                                                height="58" /></figure>
+                                        <figcaption>Audio Recording</figcaption>
+                                        <div class="iframelink" *ngIf="showiframeCaption">Change Attachment</div>
+                                       
+                                    </div>
+                                </div>
+                            </li>
                         </ul>
                     </div>
                 </div>
@@ -1947,6 +1963,26 @@
     <div class="modal-footer upload">
         <button type="button" class="btn btn-primary icon"
             (click)="addyoutubevideourl(); modal.close('Close click')">Add
+            <ng-icon name="heroArrowLongRight" class="ms-4"></ng-icon>
+        </button>
+    </div>
+</ng-template>
+<ng-template #audiorecording let-modal>
+    <div class="modal-header">
+        <h4 class="modal-title">Add Audio Recording</h4>
+        <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+    </div>
+
+    <div class="audio-recording">
+        <button class="btn btn-primary" (click)="startRecording()" [disabled]="isRecording">Start Recording</button>
+        <button class="btn btn-primary" (click)="stopRecording()" [disabled]="!isRecording">Stop Recording</button>
+    </div>
+    <div *ngIf="isRecordingaudio" class="m-auto mb-3">
+      <audio controls [src]="audioUrl"></audio>
+    </div>
+    <div class="modal-footer upload">
+        <button type="button" class="btn btn-primary icon"
+            (click)="modal.close('Close click')">Add
             <ng-icon name="heroArrowLongRight" class="ms-4"></ng-icon>
         </button>
     </div>

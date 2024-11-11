@@ -9,7 +9,7 @@ export class Question {
     public questionTypeName: string = '';
     public surveyTypeName: string = '';
     public piping: string = '';
-    public audio: string = '';
+    public audio: any = '';
     public video: string = '';
     public image: string = '';
     public status: string = '';

@@ -939,7 +939,9 @@ export class EditSurveyComponent {
     this.question.isRequired = this.openendedquesreq;
     this.question.minLimit = this.minLimit;
     this.question.isHidden = this.isHidden;
-    
+    debugger
+    this.question.audio = this.audioUrl
+    debugger
 
     let modifiedoptions: serveyOption[] = [];
     let matrixoption: MatrixHeader[]=[]
@@ -1077,8 +1079,8 @@ export class EditSurveyComponent {
           if(resp === '"QuestionCreateFailed"') {
             this.utility.showError('Question Created Failed')
           } else  if (resp === '"QuestionSuccessfullyUpdated"') {
-            this.utility.showSuccess('Question Updated Successfully.');
-            window.location.reload();
+            // this.utility.showSuccess('Question Updated Successfully.');
+            // window.location.reload();
             // let url = `/survey/manage-survey/${this.crypto.encryptParam(this.surveyId)}`;
             // this.router.navigateByUrl(url);
             //  window.location.reload();
@@ -1101,9 +1103,9 @@ export class EditSurveyComponent {
             this.utility.showError('Failed to Create Question');
           } else if(resp == '"QuestionSuccessfullyCreated"') {
             this.utility.showSuccess('Question Generated Successfully.');
-            let url = `/survey/manage-survey/${this.crypto.encryptParam(this.surveyId)}`;
-            this.router.navigateByUrl(url);
-            this.onSaveEvent.emit();
+            // let url = `/survey/manage-survey/${this.crypto.encryptParam(this.surveyId)}`;
+            // this.router.navigateByUrl(url);
+            // this.onSaveEvent.emit();
           }
            else {
             this.utility.showError(resp)
@@ -1551,6 +1553,9 @@ export class EditSurveyComponent {
   }
   openLgVideo(questionvideo: any) {
     this.modalService.open(questionvideo, { size: 'lg', centered: true });
+  }
+  openLgAudioRecording(audiorecording: any) {
+    this.modalService.open(audiorecording, { size: 'lg', centered: true });
   }
   // onLogicSave(): void {
 
@@ -2783,6 +2788,55 @@ export class EditSurveyComponent {
     return this.checkednumeric || this.checkedalphabet
 
   }
+
+  private mediaRecorder: MediaRecorder | null = null;
+  private audioChunks: Blob[] = [];
+  public audioUrl: string | null = null;
+  public isRecording: boolean = false;
+  audiorecording:any
+  isRecordingaudio:boolean = false
+
+  startRecording() {
+    if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+      navigator.mediaDevices.getUserMedia({ audio: true })
+        .then((stream) => {
+          this.mediaRecorder = new MediaRecorder(stream);
+  
+          this.mediaRecorder.ondataavailable = (event: BlobEvent) => {
+            console.log('Audio chunk available:', event.data);
+            this.audioChunks.push(event.data);
+          };
+  
+          this.mediaRecorder.onstop = () => {
+            if (this.audioChunks.length > 0) {
+              const audioBlob = new Blob(this.audioChunks, { type: 'audio/mp3' });  // Change to 'audio/webm' or 'audio/wav'
+              console.log('Audio Blob:', audioBlob);  // Log the Blob
+              this.audioUrl = URL.createObjectURL(audioBlob);
+              this.audioChunks = [];  // Clear the audio chunks array
+            } else {
+              console.error('No audio data to create Blob.');
+            }
+          };
+  
+          this.mediaRecorder.start();
+          this.isRecording = true;
+        })
+        .catch((error) => {
+          console.error('Error accessing microphone:', error);
+        });
+    } else {
+      console.error('MediaRecorder not supported on this browser.');
+    }
+  }
+  
+  stopRecording() {
+    if (this.mediaRecorder) {
+      this.mediaRecorder.stop();
+      this.isRecording = false;
+      this.isRecordingaudio = true;
+    }
+  }
+  
 
 
 
