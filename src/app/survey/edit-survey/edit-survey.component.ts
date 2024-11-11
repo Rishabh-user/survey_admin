@@ -2836,6 +2836,11 @@ export class EditSurveyComponent {
       this.isRecordingaudio = true;
     }
   }
+
+  removeAudio() {
+    this.audioUrl = null;  
+    this.isRecordingaudio = false
+  }
   
 
 

@@ -1977,8 +1977,9 @@
         <button class="btn btn-primary" (click)="startRecording()" [disabled]="isRecording">Start Recording</button>
         <button class="btn btn-primary" (click)="stopRecording()" [disabled]="!isRecording">Stop Recording</button>
     </div>
-    <div *ngIf="isRecordingaudio" class="m-auto mb-3">
+    <div *ngIf="isRecordingaudio" class="m-auto mb-3 d-flex align-items-center gap-2">
       <audio controls [src]="audioUrl"></audio>
+      <button type="button" class="btn btn-danger" (click)="removeAudio()"><ng-icon name="heroTrash"></ng-icon></button>
     </div>
     <div class="modal-footer upload">
         <button type="button" class="btn btn-primary icon"
