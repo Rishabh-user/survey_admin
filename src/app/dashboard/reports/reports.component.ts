@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 
 import { SurveyService } from 'src/app/service/survey.service';
 import { environment } from 'src/environments/environment';
+import { UtilsService } from 'src/app/service/utils.service';
 
 @Component({
   selector: 'app-reports',
@@ -30,13 +31,18 @@ export class ReportsComponent {
   // Tooltip
 
   baseUrl = '';
-  constructor(public themeService: SurveyService, private cdr: ChangeDetectorRef,) {
+  constructor(public themeService: SurveyService, private cdr: ChangeDetectorRef,private utils:UtilsService) {
     this.baseUrl = environment.baseURL;
     this.imageurl = environment.apiUrl
 
   }
   ngOnInit(): void {
-    this.getSurveyReportBySurvey(this.pageNumber, this.pageSize);
+    if(this.utils.getRoleId() === 4){
+        this.getClientSurvey(this.pageNumber, this.pageSize)
+    }else{
+      this.getSurveyReportBySurvey(this.pageNumber, this.pageSize);
+    }
+    
   }
 
   getSurveyReportBySurvey(pageNumber: number, pageSize: number) {
@@ -48,6 +54,17 @@ export class ReportsComponent {
       this.cdr.detectChanges();
     });
   }
+
+  getClientSurvey(pageNumber: number, pageSize: number) {
+    this.themeService.getClientList(pageNumber, pageSize).subscribe((data: any) => {
+
+      this.reportSurvey = data.surveyType;
+      this.totalItemsCount = data.totalCount;
+
+      this.cdr.detectChanges();
+    });
+  }
+
   onPageChange(pageNumber: number) {
 
     this.pageNumber = pageNumber;

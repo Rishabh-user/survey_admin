@@ -612,4 +612,19 @@ export class SurveyService {
     return this.http.delete(url, { responseType: 'text' });
   }
 
+  deleteQuotaQuestion(quotaId:any,quesId:any):Observable<any> {
+    const url = `${this.apiUrl}api/admin/${this.userId}/Quota/DeleteQuotaQuestion?quotaId=${quotaId}&questionId=${quesId}`;
+    return this.http.delete(url, { responseType: 'text' });
+  }
+
+  getClientList(PageNumber:any,PageSize:any): Observable<responseDTO[]> {
+    const url = `${this.apiUrl}api/admin/${this.userId}/Report/GetReportList?PageNumber=${PageNumber}&PageSize=${PageSize}`;
+    return this.http.get<responseDTO[]>(url);
+  }
+
+  cloneSurvey(sId:any):Observable<any> {
+    const url = `${this.apiUrl}api/admin/${this.userId}/GeneralQuestion/CloneSurvey?sId=${sId}`;
+    return this.http.post(url, { responseType: 'text' });
+  }
+
 }

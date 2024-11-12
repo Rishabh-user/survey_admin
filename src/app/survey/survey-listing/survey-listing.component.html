@@ -53,7 +53,7 @@
                                 </div>
                             </div>
                         </th>
-                        <th scope="col">Action</th>
+                        <th scope="col" style="text-align: center;">Action</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -125,9 +125,14 @@
                                         <ng-icon name="heroPencil" ngClass="edit-action"></ng-icon></a>
                                 </div>
                                 <ng-container *ngIf="role !== 'user' && (item.status !== 'ACT' && item.status !== 'HOL')">
+                                    <a href="javascript:" (click)="cloneSurvey(item.surveyId)"><ng-icon
+                                            name="heroDocumentDuplicate" ngClass="edit-action "></ng-icon></a>
+                                </ng-container>
+                                <ng-container *ngIf="role !== 'user' && (item.status !== 'ACT' && item.status !== 'HOL')">
                                     <a href="javascript:" (click)="openLg(sidecontent,item.surveyId,item.name)"><ng-icon
                                             name="heroTrash" ngClass="edit-action delete-trash"></ng-icon></a>
                                 </ng-container>
+                                
                             </div>
                         </td>
                     </tr>

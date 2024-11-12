@@ -179,6 +179,18 @@ export class SurveyListingComponent {
     });
   }
 
+  cloneSurvey(surveyid:any){
+    this.themeService.cloneSurvey(surveyid).subscribe({
+      next: (resp:any) => {
+        this.utility.showSuccess("Survey Cloned Successfully");
+      },
+      error: (err:any) =>{
+        this.utility.showError("Failed to clone survey");
+      }
+    })
+
+  }
+
 
 
 }

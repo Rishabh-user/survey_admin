@@ -743,9 +743,22 @@ activeIndicesForInterlock(interlockindex: number): number[] {
 
 
   onDeleteQuestion(index: number) {
-    this.surveyQuotaJson.questionDto.splice(index, 1);
+    // this.surveyQuotaJson.questionDto.splice(index, 1);
+    this.surveyservice.deleteQuotaQuestion(this.quotaid,index).subscribe({
+      next:(resp:any) => {
+        if(resp === '"DeletedSuccessfully"'){
+          this.utility.showSuccess("Question deleted Sucessfully");
+          window.location.reload();
+         // this.manageQuota();
+        }else {
+          this.utility.showError("Not Deleted")
+        }
+      },
+      error:(err:any) => {
+        console.log("Error while submitting quota:", err);
+      }
+    })
 
-    this.manageQuota();
   }
 
   onDeleteQuota() {
