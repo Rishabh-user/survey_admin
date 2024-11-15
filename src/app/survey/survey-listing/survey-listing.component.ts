@@ -183,6 +183,7 @@ export class SurveyListingComponent {
     this.themeService.cloneSurvey(surveyid).subscribe({
       next: (resp:any) => {
         this.utility.showSuccess("Survey Cloned Successfully");
+        window.location.reload()
       },
       error: (err:any) =>{
         this.utility.showError("Failed to clone survey");

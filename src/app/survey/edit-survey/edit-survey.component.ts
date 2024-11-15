@@ -1078,7 +1078,7 @@ export class EditSurveyComponent {
             this.utility.showError('Question Created Failed')
           } else  if (resp === '"QuestionSuccessfullyUpdated"') {
             this.utility.showSuccess('Question Updated Successfully.');
-            window.location.reload();
+           window.location.reload();
             // let url = `/survey/manage-survey/${this.crypto.encryptParam(this.surveyId)}`;
             // this.router.navigateByUrl(url);
             //  window.location.reload();
@@ -2807,10 +2807,10 @@ export class EditSurveyComponent {
   
           this.mediaRecorder.onstop = () => {
             if (this.audioChunks.length > 0) {
-              const audioBlob = new Blob(this.audioChunks, { type: 'audio/mp3' });  // Change to 'audio/webm' or 'audio/wav'
-              console.log('Audio Blob:', audioBlob);  // Log the Blob
+              const audioBlob = new Blob(this.audioChunks, { type: 'audio/mp3' });  
+              console.log('Audio Blob:', audioBlob);  
               this.audioUrl = URL.createObjectURL(audioBlob);
-              this.audioChunks = [];  // Clear the audio chunks array
+              this.audioChunks = []; 
             } else {
               console.error('No audio data to create Blob.');
             }
