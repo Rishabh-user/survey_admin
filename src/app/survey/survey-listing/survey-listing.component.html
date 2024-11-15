@@ -125,7 +125,8 @@
                                         <ng-icon name="heroPencil" ngClass="edit-action"></ng-icon></a>
                                 </div>
                                 <ng-container *ngIf="role !== 'user' && (item.status !== 'ACT' && item.status !== 'HOL')">
-                                    <a href="javascript:" (click)="cloneSurvey(item.surveyId)"><ng-icon
+                                    <a href="javascript:" (click)="cloneSurvey(item.surveyId)"  matTooltip="Clone this survey" 
+                                        matTooltipPosition="above"><ng-icon
                                             name="heroDocumentDuplicate" ngClass="edit-action "></ng-icon></a>
                                 </ng-container>
                                 <ng-container *ngIf="role !== 'user' && (item.status !== 'ACT' && item.status !== 'HOL')">
