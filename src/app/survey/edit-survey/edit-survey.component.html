@@ -16,7 +16,8 @@
 
                 </div>
                 <div class="ms-2">
-                    <span *ngIf="surveystatus?.includes('DEL')" class="badge text-bg-danger activestatus">Inactive</span>
+                    <span *ngIf="surveystatus?.includes('DEL')"
+                        class="badge text-bg-danger activestatus">Inactive</span>
                     <span *ngIf="surveystatus?.includes('ACT')" class="badge text-bg-success activestatus">Active</span>
                     <span *ngIf="surveystatus?.includes('HOL')" class="badge text-bg-warning activestatus">Hold</span>
                 </div>
@@ -45,7 +46,7 @@
                             <li *ngFor="let ques of questionTypes">
                                 <a (click)="onQuestionTypeClickchoice(ques)" href="javascript:void(0);"
                                     [ngClass]="{'active':(ques.id == questionTypeId)}">
-                                    <figure><img [src]="baseUrl + '/assets/' + ques.image" width="38" height="30" />
+                                    <figure><img [src]="baseUrl + '/assets/' + ques.image" width="40" height="40" />
                                     </figure>
                                     <figcaption>{{ ques.type }} <br /><small>{{ ques.subType }}</small></figcaption>
                                 </a>
@@ -57,51 +58,54 @@
                         <div class="d-flex">
                             <h5 class="mb-3" *ngIf="mode =='modify'">Update Your Question</h5>
                             <div class="custom-tooltip ms-2" *ngIf="mode =='modify' && isQNumberRequired == true">
-                              <ng-icon name="heroInformationCircle" ngClass="edit-action info-circle"
-                                  (click)="toggleTooltip('5')"></ng-icon>
+                                <ng-icon name="heroInformationCircle" ngClass="edit-action info-circle"
+                                    (click)="toggleTooltip('5')"></ng-icon>
                                 <div class="toast show" *ngIf="showTooltip['5']">
-                                  <div class="toast-header">
-                                      <img [src]="baseUrl + '/assets/images/icons/Add-new-question.png'"
-                                          class="rounded me-2" width="30" height="30" />
-                                      <h6 class="mb-0 me-auto">Add Custom Serial Number</h6>
-                                      <button type="button" class="btn-close" data-bs-dismiss="toast"
-                                          aria-label="Close" (click)="hideTooltip('5')"></button>
-                                  </div>
-                                  <div class="toast-body">
-                                    S.no will only indicate the question numbers and will not determine the position of the question in the survey.
-                                  </div>
+                                    <div class="toast-header">
+                                        <img [src]="baseUrl + '/assets/images/icons/Add-new-question.png'"
+                                            class="rounded me-2" width="30" height="30" />
+                                        <h6 class="mb-0 me-auto">Add Custom Serial Number</h6>
+                                        <button type="button" class="btn-close" data-bs-dismiss="toast"
+                                            aria-label="Close" (click)="hideTooltip('5')"></button>
+                                    </div>
+                                    <div class="toast-body">
+                                        S.no will only indicate the question numbers and will not determine the position
+                                        of the question in the survey.
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                        
-                        
+
+
                         <div class="d-flex">
                             <h5 class="mb-3" *ngIf="mode !='modify'">Add Your Question</h5>
                             <div class="custom-tooltip ms-2" *ngIf="mode !='modify' && isQNumberRequired == true">
-                              <ng-icon name="heroInformationCircle" ngClass="edit-action info-circle"
-                                  (click)="toggleTooltip('5')"></ng-icon>
+                                <ng-icon name="heroInformationCircle" ngClass="edit-action info-circle"
+                                    (click)="toggleTooltip('5')"></ng-icon>
                                 <div class="toast show" *ngIf="showTooltip['5']">
-                                  <div class="toast-header">
-                                      <img [src]="baseUrl + '/assets/images/icons/Add-new-question.png'"
-                                          class="rounded me-2" width="30" height="30" />
-                                      <h6 class="mb-0 me-auto">Add Custom Serial Number</h6>
-                                      <button type="button" class="btn-close" data-bs-dismiss="toast"
-                                          aria-label="Close" (click)="hideTooltip('5')"></button>
-                                  </div>
-                                  <div class="toast-body">
-                                    S.no will only indicate the question numbers and will not determine the position of the question in the survey.
-                                  </div>
+                                    <div class="toast-header">
+                                        <img [src]="baseUrl + '/assets/images/icons/Add-new-question.png'"
+                                            class="rounded me-2" width="30" height="30" />
+                                        <h6 class="mb-0 me-auto">Add Custom Serial Number</h6>
+                                        <button type="button" class="btn-close" data-bs-dismiss="toast"
+                                            aria-label="Close" (click)="hideTooltip('5')"></button>
+                                    </div>
+                                    <div class="toast-body">
+                                        S.no will only indicate the question numbers and will not determine the position
+                                        of the question in the survey.
+                                    </div>
                                 </div>
                             </div>
                         </div>
                         <div class="row g-3 align-items-center">
                             <div class="flex-width" *ngIf="isQNumberRequired == true ">
-                                <input type="text" id="qno" class="form-control"  [(ngModel)]="qNo" placeholder="S.No" (blur)="validateSurveySno()" [ngModelOptions]="{standalone: true}"/>
+                                <input type="text" id="qno" class="form-control" [(ngModel)]="qNo" placeholder="S.No"
+                                    (blur)="validateSurveySno()" [ngModelOptions]="{standalone: true}" />
                                 <div *ngIf="!getSerialNumberreq" class="text-danger">S.no is required.</div>
                             </div>
                             <div class="col-md-7">
                                 <input id="question" type="text" [(ngModel)]="question.question" class="form-control"
-                                    name="question" (blur)="validateSurvey()"  placeholder="Enter question"/>
+                                    name="question" (blur)="validateSurvey()" placeholder="Enter question" />
                                 <div *ngIf="!questionadded" class="text-danger">Question is required.</div>
                             </div>
                             <div class="col-md-2 ms-3">
@@ -128,23 +132,31 @@
                             <!-- <ng-icon *ngIf="!questiontooltip" (click)="addQuestionTooltip()" name="heroPlusCircle"></ng-icon>
                             <ng-icon *ngIf="questiontooltip" (click)="removeQuestionTooltip()" name="heroMinusCircle"></ng-icon> -->
                             <div class="flex-width">
-                                <button *ngIf="!questiontooltipadded" type="button" class="btn btn-primary" (click)="addQuestionTooltip()" matTooltip="Click on '+' icon to add tooltip on question"><ng-icon name="heroPlusCircle"  style="font-size: 1.2rem;height: auto;"></ng-icon></button>
-                                <button *ngIf="questiontooltipadded" type="button" class="btn btn-primary" (click)="removeQuestionTooltip()" matTooltip="Click on '-' icon to remove tooltip on question"><ng-icon name="heroMinusCircle"  style="font-size: 1.2rem;height: auto;"></ng-icon></button>
+                                <button *ngIf="!questiontooltipadded" type="button" class="btn btn-primary"
+                                    (click)="addQuestionTooltip()"
+                                    matTooltip="Click on '+' icon to add tooltip on question"><ng-icon
+                                        name="heroPlusCircle"
+                                        style="font-size: 1.2rem;height: auto;"></ng-icon></button>
+                                <button *ngIf="questiontooltipadded" type="button" class="btn btn-primary"
+                                    (click)="removeQuestionTooltip()"
+                                    matTooltip="Click on '-' icon to remove tooltip on question"><ng-icon
+                                        name="heroMinusCircle"
+                                        style="font-size: 1.2rem;height: auto;"></ng-icon></button>
                             </div>
-                            
+
                         </div>
                         <div class="mt-2" *ngIf="questiontooltipadded || questionToolTip">
                             <h6 class="mb-2">ToolTip</h6>
                             <!-- <textarea class="form-control" [(ngModel)]="questionSummery" rows="5"></textarea> -->
-                           <textarea class="form-control" rows="5" cols="10" [(ngModel)]="questionToolTip"></textarea>
+                            <textarea class="form-control" rows="5" cols="10" [(ngModel)]="questionToolTip"></textarea>
                         </div>
                         <div class="mt-3">
                             <div class="d-flex align-items-center mb-3">
                                 <h6 class="mb-0">Enable Hidden Question</h6>
                                 <div class="mb-0 ms-4">
                                     <div class="form-check form-switch">
-                                        <input class="form-check-input" type="checkbox" role="switch"
-                                            name="isChecked" (change)="enableHiddenQues($event)" [(ngModel)]="isHidden"
+                                        <input class="form-check-input" type="checkbox" role="switch" name="isChecked"
+                                            (change)="enableHiddenQues($event)" [(ngModel)]="isHidden"
                                             style="width: 2.5rem;height: 1.4rem;">
                                     </div>
                                 </div>
@@ -156,42 +168,45 @@
                                 <h6 class="mb-0">Description</h6>
                                 <div class="mb-0 ms-4">
                                     <div class="form-check form-switch">
-                                        <input class="form-check-input" type="checkbox" role="switch"
-                                            name="isChecked" (change)="onCheckboxChange($event)" [(ngModel)]="descriptionadded"
+                                        <input class="form-check-input" type="checkbox" role="switch" name="isChecked"
+                                            (change)="onCheckboxChange($event)" [(ngModel)]="descriptionadded"
                                             style="width: 2.5rem;height: 1.4rem;">
                                     </div>
                                 </div>
                             </div>
                             <!-- <textarea class="form-control" [(ngModel)]="questionSummery" rows="5"></textarea> -->
-                            <ckeditor *ngIf="descaddededitor" [editor]="Editor" [(ngModel)]="questionSummery" name="questionSummery" class="large-editor" [ngModelOptions]="{standalone: true}">
+                            <ckeditor *ngIf="descaddededitor" [editor]="Editor" [(ngModel)]="questionSummery"
+                                name="questionSummery" class="large-editor" [ngModelOptions]="{standalone: true}">
                             </ckeditor>
                         </div>
-                        
+
                     </div>
                     <div class="mb-3" *ngIf="planid == 2500 || planid == 0">
                         <div class="d-flex">
-                          <label for="exampleColorInput" class="form-label">Color picker</label>
-                          <div class="custom-tooltip ms-2">
-                            <ng-icon name="heroInformationCircle" ngClass="edit-action info-circle"
-                                (click)="toggleTooltip('4')"></ng-icon>
-                            <div class="toast show" *ngIf="showTooltip['4']">
-                                <div class="toast-header">
-                                    <img [src]="baseUrl + '/assets/images/icons/Add-new-question.png'"
-                                        class="rounded me-2" width="30" height="30" />
-                                    <h6 class="mb-0 me-auto">color picker</h6>
-                                    <button type="button" class="btn-close" data-bs-dismiss="toast"
-                                        aria-label="Close" (click)="hideTooltip('4')"></button>
+                            <label for="exampleColorInput" class="form-label">Color picker</label>
+                            <div class="custom-tooltip ms-2">
+                                <ng-icon name="heroInformationCircle" ngClass="edit-action info-circle"
+                                    (click)="toggleTooltip('4')"></ng-icon>
+                                <div class="toast show" *ngIf="showTooltip['4']">
+                                    <div class="toast-header">
+                                        <img [src]="baseUrl + '/assets/images/icons/Add-new-question.png'"
+                                            class="rounded me-2" width="30" height="30" />
+                                        <h6 class="mb-0 me-auto">color picker</h6>
+                                        <button type="button" class="btn-close" data-bs-dismiss="toast"
+                                            aria-label="Close" (click)="hideTooltip('4')"></button>
+                                    </div>
+                                    <div class="toast-body">
+                                        If you want to add color to the question and option, add a custom tag like
+                                        <code>&lt;color&gt;</code> around the text,like
+                                        <code>&lt;color&gt;question's name&lt;/color&gt;</code>.
+                                    </div>
                                 </div>
-                                <div class="toast-body">
-                                    If you want to add color to the question and option, add a custom tag like 
-                                        <code>&lt;color&gt;</code> around the text,like <code>&lt;color&gt;question's name&lt;/color&gt;</code>.
-                                </div>
-                            </div>
                             </div>
                         </div>
-                        
-                        <div class="d-flex gap-3">                            
-                            <input type="color" class="form-control form-control-color" id="exampleColorInput" value="#563d7c" title="Choose your color" [(ngModel)]="colorCode">
+
+                        <div class="d-flex gap-3">
+                            <input type="color" class="form-control form-control-color" id="exampleColorInput"
+                                value="#563d7c" title="Choose your color" [(ngModel)]="colorCode">
                             <input type="text" class="form-control flex-2" [(ngModel)]="colorCode">
                             <div class="flex-5">
                                 <!-- <strong>Eg*</strong>
@@ -202,7 +217,7 @@
                             </div>
                         </div>
                     </div>
-                    
+
                     <div ngClass="update-ques-type add-media generic-ques mt-0 mb-5">
                         <h5 class="mb-3">Add Media</h5>
                         <ul>
@@ -229,13 +244,15 @@
                                     </div> -->
                                     <div class="videourl" *ngIf="(!question.image || question.image === (imageurl + 'Files/Images/')) &&
                                     !questionImage &&
-                                    questionfilesImage.length === 0">                                     
-                                            <figure><img [src]="baseUrl+'/assets/images/icons/attach-image.png'" width="64"
+                                    questionfilesImage.length === 0">
+                                        <figure><img [src]="baseUrl+'/assets/images/icons/attach-image.png'" width="64"
                                                 height="58" /></figure>
-                                            <figcaption>Attach Image</figcaption>
-                                        
+                                        <figcaption>Attach Image</figcaption>
+
                                     </div>
-                                    <div *ngIf="question.image && question.image !== (imageurl + 'Files/Images/') && questionfilesImage.length === 0" class="videourl onhover-text" (mouseover)="showCaption = true" (mouseleave)="showCaption = false">
+                                    <div *ngIf="question.image && question.image !== (imageurl + 'Files/Images/') && questionfilesImage.length === 0"
+                                        class="videourl onhover-text" (mouseover)="showCaption = true"
+                                        (mouseleave)="showCaption = false">
                                         <figure class="image-figure">
                                             <img [src]="question.image" width="100%" class="img-fluid" />
                                         </figure>
@@ -245,15 +262,17 @@
                                     <div class="image-upload-preview">
                                         <ng-container *ngFor="let f of questionfilesImage">
                                             <div *ngIf="questionImage">
-                                              <!-- <figure>
+                                                <!-- <figure>
                                                 <img [src]="imageurl + 'Files/Images/' + questionImage" width="64" height="58" />
                                                 <figcaption>
                                                   <button  (removed)="onRemoveImage(f)">Remove</button>
                                                 </figcaption>
                                               </figure> -->
                                                 <ngx-dropzone ngx-dropzone>
-                                                    <ngx-dropzone-image-preview ngProjectAs="ngx-dropzone-preview" *ngFor="let f of questionfilesImage"
-                                                        [file]="f" [removable]="true" (removed)="onRemoveImage(f)"  class="upload-preview">
+                                                    <ngx-dropzone-image-preview ngProjectAs="ngx-dropzone-preview"
+                                                        *ngFor="let f of questionfilesImage" [file]="f"
+                                                        [removable]="true" (removed)="onRemoveImage(f)"
+                                                        class="upload-preview">
                                                     </ngx-dropzone-image-preview>
                                                 </ngx-dropzone>
                                             </div>
@@ -262,7 +281,7 @@
                                 </div>
                             </li>
                             <li (click)="openLgVideo(questionvideo)">
-                                <div class="youtubeurl" >
+                                <div class="youtubeurl">
                                     <!-- <div class="videourl">
                                         <figure><img [src]="baseUrl+'/assets/images/icons/attach-video.png'" width="64"
                                                 height="58" /></figure>
@@ -270,36 +289,39 @@
                                     </div> -->
                                     <div class="videourl" *ngIf="(!question.video || question.video === (imageurl + 'Files/Video/')) &&
                                     !videoupload &&
-                                    filesVideo.length === 0">                                     
-                                            <figure><img [src]="baseUrl+'/assets/images/icons/attach-video.png'" width="64"
+                                    filesVideo.length === 0">
+                                        <figure><img [src]="baseUrl+'/assets/images/icons/attach-video.png'" width="64"
                                                 height="58" /></figure>
-                                            <figcaption>Attach Video</figcaption>
-                                        
+                                        <figcaption>Attach Video</figcaption>
+
                                     </div>
-                                    <div *ngIf="question.video && question.video !== (imageurl + 'Files/Video/') && filesVideo.length === 0" class="videourl onhover-text" (mouseover)="showCaptionvideo = true" (mouseleave)="showCaptionvideo = false">
+                                    <div *ngIf="question.video && question.video !== (imageurl + 'Files/Video/') && filesVideo.length === 0"
+                                        class="videourl onhover-text" (mouseover)="showCaptionvideo = true"
+                                        (mouseleave)="showCaptionvideo = false">
                                         <figure class="image-figure">
-                                            <video width="100%"  controls>
+                                            <video width="100%" controls>
                                                 <source [src]="question.video" type="video/mp4">
                                             </video>
                                         </figure>
                                         <figcaption *ngIf="showCaptionvideo">Change Attachment</figcaption>
                                     </div>
                                     <div>
-                                        <ng-container >
+                                        <ng-container>
                                             <div *ngIf="videoupload">
-                                              <!-- <figure>
+                                                <!-- <figure>
                                                 <img [src]="imageurl + 'Files/Images/' + questionImage" width="64" height="58" />
                                                 <figcaption>
                                                   <button  (removed)="onRemoveImage(f)">Remove</button>
                                                 </figcaption>
                                               </figure> -->
-                                              <ngx-dropzone-preview ngProjectAs="ngx-dropzone-preview" *ngFor="let f of filesVideo" [file]="f"
-                                                [removable]="true" (removed)="onRemoveVideo(f)">
-                                                <ngx-dropzone-label>{{ f.name }} ({{ f.type }})</ngx-dropzone-label>
-                                             </ngx-dropzone-preview>
-                                                
+                                                <ngx-dropzone-preview ngProjectAs="ngx-dropzone-preview"
+                                                    *ngFor="let f of filesVideo" [file]="f" [removable]="true"
+                                                    (removed)="onRemoveVideo(f)">
+                                                    <ngx-dropzone-label>{{ f.name }} ({{ f.type }})</ngx-dropzone-label>
+                                                </ngx-dropzone-preview>
+
                                             </div>
-                                          </ng-container>
+                                        </ng-container>
                                     </div>
                                 </div>
                             </li>
@@ -324,12 +346,13 @@
                                                 height="58" /></figure>
                                         <figcaption>Attach Video URL</figcaption>
                                     </div>
-                                    <div *ngIf="youtubeUrl " class="videourl" (mouseover)="showiframeCaption = true" (mouseleave)="showiframeCaption = false">
+                                    <div *ngIf="youtubeUrl " class="videourl" (mouseover)="showiframeCaption = true"
+                                        (mouseleave)="showiframeCaption = false">
                                         <figure><img [src]="baseUrl+'/assets/images/icons/videourl.png'" width="64"
                                                 height="58" /></figure>
                                         <figcaption>Attach Video URL</figcaption>
                                         <div class="iframelink" *ngIf="showiframeCaption">Change Attachment</div>
-                                       
+
                                     </div>
                                 </div>
                             </li>
@@ -340,12 +363,13 @@
                                                 height="58" /></figure>
                                         <figcaption>Audio Recording</figcaption>
                                     </div>
-                                    <div *ngIf="youtubeUrl " class="videourl" (mouseover)="showiframeCaption = true" (mouseleave)="showiframeCaption = false">
+                                    <div *ngIf="youtubeUrl " class="videourl" (mouseover)="showiframeCaption = true"
+                                        (mouseleave)="showiframeCaption = false">
                                         <figure><img [src]="baseUrl+'/assets/images/icons/videourl.png'" width="64"
                                                 height="58" /></figure>
                                         <figcaption>Audio Recording</figcaption>
                                         <div class="iframelink" *ngIf="showiframeCaption">Change Attachment</div>
-                                       
+
                                     </div>
                                 </div>
                             </li>
@@ -354,27 +378,30 @@
                 </div>
                 <div ngClass="border-top p-4" *ngIf="question.questionTypeName !== 'Image Selection'">
                     <div ngClass="select-ans-choice mb-3">
-                        <h5 >Rows</h5>
-                        <div class="mb-2 ms-4 d-flex align-items-center" *ngIf="question.questionTypeName !== 'Open Ended'">
+                        <h5>Rows</h5>
+                        <div class="mb-2 ms-4 d-flex align-items-center"
+                            *ngIf="question.questionTypeName !== 'Open Ended'">
                             <h6 class="mb-0 me-2">Enable Description</h6>
                             <div class="form-check form-switch">
-                                <input class="form-check-input" type="checkbox" role="switch"
-                                    name="isChecked" (change)="onCheckboxOptionDescp($event)" [(ngModel)]="optiondescpisChecked"
+                                <input class="form-check-input" type="checkbox" role="switch" name="isChecked"
+                                    (change)="onCheckboxOptionDescp($event)" [(ngModel)]="optiondescpisChecked"
                                     style="width: 2.5rem;height: 1.4rem;">
                             </div>
                         </div>
-                        <div class="mb-2 ms-4 d-flex align-items-center" *ngIf="question.questionTypeName == 'Open Ended'">
+                        <div class="mb-2 ms-4 d-flex align-items-center"
+                            *ngIf="question.questionTypeName == 'Open Ended'">
                             <h6 class="mb-0 me-2">Enable Question Required</h6>
                             <div class="form-check form-switch">
-                                <input class="form-check-input" type="checkbox" role="switch"
-                                    name="isChecked" (change)="onCheckboxQuesReq($event)" [(ngModel)]="openendedquesreq"
+                                <input class="form-check-input" type="checkbox" role="switch" name="isChecked"
+                                    (change)="onCheckboxQuesReq($event)" [(ngModel)]="openendedquesreq"
                                     style="width: 2.5rem;height: 1.4rem;">
                             </div>
                         </div>
                     </div>
                     <div ngClass="mb-4" cdkDropList (cdkDropListDropped)="onDropOption($event)">
-                    
-                        <div class="row mb-3 border-bottom" style="font-weight: 500;" *ngIf="question.questionTypeName !== 'Open Ended'">
+
+                        <div class="row mb-3 border-bottom" style="font-weight: 500;"
+                            *ngIf="question.questionTypeName !== 'Open Ended'">
                             <div class="flex-width">S. No</div>
                             <div class="flex-width">Image</div>
                             <div class="flex-width"></div>
@@ -382,7 +409,7 @@
                             <div class="flex-2" *ngIf="optiondescp || optiondescpisChecked">
                                 <div class="d-flex">
                                     <p>Option Description</p>
-                                    
+
                                 </div>
                             </div>
                             <div class="flex-width">Drag</div>
@@ -390,11 +417,12 @@
                             <div class="flex-width">Tooltip</div>
                         </div>
                         <ng-contaniner *ngIf="question.questionTypeName !== 'Open Ended'">
-                            <div class="row g-2 align-items-center mb-3" *ngFor="let option of optionsArr1;let i=index;" cdkDrag>
+                            <div class="row g-2 align-items-center mb-3" *ngFor="let option of optionsArr1;let i=index;"
+                                cdkDrag>
                                 <div class="flex-width">
                                     <input type="text" id="" class="form-control" value="{{i+1}}" readonly />
                                 </div>
-                                
+
 
                                 <!-- this -->
                                 <div class="flex-width">
@@ -419,20 +447,24 @@
                                 <div class="flex-2">
                                     <input id="answer" type="text" name="answer" class="form-control"
                                         [(ngModel)]="option.option" (blur)="validateSurvey()" />
-                                        
-                                    <div *ngIf="!option.option.trim()" class="text-danger" style="position: absolute;">Option is required.</div>
+
+                                    <div *ngIf="!option.option.trim()" class="text-danger" style="position: absolute;">
+                                        Option is required.</div>
                                 </div>
-                            
+
                                 <!-- <div class="flex-2" *ngIf="optionaloption || optiondescp || option.optionDescription">
                                     <input id="answer" type="text" name="answer"  class="form-control" [(ngModel)]="option.optionDescription" placeholder="Option Description" [ngModelOptions]="{standalone: true}" />
                                         
                                 </div> -->
-                                <div class="flex-2" *ngIf="option.option !== 'Prefer not to Answer' && option.option !== 'Other (Please specify)' && option.option !== 'None of the above' && option.option !== 'Other' && option.option !== 'Don\'t know /Can\'t say' && (optiondescp || option.optionDescription)">
-                                    <input id="answer" type="text" name="answer" class="form-control" [(ngModel)]="option.optionDescription" placeholder="Option Description" [ngModelOptions]="{standalone: true}" />
+                                <div class="flex-2"
+                                    *ngIf="option.option !== 'Prefer not to Answer' && option.option !== 'Other (Please specify)' && option.option !== 'None of the above' && option.option !== 'Other' && option.option !== 'Don\'t know /Can\'t say' && (optiondescp || option.optionDescription)">
+                                    <input id="answer" type="text" name="answer" class="form-control"
+                                        [(ngModel)]="option.optionDescription" placeholder="Option Description"
+                                        [ngModelOptions]="{standalone: true}" />
                                 </div>
-                                
-                                
-                                
+
+
+
 
                                 <div class="flex-width text-end">
                                     <ng-icon name="heroBars3"></ng-icon>
@@ -443,28 +475,38 @@
                                     </a>
                                 </div>
                                 <div class="flex-width ms-3 text-end">
-                                    <button *ngIf="!optiontooltipadded[i]" type="button" class="btn btn-primary" (click)="addOptionTooltip(i)" matTooltip="Click on '+' icon to add tooltip on option"><ng-icon name="heroPlusCircle"  style="font-size: 1.2rem;height: auto;"></ng-icon></button>
-                                    <button *ngIf="optiontooltipadded[i]" type="button" class="btn btn-primary" (click)="removeOptionTooltip(i)" matTooltip="Click on '-' icon to remove tooltip on option"><ng-icon name="heroMinusCircle"  style="font-size: 1.2rem;height: auto;"></ng-icon></button>
+                                    <button *ngIf="!optiontooltipadded[i]" type="button" class="btn btn-primary"
+                                        (click)="addOptionTooltip(i)"
+                                        matTooltip="Click on '+' icon to add tooltip on option"><ng-icon
+                                            name="heroPlusCircle"
+                                            style="font-size: 1.2rem;height: auto;"></ng-icon></button>
+                                    <button *ngIf="optiontooltipadded[i]" type="button" class="btn btn-primary"
+                                        (click)="removeOptionTooltip(i)"
+                                        matTooltip="Click on '-' icon to remove tooltip on option"><ng-icon
+                                            name="heroMinusCircle"
+                                            style="font-size: 1.2rem;height: auto;"></ng-icon></button>
                                 </div>
                                 <div *ngIf="optiontooltipadded[i] || option.optionToolTip">
                                     <div class="bg-light p-4 border rounded d-flex align-items-center">
                                         <h6 class="mb-0 me-3">ToolTip</h6>
                                         <div class="d-flex align-items-center" style="flex:1;">
-                                            <div class="flex-2">                                    
-                                                <input class="form-control" [(ngModel)]="option.optionToolTip" name="tooptip" id="tooptip" type="text"/>
+                                            <div class="flex-2">
+                                                <input class="form-control" [(ngModel)]="option.optionToolTip"
+                                                    name="tooptip" id="tooptip" type="text" />
                                             </div>
                                         </div>
                                     </div>
-                                </div> 
+                                </div>
                             </div>
                         </ng-contaniner>
-                        
+
                     </div>
                     <ng-container *ngIf="question.questionTypeName !== 'Open Ended'">
                         <hr *ngIf="optionsArr2.length>0" />
-                    
-                        <div ngClass="mb-4" >
-                            <div class="row g-2 align-items-center mb-3" *ngFor="let option of optionsArr2;let i=index;">
+
+                        <div ngClass="mb-4">
+                            <div class="row g-2 align-items-center mb-3"
+                                *ngFor="let option of optionsArr2;let i=index;">
                                 <div class="flex-width">
                                     <input type="text" id="" class="form-control" value="{{optionsArr1.length+i+1}}"
                                         readonly />
@@ -483,26 +525,36 @@
                                     </ngx-dropzone>
                                 </div>
                                 <div class="flex-2">
-                                    <input type="text" disabled id="" class="form-control" [(ngModel)]="option.option" />
+                                    <input type="text" disabled id="" class="form-control"
+                                        [(ngModel)]="option.option" />
                                 </div>
 
                                 <div class="flex-width text-end">
                                     <ng-icon name="heroTrash" (click)="onDeleteOption('optionArr2',i)"></ng-icon>
                                 </div>
                                 <div class="flex-width ms-3 text-end">
-                                    <button *ngIf="!optiontooltipadded[i]" type="button" class="btn btn-primary" (click)="addOptionTooltip(i)" matTooltip="Click on '+' icon to add tooltip on option"><ng-icon name="heroPlusCircle"  style="font-size: 1.2rem;height: auto;"></ng-icon></button>
-                                    <button *ngIf="optiontooltipadded[i]" type="button" class="btn btn-primary" (click)="removeOptionTooltip(i)" matTooltip="Click on '-' icon to remove tooltip on option"><ng-icon name="heroMinusCircle"  style="font-size: 1.2rem;height: auto;"></ng-icon></button>
+                                    <button *ngIf="!optiontooltipadded[i]" type="button" class="btn btn-primary"
+                                        (click)="addOptionTooltip(i)"
+                                        matTooltip="Click on '+' icon to add tooltip on option"><ng-icon
+                                            name="heroPlusCircle"
+                                            style="font-size: 1.2rem;height: auto;"></ng-icon></button>
+                                    <button *ngIf="optiontooltipadded[i]" type="button" class="btn btn-primary"
+                                        (click)="removeOptionTooltip(i)"
+                                        matTooltip="Click on '-' icon to remove tooltip on option"><ng-icon
+                                            name="heroMinusCircle"
+                                            style="font-size: 1.2rem;height: auto;"></ng-icon></button>
                                 </div>
                                 <div *ngIf="optiontooltipadded[i] || option.optionToolTip">
                                     <div class="bg-light p-4 border rounded d-flex align-items-center">
                                         <h6 class="mb-0 me-3">ToolTip</h6>
                                         <div class="d-flex align-items-center" style="flex:1;">
-                                            <div class="flex-2">                                    
-                                                <input class="form-control" [(ngModel)]="option.optionToolTip" name="tooptip" id="tooptip" type="text"/>
+                                            <div class="flex-2">
+                                                <input class="form-control" [(ngModel)]="option.optionToolTip"
+                                                    name="tooptip" id="tooptip" type="text" />
                                             </div>
                                         </div>
                                     </div>
-                                </div> 
+                                </div>
                             </div>
                         </div>
                     </ng-container>
@@ -511,7 +563,8 @@
                         <textarea [(ngModel)]="screeningRedirectUrl" class="form-control">
                         </textarea>
                     </div>
-                    <div *ngIf="question.questionTypeName === 'Open Ended' && (question.openEndedType == '' || question.openEndedType == 'textarea')">
+                    <div
+                        *ngIf="question.questionTypeName === 'Open Ended' && (question.openEndedType == '' || question.openEndedType == 'textarea')">
 
                         <div class="mb-3">
 
@@ -529,27 +582,27 @@
 
                         <div class="row">
                             <div class="col-md-6">
-                               <label>Word Limit</label>
+                                <label>Word Limit</label>
                             </div>
                             <div class="col-md-6">
-                                <input id="answer" type="number" min="1" name="answer" class="form-control" [(ngModel)]="textlimit"
-                                (blur)="validateSurvey()" />
+                                <input id="answer" type="number" min="1" name="answer" class="form-control"
+                                    [(ngModel)]="textlimit" (blur)="validateSurvey()" />
                             </div>
-                            
+
                         </div>
                         <div class="row mt-3">
                             <div class="col-md-6">
-                               <label>Input Count</label>
+                                <label>Input Count</label>
                             </div>
                             <div class="col-md-6">
-                                <input id="answer" type="number" min="1" name="answer" class="form-control" [(ngModel)]="minLimit"
-                                (blur)="validateSurvey()" />
+                                <input id="answer" type="number" min="1" name="answer" class="form-control"
+                                    [(ngModel)]="minLimit" (blur)="validateSurvey()" />
                             </div>
-                            
+
                         </div>
                         <div class="row mt-3">
                             <div class="col-md-6">
-                               <label>Input Type</label>
+                                <label>Input Type</label>
                             </div>
                             <div class="col-md-6">
                                 <div class="form-check form-check-inline">
@@ -563,25 +616,25 @@
                                     <label class="form-check-label" for="textfield">Textfield</label>
                                 </div>
                             </div>
-                           
-                            
+
+
                         </div>
 
                     </div>
                     <div class="mb-3" *ngIf="question.questionTypeName === 'Auto Continues Sum'">
-                        
+
                         <div class="row">
                             <div class="col-md-6">
                                 <label class="mb-2">Min Limit</label>
-                                <input id="answer" type="number" name="minlimit" class="form-control" [(ngModel)]="minLimit"
-                                (blur)="validateSurvey()" />
+                                <input id="answer" type="number" name="minlimit" class="form-control"
+                                    [(ngModel)]="minLimit" (blur)="validateSurvey()" />
                             </div>
                             <div class="col-md-6">
                                 <label class="mb-2">Max Limit</label>
-                                <input id="answer" type="number" name="textlimit" class="form-control" [(ngModel)]="textlimit"
-                                (blur)="validateSurvey()" />
+                                <input id="answer" type="number" name="textlimit" class="form-control"
+                                    [(ngModel)]="textlimit" (blur)="validateSurvey()" />
                             </div>
-                           
+
                         </div>
                     </div>
                     <div ngClass="mb-4" *ngIf="question.questionTypeName !== 'Open Ended'">
@@ -647,9 +700,9 @@
                         <div class="mb-2 ms-4 d-flex align-items-center">
                             <h6 class="mb-0 me-2">Enable Description</h6>
                             <div class="form-check form-switch">
-                                <input class="form-check-input" type="checkbox" role="switch" [(ngModel)]="matrixdescpisChecked"
-                                    name="isChecked" (change)="onCheckboxOptionMatrix($event)"
-                                    style="width: 2.5rem;height: 1.4rem;">
+                                <input class="form-check-input" type="checkbox" role="switch"
+                                    [(ngModel)]="matrixdescpisChecked" name="isChecked"
+                                    (change)="onCheckboxOptionMatrix($event)" style="width: 2.5rem;height: 1.4rem;">
                             </div>
                         </div>
 
@@ -661,7 +714,7 @@
                             <div class="flex-2" *ngIf="optionmatrixdesc || matrixdescpisChecked">
                                 <div class="d-flex">
                                     <p>Option Description</p>
-                                    
+
                                 </div>
                             </div>
                             <div class="flex-width">Drag</div>
@@ -675,22 +728,25 @@
 
 
                             <!-- this -->
-                            
+
 
                             <div class="flex-2">
                                 <input id="answer" type="text" name="answer" class="form-control"
                                     [(ngModel)]="option.header" (blur)="validateSurvey()" />
-                                <div *ngIf="!option.header.trim()" class="text-danger" style="position: absolute;">Option is required.</div>
+                                <div *ngIf="!option.header.trim()" class="text-danger" style="position: absolute;">
+                                    Option is required.</div>
                             </div>
                             <!-- <div class="flex-2" *ngIf="optionmatrixdesc || option.headerDescription">
                                 
                                 <input id="answer" type="text" name="answer" class="form-control" [(ngModel)]="option.headerDescription" placeholder="Option Description"  />
                                     
                             </div> -->
-                            <div class="flex-2" *ngIf="option.header !== 'Other' && option.header !== 'No Opinion' && (optionmatrixdesc || option.headerDescription)">
-                                
-                                <input id="answer" type="text" name="answer" class="form-control" [(ngModel)]="option.headerDescription" placeholder="Option Description"  />
-                                    
+                            <div class="flex-2"
+                                *ngIf="option.header !== 'Other' && option.header !== 'No Opinion' && (optionmatrixdesc || option.headerDescription)">
+
+                                <input id="answer" type="text" name="answer" class="form-control"
+                                    [(ngModel)]="option.headerDescription" placeholder="Option Description" />
+
                             </div>
 
                             <div class="flex-width text-end" cdkDrag>
@@ -701,21 +757,28 @@
                                     <ng-icon name="heroTrash"></ng-icon>
                                 </a>
                             </div>
-                           
+
                             <div class="flex-width ms-3 text-end">
-                                <button *ngIf="!matrixoptiontooltip[i]" type="button" class="btn btn-primary" (click)="addOptionMatrixTooltip(i)" matTooltip="Click on '+' icon to add tooltip on option"><ng-icon name="heroPlusCircle"  style="font-size: 1.2rem;height: auto;"></ng-icon></button>
-                                <button *ngIf="matrixoptiontooltip[i]" type="button" class="btn btn-primary" (click)="removeOptionMatrixTooltip(i)" ><ng-icon name="heroMinusCircle"  style="font-size: 1.2rem;height: auto;"></ng-icon></button>
+                                <button *ngIf="!matrixoptiontooltip[i]" type="button" class="btn btn-primary"
+                                    (click)="addOptionMatrixTooltip(i)"
+                                    matTooltip="Click on '+' icon to add tooltip on option"><ng-icon
+                                        name="heroPlusCircle"
+                                        style="font-size: 1.2rem;height: auto;"></ng-icon></button>
+                                <button *ngIf="matrixoptiontooltip[i]" type="button" class="btn btn-primary"
+                                    (click)="removeOptionMatrixTooltip(i)"><ng-icon name="heroMinusCircle"
+                                        style="font-size: 1.2rem;height: auto;"></ng-icon></button>
                             </div>
                             <div *ngIf="matrixoptiontooltip[i] || option.headerToolTip">
                                 <label class="mb-1">ToolTip</label>
                                 <div class="d-flex align-items-center">
-                                    
-                                    <div class="mt-2 flex-2">                                    
-                                        <input class="form-control" [(ngModel)]="option.headerToolTip" id="headeroption" name="headeroption" type="text" />
+
+                                    <div class="mt-2 flex-2">
+                                        <input class="form-control" [(ngModel)]="option.headerToolTip" id="headeroption"
+                                            name="headeroption" type="text" />
                                     </div>
-                                    
+
                                 </div>
-                            </div> 
+                            </div>
                         </div>
                     </div>
                     <hr *ngIf="matrixOptions.length>0" />
@@ -726,7 +789,7 @@
                                     readonly />
                             </div>
 
-                            
+
                             <div class="flex-2">
                                 <input type="text" disabled id="" class="form-control" [(ngModel)]="option.header" />
                             </div>
@@ -736,7 +799,7 @@
                             </div>
                         </div>
                     </div>
-                    
+
                     <div ngClass="mb-4">
                         <div class="row g-2 align-items-center">
 
@@ -747,7 +810,7 @@
                                     </a>
                                 </div>
                             </div>
-                           
+
                             <div class="col-auto">
                                 <div ngClass="new-options">
                                     <a herf="javascript:void(0);" (click)="hanldeAddOptionClickMatrix('other')"><ng-icon
@@ -757,12 +820,13 @@
                             </div>
                             <div class="col-auto">
                                 <div ngClass="new-options">
-                                    <a herf="javascript:void(0);" (click)="hanldeAddOptionClickMatrix('NoOpinion')"><ng-icon
+                                    <a herf="javascript:void(0);"
+                                        (click)="hanldeAddOptionClickMatrix('NoOpinion')"><ng-icon
                                             name="heroPlusCircle"></ng-icon> Add "No Opinion"
                                         Option</a>
                                 </div>
                             </div>
-                            
+
                         </div>
                     </div>
                 </div>
@@ -774,9 +838,9 @@
                         <div class="mb-2 ms-4 d-flex align-items-center">
                             <h6 class="mb-0 me-2">Enable Description</h6>
                             <div class="form-check form-switch">
-                                <input class="form-check-input" type="checkbox" role="switch" [(ngModel)]="matrixdescpisChecked"
-                                    name="isChecked" (change)="onCheckboxOptionMatrix($event)"
-                                    style="width: 2.5rem;height: 1.4rem;">
+                                <input class="form-check-input" type="checkbox" role="switch"
+                                    [(ngModel)]="matrixdescpisChecked" name="isChecked"
+                                    (change)="onCheckboxOptionMatrix($event)" style="width: 2.5rem;height: 1.4rem;">
                             </div>
                         </div>
 
@@ -788,7 +852,7 @@
                             <div class="flex-2" *ngIf="optionmatrixdesc || matrixdescpisChecked">
                                 <div class="d-flex">
                                     <p>Option Description</p>
-                                    
+
                                 </div>
                             </div>
                             <div class="flex-width">Drag</div>
@@ -802,18 +866,20 @@
 
 
                             <!-- this -->
-                            
+
 
                             <div class="flex-2">
                                 <input id="answer" type="number" name="answer" class="form-control"
                                     [(ngModel)]="option.header" (blur)="validateSurvey()" />
-                                <div *ngIf="option.header === undefined || option.header.toString().trim() === ''" class="text-danger" style="position: absolute;">Option is required.</div>
+                                <div *ngIf="option.header === undefined || option.header.toString().trim() === ''"
+                                    class="text-danger" style="position: absolute;">Option is required.</div>
                             </div>
-                          
+
                             <div class="flex-2" *ngIf="optionmatrixdesc || option.headerDescription">
-                                
-                                <input id="answer" type="text" name="answer" class="form-control" [(ngModel)]="option.headerDescription" placeholder="Option Description"  />
-                                    
+
+                                <input id="answer" type="text" name="answer" class="form-control"
+                                    [(ngModel)]="option.headerDescription" placeholder="Option Description" />
+
                             </div>
 
                             <div class="flex-width text-end" cdkDrag>
@@ -824,21 +890,28 @@
                                     <ng-icon name="heroTrash"></ng-icon>
                                 </a>
                             </div>
-                           
+
                             <div class="flex-width ms-3 text-end">
-                                <button *ngIf="!matrixoptiontooltip[i]" type="button" class="btn btn-primary" (click)="addOptionMatrixTooltip(i)" matTooltip="Click on '+' icon to add tooltip on option"><ng-icon name="heroPlusCircle"  style="font-size: 1.2rem;height: auto;"></ng-icon></button>
-                                <button *ngIf="matrixoptiontooltip[i]" type="button" class="btn btn-primary" (click)="removeOptionMatrixTooltip(i)" ><ng-icon name="heroMinusCircle"  style="font-size: 1.2rem;height: auto;"></ng-icon></button>
+                                <button *ngIf="!matrixoptiontooltip[i]" type="button" class="btn btn-primary"
+                                    (click)="addOptionMatrixTooltip(i)"
+                                    matTooltip="Click on '+' icon to add tooltip on option"><ng-icon
+                                        name="heroPlusCircle"
+                                        style="font-size: 1.2rem;height: auto;"></ng-icon></button>
+                                <button *ngIf="matrixoptiontooltip[i]" type="button" class="btn btn-primary"
+                                    (click)="removeOptionMatrixTooltip(i)"><ng-icon name="heroMinusCircle"
+                                        style="font-size: 1.2rem;height: auto;"></ng-icon></button>
                             </div>
                             <div *ngIf="matrixoptiontooltip[i] || option.headerToolTip">
                                 <label class="mb-1">ToolTip</label>
                                 <div class="d-flex align-items-center">
-                                    
-                                    <div class="mt-2 flex-2">                                    
-                                        <input class="form-control" [(ngModel)]="option.headerToolTip" id="headeroption" name="headeroption" type="text" />
+
+                                    <div class="mt-2 flex-2">
+                                        <input class="form-control" [(ngModel)]="option.headerToolTip" id="headeroption"
+                                            name="headeroption" type="text" />
                                     </div>
-                                    
+
                                 </div>
-                            </div> 
+                            </div>
                         </div>
                     </div>
                     <hr *ngIf="matrixOptions.length>0" />
@@ -849,7 +922,7 @@
                                     readonly />
                             </div>
 
-                            
+
                             <div class="flex-2">
                                 <input type="text" disabled id="" class="form-control" [(ngModel)]="option.header" />
                             </div>
@@ -859,7 +932,7 @@
                             </div>
                         </div>
                     </div>
-                    
+
                     <div ngClass="mb-4">
                         <div class="row g-2 align-items-center">
 
@@ -870,7 +943,7 @@
                                     </a>
                                 </div>
                             </div>
-                           
+
                         </div>
                     </div>
                 </div>
@@ -882,9 +955,9 @@
                         <div class="mb-2 ms-4 d-flex align-items-center">
                             <h6 class="mb-0 me-2">Enable Description</h6>
                             <div class="form-check form-switch">
-                                <input class="form-check-input" type="checkbox" role="switch" [(ngModel)]="matrixdescpisChecked"
-                                    name="isChecked" (change)="onCheckboxOptionMatrix($event)"
-                                    style="width: 2.5rem;height: 1.4rem;">
+                                <input class="form-check-input" type="checkbox" role="switch"
+                                    [(ngModel)]="matrixdescpisChecked" name="isChecked"
+                                    (change)="onCheckboxOptionMatrix($event)" style="width: 2.5rem;height: 1.4rem;">
                             </div>
                         </div>
 
@@ -896,29 +969,32 @@
                             <div class="flex-2" *ngIf="optionmatrixdesc || matrixdescpisChecked">
                                 <div class="d-flex">
                                     <p>Option Description</p>
-                                    
+
                                 </div>
                             </div>
                             <div class="flex-width">Drag</div>
                             <div class="flex-width">Delete</div>
                             <div class="flex-width">Tooltip</div>
                         </div>
-                        
+
                         <div class="row g-2 align-items-center mb-3" *ngFor="let option of matrixOptions;let i=index;">
                             <div class="flex-width">
                                 <input type="text" id="" class="form-control" value="{{i+1}}" readonly />
                             </div>
 
                             <div class="flex-2">
-                                
+
                                 <input id="answer" type="text" name="answer" class="form-control"
                                     [(ngModel)]="option.header" (blur)="validateSurvey()" />
-                                <div *ngIf="!option.header.trim()" class="text-danger" style="position: absolute;">Option is required.</div>
+                                <div *ngIf="!option.header.trim()" class="text-danger" style="position: absolute;">
+                                    Option is required.</div>
                             </div>
-                            <div class="flex-2" *ngIf="option.header !== 'Other' && option.header !== 'No Opinion' && (optionmatrixdesc || option.headerDescription)">
-                                
-                                <input id="answer" type="text" name="answer" class="form-control" [(ngModel)]="option.headerDescription" placeholder="Option Description"  />
-                                    
+                            <div class="flex-2"
+                                *ngIf="option.header !== 'Other' && option.header !== 'No Opinion' && (optionmatrixdesc || option.headerDescription)">
+
+                                <input id="answer" type="text" name="answer" class="form-control"
+                                    [(ngModel)]="option.headerDescription" placeholder="Option Description" />
+
                             </div>
 
                             <div class="flex-width text-end" cdkDrag>
@@ -929,21 +1005,28 @@
                                     <ng-icon name="heroTrash"></ng-icon>
                                 </a>
                             </div>
-                           
+
                             <div class="flex-width ms-3 text-end">
-                                <button *ngIf="!matrixoptiontooltip[i]" type="button" class="btn btn-primary" (click)="addOptionMatrixTooltip(i)" matTooltip="Click on '+' icon to add tooltip on option"><ng-icon name="heroPlusCircle"  style="font-size: 1.2rem;height: auto;"></ng-icon></button>
-                                <button *ngIf="matrixoptiontooltip[i]" type="button" class="btn btn-primary" (click)="removeOptionMatrixTooltip(i)" ><ng-icon name="heroMinusCircle"  style="font-size: 1.2rem;height: auto;"></ng-icon></button>
+                                <button *ngIf="!matrixoptiontooltip[i]" type="button" class="btn btn-primary"
+                                    (click)="addOptionMatrixTooltip(i)"
+                                    matTooltip="Click on '+' icon to add tooltip on option"><ng-icon
+                                        name="heroPlusCircle"
+                                        style="font-size: 1.2rem;height: auto;"></ng-icon></button>
+                                <button *ngIf="matrixoptiontooltip[i]" type="button" class="btn btn-primary"
+                                    (click)="removeOptionMatrixTooltip(i)"><ng-icon name="heroMinusCircle"
+                                        style="font-size: 1.2rem;height: auto;"></ng-icon></button>
                             </div>
                             <div *ngIf="matrixoptiontooltip[i] || option.headerToolTip">
                                 <label class="mb-1">ToolTip</label>
                                 <div class="d-flex align-items-center">
-                                    
-                                    <div class="mt-2 flex-2">                                    
-                                        <input class="form-control" [(ngModel)]="option.headerToolTip" id="headeroption" name="headeroption" type="text" />
+
+                                    <div class="mt-2 flex-2">
+                                        <input class="form-control" [(ngModel)]="option.headerToolTip" id="headeroption"
+                                            name="headeroption" type="text" />
                                     </div>
-                                    
+
                                 </div>
-                            </div> 
+                            </div>
                         </div>
                     </div>
                     <hr *ngIf="matrixOptions.length>0" />
@@ -964,7 +1047,7 @@
                             </div>
                         </div>
                     </div> -->
-                   
+
                 </div>
             </li>
             <!-- <li *ngIf="question.questionTypeName === 'Auto Continues Sum'">
@@ -1134,7 +1217,8 @@
                                                 </mat-option>
                                             </mat-autocomplete>
                                         </mat-form-field>
-                                        <div *ngIf="categoryNameChecks[groupIndex] === false" class="text-danger">Option is
+                                        <div *ngIf="categoryNameChecks[groupIndex] === false" class="text-danger">Option
+                                            is
                                             required.</div>
                                     </form>
 
@@ -1144,35 +1228,30 @@
                                     <div class="col-md-6 groupoption">
                                         <div class="form-check form-check-inline">
                                             <input class="form-check-input" type="radio" id="Randomize{{group.id}}"
-                                            [checked]="group.isRandomize == true" 
-                                                name="groupOption{{group.id}}"
+                                                [checked]="group.isRandomize == true" name="groupOption{{group.id}}"
                                                 (change)="onGroupValueChange('randomize', group.id)">
                                             <label class="form-check-label ms-2"
                                                 for="Randomize{{group.id}}">Randomize</label>
                                         </div>
                                         <div class="form-check form-check-inline">
                                             <input class="form-check-input" type="radio" id="Exclude{{group.id}}"
-                                            [checked]="group.isExcluded == true"
-                                            name="groupOption{{group.id}}"
+                                                [checked]="group.isExcluded == true" name="groupOption{{group.id}}"
                                                 (change)="onGroupValueChange('excluded',  group.id)">
-                                            <label class="form-check-label ms-2" for="Exclude{{group.id}}">Exclude</label>
+                                            <label class="form-check-label ms-2"
+                                                for="Exclude{{group.id}}">Exclude</label>
                                         </div>
                                         <div class="form-check form-check-inline">
                                             <input class="form-check-input" type="radio" id="Flip{{group.id}}"
-                                                [checked]="group.isFlipNumber === true"
-                                                name="groupOption{{group.id}}"
+                                                [checked]="group.isFlipNumber === true" name="groupOption{{group.id}}"
                                                 (change)="onGroupValueChange('flipNumber', group.id)">
-                                              
-                                            <label class="form-check-label ms-2"
-                                                for="Flip{{group.id}}">Flip</label>
+
+                                            <label class="form-check-label ms-2" for="Flip{{group.id}}">Flip</label>
                                         </div>
                                         <div class="form-check form-check-inline">
                                             <input class="form-check-input" type="radio" id="Rotate{{group.id}}"
-                                            [checked]="group.isRotate === true"
-                                                name="groupOption{{group.id}}"
+                                                [checked]="group.isRotate === true" name="groupOption{{group.id}}"
                                                 (change)="onGroupValueChange('rotate',  group.id)">
-                                            <label class="form-check-label ms-2"
-                                                for="Rotate{{group.id}}">Rotate</label>
+                                            <label class="form-check-label ms-2" for="Rotate{{group.id}}">Rotate</label>
                                         </div>
                                     </div>
                                     <div class="col-md-6 text-end">
@@ -1252,24 +1331,29 @@
                     </div>
                 </div>
                 <div>
-                    
+
                     <div ngClass="pt-4 add-new-logic" *ngIf="visibleanslogic">
                         <div ngClass="mb-4">
                             <div class="logic-tab">
                                 <!-- Nav tabs -->
                                 <ul class="nav flex-column nav-tabs" id="myTab" role="tablist">
-            
+
                                     <li class="nav-item" role="presentation">
-                                        <button class="nav-link active"  id="answerlogic-tab" data-bs-toggle="tab"
-                                            data-bs-target="#answerlogic" role="tab" aria-selected="false">Create Answer Logic</button>
+                                        <button class="nav-link active" id="answerlogic-tab" data-bs-toggle="tab"
+                                            data-bs-target="#answerlogic" role="tab" aria-selected="false">Create Answer
+                                            Logic</button>
                                     </li>
-                                    <li class="nav-item" role="presentation" *ngIf="question.questionTypeName == 'Matrix Choice'">
-                                        <button (click)="getAllSurveyList();getMatrixLogic()" class="nav-link" id="matrixlogic-tab" data-bs-toggle="tab"
-                                            data-bs-target="#matrixlogic" role="tab" aria-selected="false">Create Matrix Logic</button>
+                                    <li class="nav-item" role="presentation"
+                                        *ngIf="question.questionTypeName == 'Matrix Choice'">
+                                        <button (click)="getAllSurveyList();getMatrixLogic()" class="nav-link"
+                                            id="matrixlogic-tab" data-bs-toggle="tab" data-bs-target="#matrixlogic"
+                                            role="tab" aria-selected="false">Create Matrix Logic</button>
                                     </li>
                                     <li class="nav-item" role="presentation">
-                                        <button  class="nav-link" id="answerselection-tab" data-bs-toggle="tab" *ngIf="question.questionTypeName == 'Multi-Select'|| question.questionTypeId == 10"
-                                            data-bs-target="#ansselection" role="tab" aria-selected="false">Question Limit</button>
+                                        <button class="nav-link" id="answerselection-tab" data-bs-toggle="tab"
+                                            *ngIf="question.questionTypeName == 'Multi-Select'|| question.questionTypeId == 10"
+                                            data-bs-target="#ansselection" role="tab" aria-selected="false">Question
+                                            Limit</button>
                                     </li>
                                 </ul>
                                 <div class="tab-content p-4">
@@ -1285,23 +1369,32 @@
                                                             <div class="infocircle justify-content-start mb-4">
                                                                 <h5>Create Answer Logic {{i+1}}</h5>
                                                                 <div class="custom-tooltip ms-2">
-                                                                    <ng-icon name="heroInformationCircle" ngClass="edit-action info-circle"
+                                                                    <ng-icon name="heroInformationCircle"
+                                                                        ngClass="edit-action info-circle"
                                                                         (click)="toggleTooltip('2')"></ng-icon>
                                                                     <div class="toast show" *ngIf="showTooltip['2']">
                                                                         <div class="toast-header">
                                                                             <img [src]="baseUrl + '/assets/images/icons/Add-new-question.png'"
-                                                                                class="rounded me-2" width="30" height="30" />
-                                                                            <h6 class="mb-0 me-auto">Create Question (Create Answer Logic)
+                                                                                class="rounded me-2" width="30"
+                                                                                height="30" />
+                                                                            <h6 class="mb-0 me-auto">Create Question
+                                                                                (Create Answer Logic)
                                                                             </h6>
-                                                                            <button type="button" class="btn-close" data-bs-dismiss="toast"
-                                                                                aria-label="Close" (click)="hideTooltip('2')"></button>
+                                                                            <button type="button" class="btn-close"
+                                                                                data-bs-dismiss="toast"
+                                                                                aria-label="Close"
+                                                                                (click)="hideTooltip('2')"></button>
                                                                         </div>
                                                                         <div class="toast-body">
-                                                                            By implementing answer logic, you can dynamically show or hide
-                                                                            answer options based on the respondents' answers. This feature
+                                                                            By implementing answer logic, you can
+                                                                            dynamically show or hide
+                                                                            answer options based on the respondents'
+                                                                            answers. This feature
                                                                             not
-                                                                            only streamlines the survey-taking process but also ensures that
-                                                                            respondents are presented with relevant questions, leading to
+                                                                            only streamlines the survey-taking process
+                                                                            but also ensures that
+                                                                            respondents are presented with relevant
+                                                                            questions, leading to
                                                                             more
                                                                             accurate and insightful data.
                                                                         </div>
@@ -1309,19 +1402,25 @@
                                                                 </div>
                                                             </div>
                                                             <div ngClass="d-flex justify-content-between mb-3">
-                                                                <h6>Redirect to different questions based on user's answer.</h6>
-                    
+                                                                <h6>Redirect to different questions based on user's
+                                                                    answer.</h6>
+
                                                             </div>
-                                                            <div class="alert alert-danger"
-                                                            role="alert" *ngIf="filteredQuestionList.length == 0">
-                                                            <p>Option Logic can not apply to this Question</p>
+                                                            <div class="alert alert-danger" role="alert"
+                                                                *ngIf="filteredQuestionList.length == 0">
+                                                                <p>Option Logic can not apply to this Question</p>
                                                             </div>
-                                                            <div ngClass="logic-ques" *ngIf="filteredQuestionList.length > 0">
+                                                            <div ngClass="logic-ques"
+                                                                *ngIf="filteredQuestionList.length > 0">
                                                                 <div class="input-group flex-nowrap">
-                                                                    <span class="input-group-text" id="addon-wrapping">In</span>
-                                                                    <select class="form-select" [(ngModel)]="logicEntry.optionlogicquesid" #selectedQuestion
+                                                                    <span class="input-group-text"
+                                                                        id="addon-wrapping">In</span>
+                                                                    <select class="form-select"
+                                                                        [(ngModel)]="logicEntry.optionlogicquesid"
+                                                                        #selectedQuestion
                                                                         (change)="getOptionsByQuestionId(selectedQuestion.value)">
-                                                                        <option *ngFor="let item of filteredQuestionList;let i=index;"
+                                                                        <option
+                                                                            *ngFor="let item of filteredQuestionList;let i=index;"
                                                                             value="{{item.id}}">{{item.item}}</option>
                                                                     </select>
                                                                 </div>
@@ -1333,42 +1432,48 @@
                                                                         <div class="col-md-1">
                                                                             <div>Value</div>
                                                                         </div>
-                                                                        
+
                                                                         <div class="col-md-3">
-                                                                            <select class="form-select" 
-                                                                            [(ngModel)]="logicEntry.optionlogicifid" #ifIdSelect
-                                                                            (change)="onOptionLogicEntry(i)">
-                                                                                <option *ngFor="let item of logicValuesList;let i=index;"
-                                                                                    value="{{item.id}}">{{item.name}}</option>
+                                                                            <select class="form-select"
+                                                                                [(ngModel)]="logicEntry.optionlogicifid"
+                                                                                #ifIdSelect
+                                                                                (change)="onOptionLogicEntry(i)">
+                                                                                <option
+                                                                                    *ngFor="let item of logicValuesList;let i=index;"
+                                                                                    value="{{item.id}}">{{item.name}}
+                                                                                </option>
                                                                             </select>
                                                                         </div>
                                                                         <div class="col-md-3">
                                                                             <mat-form-field class="example-chip-list">
-                                                                                <mat-chip-grid #chipGrid aria-label="City selection">
+                                                                                <mat-chip-grid #chipGrid
+                                                                                    aria-label="City selection">
                                                                                     <mat-chip-row
                                                                                         *ngFor="let option of selectedOptions[i]; let option_index=index;">
-                                                                                       
+
                                                                                         {{option.option}}
-                                                                                        <button matChipRemove [attr.aria-label]="'remove'"
+                                                                                        <button matChipRemove
+                                                                                            [attr.aria-label]="'remove'"
                                                                                             (click)="removeOption(option, i)">
                                                                                             <mat-icon>cancel</mat-icon>
                                                                                         </button>
                                                                                     </mat-chip-row>
-                                                                                    <input 
+                                                                                    <input
                                                                                         [(ngModel)]="logicEntry.optionlogicifexpectedid"
                                                                                         [matChipInputFor]="chipGrid"
                                                                                         [matAutocomplete]="auto"
                                                                                         [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
                                                                                         (matChipInputTokenEnd)="addOption($event,i)">
                                                                                 </mat-chip-grid>
-                                                                            
-                                                                                <mat-autocomplete #auto="matAutocomplete"  
+
+                                                                                <mat-autocomplete
+                                                                                    #auto="matAutocomplete"
                                                                                     (optionSelected)="selectedOption($event,i);selectOptionOneValue($event,i,logicEntry.optionlogicifid)">
-                                                                                    <mat-option 
-                                                                                        *ngFor="let option of optionListByQuestionId"                                                                   
+                                                                                    <mat-option
+                                                                                        *ngFor="let option of optionListByQuestionId"
                                                                                         [value]="option">
                                                                                         {{option.option}}
-                                                                                        
+
                                                                                     </mat-option>
                                                                                 </mat-autocomplete>
                                                                             </mat-form-field>
@@ -1382,21 +1487,29 @@
                                                                     <div ngClass="mb-4">
                                                                         <div class="row g-2 align-items-center">
                                                                             <div class="col-md-4">
-                                                                                <select class="form-select" [(ngModel)]="logicEntry.optionlogicthanid"  #thanIdSelect >
+                                                                                <select class="form-select"
+                                                                                    [(ngModel)]="logicEntry.optionlogicthanid"
+                                                                                    #thanIdSelect>
                                                                                     <option
                                                                                         *ngFor="let item of optionLogicValuesList;let i=index;"
-                                                                                        value="{{item.id}}">{{item.name}}</option>
+                                                                                        value="{{item.id}}">
+                                                                                        {{item.name}}</option>
                                                                                 </select>
                                                                             </div>
                                                                             <div class="col-md-4">
-                                                                                <select class="form-select"  [(ngModel)]="logicEntry.optionlogicthanexpectedid"  #thanExpectedSelect>
-                                                                                    <option *ngFor="let item of optionsArr1;let i=index;"
-                                                                                        value="{{item.id}}">{{item.option}}</option>
+                                                                                <select class="form-select"
+                                                                                    [(ngModel)]="logicEntry.optionlogicthanexpectedid"
+                                                                                    #thanExpectedSelect>
+                                                                                    <option
+                                                                                        *ngFor="let item of optionsArr1;let i=index;"
+                                                                                        value="{{item.id}}">
+                                                                                        {{item.option}}</option>
                                                                                 </select>
                                                                             </div>
                                                                             <div class="col-md-1">
-                    
-                                                                                <button type="button" class="btn btn-outline-primary btn-sm"
+
+                                                                                <button type="button"
+                                                                                    class="btn btn-outline-primary btn-sm"
                                                                                     (click)="createansweraddthen(i)">Else</button>
                                                                             </div>
                                                                         </div>
@@ -1409,80 +1522,102 @@
                                                                     <div ngClass="mb-4">
                                                                         <div class="row g-2 align-items-center">
                                                                             <div class="col-md-4">
-                                                                                <select class="form-select" [(ngModel)]="logicEntry.optionlogicelseid"  #thanIdSelect>
+                                                                                <select class="form-select"
+                                                                                    [(ngModel)]="logicEntry.optionlogicelseid"
+                                                                                    #thanIdSelect>
                                                                                     <option
                                                                                         *ngFor="let item of optionLogicValuesList;let i=index;"
-                                                                                        value="{{item.id}}">{{item.name}}</option>
+                                                                                        value="{{item.id}}">
+                                                                                        {{item.name}}</option>
                                                                                 </select>
                                                                             </div>
                                                                             <div class="col-md-4">
-                                                                                <select class="form-select"  [(ngModel)]="logicEntry.optionlogicelseexpected" #elseExpectedSelect>
-                                                                                    <option *ngFor="let item of optionsArr1;let i=index;"
-                                                                                        value="{{item.id}}">{{item.option}}</option>
+                                                                                <select class="form-select"
+                                                                                    [(ngModel)]="logicEntry.optionlogicelseexpected"
+                                                                                    #elseExpectedSelect>
+                                                                                    <option
+                                                                                        *ngFor="let item of optionsArr1;let i=index;"
+                                                                                        value="{{item.id}}">
+                                                                                        {{item.option}}</option>
                                                                                 </select>
                                                                             </div>
                                                                             <div class="col-md-4">
-                                                                                <a routerLink="javascript:"><ng-icon name="heroTrash"
+                                                                                <a routerLink="javascript:"><ng-icon
+                                                                                        name="heroTrash"
                                                                                         ngClass="trash-icon"
                                                                                         (click)="createanswershidethen(i)"></ng-icon></a>
                                                                             </div>
                                                                         </div>
-                    
+
                                                                     </div>
                                                                 </div>
 
                                                             </div>
-                                                            <div class="col-12" [ngClass]="{'disablebutton':getoptionlogic.length == 0}">
-                                                                <button type="button" class="btn trash-icon" (click)="deleteOptionLogics(i)">Delete Logic {{i+1}}</button>
+                                                            <div class="col-12"
+                                                                [ngClass]="{'disablebutton':getoptionlogic.length == 0}">
+                                                                <button type="button" class="btn trash-icon"
+                                                                    (click)="deleteOptionLogics(i)">Delete Logic
+                                                                    {{i+1}}</button>
                                                             </div>
                                                         </div>
-                    
+
                                                     </div>
                                                     <!-- <div class="col-12">
                                                         <button type="button" class="btn trash-icon ms-4" (click)="deleteOptionLogics(i)">Delete Logic {{i+1}}</button>
                                                     </div> -->
                                                 </ng-container>
-                                                
+
                                             </div>
                                             <div class="row mt-3">
                                                 <div class="col-12 text-end">
-                                                    <button type="button" class="btn btn-primary px-5" (click)="onLogicSave()">Save
+                                                    <button type="button" class="btn btn-primary px-5"
+                                                        (click)="onLogicSave()">Save
                                                         Logic</button>
-                                                    <button type="button" class="btn btn-primary px-5 ms-4" (click)="onAddLogic()">Add Logic</button>
+                                                    <button type="button" class="btn btn-primary px-5 ms-4"
+                                                        (click)="onAddLogic()">Add Logic</button>
                                                 </div>
-                                                 
+
                                             </div>
                                         </div>
-                                        
+
                                     </div>
-            
-                                    <div class="tab-pane" id="matrixlogic" role="tabpanel" aria-labelledby="matrixlogic-tab">
+
+                                    <div class="tab-pane" id="matrixlogic" role="tabpanel"
+                                        aria-labelledby="matrixlogic-tab">
                                         <!-- <h5 ngClass="mb-4">Matrix Logic</h5> -->
                                         <div ngClass="mb-4">
                                             <div class="logic-tab">
                                                 <!-- Logic Question -->
-                                                <div class="tab-content p-4" >
+                                                <div class="tab-content p-4">
                                                     <div class="tab-pane active" id="branching" role="tabpanel"
                                                         aria-labelledby="branching-tab">
                                                         <div class="infocircle justify-content-start mb-4">
                                                             <h5>Create Matrix Logic</h5>
                                                             <div class="custom-tooltip ms-2">
-                                                                <ng-icon name="heroInformationCircle" ngClass="edit-action info-circle"
+                                                                <ng-icon name="heroInformationCircle"
+                                                                    ngClass="edit-action info-circle"
                                                                     (click)="toggleTooltip('6')"></ng-icon>
                                                                 <div class="toast show" *ngIf="showTooltip['6']">
                                                                     <div class="toast-header">
                                                                         <img [src]="baseUrl + '/assets/images/icons/Add-new-question.png'"
-                                                                            class="rounded me-2" width="30" height="30" />
-                                                                        <h6 class="mb-0 me-auto">Create Matrix Header Logic
+                                                                            class="rounded me-2" width="30"
+                                                                            height="30" />
+                                                                        <h6 class="mb-0 me-auto">Create Matrix Header
+                                                                            Logic
                                                                         </h6>
-                                                                        <button type="button" class="btn-close" data-bs-dismiss="toast"
-                                                                            aria-label="Close" (click)="hideTooltip('6')"></button>
+                                                                        <button type="button" class="btn-close"
+                                                                            data-bs-dismiss="toast" aria-label="Close"
+                                                                            (click)="hideTooltip('6')"></button>
                                                                     </div>
                                                                     <div class="toast-body">
-                                                                        By implementing Matrix Header Logic, you can dynamically show or hide
-                                                                        answer options based on the respondents' answers. This feature
-                                                                        not only streamlines the survey-taking process but also ensures that
-                                                                        respondents are presented with relevant questions, leading to
+                                                                        By implementing Matrix Header Logic, you can
+                                                                        dynamically show or hide
+                                                                        answer options based on the respondents'
+                                                                        answers. This feature
+                                                                        not only streamlines the survey-taking process
+                                                                        but also ensures that
+                                                                        respondents are presented with relevant
+                                                                        questions, leading to
                                                                         more
                                                                         accurate and insightful data.
                                                                     </div>
@@ -1490,18 +1625,21 @@
                                                             </div>
                                                         </div>
                                                         <div ngClass="d-flex justify-content-between mb-3">
-                                                            <h6>Redirect to different questions based on user's answer.</h6>
-                
+                                                            <h6>Redirect to different questions based on user's answer.
+                                                            </h6>
+
                                                         </div>
                                                         <!-- <div class="alert alert-danger"
                                                         role="alert" *ngIf="filteredQuestionList.length == 0">
                                                           <p>Option Logic can not apply to this Question</p>
                                                         </div> -->
-                                                        <div ngClass="logic-ques" >
+                                                        <div ngClass="logic-ques">
                                                             <div class="input-group flex-nowrap">
-                                                                <span class="input-group-text" id="addon-wrapping">In</span>
-                                                                <input id="question" type="text" [(ngModel)]="question.question" class="form-control"
-                                                                name="question" />
+                                                                <span class="input-group-text"
+                                                                    id="addon-wrapping">In</span>
+                                                                <input id="question" type="text"
+                                                                    [(ngModel)]="question.question" class="form-control"
+                                                                    name="question" />
                                                             </div>
                                                             <div ngClass="if-then">
                                                                 <span>If</span>
@@ -1512,38 +1650,44 @@
                                                                         <div>Value</div>
                                                                     </div>
                                                                     <div class="col-md-3">
-                                                                        <select class="form-select" [(ngModel)]="matriclogicifId"  (change)="onOptionMatrixEntry()" #ifIdSelect>
-                                                                            <option *ngFor="let item of logicValuesList;let i=index;"
-                                                                                value="{{item.id}}">{{item.name}}</option>
+                                                                        <select class="form-select"
+                                                                            [(ngModel)]="matriclogicifId"
+                                                                            (change)="onOptionMatrixEntry()"
+                                                                            #ifIdSelect>
+                                                                            <option
+                                                                                *ngFor="let item of logicValuesList;let i=index;"
+                                                                                value="{{item.id}}">{{item.name}}
+                                                                            </option>
                                                                         </select>
                                                                     </div>
                                                                     <div class="col-md-3">
-                                                                       
+
                                                                         <mat-form-field class="example-chip-list">
-                                                                            <mat-chip-grid #chipGrid aria-label="City selection">
+                                                                            <mat-chip-grid #chipGrid
+                                                                                aria-label="City selection">
                                                                                 <mat-chip-row
                                                                                     *ngFor="let option of selectedMatricHeaderOptions; let i=index;">
                                                                                     {{option.header}}
-                                                                                    <button matChipRemove [attr.aria-label]="'remove'"
+                                                                                    <button matChipRemove
+                                                                                        [attr.aria-label]="'remove'"
                                                                                         (click)="removeMatrixHeaderOption(option)">
                                                                                         <mat-icon>cancel</mat-icon>
                                                                                     </button>
                                                                                 </mat-chip-row>
-                                                                                <input 
+                                                                                <input
                                                                                     [(ngModel)]="matrixlogicifexpectedid"
                                                                                     [matChipInputFor]="chipGrid"
                                                                                     [matAutocomplete]="auto"
-                                                                                    [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
-                                                                                   >
+                                                                                    [matChipInputSeparatorKeyCodes]="separatorKeysCodes">
                                                                             </mat-chip-grid>
-                                                                           
-                                                                            <mat-autocomplete #auto="matAutocomplete"  
+
+                                                                            <mat-autocomplete #auto="matAutocomplete"
                                                                                 (optionSelected)="selectedMatrixHeaderOption($event)">
-                                                                                <mat-option 
-                                                                                    *ngFor="let option of matrixAllOptions"                                                                   
+                                                                                <mat-option
+                                                                                    *ngFor="let option of matrixAllOptions"
                                                                                     [value]="option">
                                                                                     {{option.header}}
-                                                                                    
+
                                                                                 </mat-option>
                                                                             </mat-autocomplete>
                                                                         </mat-form-field>
@@ -1557,21 +1701,29 @@
                                                                 <div ngClass="mb-4">
                                                                     <div class="row g-2 align-items-center">
                                                                         <div class="col-md-4">
-                                                                            <select class="form-select" [(ngModel)]="matrixheaderthenid"   #thanIdSelect>
+                                                                            <select class="form-select"
+                                                                                [(ngModel)]="matrixheaderthenid"
+                                                                                #thanIdSelect>
                                                                                 <option
                                                                                     *ngFor="let item of optionLogicValuesList;let i=index;"
-                                                                                    value="{{item.id}}">{{item.name}}</option>
+                                                                                    value="{{item.id}}">{{item.name}}
+                                                                                </option>
                                                                             </select>
                                                                         </div>
                                                                         <div class="col-md-4">
-                                                                            <select class="form-select"  [(ngModel)]="matrixlogicthanexpected"  #thanExpectedSelect>
-                                                                                <option *ngFor="let item of optionsArr1;let i=index;"
-                                                                                    value="{{item.id}}">{{item.option}}</option>
+                                                                            <select class="form-select"
+                                                                                [(ngModel)]="matrixlogicthanexpected"
+                                                                                #thanExpectedSelect>
+                                                                                <option
+                                                                                    *ngFor="let item of optionsArr1;let i=index;"
+                                                                                    value="{{item.id}}">{{item.option}}
+                                                                                </option>
                                                                             </select>
                                                                         </div>
                                                                         <div class="col-md-1">
-                
-                                                                            <button type="button" class="btn btn-outline-primary btn-sm"
+
+                                                                            <button type="button"
+                                                                                class="btn btn-outline-primary btn-sm"
                                                                                 (click)="matrixHeadeeAddThen()">Else</button>
                                                                         </div>
                                                                     </div>
@@ -1584,70 +1736,89 @@
                                                                 <div ngClass="mb-4">
                                                                     <div class="row g-2 align-items-center">
                                                                         <div class="col-md-4">
-                                                                            <select class="form-select" [(ngModel)]="matrixlogicelseid" #thanIdSelect>
+                                                                            <select class="form-select"
+                                                                                [(ngModel)]="matrixlogicelseid"
+                                                                                #thanIdSelect>
                                                                                 <option
                                                                                     *ngFor="let item of optionLogicValuesList;let i=index;"
-                                                                                    value="{{item.id}}">{{item.name}}</option>
+                                                                                    value="{{item.id}}">{{item.name}}
+                                                                                </option>
                                                                             </select>
                                                                         </div>
                                                                         <div class="col-md-4">
-                                                                            <select class="form-select"  [(ngModel)]="matrixlogicelseexpected"  #elseExpectedSelect>
-                                                                                <option *ngFor="let item of optionsArr1;let i=index;"
-                                                                                    value="{{item.id}}">{{item.option}}</option>
+                                                                            <select class="form-select"
+                                                                                [(ngModel)]="matrixlogicelseexpected"
+                                                                                #elseExpectedSelect>
+                                                                                <option
+                                                                                    *ngFor="let item of optionsArr1;let i=index;"
+                                                                                    value="{{item.id}}">{{item.option}}
+                                                                                </option>
                                                                             </select>
                                                                         </div>
                                                                         <div class="col-md-8">
-                                                                            <a routerLink="javascript:"><ng-icon name="heroTrash"
+                                                                            <a routerLink="javascript:"><ng-icon
+                                                                                    name="heroTrash"
                                                                                     ngClass="trash-icon"
                                                                                     (click)="matrixHeaderHideThen()"></ng-icon></a>
                                                                         </div>
                                                                     </div>
-                
+
                                                                 </div>
                                                             </div>
                                                         </div>
                                                     </div>
-                
+
                                                 </div>
-                
+
                                             </div>
                                             <div class="row mt-3">
                                                 <div class="col-12 text-end">
-                                                    <button type="button" class="btn btn-primary px-5" (click)="createMatixLogic()">Save
+                                                    <button type="button" class="btn btn-primary px-5"
+                                                        (click)="createMatixLogic()">Save
                                                         Logic</button>
-                                                    <button type="button" class="btn trash-icon px-5 ms-4" (click)="deleteMatrxiOptionLogics()">Delete</button>
+                                                    <button type="button" class="btn trash-icon px-5 ms-4"
+                                                        (click)="deleteMatrxiOptionLogics()">Delete</button>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
 
-                                    <div class="tab-pane" id="ansselection" role="tabpanel" aria-labelledby="answerselection-tab">
+                                    <div class="tab-pane" id="ansselection" role="tabpanel"
+                                        aria-labelledby="answerselection-tab">
                                         <!-- <h5 ngClass="mb-4">Matrix Logic</h5> -->
                                         <div ngClass="mb-4">
                                             <div class="logic-tab">
                                                 <!-- Logic Question -->
-                                                <div class="tab-content p-4" >
+                                                <div class="tab-content p-4">
                                                     <div class="tab-pane active" id="branching" role="tabpanel"
                                                         aria-labelledby="branching-tab">
                                                         <div class="infocircle justify-content-start mb-4">
                                                             <h5>Create Answer selection Limit</h5>
                                                             <div class="custom-tooltip ms-2">
-                                                                <ng-icon name="heroInformationCircle" ngClass="edit-action info-circle"
+                                                                <ng-icon name="heroInformationCircle"
+                                                                    ngClass="edit-action info-circle"
                                                                     (click)="toggleTooltip('7')"></ng-icon>
                                                                 <div class="toast show" *ngIf="showTooltip['7']">
                                                                     <div class="toast-header">
                                                                         <img [src]="baseUrl + '/assets/images/icons/Add-new-question.png'"
-                                                                            class="rounded me-2" width="30" height="30" />
-                                                                        <h6 class="mb-0 me-auto">Create Answer selection Limit
+                                                                            class="rounded me-2" width="30"
+                                                                            height="30" />
+                                                                        <h6 class="mb-0 me-auto">Create Answer selection
+                                                                            Limit
                                                                         </h6>
-                                                                        <button type="button" class="btn-close" data-bs-dismiss="toast"
-                                                                            aria-label="Close" (click)="hideTooltip('7')"></button>
+                                                                        <button type="button" class="btn-close"
+                                                                            data-bs-dismiss="toast" aria-label="Close"
+                                                                            (click)="hideTooltip('7')"></button>
                                                                     </div>
                                                                     <div class="toast-body">
-                                                                        By implementing Matrix Header Logic, you can dynamically show or hide
-                                                                        answer options based on the respondents' answers. This feature
-                                                                        not only streamlines the survey-taking process but also ensures that
-                                                                        respondents are presented with relevant questions, leading to
+                                                                        By implementing Matrix Header Logic, you can
+                                                                        dynamically show or hide
+                                                                        answer options based on the respondents'
+                                                                        answers. This feature
+                                                                        not only streamlines the survey-taking process
+                                                                        but also ensures that
+                                                                        respondents are presented with relevant
+                                                                        questions, leading to
                                                                         more
                                                                         accurate and insightful data.
                                                                     </div>
@@ -1655,18 +1826,21 @@
                                                             </div>
                                                         </div>
                                                         <div ngClass="d-flex justify-content-between mb-3">
-                                                            <h6>Redirect to different questions based on user's answer.</h6>
-                
+                                                            <h6>Redirect to different questions based on user's answer.
+                                                            </h6>
+
                                                         </div>
                                                         <!-- <div class="alert alert-danger"
                                                         role="alert" *ngIf="filteredQuestionList.length == 0">
                                                           <p>Option Logic can not apply to this Question</p>
                                                         </div> -->
-                                                        <div ngClass="logic-ques" >
+                                                        <div ngClass="logic-ques">
                                                             <div class="input-group flex-nowrap">
-                                                                <span class="input-group-text" id="addon-wrapping">In</span>
-                                                                <input id="question" type="text" [(ngModel)]="question.question" class="form-control"
-                                                                name="question" />
+                                                                <span class="input-group-text"
+                                                                    id="addon-wrapping">In</span>
+                                                                <input id="question" type="text"
+                                                                    [(ngModel)]="question.question" class="form-control"
+                                                                    name="question" />
                                                             </div>
                                                             <div ngClass="if-then">
                                                                 <span>If</span>
@@ -1677,37 +1851,48 @@
                                                                         <div>Value</div>
                                                                     </div>
                                                                     <div class="col-md-3">
-                                                                        <select class="form-select" [(ngModel)]="multiselectlimitifid"  (change)="onOptionMatrixEntry()" #ifIdSelect>
-                                                                            <option *ngFor="let item of anslimitvalues;let i=index;"
-                                                                                value="{{item.valueId}}">{{item.name}}</option>
+                                                                        <select class="form-select"
+                                                                            [(ngModel)]="multiselectlimitifid"
+                                                                            (change)="onOptionMatrixEntry()"
+                                                                            #ifIdSelect>
+                                                                            <option
+                                                                                *ngFor="let item of anslimitvalues;let i=index;"
+                                                                                value="{{item.valueId}}">{{item.name}}
+                                                                            </option>
                                                                         </select>
                                                                     </div>
                                                                     <div class="col-md-3">
-                                                                       
-                                                                       <input class="form-control" type="number" min="0" [(ngModel)]="muiltiselectanslimit" id="ansselection" name="ansselection" (blur)="validateAnsLimit()"/>
-                                                                       <div *ngIf="!anslimit" class="text-danger">Field is required</div>
+
+                                                                        <input class="form-control" type="number"
+                                                                            min="0" [(ngModel)]="muiltiselectanslimit"
+                                                                            id="ansselection" name="ansselection"
+                                                                            (blur)="validateAnsLimit()" />
+                                                                        <div *ngIf="!anslimit" class="text-danger">Field
+                                                                            is required</div>
                                                                     </div>
                                                                 </div>
                                                             </div>
-                                                            
+
                                                         </div>
                                                     </div>
-                
+
                                                 </div>
-                
+
                                             </div>
                                             <div class="row mt-3">
                                                 <div class="col-12 text-end">
-                                                    <button type="button" class="btn btn-primary px-5" (click)="multiSelectAnsLimit()">Save
+                                                    <button type="button" class="btn btn-primary px-5"
+                                                        (click)="multiSelectAnsLimit()">Save
                                                         Logic</button>
-                                                    <button type="button" class="btn trash-icon px-5 ms-4" (click)="deleteSelectAnsLimit()">Delete</button>
+                                                    <button type="button" class="btn trash-icon px-5 ms-4"
+                                                        (click)="deleteSelectAnsLimit()">Delete</button>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-            
-                                    
-            
+
+
+
                                 </div>
                             </div>
                         </div>
@@ -1978,12 +2163,12 @@
         <button class="btn btn-primary" (click)="stopRecording()" [disabled]="!isRecording">Stop Recording</button>
     </div>
     <div *ngIf="isRecordingaudio" class="m-auto mb-3 d-flex align-items-center gap-2">
-      <audio controls [src]="audioUrl"></audio>
-      <button type="button" class="btn btn-danger" (click)="removeAudio()"><ng-icon name="heroTrash"></ng-icon></button>
+        <audio controls [src]="audioUrl"></audio>
+        <button type="button" class="btn btn-danger" (click)="removeAudio()"><ng-icon
+                name="heroTrash"></ng-icon></button>
     </div>
     <div class="modal-footer upload">
-        <button type="button" class="btn btn-primary icon"
-            (click)="modal.close('Close click')">Add
+        <button type="button" class="btn btn-primary icon" (click)="modal.close('Close click')">Add
             <ng-icon name="heroArrowLongRight" class="ms-4"></ng-icon>
         </button>
     </div>
@@ -1992,12 +2177,12 @@
     <div class="modal-header">
         <h4 class="modal-title">Attach Image</h4>
         <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
-        
+
     </div>
     <div class="modal-body popup-ques">
         <div class="row">
             <div class="col-md-12">
-                
+
                 <ngx-dropzone ngx-dropzone [accept]="'image/*'" (change)="onSelectImage($event)">
                     <ngx-dropzone-label>
                         <figure><img [src]="baseUrl+'/assets/images/icons/attach-image.png'" width="64" height="58" />
@@ -2020,7 +2205,7 @@
                     <img [src]="question.image" width="50%" />
                   </ng-container>
             </div> -->
-              
+
         </div>
     </div>
     <div class="modal-footer upload">
