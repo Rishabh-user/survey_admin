@@ -522,7 +522,7 @@ export class ViewComponent {
     }
   }
 
-
+  graphPerPage:any
   generatePDF(): void {
     this.showForPDF = true;
     this.showpdf = !this.showpdf;
@@ -533,9 +533,14 @@ export class ViewComponent {
         const pdf = new jsPDF('p', 'mm', 'a4');
         const pageHeight = 295;
         const imgWidth = 210;
-        const margin = 10;
-        const graphPerPage = 3;
-        const lineHeight = 10; // Adjust based on your content's font size
+        const margin = 15;
+        if(this.graphtypevalue ==1 ||this.graphtypevalue ==2){
+         this.graphPerPage = 2;
+        }else{
+          this.graphPerPage = 3;
+        }
+        
+        const lineHeight = 15; // Adjust based on your content's font size
         let currentYPosition = margin + lineHeight; // Leave space for the survey name
 
         const addSurveyNameToPDF = () => {
@@ -568,7 +573,7 @@ export class ViewComponent {
                 const item = items[currentGraphIndex];
                 addItemToPDF(item, currentYPosition, () => {
                     currentGraphIndex++;
-                    if (currentGraphIndex % graphPerPage === 0) {
+                    if (currentGraphIndex % this.graphPerPage === 0) {
                         pdf.addPage();
                         addSurveyNameToPDF();
                         currentYPosition = margin + lineHeight;
@@ -585,8 +590,8 @@ export class ViewComponent {
         let currentGraphIndex = 0;
         addSurveyNameToPDF();
         processNextItem();
-    }, 1000); // Adjust timeout to ensure content is fully rendered
-}
+    }, 1000); 
+  }
 
 
 
