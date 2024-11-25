@@ -32,7 +32,7 @@
 </div>
 <div [class.vendor-link]="role === 'Vendor' || role === 'Client'">
 
-    <div class="common-bg" *ngIf="role === 'Client'">
+    <div class="common-bg" >
         
         <div >
             <div class="mb-3">
@@ -87,6 +87,7 @@
                 <div class="col-11">
                         <input type="number" class="form-control" name="surveycount" [(ngModel)]="surveyQuotaJson.totalUsers"
                         (blur)="showQuotas()" (ngModelChange)="changeUserCount();">
+
                     
                     <div *ngIf="showCountError" class="text-danger">Please enter a valid survey count.</div>
                 </div>

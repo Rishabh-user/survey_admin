@@ -87,7 +87,6 @@ export class SurveyListingComponent {
     }
   }
 
-
   getAllSurveyList(pageNumber: number, pageSize: number) {
     this.themeService.getSurveyListWithPage(pageNumber, pageSize).subscribe((data: any) => {
       this.surveyData = data.surveyType;
@@ -97,6 +96,13 @@ export class SurveyListingComponent {
     });
   }
   models: { id: number, name: string }[] = [];
+
+  // Add this method in your component
+  getCountryImageArray(countryImage: string): string[] {
+    if (!countryImage) return []; // Handle empty or null cases
+    return countryImage.split(',').map(flag => flag.trim());
+  }
+
 
   getNames() {
     this.themeService.GetCategories().subscribe((data: any) => {

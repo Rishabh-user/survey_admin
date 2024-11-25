@@ -33,6 +33,7 @@ import { QuestionLogic } from 'src/app/models/question-logic';
 })
 export class EditSurveyComponent {
   // Tooltip
+  @ViewChild('videoElement') videoElement!: ElementRef<HTMLVideoElement>;
   showTooltip: { [key: string]: boolean } = {};
   currentTooltip: string | null = null;
   // toggleTooltip(identifier: string) {
@@ -181,6 +182,8 @@ export class EditSurveyComponent {
       }
     });
   }
+
+ 
   //groupedOptions: { [key: number]: { options: Option[], isRandomize: boolean, isExcluded: boolean, isFlipNumber:boolean, isRotate:boolean } } = {};
   groupedOptions: { 
     [key: number]: { 
@@ -439,7 +442,7 @@ export class EditSurveyComponent {
     });
     
     this.getMultiAnsLimitValues();
-    
+    this.initCamera();
     
   }
 
@@ -1554,6 +1557,9 @@ export class EditSurveyComponent {
   }
   openLgAudioRecording(audiorecording: any) {
     this.modalService.open(audiorecording, { size: 'lg', centered: true });
+  }
+  openLgVideoRecord(videorecord: any) {
+    this.modalService.open(videorecord, { size: 'lg', centered: true });
   }
   // onLogicSave(): void {
 
@@ -2810,6 +2816,8 @@ export class EditSurveyComponent {
               const audioBlob = new Blob(this.audioChunks, { type: 'audio/mp3' });  
               console.log('Audio Blob:', audioBlob);  
               this.audioUrl = URL.createObjectURL(audioBlob);
+              const url= URL.revokeObjectURL(this.audioUrl)
+              console.log("url",url)
               this.audioChunks = []; 
             } else {
               console.error('No audio data to create Blob.');
@@ -2839,6 +2847,76 @@ export class EditSurveyComponent {
     this.audioUrl = null;  
     this.isRecordingaudio = false
   }
+
+
+  //video
+
+
+  mediaRecorderVideo!: MediaRecorder;
+  recordedChunks: Blob[] = [];
+  recordedVideoUrl: string | null = null;
+  stream: MediaStream | null = null;  
+  public isRecordingVideo: boolean = false;
+  recordedVideo:boolean = false;
+  
+  async initCamera() {
+    try {
+      this.stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
+      
+      this.videoElement.nativeElement.srcObject = this.stream;
+      
+      this.videoElement.nativeElement.onloadedmetadata = () => {
+        console.log('Video stream initialized');
+      };
+    } catch (error) {
+      console.error('Error accessing camera:', error);
+    }
+  }
+  
+  startRecordingVideo() {
+    if (!this.stream) {
+      console.error('No media stream available');
+      return;
+    }
+  
+    this.mediaRecorderVideo = new MediaRecorder(this.stream);
+    this.recordedChunks = [];
+  
+    this.mediaRecorderVideo.ondataavailable = (event) => {
+      if (event.data.size > 0) {
+        this.recordedChunks.push(event.data);
+      }
+    };
+  
+    this.mediaRecorderVideo.onstop = () => {
+      const blob = new Blob(this.recordedChunks, { type: 'video/webm' });
+      this.recordedVideoUrl = URL.createObjectURL(blob);
+      console.log("recordedVideoUrl",this.recordedVideoUrl)
+    };
+  
+    this.mediaRecorderVideo.start();
+    this.isRecordingVideo = true;
+    console.log('Recording started');
+  }
+  
+  stopRecordingVideo() {
+    if (this.mediaRecorderVideo ) {
+      this.mediaRecorderVideo.stop();
+      this.isRecordingVideo = false;
+      this.recordedVideo = true;
+      console.log('Recording stopped');
+    }
+  }
+  
+  downloadVideo() {
+    if (this.recordedVideoUrl) {
+      const a = document.createElement('a');
+      a.href = this.recordedVideoUrl;
+      a.download = 'recorded-video.webm';
+      a.click();
+    }
+  }
+  
   
 
 

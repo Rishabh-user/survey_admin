@@ -627,4 +627,9 @@ export class SurveyService {
     return this.http.post(url, { responseType: 'text' });
   }
 
+  SubmitQuery(data:any):Observable<any> {
+    const url = `${this.apiUrl}api/admin/${this.userId}/ContactUs/SubmitQuery`;
+    return this.http.post(url, data,{ responseType: 'text' });
+  }
+
 }

@@ -201,6 +201,7 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
   numberage:number=0;
   isopenendedvalue:boolean[][] = [];
   isHidden:boolean;
+  questionreq: Question = new Question();
   
   
 
@@ -514,7 +515,7 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
   otherCategoryName: any
   surveyStatus: any
   countryName: any
-  countryImage: any
+  countryImage: any;
   totalItemsCount: number
   surveycreateddate: any
   isQNumberRequired:any
@@ -553,6 +554,8 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
         this.isQNumberRequired = data.isQNumberRequired;
         this.isHidden = data.isHidden;
         this.selectedCountry = this.country.find(country => country.id === this.countryId) || null;
+
+        console.log("countryImage",this.countryImage)
 
 
         this.surveycreateddate = data.createdDate
@@ -624,6 +627,9 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
     });
   }
 
+  get countryImageArray(): string[] {
+    return this.countryImage.split(',').map((flag:any) => flag.trim());
+  }
 
   getCategoryNames() {
     this.surveyservice.GetCategories().subscribe((response: { [x: string]: any; }) => {
@@ -1333,6 +1339,7 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
   createSingleLogicEntry(questionId: any, logicEntry: any, sort: any): void {
     this.createLogicCount++;
     //alert(sort);
+    debugger
     console.log('Inside logicEntry', logicEntry)
     const thanTermValue = logicEntry.thanExpected !== null ? logicEntry.thanExpected : 0;
     const elseTermValue = logicEntry.elseExpected !== null ? logicEntry.elseExpected : 0;
@@ -1370,6 +1377,12 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
       popupTextValue = logicEntry.popupTextElse;
       isEveryTimeValue = logicEntry.isEveryTimeElse;
       timesPeriodValue = logicEntry.timesPeriodElse;
+    }
+
+    console.log("this.questionLogic.ifId",ifIdValue)
+
+    if(ifIdValue === 13){
+      this.questionreq.isRequired = false;
     }
 
     this.questionLogic.id = id;
@@ -1413,7 +1426,7 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
       this.questionLogic.logicConditions[0].ifId = logicEntry.ifIdAndOr;
       this.questionLogic.logicConditions[0].ifExpected = logicEntry.ifExpectedAndOr;
     }
-
+    debugger
 
     //setTimeout(() => {
     if (this.questionLogic.id > 0) {
@@ -1421,7 +1434,7 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
         response => {
 
           this.utils.showSuccess('Logic Created Successfully.');
-          window.location.reload();
+          //window.location.reload();
         },
         error => {
           console.error('Error occurred while sending POST request:', error);
@@ -1432,7 +1445,7 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
       this.surveyservice.createLogic(this.questionLogic).subscribe(
         response => {
           this.utils.showSuccess('Logic Created Successfully.');
-          window.location.reload();
+         // window.location.reload();
         },
         error => {
           console.error('Error occurred while sending POST request:', error);
@@ -2248,11 +2261,12 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
   
 
   onInputChange(logicEntryIfId: any, questionIndex: number, logicIndex: number): void {
-    
-    
-      this.logicEntriesPerQuestion[questionIndex][logicIndex].ifExpected = '0';
-    
-  
+    console.log("qwertyu",logicEntryIfId)
+    this.logicEntriesPerQuestion[questionIndex][logicIndex].ifExpected = '0';
+
+    if(logicEntryIfId === 13){
+        this.questionreq.isRequired = false;
+    }
   }
 
    
@@ -3559,6 +3573,7 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
   }
 
   createMatrixHeaderLogicEntry(questionId: any, logicEntry: any, sort: any): void {
+    
     this.createLogicCount++;
     //alert(sort);
     console.log('Inside logicEntry', logicEntry)

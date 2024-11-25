@@ -188,7 +188,7 @@ export class QuotaManagementComponent {
 
   showQuestionQptions(index: number, questionId: any) {
    
-    const question = this.questionList.questions.filter((x: any) => x.id == questionId)[0];
+    const question = this.questionList?.questions?.filter((x: any) => x.id == questionId)[0];
 
     if (question) {
       this.surveyQuotaJson.questionDto[index].optionsDto = [];
@@ -408,16 +408,16 @@ activeIndicesForInterlock(interlockindex: number): number[] {
       this.questionList = data;
       console.log("gg  questionList", this.questionList);
 
-      this.questionList.questions.forEach((question: any) => {
+      this.questionList?.questions?.forEach((question: any) => {
         if (question.genericType) {
           this.genericlist.push(question.genericType);
         }
       });
-      this.questionList.questions.forEach((question: any) => {
+      this.questionList?.questions?.forEach((question: any) => {
 
       });
-      if (this.questionList && Array.isArray(this.questionList.questions)) {
-        this.questionList.questions.forEach((question: any) => {
+      if (this.questionList && Array.isArray(this.questionList?.questions)) {
+        this.questionList?.questions?.forEach((question: any) => {
           if (question.options && Array.isArray(question.options)) {
             question.options.forEach((option: any) => {
               this.optionlist.push(option.option);
@@ -475,7 +475,7 @@ activeIndicesForInterlock(interlockindex: number): number[] {
 
   selectedOptionDetails(selectedQuestionId: any, index: number) {
 
-    const selectedQuestion = this.questionList.questions.find((item: { id: any; }) => {
+    const selectedQuestion = this.questionList?.questions?.find((item: { id: any; }) => {
       return item.id == selectedQuestionId;
     });
 
@@ -511,7 +511,7 @@ activeIndicesForInterlock(interlockindex: number): number[] {
       console.log("Number of selected options at index " + index + ":", this.selectedOptionsCount[index]);
 
       // return selectedOptions;
-      this.questionList.questions = this.questionList.questions.filter((question: any) => question.id !== this.selectedquestionid);
+      this.questionList.questions = this.questionList?.questions?.filter((question: any) => question.id !== this.selectedquestionid);
 
       console.log("asdfghj", this.questionList.questions)
 
@@ -647,7 +647,7 @@ activeIndicesForInterlock(interlockindex: number): number[] {
 
           // let filteredQuestions = []
 
-          this.filteredQuestions = this.questionList.questions.filter((question: any) =>
+          this.filteredQuestions = this.questionList?.questions?.filter((question: any) =>
             question.id == selectedquesid.questionId
           );
 
@@ -734,6 +734,7 @@ activeIndicesForInterlock(interlockindex: number): number[] {
     this.surveyservice.manageQuota(this.surveyQuotaJson, isEdit).subscribe({
       next: (response: any) => {
         this.getQuotaBySurveyId();
+        //window.location.reload();
       },
       error: (error: any) => {
         console.log("Error while submitting quota:", error);
@@ -942,7 +943,7 @@ activeIndicesForInterlock(interlockindex: number): number[] {
     this.interlockquesid = quesid;
     //this.interlockoptionid = this.filteredQuestions.filter(item => item === quesid);
     
-    this.interlockoptionlist = this.questionList.questions.filter((question: any) =>
+    this.interlockoptionlist = this.questionList?.questions?.filter((question: any) =>
       question.id == quesid
     );
     console.log("interlockoptionlist",this.interlockoptionlist[0].options)
@@ -958,7 +959,7 @@ activeIndicesForInterlock(interlockindex: number): number[] {
     console.log("currentinterlockid quesid",quesid)
 
     
-    this.currentinterlockoptionlist = this.questionList.questions.filter((question: any) =>
+    this.currentinterlockoptionlist = this.questionList?.questions?.filter((question: any) =>
       question.id == quesid
     );
     console.log("currentinterlockoptionlist",this.currentinterlockoptionlist[0].options)

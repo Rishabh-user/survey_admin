@@ -306,9 +306,9 @@
                 <div class="d-flex">
                     <h4 ngClass="mb-3">
                         <ng-container *ngIf="countryName !== 'Other Country'">
-                            <img matTooltip="{{countryName}}"
-                                aria-label="Button that displays a tooltip when focused or hovered over" loading="lazy"
-                                [src]="baseUrl + '/assets/images/country-flag/' + countryImage" width="30" height="30"
+                            <img *ngFor="let flag of countryImageArray" matTooltip="{{countryName}}"
+                                aria-label="Button that displays a tooltip when focused or hovered over" loading="lazy" class="ms-2"
+                                [src]="baseUrl + '/assets/images/country-flag/' + flag" width="30" height="30"
                                 alt="{{countryName}}" />
                         </ng-container>
                         {{surveyName}}
@@ -863,7 +863,7 @@
 
                                                                                 <div class="col-md-3"
                                                                                     *ngIf="question?.questionType === 'Open Ended'">
-
+                                                                                    
                                                                                     <select class="form-select"
                                                                                         [(ngModel)]="logicEntry.ifId"
                                                                                         (change)="onLogicEntryChange(i,j);onInputChange(logicEntry.ifId, i, j)">

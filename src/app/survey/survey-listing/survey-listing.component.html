@@ -68,8 +68,11 @@
                         </td>
                         <td>
                             <ng-container *ngIf="item.countryName !== 'Other Country'">
-                                <img [src]="baseUrl + '/assets/images/country-flag/' + item.countryImage"
-                                    class="me-2 rounded-circle" style="width: 30px;height: 30px;" />
+                                <img *ngFor="let flag of getCountryImageArray(item.countryImage)"
+                                [src]="baseUrl + '/assets/images/country-flag/' + flag"
+                                class="me-2 rounded-circle"
+                                style="width: 30px; height: 30px;"
+                                alt="Country Flag" />
                             </ng-container>
                             {{item.countryName}}
                         </td>
