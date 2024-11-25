@@ -663,7 +663,8 @@
                                         </label>
                                     </div>
                                 </div>
-                                <div *ngIf="question?.questionType === 'Open Ended' && question.isOpenEnded">
+                                <div *ngIf="question?.questionType === 'Open Ended' && question.isOpenEnded && question.options.length == 0">
+                                    
                                     <input class="form-control" type="text" />
                                 </div>
                                 <div *ngIf="question.isScreening">

@@ -38,7 +38,10 @@ export class CreateSurveyPopupComponent {
   //selectedCountry: { id: string, name: string, images: string } | null = null;
   selectedCountry: { id: string; name: string; images: string }[]  = [];
   suggestions: any[] = [];
-  
+  showAvalibility:boolean = false;
+  isdesktopRequired:boolean = false;
+  isMobileRequired:boolean = false;
+  isTabletRequired:boolean = false;
   //selectedCountryId: string | null = null;
 
 
@@ -191,7 +194,7 @@ export class CreateSurveyPopupComponent {
 
       this.surveyservice.createSurvey(dataToSend).subscribe(
         response => {
-          if (this.removeQuotes(response) == 'AlreadyExits') {
+          if (response == '"AlreadyExists"') {
             this.utility.showError("This Survey Already Created")
             return
           }
@@ -255,5 +258,20 @@ export class CreateSurveyPopupComponent {
     this.suggestions = [];
     this.validateSurvey(); // Re-validate input after selection
   }
-  
+
+  showSerialAvailability(){
+    this.showAvalibility = true
+  }
+  hideSerialAvailability(){
+    this.showAvalibility = false
+  }
+  onDesktopReq(event: any) {
+    this.isdesktopRequired = event.target.checked;
+  }
+  onMobileReq(event: any) {
+    this.isMobileRequired = event.target.checked;
+  }
+  onTabletReq(event: any) {
+    this.isTabletRequired = event.target.checked;
+  }
 }

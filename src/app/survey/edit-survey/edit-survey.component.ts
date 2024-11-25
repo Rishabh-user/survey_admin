@@ -150,7 +150,7 @@ export class EditSurveyComponent {
   inputTextArea:any;
   inputTextType:any;
   isvalidopenended:boolean=false;
-
+  showDontKnowOption:boolean = false;
   
 
   constructor(public themeService: DataService, private router: Router,
@@ -834,7 +834,7 @@ export class EditSurveyComponent {
   onSave() {
 
     // Validate the survey
-
+    console.log("all options",this.allOptions)
     if (!this.validateSurveySno() && this.quesserialno === 'true') {
       this.utility.showError('Please fill required fields.');
       return;
@@ -907,7 +907,7 @@ export class EditSurveyComponent {
     }
     if (this.question.questionTypeName === 'Open Ended' && (this.question.openEndedType === '' || this.question.openEndedType === 'textarea')) {
 
-      this.allOptions = []
+      //this.allOptions = []
 
       this.question.openEndedType = "textarea"
 
@@ -1081,7 +1081,7 @@ export class EditSurveyComponent {
             this.utility.showError('Question Created Failed')
           } else  if (resp === '"QuestionSuccessfullyUpdated"') {
             this.utility.showSuccess('Question Updated Successfully.');
-           window.location.reload();
+             //window.location.reload();
             // let url = `/survey/manage-survey/${this.crypto.encryptParam(this.surveyId)}`;
             // this.router.navigateByUrl(url);
             //  window.location.reload();
@@ -1298,6 +1298,9 @@ export class EditSurveyComponent {
       this.optionsArr1.splice(index, 1);
 
       console.log("delete opt1",this.optionsArr1)
+      if(this.question.questionTypeName === 'Open Ended'){
+        this.showDontKnowOption = false;
+      }
 
     } else {
 
@@ -1943,6 +1946,12 @@ export class EditSurveyComponent {
 
       console.log(this.filteredCountryNames,this.filteredSurveyNames,this.filteredCountryNames,this.filteredCountryNames)
     });
+  }
+
+
+  get countryImageArray(): string[] {
+    console.log("filteredCountryNames",this.filteredCountryNames)
+    return this.filteredCountryNames[0].split(',').map((flag:any) => flag.trim());
   }
   hanldeAddOptionClickMatrix(type: string | null = null) {
   
@@ -2915,6 +2924,10 @@ export class EditSurveyComponent {
       a.download = 'recorded-video.webm';
       a.click();
     }
+  }
+
+  openEndedOption(){
+    this.showDontKnowOption = true
   }
   
   

@@ -6,9 +6,9 @@
                 <div>
                     <h4 ngClass="mb-3">
                         <ng-container *ngIf="filteredCountryNames !== 'Other Country'">
-                            <img matTooltip="{{filteredCountryNames}}"
-                                aria-label="Button that displays a tooltip when focused or hovered over" loading="lazy"
-                                [src]="baseUrl + '/assets/images/country-flag/' + filteredCountryNames" width="30"
+                            <img *ngFor="let flag of countryImageArray" matTooltip="{{filteredCountryNames}}"
+                                aria-label="Button that displays a tooltip when focused or hovered over" loading="lazy" class="ms-2"
+                                [src]="baseUrl + '/assets/images/country-flag/' + flag" width="30"
                                 height="30" alt="{{filteredCountryNames}}" />
                         </ng-container>
                         {{filteredSurveyNames}}
@@ -608,7 +608,7 @@
                             </div>
 
                         </div>
-                        <div class="row">
+                        <div class="row mb-3">
                             <div class="col-md-4">
                                 <input id="answer" type="number" min="1" name="answer" class="form-control"
                                     [(ngModel)]="textlimit" (blur)="validateSurvey()" />
@@ -630,6 +630,162 @@
                                 </div>
                             </div>
 
+                        </div>
+                        <div *ngIf="showDontKnowOption" ngClass="mb-4 mt-4" cdkDropList (cdkDropListDropped)="onDropOption($event)">
+
+                            <div class="row mb-3 border-bottom" style="font-weight: 500;"
+                                >
+                                <div class="flex-width">S. No</div>
+                                <div class="flex-width">Image</div>
+                                <div class="flex-width"></div>
+                                <div class="flex-2">Option</div>
+                                <div class="flex-2" *ngIf="optiondescp || optiondescpisChecked">
+                                    <div class="d-flex">
+                                        <p>Option Description</p>
+    
+                                    </div>
+                                </div>
+                                <div class="flex-width">Delete</div>
+                                <div class="flex-width">Tooltip</div>
+                            </div>
+                            <ng-contaniner >
+                                <div class="row g-2 align-items-center mb-3" *ngFor="let option of optionsArr1;let i=index;"
+                                    cdkDrag>
+                                    <div class="flex-width">
+                                        <input type="text" id="" class="form-control" value="{{i+1}}" readonly />
+                                    </div>
+    
+    
+                                    <!-- this -->
+                                    <div class="flex-width">
+                                        <ngx-dropzone class="edit-survey-img" ngx-dropzone [accept]="'image/*'"
+                                            (change)="onSelectOptionImage($event, i,question.id, i)">
+                                            <ngx-dropzone-label>
+                                                <img [src]="baseUrl + '/assets/images/icons/attach-image.png'" />
+                                            </ngx-dropzone-label>
+                                            <ngx-dropzone-image-preview ngProjectAs="ngx-dropzone-preview"
+                                                *ngFor="let f of optionImages[i]" [file]="f" [removable]="true"
+                                                (removed)="onRemoveSelectOptionImage(f,i)">
+                                            </ngx-dropzone-image-preview>
+                                        </ngx-dropzone>
+                                    </div>
+    
+                                    <div class="flex-width view-img" *ngIf="optionimagennew.length > 0">
+    
+                                        <ng-container>
+                                            <img [src]="optionimagennew[i]" class="img-fluid">
+                                        </ng-container>
+                                    </div>
+                                    <div class="flex-2">
+                                        <input id="answer" type="text" name="answer" class="form-control"
+                                            [(ngModel)]="option.option" (blur)="validateSurvey()" />
+    
+                                        <div *ngIf="!option.option.trim()" class="text-danger" style="position: absolute;">
+                                            Option is required.</div>
+                                    </div>
+    
+                                    <!-- <div class="flex-2" *ngIf="optionaloption || optiondescp || option.optionDescription">
+                                        <input id="answer" type="text" name="answer"  class="form-control" [(ngModel)]="option.optionDescription" placeholder="Option Description" [ngModelOptions]="{standalone: true}" />
+                                            
+                                    </div> -->
+                                    <div class="flex-2"
+                                        *ngIf="option.option !== 'Prefer not to Answer' && option.option !== 'Other (Please specify)' && option.option !== 'None of the above' && option.option !== 'Other' && option.option !== 'Don\'t know /Can\'t say' && (optiondescp || option.optionDescription)">
+                                        <input id="answer" type="text" name="answer" class="form-control"
+                                            [(ngModel)]="option.optionDescription" placeholder="Option Description"
+                                            [ngModelOptions]="{standalone: true}" />
+                                    </div>
+    
+                                    <div class="flex-width text-end">
+                                        <a href="javascript:void(0);" (click)="onDeleteOption('optionArr1',i)">
+                                            <ng-icon name="heroTrash"></ng-icon>
+                                        </a>
+                                    </div>
+                                    <div class="flex-width ms-3 text-end">
+                                        <button *ngIf="!optiontooltipadded[i]" type="button" class="btn btn-primary"
+                                            (click)="addOptionTooltip(i)"
+                                            matTooltip="Click on '+' icon to add tooltip on option"><ng-icon
+                                                name="heroPlusCircle"
+                                                style="font-size: 1.2rem;height: auto;"></ng-icon></button>
+                                        <button *ngIf="optiontooltipadded[i]" type="button" class="btn btn-primary"
+                                            (click)="removeOptionTooltip(i)"
+                                            matTooltip="Click on '-' icon to remove tooltip on option"><ng-icon
+                                                name="heroMinusCircle"
+                                                style="font-size: 1.2rem;height: auto;"></ng-icon></button>
+                                    </div>
+                                    <div *ngIf="optiontooltipadded[i] || option.optionToolTip">
+                                        <div class="bg-light p-4 border rounded d-flex align-items-center">
+                                            <h6 class="mb-0 me-3">ToolTip</h6>
+                                            <div class="d-flex align-items-center" style="flex:1;">
+                                                <div class="flex-2">
+                                                    <input class="form-control" [(ngModel)]="option.optionToolTip"
+                                                        name="tooptip" id="tooptip" type="text" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                            </ng-contaniner>
+    
+                        </div>
+                        <div>
+                            <ng-container >
+                                <hr *ngIf="optionsArr2.length>0" />
+        
+                                <div ngClass="mb-4">
+                                    <div class="row g-2 align-items-center mb-3"
+                                        *ngFor="let option of optionsArr2;let i=index;">
+                                        <div class="flex-width">
+                                            <input type="text" id="" class="form-control" value="{{optionsArr1.length+i+1}}"
+                                                readonly />
+                                        </div>
+        
+                                        <div class="flex-width">
+                                            <ngx-dropzone class="edit-survey-img" ngx-dropzone [accept]="'image/*'"
+                                                (change)="onSelectNewOptionImage($event, i,question.id,option.id)">
+                                                <ngx-dropzone-label>
+                                                    <img [src]="baseUrl + '/assets/images/icons/attach-image.png'" />
+                                                </ngx-dropzone-label>
+                                                <ngx-dropzone-image-preview ngProjectAs="ngx-dropzone-preview"
+                                                    *ngFor="let f of newoptionImages[i]" [file]="f" [removable]="true"
+                                                    (removed)="onRemoveSelectOptionImage(f,i)">
+                                                </ngx-dropzone-image-preview>
+                                            </ngx-dropzone>
+                                        </div>
+                                        <div class="flex-2">
+                                            <input type="text" disabled id="" class="form-control"
+                                                [(ngModel)]="option.option" />
+                                        </div>
+        
+                                        <div class="flex-width text-end">
+                                            <ng-icon name="heroTrash" (click)="onDeleteOption('optionArr2',i)"></ng-icon>
+                                        </div>
+                                        <div class="flex-width ms-3 text-end">
+                                            <button *ngIf="!optiontooltipadded[i]" type="button" class="btn btn-primary"
+                                                (click)="addOptionTooltip(i)"
+                                                matTooltip="Click on '+' icon to add tooltip on option"><ng-icon
+                                                    name="heroPlusCircle"
+                                                    style="font-size: 1.2rem;height: auto;"></ng-icon></button>
+                                            <button *ngIf="optiontooltipadded[i]" type="button" class="btn btn-primary"
+                                                (click)="removeOptionTooltip(i)"
+                                                matTooltip="Click on '-' icon to remove tooltip on option"><ng-icon
+                                                    name="heroMinusCircle"
+                                                    style="font-size: 1.2rem;height: auto;"></ng-icon></button>
+                                        </div>
+                                        <div *ngIf="optiontooltipadded[i] || option.optionToolTip">
+                                            <div class="bg-light p-4 border rounded d-flex align-items-center">
+                                                <h6 class="mb-0 me-3">ToolTip</h6>
+                                                <div class="d-flex align-items-center" style="flex:1;">
+                                                    <div class="flex-2">
+                                                        <input class="form-control" [(ngModel)]="option.optionToolTip"
+                                                            name="tooptip" id="tooptip" type="text" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </ng-container>
                         </div>
                         <!-- <div class="row">
                             <div class="col-md-6">
@@ -700,29 +856,29 @@
 
                         </div>
                     </div>
-                    <div ngClass="mb-4" *ngIf="question.questionTypeName !== 'Open Ended'">
+                    <div ngClass="mb-4" >
                         <div class="row g-2 align-items-center">
-                            <div class="col-auto">
+                            <div class="col-auto" *ngIf="question.questionTypeName !== 'Open Ended'">
                                 <div class="new-options">
                                     <a herf="javascript:void(0);" (click)="hanldeAddOptionClick()"><ng-icon
                                             name="heroPlusCircle"></ng-icon> Add Option</a>
                                 </div>
                             </div>
-                            <div class="col-auto">
+                            <div class="col-auto" *ngIf="question.questionTypeName !== 'Open Ended'">
                                 <div ngClass="new-options">
                                     <a herf="javascript:void(0);" (click)="hanldeAddOptionClick('other')"><ng-icon
                                             name="heroPlusCircle"></ng-icon> Other
                                     </a>
                                 </div>
                             </div>
-                            <div class="col-auto">
+                            <div class="col-auto" *ngIf="question.questionTypeName !== 'Open Ended'">
                                 <div ngClass="new-options">
                                     <a herf="javascript:void(0);" (click)="hanldeAddOptionClick('Optional')"><ng-icon
                                             name="heroPlusCircle"></ng-icon> Add "Other (Please specify)"
                                         Option</a>
                                 </div>
                             </div>
-                            <div class="col-auto">
+                            <div class="col-auto" *ngIf="question.questionTypeName !== 'Open Ended'">
                                 <div ngClass="new-options">
                                     <a herf="javascript:void(0);" (click)="hanldeAddOptionClick('noneOfAbove')"><ng-icon
                                             name="heroPlusCircle"></ng-icon> Add "None of the
@@ -732,20 +888,20 @@
                             </div>
                             <div class="col-auto">
                                 <div ngClass="new-options">
-                                    <a herf="javascript:void(0);" (click)="hanldeAddOptionClick('dontKnow')"><ng-icon
+                                    <a herf="javascript:void(0);" (click)="hanldeAddOptionClick('dontKnow'); openEndedOption()"><ng-icon
                                             name="heroPlusCircle"></ng-icon> Add "Don't
                                         know /Can't say"
                                         Option</a>
                                 </div>
                             </div>
-                            <div class="col-auto">
+                            <div class="col-auto" *ngIf="question.questionTypeName !== 'Open Ended'">
                                 <div ngClass="new-options">
                                     <a herf="javascript:void(0);"
                                         (click)="hanldeAddOptionClick('prefernottoanswer')"><ng-icon
                                             name="heroPlusCircle"></ng-icon>Add "Prefer not to Answer" option</a>
                                 </div>
                             </div>
-                            <div class="col-auto">
+                            <div class="col-auto" *ngIf="question.questionTypeName !== 'Open Ended'">
                                 <div ngClass="new-options">
                                     <a herf="javascript:void(0);" (click)="openLg(content)"><ng-icon
                                             name="heroPlusCircle"></ng-icon> Add Bulk
@@ -2245,7 +2401,7 @@
     <video #videoElement autoplay></video>
     <div>
        <button class="btn btn-primary" (click)="startRecordingVideo()" [disabled]="isRecordingVideo">Start Recording</button>
-       <button class="btn btn-primary" (click)="stopRecordingVideo()" [disabled]="!isRecordingVideo">Stop Recording</button>
+       <button class="btn btn-primary" (click)="stopRecordingVideo();" [disabled]="!isRecordingVideo">Stop Recording</button>
     </div>
     <div *ngIf="recordedVideo" class="m-auto mb-3 d-flex align-items-center gap-2">
         <video  [src]="recordedVideoUrl" controls></video>
