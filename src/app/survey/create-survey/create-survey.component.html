@@ -138,6 +138,38 @@
                     here</a>
             </div>
         </div>
+        <div ngClass="generic-ques">
+            <div class="infocircle mb-2">
+                <h6 class="mb-0">Add Group</h6>
+                <div class="custom-tooltip">
+                    <ng-icon name="heroInformationCircle" ngClass="edit-action info-circle"
+                        (click)="toggleTooltip('2')"></ng-icon>
+                    <div class="toast show" *ngIf="showTooltip['17']">
+                        <div class="toast-header">
+                            <img [src]="baseUrl + '/assets/images/icons/Add-new-question.png'" class="rounded me-2"
+                                width="30" height="30" />
+                            <h6 class="mb-0 me-auto">Add Group</h6>
+                            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"
+                                (click)="hideTooltip('17')"></button>
+                        </div>
+                        <div class="toast-body">
+                           Group
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="common-ques"
+                [class.disabled-link]="(totalItemsCount == 20 && planid == '500') || (totalItemsCount == 50 && planid == '1200')">
+                <a href="javascript:void(0);" (click)="openQuesGroup(quesgroup)">
+                    <figure><img [src]="baseUrl + '/assets/images/icons/Add-new-question.png'" width="30" height="30" />
+                    </figure>
+                    <figcaption>Add Group</figcaption>
+                </a>
+            </div>
+
+
+        </div>
         <div ngClass="my-3">
             <div class="infocircle mb-2">
                 <h6 class="mb-0">Add Logic</h6>
@@ -1885,7 +1917,7 @@
     <div class="modal-body popup-ques">
         <div ngClass="update-ques-type generic-ques">
             <ul>
-                <li *ngFor="let ques of question">
+                <li class="" *ngFor="let ques of question">
                     <a [ngClass]="{'active':(ques.id === selectedQuestionType)}" href="javascript:void(0);"
                         (click)="onQuestionTypeClick(ques.id,ques.type)">
                         <figure>
@@ -2628,6 +2660,49 @@
                 </div>
             </div>
         </div>
+    </div>
+</ng-template>
+
+<!-- Add Group -->
+
+<ng-template #quesgroup let-modal>
+    <div class="modal-header">
+        <h4 class="modal-title">Select Question For Group</h4>
+        <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+    </div>
+    <div class="modal-body popup-ques">
+        <div ngClass="update-ques-type generic-ques">
+            <div class="p-2">
+                <div class="multiselect-option">
+                    <div *ngFor="let item of questions; let i = index"
+                        class="form-check {{item.isDisabled?'disabled':''}}">
+                        <div class="checkbox-wrapper multiselect-img">
+                            <input type="checkbox" [id]="'checkbox_' + i" [value]="item.id"
+                                [checked]="item?.isChecked || false ">
+
+                            <label class="form-check-label" [for]="'checkbox_' + i">
+                                <div class="mb-0">
+                                    <span [innerHTML]="item?.question"></span>
+                                </div>
+
+                            </label>
+
+                        </div>
+                    </div>
+                </div>
+                <!-- <ul>
+                    <li *ngFor="let question of questions; let i=index" >
+                        {{i+1}}.&nbsp;<div [innerHTML]="question?.question"></div>
+                    </li>
+                </ul> -->
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer upload">
+        <button type="button" class="btn close" (click)="modal.close('Close click')">Add</button>
+        <button type="button" class="btn btn-primary icon" (click)="modal.close('Close click')">Create
+            <ng-icon name="heroArrowLongRight" class="ms-4"></ng-icon>
+        </button>
     </div>
 </ng-template>
 

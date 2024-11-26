@@ -203,7 +203,6 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
   isHidden:boolean;
   questionreq: Question = new Question();
   
-  
 
   centerId: number = this.utils.getCenterId();
 
@@ -480,6 +479,9 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
   opensidecontent() {
     const modalRef = this.modalService.open(this.opensidecontent, { /* modal options */ });
   }
+  openQuesGroup(quesgroup: any) {
+    this.modalService.open(quesgroup, { size: 'lg', centered: true });
+  }
   openAddScreen(AddScreen: any) {
     this.modalService.open(AddScreen, { size: 'xl', centered: true });
     this.isActivescreen = !this.isActivescreen;
@@ -522,7 +524,6 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
   GetSurveyDetails(pageSize: number, pageNumber: number) {
 
     this.surveyservice.getSurveyDetailsById(pageNumber, pageSize, this.surveyId).subscribe((data: any) => {
-
 
       if (Array.isArray(data)) {
         this.surveyName = data[0]?.surveyName;
@@ -628,7 +629,7 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
   }
 
   get countryImageArray(): string[] {
-    return this.countryImage.split(',').map((flag:any) => flag.trim());
+    return this.countryImage?.split(',').map((flag:any) => flag.trim());
   }
 
   getCategoryNames() {
@@ -1339,7 +1340,7 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
   createSingleLogicEntry(questionId: any, logicEntry: any, sort: any): void {
     this.createLogicCount++;
     //alert(sort);
-    debugger
+    
     console.log('Inside logicEntry', logicEntry)
     const thanTermValue = logicEntry.thanExpected !== null ? logicEntry.thanExpected : 0;
     const elseTermValue = logicEntry.elseExpected !== null ? logicEntry.elseExpected : 0;
@@ -1381,9 +1382,35 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
 
     console.log("this.questionLogic.ifId",ifIdValue)
 
-    if(ifIdValue === 13){
-      this.questionreq.isRequired = false;
-    }
+    // if(ifIdValue === 13){
+    //   debugger
+    //   const quesid = this.questions?.find((ques:any)=> ques.id === questionId)
+    //   console.log("quesid",quesid.id)
+    //   this.questionreq.isRequired = false;
+    //   this.questionreq.id =quesid?.id;
+    //   this.questionreq.createdDate = this.getCurrentDateTime();
+    //   this.questionreq.modifiedDate = this.getCurrentDateTime();
+    //   if(this.questionreq.id > 0){
+    //     this.surveyservice.updateGeneralQuestion(this.questionreq).subscribe({
+    //       next: (response) => {
+    //         console.log("API Call Success", response);
+    //       },
+    //       error: (error) => {
+    //         console.error("API Call Error", error);
+    //       },
+    //     })
+    //   }else{
+    //     this.surveyservice.CreateGeneralQuestion(this.questionreq).subscribe({
+    //       next: (response) => {
+    //         console.log("API Call Success", response);
+    //       },
+    //       error: (error) => {
+    //         console.error("API Call Error", error);
+    //       },
+    //     })
+    //   }
+    //   debugger
+    // }
 
     this.questionLogic.id = id;
     this.questionLogic.surveyId = this.surveyId;
@@ -1426,7 +1453,7 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
       this.questionLogic.logicConditions[0].ifId = logicEntry.ifIdAndOr;
       this.questionLogic.logicConditions[0].ifExpected = logicEntry.ifExpectedAndOr;
     }
-    debugger
+    
 
     //setTimeout(() => {
     if (this.questionLogic.id > 0) {
@@ -1434,7 +1461,7 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
         response => {
 
           this.utils.showSuccess('Logic Created Successfully.');
-          window.location.reload();
+          //window.location.reload();
         },
         error => {
           console.error('Error occurred while sending POST request:', error);
@@ -1445,7 +1472,7 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
       this.surveyservice.createLogic(this.questionLogic).subscribe(
         response => {
           this.utils.showSuccess('Logic Created Successfully.');
-          window.location.reload();
+         // window.location.reload();
         },
         error => {
           console.error('Error occurred while sending POST request:', error);
@@ -3818,6 +3845,8 @@ deleteAutoCode(){
     }
   });
 }
+
+// adding group
 
 
 
