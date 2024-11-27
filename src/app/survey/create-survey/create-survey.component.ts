@@ -1339,8 +1339,7 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
 
   createSingleLogicEntry(questionId: any, logicEntry: any, sort: any): void {
     this.createLogicCount++;
-    //alert(sort);
-    
+    debugger
     console.log('Inside logicEntry', logicEntry)
     const thanTermValue = logicEntry.thanExpected !== null ? logicEntry.thanExpected : 0;
     const elseTermValue = logicEntry.elseExpected !== null ? logicEntry.elseExpected : 0;
@@ -1382,35 +1381,7 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
 
     console.log("this.questionLogic.ifId",ifIdValue)
 
-    // if(ifIdValue === 13){
-    //   debugger
-    //   const quesid = this.questions?.find((ques:any)=> ques.id === questionId)
-    //   console.log("quesid",quesid.id)
-    //   this.questionreq.isRequired = false;
-    //   this.questionreq.id =quesid?.id;
-    //   this.questionreq.createdDate = this.getCurrentDateTime();
-    //   this.questionreq.modifiedDate = this.getCurrentDateTime();
-    //   if(this.questionreq.id > 0){
-    //     this.surveyservice.updateGeneralQuestion(this.questionreq).subscribe({
-    //       next: (response) => {
-    //         console.log("API Call Success", response);
-    //       },
-    //       error: (error) => {
-    //         console.error("API Call Error", error);
-    //       },
-    //     })
-    //   }else{
-    //     this.surveyservice.CreateGeneralQuestion(this.questionreq).subscribe({
-    //       next: (response) => {
-    //         console.log("API Call Success", response);
-    //       },
-    //       error: (error) => {
-    //         console.error("API Call Error", error);
-    //       },
-    //     })
-    //   }
-    //   debugger
-    // }
+    
 
     this.questionLogic.id = id;
     this.questionLogic.surveyId = this.surveyId;
@@ -1453,6 +1424,44 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
       this.questionLogic.logicConditions[0].ifId = logicEntry.ifIdAndOr;
       this.questionLogic.logicConditions[0].ifExpected = logicEntry.ifExpectedAndOr;
     }
+
+    // if(ifIdValue === 13){
+    //   if(questionId > 0){
+    //     this.questionreq.id =questionId;
+    //   }else{
+    //     this.questionreq.id=0
+    //   }
+    //   const quesid = this.questions?.find((ques:any)=> ques.id === questionId)
+    //   console.log("quesid",quesid)
+    //   this.questionreq.isRequired = false;
+    //   this.questionreq.genericTypeId = quesid.genericTypeId;
+      
+    //   this.questionreq.createdDate = this.getCurrentDateTime();
+    //   this.questionreq.modifiedDate = this.getCurrentDateTime();
+    //   this.questionreq.surveyTypeId = this.surveyId;
+
+    //   if(this.questionreq.id > 0){
+    //     this.surveyservice.updateGeneralQuestion(this.questionreq).subscribe({
+    //       next: (response) => {
+    //         console.log("API Call Success", response);
+    //       },
+    //       error: (error) => {
+    //         console.error("API Call Error", error);
+    //       },
+    //     })
+    //   }else{
+    //     this.surveyservice.CreateGeneralQuestion(this.questionreq).subscribe({
+    //       next: (response) => {
+    //         console.log("API Call Success", response);
+    //       },
+    //       error: (error) => {
+    //         console.error("API Call Error", error);
+    //       },
+    //     })
+    //   }
+      
+    // }
+    
     
 
     //setTimeout(() => {

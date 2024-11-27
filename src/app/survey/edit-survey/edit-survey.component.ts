@@ -385,7 +385,6 @@ export class EditSurveyComponent {
   }
 
   ngOnInit() {
-    
     this.planid = this.utility.getPlanId();
     this.themeService.closeSideBar();
     this.getQuestionListBySurveyId();
@@ -842,7 +841,9 @@ export class EditSurveyComponent {
     
     
     const isSurveyValid = this.validateSurvey();
-    const isHeaderValid = this.validateHeaders()
+    //const isHeaderValid = this.validateHeaders();
+    const isHeaderValid = this.validatedHeaders();
+    console.log("isHeaderValid",isHeaderValid)
     this.isvalidopenended = this.validateOpenEnded();
 
     if(!this.isvalidopenended && (this.question.questionTypeName === 'Open Ended' && (this.question.openEndedType === '' || this.question.openEndedType === 'textarea'))){
@@ -858,7 +859,8 @@ export class EditSurveyComponent {
 
     
     if(this.question.questionTypeName === 'Matrix Choice' || this.question.questionTypeName === 'Continous Sum'){
-      if (!this.validateHeaders()) {
+      if (!isHeaderValid) {
+        console.log("isHeaderValid",isHeaderValid)
         this.utility.showError('Please fill all header fields.');
         return;
       }
@@ -1944,14 +1946,12 @@ export class EditSurveyComponent {
 
       this.surveystatus = filteredSurveys.map(survey => survey.status)
 
-      console.log(this.filteredCountryNames,this.filteredSurveyNames,this.filteredCountryNames,this.filteredCountryNames)
     });
   }
 
 
   get countryImageArray(): string[] {
-    console.log("filteredCountryNames",this.filteredCountryNames)
-    return this.filteredCountryNames[0].split(',').map((flag:any) => flag.trim());
+    return this.filteredCountryNames?.[0]?.split(',').map((flag:any) => flag.trim());
   }
   hanldeAddOptionClickMatrix(type: string | null = null) {
   
@@ -2526,7 +2526,7 @@ export class EditSurveyComponent {
 
         if (Array.isArray(this.matrixAllOptions) && this.matrixAllOptions.length > 0) {
           this.selectedMatricHeaderOptions = []
-          const filteredOptions = this.matrixAllOptions.filter((item: { id: number }) => data[0]?.ifExpected.includes(item.id));
+          const filteredOptions = this.matrixAllOptions.filter((item: { id: number }) => data[0]?.ifExpected?.includes(item.id));
 
           this.selectedMatricHeaderOptions.push(...filteredOptions);
         }
@@ -2929,6 +2929,18 @@ export class EditSurveyComponent {
   openEndedOption(){
     this.showDontKnowOption = true
   }
+
+  validatedHeaders(): boolean {
+    const isAnyOptionEmpty = this.matrixAllOptions.some(option => 
+      !option.header || (typeof option.header === 'string' && option.header.trim() === '')
+    );
+    
+
+    console.log("isAnyOptionEmpty",isAnyOptionEmpty)
+
+    return  !isAnyOptionEmpty
+  }
+
   
   
 

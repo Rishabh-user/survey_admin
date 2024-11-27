@@ -283,7 +283,7 @@ export class QuotaManagementComponent {
     // console.log("activewer", this.activeValue)
 
     this.surveyQuotaJson.questionDto[index].type = type;
-    this.changeUserCount();
+    //this.changeUserCount();
   }
   getQuestionDetail(quesId: any, questionList: any) {
     return questionList?.filter((ques: any) => ques.id == quesId)[0];
@@ -733,8 +733,12 @@ activeIndicesForInterlock(interlockindex: number): number[] {
 
     this.surveyservice.manageQuota(this.surveyQuotaJson, isEdit).subscribe({
       next: (response: any) => {
-        this.getQuotaBySurveyId();
-        //window.location.reload();
+        this.utility.showSuccess("Quota is Saved")
+        //this.getQuotaBySurveyId();
+        setTimeout(() => {
+          window.location.reload();
+        }, 500);
+       
       },
       error: (error: any) => {
         console.log("Error while submitting quota:", error);

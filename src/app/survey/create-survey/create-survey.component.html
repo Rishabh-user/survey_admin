@@ -2674,7 +2674,7 @@
         <div ngClass="update-ques-type generic-ques">
             <div class="p-2">
                 <div class="multiselect-option">
-                    <div *ngFor="let item of questions; let i = index"
+                    <div *ngFor="let item of logicQuestionListById; let i = index"
                         class="form-check {{item.isDisabled?'disabled':''}}">
                         <div class="checkbox-wrapper multiselect-img">
                             <input type="checkbox" [id]="'checkbox_' + i" [value]="item.id"
@@ -2682,7 +2682,7 @@
 
                             <label class="form-check-label" [for]="'checkbox_' + i">
                                 <div class="mb-0">
-                                    <span [innerHTML]="item?.question"></span>
+                                    <span [innerHTML]="item?.item"></span>
                                 </div>
 
                             </label>
