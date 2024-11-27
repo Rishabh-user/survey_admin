@@ -2671,30 +2671,24 @@
         <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
     </div>
     <div class="modal-body popup-ques">
-        <div ngClass="update-ques-type generic-ques">
-            <div class="p-2">
-                <div class="multiselect-option">
-                    <div *ngFor="let item of logicQuestionListById; let i = index"
-                        class="form-check {{item.isDisabled?'disabled':''}}">
-                        <div class="checkbox-wrapper multiselect-img">
-                            <input type="checkbox" [id]="'checkbox_' + i" [value]="item.id"
-                                [checked]="item?.isChecked || false ">
+        <div class="p-2">
+            <div class="multiselect-option">
+                <div *ngFor="let item of logicQuestionListById; let i = index"
+                    class="form-check {{item.isDisabled?'disabled':''}}">
+                    <div class="checkbox-wrapper multiselect-img">
+                        {{groupquesid}}
+                        <input type="checkbox" [id]="'checkbox_' + i" [value]="item.id"
+                            [checked]="item?.isChecked || false" (change)="groupQuesId($event,item.id)">
 
-                            <label class="form-check-label" [for]="'checkbox_' + i">
-                                <div class="mb-0">
-                                    <span [innerHTML]="item?.item"></span>
-                                </div>
+                        <label class="form-check-label" [for]="'checkbox_' + i">
+                            <div class="mb-0">
+                                <span [innerHTML]="item?.item"></span>
+                            </div>
 
-                            </label>
+                        </label>
 
-                        </div>
                     </div>
                 </div>
-                <!-- <ul>
-                    <li *ngFor="let question of questions; let i=index" >
-                        {{i+1}}.&nbsp;<div [innerHTML]="question?.question"></div>
-                    </li>
-                </ul> -->
             </div>
         </div>
     </div>

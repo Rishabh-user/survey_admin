@@ -202,6 +202,8 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
   isopenendedvalue:boolean[][] = [];
   isHidden:boolean;
   questionreq: Question = new Question();
+  groupquesid:any;
+  groupQues:any[]=[];
   
 
   centerId: number = this.utils.getCenterId();
@@ -3856,6 +3858,22 @@ deleteAutoCode(){
 }
 
 // adding group
+
+groupQuesId(event:any,id:any){
+  console.log("event",event.target.checked)
+  console.log("ids",id)
+  if(event.target.checked){
+    if(!this.groupQues.includes(id)){
+      this.groupQues.push(id);
+    }
+  }else{
+    this.groupQues = this.groupQues?.filter((item) => item !== id)
+
+  }
+  
+  console.log("groupQues",this.groupQues)
+
+}
 
 
 

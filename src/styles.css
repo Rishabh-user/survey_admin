@@ -2606,6 +2606,7 @@ th:last-child, td:last-child
     grid-template-columns: repeat(3, 33.33%);
     gap: 10px;
     justify-content: space-between;
+    padding: 0 1.5rem 1rem 0;
 }
 .checkbox-wrapper.image-type input[type=radio]:checked~label {
   background-color: #fdefe7;
@@ -2707,7 +2708,7 @@ th:last-child, td:last-child
     margin-top: 0;
     z-index: 9;
     position: absolute;
-    top: 50%;
+    top: 72%;
     left: 15px;
     transform: translateY(-50%);
 }
