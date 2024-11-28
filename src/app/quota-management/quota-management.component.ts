@@ -905,7 +905,7 @@ activeIndicesForInterlock(interlockindex: number): number[] {
 
   getAllVendorSurveyList() {
     
-    this.surveyservice.getVendorList(this.quotoid).subscribe((data: any) => {
+    this.surveyservice.getVendorListBySurveyId(this.quotoid).subscribe((data: any) => {
       this.vendorsurveydata = data
       console.log("ertyu",this.vendorsurveydata)
 

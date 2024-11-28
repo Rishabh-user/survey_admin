@@ -632,4 +632,9 @@ export class SurveyService {
     return this.http.post(url, data,{ responseType: 'text' });
   }
 
+  getVendorListBySurveyId(surveyId: any): Observable<responseDTO[]> {
+    const url = `${this.apiUrl}api/admin/${this.userId}/Vendar/GetVendorListBySurveyId?surveyId=${surveyId}`;
+    return this.http.get<responseDTO[]>(url);
+  }
+
 }

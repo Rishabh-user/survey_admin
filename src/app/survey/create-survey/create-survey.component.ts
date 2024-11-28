@@ -3871,7 +3871,7 @@ groupQuesId(event:any,id:any){
 
   }
   
-  console.log("groupQues",this.groupQues)
+  console.log("groupQues",this.groupQues);
 
 }
 
