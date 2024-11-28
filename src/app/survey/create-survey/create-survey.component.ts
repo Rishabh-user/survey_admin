@@ -1472,7 +1472,7 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
         response => {
 
           this.utils.showSuccess('Logic Created Successfully.');
-          //window.location.reload();
+          window.location.reload();
         },
         error => {
           console.error('Error occurred while sending POST request:', error);
@@ -1483,7 +1483,7 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
       this.surveyservice.createLogic(this.questionLogic).subscribe(
         response => {
           this.utils.showSuccess('Logic Created Successfully.');
-         // window.location.reload();
+         window.location.reload();
         },
         error => {
           console.error('Error occurred while sending POST request:', error);
