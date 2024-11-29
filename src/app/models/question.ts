@@ -41,4 +41,6 @@ export class Question {
     public questionToolTip: string = '';
     public inputTextArea: boolean = false;
     public inputTextType: boolean = false;
+    public isListRow1:boolean = false;
+    public isListRow2: boolean = false;
 }

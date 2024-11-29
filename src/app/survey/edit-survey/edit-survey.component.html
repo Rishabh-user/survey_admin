@@ -1574,6 +1574,10 @@
                                             data-bs-target="#ansselection" role="tab" aria-selected="false">Question
                                             Limit</button>
                                     </li>
+                                    <li class="nav-item" role="presentation">
+                                        <button class="nav-link" id="answerlogicrow-tab" data-bs-toggle="tab"
+                                            data-bs-target="#answerlogicrow" role="tab" aria-selected="false">Answer Logic</button>
+                                    </li>
                                 </ul>
                                 <div class="tab-content p-4">
                                     <div class="tab-pane active" id="answerlogic" role="tabpanel"
@@ -2109,9 +2113,83 @@
                                             </div>
                                         </div>
                                     </div>
+                                       
+                                    <div class="tab-pane" id="answerlogicrow" role="tabpanel"
+                                        aria-labelledby="answerlogicrow-tab">
+                                        <!-- <h5 ngClass="mb-4">Matrix Logic</h5> -->
+                                        <div ngClass="mb-4">
+                                            <div class="logic-tab">
+                                                <!-- Logic Question -->
+                                                <div class="tab-content p-4">
+                                                    <div class="tab-pane active" id="branching" role="tabpanel"
+                                                        aria-labelledby="branching-tab">
+                                                        <div class="infocircle justify-content-start mb-4">
+                                                            <h5>Create Answer Logic</h5>
+                                                            <div class="custom-tooltip ms-2">
+                                                                <ng-icon name="heroInformationCircle"
+                                                                    ngClass="edit-action info-circle"
+                                                                    (click)="toggleTooltip('7')"></ng-icon>
+                                                                <div class="toast show" *ngIf="showTooltip['7']">
+                                                                    <div class="toast-header">
+                                                                        <img [src]="baseUrl + '/assets/images/icons/Add-new-question.png'"
+                                                                            class="rounded me-2" width="30"
+                                                                            height="30" />
+                                                                        <h6 class="mb-0 me-auto">Create Answer selection
+                                                                            Limit
+                                                                        </h6>
+                                                                        <button type="button" class="btn-close"
+                                                                            data-bs-dismiss="toast" aria-label="Close"
+                                                                            (click)="hideTooltip('7')"></button>
+                                                                    </div>
+                                                                    <div class="toast-body">
+                                                                        By implementing Matrix Header Logic, you can
+                                                                        dynamically show or hide
+                                                                        answer options based on the respondents'
+                                                                        answers. This feature
+                                                                        not only streamlines the survey-taking process
+                                                                        but also ensures that
+                                                                        respondents are presented with relevant
+                                                                        questions, leading to
+                                                                        more
+                                                                        accurate and insightful data.
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div ngClass="d-flex justify-content-between mb-3">
+                                                            <h6>Redirect to different questions based on user's answer.
+                                                            </h6>
 
+                                                        </div>
+                                                       <div>
+                                                        <div class="col-md-12">
+                                                            <div class="form-check form-check-inline">
+                                                                <input class="form-check-input" type="radio" name="rowlevel1" value="rowlevel1"
+                                                                    id="rowlevel1" [(ngModel)]="rowlevetype" (change)="checkInputType()">
+                                                                <label class="form-check-label" for="rowlevel1">List of rows selected in previous question.</label>
+                                                            </div>
+                                                            <div class="form-check form-check-inline">
+                                                                <input class="form-check-input" type="radio" name="rowlevel2" value="rowlevel2"
+                                                                    id="rowlevel2" [(ngModel)]="rowlevetype" (change)="checkInputType()">
+                                                                <label class="form-check-label" for="rowlevel2">List of rows which are not selected in prevoius question.</label>
+                                                            </div>
+                                                        </div>
+                                                        <div>
+                                                            <button type="button" class="btn btn-primary px-5"
+                                                            (click)="onSave()">Save
+                                                            Logic</button>
+                                                        </div>
+                                                        
+                                                       </div>
+                                                        
+                                                    </div>
 
+                                                </div>
 
+                                            </div>
+                                            
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>

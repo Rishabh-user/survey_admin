@@ -151,6 +151,9 @@ export class EditSurveyComponent {
   inputTextType:any;
   isvalidopenended:boolean=false;
   showDontKnowOption:boolean = false;
+  isListRow2: boolean = false;
+  isListRow1: boolean = false;
+  rowlevetype:any
   
 
   constructor(public themeService: DataService, private router: Router,
@@ -232,6 +235,11 @@ export class EditSurveyComponent {
         this.inputtype = 'textarea'
       }else{
         this.inputtype ='textfield'
+      }
+      if(data.isListRow1){
+        this.rowlevetype = 'rowlevel1'
+      }else{
+        this.rowlevetype ='rowlevel2'
       }
 
       if(this.questionSummery){
@@ -899,6 +907,7 @@ export class EditSurveyComponent {
     };
 
     this.checkInputType();
+    this.rowLevelCondition();
 
     // Update the question properties if necessary
     if (this.groups.length > 0) {
@@ -1083,7 +1092,7 @@ export class EditSurveyComponent {
             this.utility.showError('Question Created Failed')
           } else  if (resp === '"QuestionSuccessfullyUpdated"') {
             this.utility.showSuccess('Question Updated Successfully.');
-             window.location.reload();
+             //window.location.reload();
             // let url = `/survey/manage-survey/${this.crypto.encryptParam(this.surveyId)}`;
             // this.router.navigateByUrl(url);
             //  window.location.reload();
@@ -2939,6 +2948,17 @@ export class EditSurveyComponent {
     console.log("isAnyOptionEmpty",isAnyOptionEmpty)
 
     return  !isAnyOptionEmpty
+  }
+
+
+  rowLevelCondition(){
+    if(this.rowlevetype == 'rowlevel1'){
+      this.question.isListRow1= true;
+      this.question.isListRow2 = false;
+    }else{
+      this.question.isListRow2 = true;
+      this.question.isListRow1= false;
+    }
   }
 
   
