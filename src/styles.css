@@ -2639,7 +2639,6 @@ th:last-child, td:last-child
 
 .form-control {
   border: 1px solid var(--border-color);
-  margin-top: 1rem;
 }
 
 .add-screen-ques>div {
