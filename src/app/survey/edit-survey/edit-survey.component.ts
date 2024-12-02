@@ -238,7 +238,8 @@ export class EditSurveyComponent {
       }
       if(data.isListRow1){
         this.rowlevetype = 'rowlevel1'
-      }else{
+      }
+      if(data.isListRow2){
         this.rowlevetype ='rowlevel2'
       }
 
