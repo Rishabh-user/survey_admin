@@ -127,7 +127,7 @@
                     <hr>
                     <div>
                         <a *ngIf="!showAvalibility" href="javascript:void(0);" type="button" class=""
-                            (click)="showSerialAvailability()">More
+                            (click)="showSerialAvailability()">Additional Setting
                         </a>
                         <a *ngIf="showAvalibility" href="javascript:void(0);" type="button" class=""
                             (click)="hideSerialAvailability()">Less
@@ -167,7 +167,7 @@
                                 <div class="d-flex justify-content-end">
                                     <div class="form-check form-switch">
                                         <input class="form-check-input" type="checkbox" role="switch"
-                                            [(ngModel)]="isdesktopRequired" [ngModelOptions]="{standalone: true}"
+                                            [(ngModel)]="isDesktopMode" [ngModelOptions]="{standalone: true}"
                                             name="isChecked" (change)="onDesktopReq($event)"
                                             style="width: 2.5rem;height: 1.4rem;">
                                     </div>
@@ -183,7 +183,7 @@
                                 <div class="d-flex justify-content-end">
                                     <div class="form-check form-switch">
                                         <input class="form-check-input" type="checkbox" role="switch"
-                                            [(ngModel)]="isMobileRequired" [ngModelOptions]="{standalone: true}"
+                                            [(ngModel)]="isMobileMode" [ngModelOptions]="{standalone: true}"
                                             name="isChecked" (change)="onMobileReq($event)"
                                             style="width: 2.5rem;height: 1.4rem;">
                                     </div>
@@ -199,7 +199,7 @@
                                 <div class="d-flex justify-content-end">
                                     <div class="form-check form-switch">
                                         <input class="form-check-input" type="checkbox" role="switch"
-                                            [(ngModel)]="isTabletRequired" [ngModelOptions]="{standalone: true}"
+                                            [(ngModel)]="isTabletMode" [ngModelOptions]="{standalone: true}"
                                             name="isChecked" (change)="onTabletReq($event)"
                                             style="width: 2.5rem;height: 1.4rem;">
                                     </div>

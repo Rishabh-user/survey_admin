@@ -49,6 +49,10 @@ export class DashboardComponent {
   planid: any
   cdr: any;
   isDisabled: boolean = true;
+  showAvalibility:boolean = false;
+  isDesktopMode:boolean = true;
+  isMobileMode:boolean = true;
+  isTabletMode:boolean = true;
   constructor(private visibilityService: DataService, private modalService: NgbModal, public themeService: DataService,
     public surveyservice: SurveyService, private auth: AuthService, private utility: UtilsService, private crypto: CryptoService, private router: Router,
     private csvService: SurveyService,
@@ -516,7 +520,10 @@ export class DashboardComponent {
         otherCategory: this.categoryName,
         // countryId: this.selectedCountryId,
         countryId: this.joinedCountryIds,
-        isQNumberRequired: this.isQNumberRequired
+        isQNumberRequired: this.isQNumberRequired,
+        isTabletMode:this.isTabletMode,
+        isDesktopMode:this.isDesktopMode,
+        isMobileMode:this.isMobileMode
       };
 
 
@@ -569,6 +576,22 @@ export class DashboardComponent {
       this.totalItemsCount = data.totalCount;
       this.cdr.detectChanges();
     });
+  }
+
+  showSerialAvailability(){
+    this.showAvalibility = true
+  }
+  hideSerialAvailability(){
+    this.showAvalibility = false
+  }
+  onDesktopReq(event: any) {
+    this.isDesktopMode = event.target.checked;
+  }
+  onMobileReq(event: any) {
+    this.isMobileMode = event.target.checked;
+  }
+  onTabletReq(event: any) {
+    this.isTabletMode = event.target.checked;
   }
 
 }

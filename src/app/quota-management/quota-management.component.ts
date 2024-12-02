@@ -79,7 +79,7 @@ export class QuotaManagementComponent {
     this.surveyQuotaJson.createdDate = new Date();
     this.surveyQuotaJson.surveyId = this.surveyId;
     this.surveyQuotaJson.status = this.status;
-    this.surveyQuotaJson.vendarId = this.vendorid;
+    //this.surveyQuotaJson.vendarId = this.vendorid;
   }
 
 
@@ -222,7 +222,7 @@ export class QuotaManagementComponent {
   }
 
   changeUserCount() {
-    this.surveyQuotaJson.questionDto.forEach((question: any) => {
+    this.surveyQuotaJson?.questionDto?.forEach((question: any) => {
       const options = question.optionsDto;
       const totalOptions = options.length;
       console.log("options",options)
@@ -725,7 +725,7 @@ activeIndicesForInterlock(interlockindex: number): number[] {
   manageQuota() {
 
     let isEdit = false;
-    this.surveyQuotaJson.vendarId = this.vendorid
+    //this.surveyQuotaJson.vendarId = this.vendorid
     if (this.surveyQuotaJson.quotaId > 0) {
       isEdit = true;
     }

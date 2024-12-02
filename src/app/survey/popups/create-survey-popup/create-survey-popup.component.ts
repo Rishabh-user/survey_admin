@@ -39,9 +39,9 @@ export class CreateSurveyPopupComponent {
   selectedCountry: { id: string; name: string; images: string }[]  = [];
   suggestions: any[] = [];
   showAvalibility:boolean = false;
-  isdesktopRequired:boolean = false;
-  isMobileRequired:boolean = false;
-  isTabletRequired:boolean = false;
+  isDesktopMode:boolean = true;
+  isMobileMode:boolean = true;
+  isTabletMode:boolean = true;
   //selectedCountryId: string | null = null;
 
 
@@ -188,7 +188,10 @@ export class CreateSurveyPopupComponent {
         otherCategory: this.categoryName,
         //countryId: this.selectedCountryId,
         countryId: this.joinedCountryIds,
-        isQNumberRequired: this.isQNumberRequired
+        isQNumberRequired: this.isQNumberRequired,
+        isTabletMode:this.isTabletMode,
+        isDesktopMode:this.isDesktopMode,
+        isMobileMode:this.isMobileMode
       };
 
 
@@ -266,12 +269,12 @@ export class CreateSurveyPopupComponent {
     this.showAvalibility = false
   }
   onDesktopReq(event: any) {
-    this.isdesktopRequired = event.target.checked;
+    this.isDesktopMode = event.target.checked;
   }
   onMobileReq(event: any) {
-    this.isMobileRequired = event.target.checked;
+    this.isMobileMode = event.target.checked;
   }
   onTabletReq(event: any) {
-    this.isTabletRequired = event.target.checked;
+    this.isTabletMode = event.target.checked;
   }
 }
