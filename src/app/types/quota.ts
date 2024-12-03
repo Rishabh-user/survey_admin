@@ -1,7 +1,7 @@
 export class QuotaData {
-    quotaId: number;
+    quotaId: number =0;
     surveyId: number;
-    totalUsers: number;
+    totalUsers: number = 0;
     createdDate: Date;
     centerId: number;
     status: string;

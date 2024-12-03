@@ -24,6 +24,7 @@ import { DomSanitizer,SafeHtml } from '@angular/platform-browser';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import { MatixHeaderLogics } from 'src/app/models/logic';
 import { QuestionLogic } from 'src/app/models/question-logic';
+import { fastDiff } from '@ckeditor/ckeditor5-utils';
 
 @Component({
   selector: 'app-edit-survey',
@@ -154,6 +155,9 @@ export class EditSurveyComponent {
   isListRow2: boolean = false;
   isListRow1: boolean = false;
   rowlevetype:any
+  questimeouton:boolean = false;
+  enablequestime:boolean = false;
+  audiorecord:any
   
 
   constructor(public themeService: DataService, private router: Router,
@@ -231,6 +235,7 @@ export class EditSurveyComponent {
       this.question.openEndedType = data.openEndedType
       this.minLimit = data.minLimit;
       this.isHidden = data.isHidden;
+      this.audiorecord = data.audio;
       if(data.inputTextArea){
         this.inputtype = 'textarea'
       }else{
@@ -954,7 +959,8 @@ export class EditSurveyComponent {
     this.question.isRequired = this.openendedquesreq;
     this.question.minLimit = this.minLimit;
     this.question.isHidden = this.isHidden;
-    this.question.audio = this.audioUrl
+    //this.question.audio = this.audioUrl
+    this.question.audio = this.audiorecord
 
     let modifiedoptions: serveyOption[] = [];
     let matrixoption: MatrixHeader[]=[]
@@ -1093,7 +1099,7 @@ export class EditSurveyComponent {
             this.utility.showError('Question Created Failed')
           } else  if (resp === '"QuestionSuccessfullyUpdated"') {
             this.utility.showSuccess('Question Updated Successfully.');
-             window.location.reload();
+            window.location.reload();
             // let url = `/survey/manage-survey/${this.crypto.encryptParam(this.surveyId)}`;
             // this.router.navigateByUrl(url);
             //  window.location.reload();
@@ -2961,6 +2967,81 @@ export class EditSurveyComponent {
       this.question.isListRow1= false;
     }
   }
+
+  onEnableTimeout(event: any) {
+    this.questimeouton = event.target.checked;
+    if(this.questimeouton){
+      this.enablequestime = true;
+    }else{
+      this.enablequestime = false;
+    }
+  }
+
+
+  filesAudio: File[] = [];
+
+  // onSelectAudio(event: any): void {
+  //   const maxFileSize = 15 * 1024 * 1024; // 15MB
+  //   for (const file of event.addedFiles) {
+  //     if (file.size <= maxFileSize) {
+  //       const reader = new FileReader();
+  //       reader.onload = () => {
+  //         if (!this.filesAudio.some(f => f.name === file.name)) {
+  //           this.filesAudio.push({ 
+  //             name: file.name, 
+  //             type: file.type, 
+  //             url: reader.result as string 
+  //           });
+  //         }
+  //       };
+  //       console.log("filesAudio",file.name)
+  //       this.audiorecord = file.name
+  //       reader.readAsDataURL(file); 
+  //     } else {
+  //       alert('File size exceeds 15MB limit');
+  //     }
+  //   }
+  // }
+
+  // onRemoveAudio(file: { name: string; type: string; url: string }): void {
+  //   this.filesAudio = this.filesAudio.filter(f => f.name !== file.name);
+  // }
+  uploadAudio(file: File): void {
+
+    let queryParams = null;
+    if (this.questionId != 0) {
+      queryParams = {
+        qid: this.questionId
+      };
+    }
+    this.surveyservice.uploadQuesAudio(file, queryParams).subscribe(
+      (response: String) => {
+
+        this.audiorecord = response
+        this.audiorecord = response.replace(/"/g, '');
+        this.utility.showSuccess("Uploaded Succesfully")
+      },
+      (error) => {
+        this.utility.showError("Video not uploaded")
+        console.error('Error occurred while uploading:', error);
+      }
+    );
+  }
+
+  onSelectAudio(event: any) {
+    const file = event.addedFiles && event.addedFiles.length > 0 ? event.addedFiles[0] : null;
+
+    if (file) {
+      this.filesAudio.push(file); 
+      this.uploadAudio(file); 
+    }
+  }
+  onRemoveAudio(event: any) { // Use 'any' as the event type
+
+    this.filesAudio.splice(this.files.indexOf(event), 1);
+    this.audiorecord =''
+  }
+
 
   
   

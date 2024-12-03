@@ -179,6 +179,22 @@
                                 name="questionSummery" class="large-editor" [ngModelOptions]="{standalone: true}">
                             </ckeditor>
                         </div>
+                        <div class="mt-3">
+                            <div class="d-flex align-items-center mb-3">
+                                <h6 class="mb-0">Enable Question Timeout</h6>
+                                <div class="mb-0 ms-4">
+                                    <div class="form-check form-switch">
+                                        <input class="form-check-input" type="checkbox" role="switch" name="isChecked"
+                                            (change)="onEnableTimeout($event)" [(ngModel)]="questimeouton"
+                                            style="width: 2.5rem;height: 1.4rem;">
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- <textarea class="form-control" [(ngModel)]="questionSummery" rows="5"></textarea> -->
+                            <div *ngIf="enablequestime">
+                                <input type="text" class="form-control">
+                            </div>
+                        </div>
 
                     </div>
                     <div class="mb-3" *ngIf="planid == 2500 || planid == 0">
@@ -250,6 +266,7 @@
                                         <figcaption>Attach Image</figcaption>
 
                                     </div>
+                                    
                                     <div *ngIf="question.image && question.image !== (imageurl + 'Files/Images/') && questionfilesImage.length === 0"
                                         class="videourl onhover-text" (mouseover)="showCaption = true"
                                         (mouseleave)="showCaption = false">
@@ -325,20 +342,6 @@
                                     </div>
                                 </div>
                             </li>
-                            <!-- <li>
-                                <ngx-dropzone ngx-dropzone [accept]="'video/*'" (change)="onSelectVideo($event)">
-                                    <ngx-dropzone-label>
-                                        <figure><img [src]="baseUrl+'/assets/images/icons/attach-video.png'" width="64"
-                                                height="58" /></figure>
-                                        <figcaption>Attach Video</figcaption>
-                                    </ngx-dropzone-label>
-                                    <ngx-dropzone-image-preview ngProjectAs="ngx-dropzone-preview"
-                                        *ngFor="let f of filesVideo" [file]="f" [removable]="true"
-                                        (removed)="onRemoveVideo(f)">
-
-                                    </ngx-dropzone-image-preview>
-                                </ngx-dropzone>
-                            </li> -->
                             <li (click)="openLgUrl(videourl)">
                                 <div class="youtubeurl">
                                     <div class="videourl" *ngIf="!youtubeUrl">
@@ -358,22 +361,23 @@
                             </li>
                             <li (click)="openLgAudioRecording(audiorecording)">
                                 <div class="youtubeurl">
+                                    <div class="videourl">
+                                        <figure><img [src]="baseUrl+'/assets/images/icons/attach-video.png'" width="64"
+                                                height="58" /></figure>
+                                        <figcaption>Attach Audio </figcaption>
+
+                                    </div>
+
+                                </div>
+                                <!-- <div class="youtubeurl">
                                     <div class="videourl" *ngIf="!youtubeUrl">
                                         <figure><img [src]="baseUrl+'/assets/images/icons/videourl.png'" width="64"
                                                 height="58" /></figure>
                                         <figcaption>Audio Recording</figcaption>
                                     </div>
-                                    <div *ngIf="youtubeUrl " class="videourl" (mouseover)="showiframeCaption = true"
-                                        (mouseleave)="showiframeCaption = false">
-                                        <figure><img [src]="baseUrl+'/assets/images/icons/videourl.png'" width="64"
-                                                height="58" /></figure>
-                                        <figcaption>Audio Recording</figcaption>
-                                        <div class="iframelink" *ngIf="showiframeCaption">Change Attachment</div>
-
-                                    </div>
-                                </div>
+                                </div> -->
                             </li>
-                            <li (click)="openLgVideoRecord(videorecord)">
+                            <!-- <li (click)="openLgVideoRecord(videorecord)">
                                 <div class="youtubeurl">
                                     <div class="videourl" *ngIf="!youtubeUrl">
                                         <figure><img [src]="baseUrl+'/assets/images/icons/videourl.png'" width="64"
@@ -389,7 +393,7 @@
 
                                     </div>
                                 </div>
-                            </li>
+                            </li> -->
                         </ul>
                     </div>
                 </div>
@@ -2577,7 +2581,7 @@
         <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
     </div>
 
-    <div class="audio-recording">
+    <!-- <div class="audio-recording">
         <button class="btn btn-primary" (click)="startRecording()" [disabled]="isRecording">Start Recording</button>
         <button class="btn btn-primary" (click)="stopRecording()" [disabled]="!isRecording">Stop Recording</button>
     </div>
@@ -2585,6 +2589,37 @@
         <audio controls [src]="audioUrl"></audio>
         <button type="button" class="btn btn-danger" (click)="removeAudio()"><ng-icon
                 name="heroTrash"></ng-icon></button>
+    </div> -->
+    <div class="modal-body popup-ques">
+        <div class="row">
+            <div class="col-md-12">
+                <form>
+                    <div>
+                        <ngx-dropzone (change)="onSelectAudio($event)"  [accept]="'audio/*'" [ngClass]="'drop-file'">
+                            <ngx-dropzone-label>
+                                <img [src]="baseUrl +'/assets/images/icons/attach-image.png'" />
+                                <a href="javascript:"><u>Click to upload</u></a> <span> or drag and drop</span>
+                                <p>Max. File Size: 15MB</p>
+                            </ngx-dropzone-label>
+                            <ngx-dropzone-preview *ngFor="let f of filesAudio" [removable]="true" (removed)="onRemoveAudio(f)">
+                                <audio controls [src]="f" alt="Uploaded Audio"></audio>
+                                <ngx-dropzone-label>{{ f.name }} ({{ f.type }})</ngx-dropzone-label>
+                            </ngx-dropzone-preview>
+                        </ngx-dropzone>
+                
+                    </div>
+                    <div *ngIf="audiorecord && question.audio !== (imageurl + 'Files/Audio/') && filesAudio.length === 0"
+                            class="videourl onhover-text mt-4" (mouseover)="showCaptionvideo = true"
+                                (mouseleave)="showCaptionvideo = false">
+                            <figure class="image-figure">
+                                <audio width="100%" controls>
+                                    <source [src]="audiorecord" type="audio/mp4" />
+                                </audio>
+                            </figure>
+                    </div>
+                </form>
+            </div>
+        </div>
     </div>
     <div class="modal-footer upload">
         <button type="button" class="btn btn-primary icon" (click)="modal.close('Close click')">Add

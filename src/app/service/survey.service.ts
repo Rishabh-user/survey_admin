@@ -637,4 +637,16 @@ export class SurveyService {
     return this.http.get<responseDTO[]>(url);
   }
 
+
+  uploadQuesAudio(file: File, queryParams: any): Observable<any> {
+    const formData = new FormData();
+    formData.append('file', file, file.name);
+    let url = `${this.apiUrl}api/admin/${this.userId}/GeneralQuestion/UploadQuestionAudio`;
+    if (queryParams) {
+      const queryParamsString = new URLSearchParams(queryParams).toString();
+      url += `?${queryParamsString}`;
+    }
+    return this.http.post(url, formData, { responseType: 'text' });
+  }
+
 }

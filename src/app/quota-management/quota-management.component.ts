@@ -733,11 +733,11 @@ activeIndicesForInterlock(interlockindex: number): number[] {
 
     this.surveyservice.manageQuota(this.surveyQuotaJson, isEdit).subscribe({
       next: (response: any) => {
-        this.utility.showSuccess("Quota is Saved")
-        //this.getQuotaBySurveyId();
-        setTimeout(() => {
-          window.location.reload();
-        }, 500);
+        //this.utility.showSuccess("Quota is Saved")
+        this.getQuotaBySurveyId();
+        // setTimeout(() => {
+        //   window.location.reload();
+        // }, 500);
        
       },
       error: (error: any) => {
