@@ -1402,7 +1402,7 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
     this.questionLogic.timesPeriod = timesPeriodValue;
     this.questionLogic.sort = sort;
 
-
+    debugger
     if (!this.questionLogic.logicConditions[0]) {
       this.questionLogic.logicConditions[0] = {
         id: 0,

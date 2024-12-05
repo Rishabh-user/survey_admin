@@ -1092,7 +1092,7 @@
 
 
                             <div class="flex-2">
-                                <input id="answer" type="number" name="answer" class="form-control"
+                                <input id="answer" type="text" name="answer" class="form-control"
                                     [(ngModel)]="option.header" (blur)="validateSurvey()" />
                                 <div *ngIf="!option.header.trim()" class="text-danger" style="position: absolute;">
                                     Option is required.</div>
@@ -1172,10 +1172,13 @@
                                 </div>
                             </div>
 
+                           
+
                         </div>
                     </div>
                 </div>
             </li>
+            
             <li *ngIf="question.questionTypeName === 'Continous Sum'">
                 <div ngClass="border-top p-4">
                     <div ngClass="select-ans-choice mb-5">
@@ -2301,8 +2304,11 @@
                                                             </div>
                                                         </div>
                                                         <div class="mt-4">
-                                                            <button type="button" class="btn btn-primary px-5"
+                                                            <button type="button" class="btn btn-primary"
                                                             (click)="onSave()">Save
+                                                            Logic</button>
+                                                            <button type="button" class="btn btn-primary ms-3"
+                                                            (click)="deleteRowLevelCondition()">Delete
                                                             Logic</button>
                                                         </div>
                                                         

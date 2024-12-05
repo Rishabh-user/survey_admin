@@ -2962,9 +2962,11 @@ export class EditSurveyComponent {
     if(this.rowlevetype == 'rowlevel1'){
       this.question.isListRow1= true;
       this.question.isListRow2 = false;
+      console.log("isListRow1",this.question.isListRow1)
     }else{
       this.question.isListRow2 = true;
       this.question.isListRow1= false;
+      console.log("isListRow2",this.question.isListRow2)
     }
   }
 
@@ -3041,6 +3043,315 @@ export class EditSurveyComponent {
     this.filesAudio.splice(this.files.indexOf(event), 1);
     this.audiorecord =''
   }
+
+
+  deleteRowLevelCondition() {
+
+    // Validate the survey
+    console.log("all options",this.allOptions)
+    if (!this.validateSurveySno() && this.quesserialno === 'true') {
+      this.utility.showError('Please fill required fields.');
+      return;
+    }
+    
+    
+    const isSurveyValid = this.validateSurvey();
+    //const isHeaderValid = this.validateHeaders();
+    const isHeaderValid = this.validatedHeaders();
+    console.log("isHeaderValid",isHeaderValid)
+    this.isvalidopenended = this.validateOpenEnded();
+
+    if(!this.isvalidopenended && (this.question.questionTypeName === 'Open Ended' && (this.question.openEndedType === '' || this.question.openEndedType === 'textarea'))){
+      this.utility.showError("Checkbox is required");
+      console.log("isvalidopenended",this.isvalidopenended)
+      return
+    }
+
+    if (!isSurveyValid ) {
+      this.utility.showError('Please fill all required fields.');
+      return;
+    }
+
+    
+    if(this.question.questionTypeName === 'Matrix Choice' || this.question.questionTypeName === 'Continous Sum'){
+      if (!isHeaderValid) {
+        console.log("isHeaderValid",isHeaderValid)
+        this.utility.showError('Please fill all header fields.');
+        return;
+      }
+    }
+
+   
+
+    const isAnyOptionNonUnique = (new Set(this.allOptions.map(option => option.option.trim()))).size !== this.allOptions.length;
+    if (isAnyOptionNonUnique) {
+      this.utility.showError('Duplicate option value.');
+      return;
+    }
+
+    for (let i = 0; i < this.groups.length; i++) {
+      if (this.categoryNameChecks[i] === true) {
+        const group = this.groups[i];
+        if (!(group.isRandomize || group.isExcluded || group.isFlipNumber || group.isRotate)) {
+          // this.categoryNameChecks[i] = false;
+            this.utility.showError("Select at least one radio button for group " + group.id);
+            return;
+          
+        }
+      }
+    }
+    
+
+    if (this.optionExists("Other (Please specify)") || this.optionExists("Prefer not to Answer")) {
+      this.question.openEndedType = "text";
+    }
+
+    // Prepare data to send
+    const dataToSend = {
+      name: this.question.question,
+      categoryId: this.categoryId,
+      countryId: this.question.questionTypeName
+    };
+
+    this.rowLevelCondition();
+
+    // Update the question properties if necessary
+    if (this.groups.length > 0) {
+      this.question.isGrouping = true;
+    }
+    if (this.questionId > 0) {
+      this.question.id = this.questionId;
+    }
+    if (this.question.questionTypeName === 'Open Ended' && (this.question.openEndedType === '' || this.question.openEndedType === 'textarea')) {
+
+      //this.allOptions = []
+
+      this.question.openEndedType = "textarea"
+
+      if(this.textlimit === ''){
+        this.question.textLimit = null;
+      } else{
+        this.question.textLimit = this.textlimit;
+      }
+      // this.question.textLimit = this.textlimit
+    }
+    if (this.question.questionTypeName === 'Auto Continues Sum') {
+      this.question.textLimit = this.textlimit
+    }
+    // else{
+    //   this.question.openEndedType = 'text'
+    // }
+    
+  
+
+
+    this.question.image = this.questionImage;
+    this.question.video = this.videoupload;
+    this.question.youtubeUrl = this.youtubeUrl;
+    this.question.colorCode = this.colorCode
+    this.question.qNo = this.qNo
+    this.question.isNumeric =  this.numeric
+    this.question.isAlphabet = this.alphabet;
+    // this.question.inputTextArea = this.inputTextArea;
+    // this.question.inputTextType = this.inputTextType;
+    this.question.description = this.description;
+    this.question.questionToolTip = this.questionToolTip;
+    this.question.isRequired = this.openendedquesreq;
+    this.question.minLimit = this.minLimit;
+    this.question.isHidden = this.isHidden;
+    //this.question.audio = this.audioUrl
+    this.question.audio = this.audiorecord
+    this.question.isListRow1 = false;
+    this.question.isListRow2 = false;
+
+    let modifiedoptions: serveyOption[] = [];
+    let matrixoption: MatrixHeader[]=[]
+
+    this.matrixAllOptions.forEach((option: any) => {
+
+      let headerOption = new MatrixHeader();
+      headerOption.id = option.id;
+      headerOption.header = option.header
+      headerOption.createdDate = option.createdDate;
+      headerOption.modifiedDate = option.modifiedDate;
+      headerOption.status = option.status;
+      headerOption.sort = option.sort;
+      headerOption.headerToolTip = option.headerToolTip;
+      headerOption.headerDescription = option.headerDescription;
+      
+
+      matrixoption.push(headerOption)
+
+    });
+    
+    
+    
+    if(this.question.questionTypeName === 'Slider Scale' && this.questionId == 0) {
+      this.allOptions.forEach((option,index) => {
+        let modifiedOption = new serveyOption();
+
+        modifiedOption.createdDate = option.createdDate;
+        modifiedOption.group = option.group;
+        modifiedOption.id = option.id;
+        modifiedOption.imageAdded = option.imageAdded;
+        modifiedOption.isExcluded = option.isExcluded;
+        modifiedOption.isFixed = option.isFixed;
+        modifiedOption.isRandomize = option.isRandomize;
+        modifiedOption.isFlipNumber = option.isFlipNumber;
+        modifiedOption.isRotate = option.isRotate;
+        modifiedOption.isSelected = option.isSelected;
+        modifiedOption.isVisible = option.isVisible;
+
+        modifiedOption.keyword = option.keyword;
+        modifiedOption.modifiedDate = option.modifiedDate;
+        modifiedOption.option = option.option;
+        modifiedOption.selected = option.selected;
+        modifiedOption.sort = option.sort;
+        modifiedOption.status = option.status;
+        modifiedOption.optionToolTip = option.optionToolTip;
+        // modifiedOption.optionDescription = option.optionDescription;
+        if (index === 0) {
+          modifiedOption.optionDescription = 'Not at all likely';
+        } else if (index === this.allOptions.length - 1) {
+          modifiedOption.optionDescription = 'Extremely likely';
+        } else {
+          modifiedOption.optionDescription = option.optionDescription;
+        }
+        modifiedOption.image = option.imageAdded ? option.image : null;
+        modifiedoptions.push(modifiedOption);
+      });
+    } else if(this.question.questionTypeName === 'Slider Scale' && this.questionId >0){
+      
+      this.allOptions.forEach((option,index) => {
+        let modifiedOption = new serveyOption();
+
+        modifiedOption.createdDate = option.createdDate;
+        modifiedOption.group = option.group;
+        modifiedOption.id = option.id;
+        modifiedOption.imageAdded = option.imageAdded;
+        modifiedOption.isExcluded = option.isExcluded;
+        modifiedOption.isFixed = option.isFixed;
+        modifiedOption.isRandomize = option.isRandomize;
+        modifiedOption.isFlipNumber = option.isFlipNumber;
+        modifiedOption.isRotate = option.isRotate;
+        modifiedOption.isSelected = option.isSelected;
+        modifiedOption.isVisible = option.isVisible;
+
+        modifiedOption.keyword = option.keyword;
+        modifiedOption.modifiedDate = option.modifiedDate;
+        modifiedOption.option = option.option;
+        modifiedOption.selected = option.selected;
+        modifiedOption.sort = option.sort;
+        modifiedOption.status = option.status;
+        modifiedOption.optionToolTip = option.optionToolTip;
+        modifiedOption.optionDescription = option.optionDescription;
+        // if (index === 0) {
+        //   modifiedOption.optionDescription = 'Not at all likely';
+        // } else if (index === this.allOptions.length - 1) {
+        //   modifiedOption.optionDescription = 'Extremely likely';
+        // } else {
+        //   modifiedOption.optionDescription = option.optionDescription;
+        // }
+        modifiedOption.image = option.imageAdded ? option.image : null;
+        modifiedoptions.push(modifiedOption);
+      });
+      
+    } else {
+      this.allOptions.forEach((option) => {
+        let modifiedOption = new serveyOption();
+  
+        modifiedOption.createdDate = option.createdDate;
+        modifiedOption.group = option.group;
+        modifiedOption.id = option.id;
+        modifiedOption.imageAdded = option.imageAdded;
+        modifiedOption.isExcluded = option.isExcluded;
+        modifiedOption.isFixed = option.isFixed;
+        modifiedOption.isRandomize = option.isRandomize;
+        modifiedOption.isFlipNumber = option.isFlipNumber;
+        modifiedOption.isRotate = option.isRotate;
+        modifiedOption.isSelected = option.isSelected;
+        modifiedOption.isVisible = option.isVisible;
+  
+        modifiedOption.keyword = option.keyword;
+        modifiedOption.modifiedDate = option.modifiedDate;
+        modifiedOption.option = option.option;
+        modifiedOption.selected = option.selected;
+        modifiedOption.sort = option.sort;
+        modifiedOption.status = option.status;
+        modifiedOption.optionToolTip = option.optionToolTip;
+        modifiedOption.optionDescription = option.optionDescription;
+        modifiedOption.image = option.imageAdded ? option.image : null;
+        modifiedoptions.push(modifiedOption);
+      });
+    }
+    
+
+    this.question.options = modifiedoptions;
+    this.question.matrixHeader= matrixoption;
+    this.question.piping = this.questionsortvalue
+    this.question.questionSummery = this.questionSummery
+
+    // Send the request based on whether it's an update or creation
+    if (parseFloat(this.questionId) > 0) {
+      // Update existing question
+      this.surveyservice.updateGeneralQuestion(this.question).subscribe({
+        next: (resp: any) => {
+          this.categoryNameCheck = false;
+          if(resp === '"QuestionCreateFailed"') {
+            this.utility.showError('Question Created Failed')
+          } else  if (resp === '"QuestionSuccessfullyUpdated"') {
+            this.utility.showSuccess('Question Updated Successfully.');
+            window.location.reload();
+            // let url = `/survey/manage-survey/${this.crypto.encryptParam(this.surveyId)}`;
+            // this.router.navigateByUrl(url);
+            //  window.location.reload();
+            
+          } 
+        },
+        error: (err: any) => {
+          this.utility.showError('error');
+        }
+      });
+    } else {
+      this.surveyservice.CreateGeneralQuestion(this.question).subscribe({
+        next: (resp: any) => {
+          this.categoryNameCheck = false;
+          // this.utility.showSuccess('Question Generated Successfully.');
+          // let url = `/survey/manage-survey/${this.crypto.encryptParam(this.surveyId)}`;
+          // this.router.navigateByUrl(url);
+          // this.onSaveEvent.emit();
+          if (resp == '"QuestionCreateFailed"') {
+            this.utility.showError('Failed to Create Question');
+          } else if(resp == '"QuestionSuccessfullyCreated"') {
+            this.utility.showSuccess('Question Generated Successfully.');
+            let url = `/survey/manage-survey/${this.crypto.encryptParam(this.surveyId)}`;
+            this.router.navigateByUrl(url);
+            this.onSaveEvent.emit();
+          }
+           else {
+            this.utility.showError(resp)
+          }
+        },
+        error: (err: any) => {
+          this.utility.showError('error');
+        }
+      });
+    }
+
+
+  }
+  // deleteRowLevelCondition(){
+  //   if(this.question.isListRow1){
+  //     this.question.isListRow1 = false
+  //   }
+  //   if(this.question.isListRow2){
+  //     this.question.isListRow2 = false
+  //   }
+
+  // }
+
+
+  
 
 
   
