@@ -26,6 +26,7 @@ import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { MatixHeaderLogics } from 'src/app/models/logic';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+import { OpenendedFormComponent } from '../popups/openended-form/openended-form.component';
 
 // import { debug } from 'console';
 
@@ -125,6 +126,7 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
   @ViewChild('OccupationModal', { static: true }) occupationModal!: ModalDirective;
   @ViewChild('MonthlyIncomeModalforeign', { static: true }) monthlyincomeforeignModal!: ModalDirective;
   @ViewChild('DescriptionScreenModal', { static: true }) DescriptionScreenModal!: ModalDirective;
+  @ViewChild('opendendedformModal', { static: true }) opendendedformModal!: ModalDirective;
 
   public Editor = ClassicEditor;
 
@@ -399,9 +401,13 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
       this.secLsmModal.show();
     } else if (type === "DESC") {
       this.DescriptionScreenModal.show();
-    } else if (type === "Occupation") {
+    } 
+    else if (type === "Occupation") {
       this.occupationModal.show();
     }
+    // else if (type === "Occupation") {
+    //   this.opendendedformModal.show();
+    // }
 
   }
   onGenericQuestionClickDesc(type: any): void {

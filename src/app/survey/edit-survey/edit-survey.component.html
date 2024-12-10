@@ -191,8 +191,8 @@
                                 </div>
                             </div>
                             <!-- <textarea class="form-control" [(ngModel)]="questionSummery" rows="5"></textarea> -->
-                            <div *ngIf="enablequestime">
-                                <input type="text" class="form-control">
+                            <div class="col-md-2" *ngIf="enablequestime">
+                                <input type="text" class="form-control" [(ngModel)]="timeOut" [ngModelOptions]="{standalone: true}" placeholder="Enter time in seconds">
                             </div>
                         </div>
 
@@ -2627,30 +2627,6 @@
             </div>
         </div>
     </div>
-    <div class="modal-footer upload">
-        <button type="button" class="btn btn-primary icon" (click)="modal.close('Close click')">Add
-            <ng-icon name="heroArrowLongRight" class="ms-4"></ng-icon>
-        </button>
-    </div>
-</ng-template>
-<ng-template #videorecord let-modal>
-    <div class="modal-header">
-        <h4 class="modal-title">Add Video Recording</h4>
-        <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
-    </div>
-
-    <video #videoElement autoplay></video>
-    <div>
-       <button class="btn btn-primary" (click)="startRecordingVideo()" [disabled]="isRecordingVideo">Start Recording</button>
-       <button class="btn btn-primary" (click)="stopRecordingVideo();" [disabled]="!isRecordingVideo">Stop Recording</button>
-    </div>
-    <div *ngIf="recordedVideo" class="m-auto mb-3 d-flex align-items-center gap-2">
-        <video  [src]="recordedVideoUrl" controls></video>
-    </div>
-        
-    
-   
-
     <div class="modal-footer upload">
         <button type="button" class="btn btn-primary icon" (click)="modal.close('Close click')">Add
             <ng-icon name="heroArrowLongRight" class="ms-4"></ng-icon>

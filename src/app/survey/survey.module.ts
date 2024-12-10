@@ -56,8 +56,6 @@ import { VendarSurveyListComponent } from './vendar-survey-list/vendar-survey-li
 
 @NgModule({
   declarations: [
-
-    
     VendarSurveyListComponent,
   ],
   imports: [

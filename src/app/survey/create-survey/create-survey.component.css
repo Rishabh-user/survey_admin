@@ -25,3 +25,6 @@
   }
 
  
+.group-ques .checkbox-wrapper{height: auto;}
+.group-ques .checkbox-wrapper input[type=checkbox], .group-ques .checkbox-wrapper input[type=radio]{position: absolute;}
+.group-ques .multiselect-option input~label.form-check-label{padding: 1rem;}

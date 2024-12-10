@@ -157,7 +157,8 @@ export class EditSurveyComponent {
   rowlevetype:any
   questimeouton:boolean = false;
   enablequestime:boolean = false;
-  audiorecord:any
+  audiorecord:any;
+  timeOut:number
   
 
   constructor(public themeService: DataService, private router: Router,
@@ -455,7 +456,6 @@ export class EditSurveyComponent {
     });
     
     this.getMultiAnsLimitValues();
-    this.initCamera();
     
   }
 
@@ -959,6 +959,7 @@ export class EditSurveyComponent {
     this.question.isRequired = this.openendedquesreq;
     this.question.minLimit = this.minLimit;
     this.question.isHidden = this.isHidden;
+    this.question.timeOut = this.timeOut;
     //this.question.audio = this.audioUrl
     this.question.audio = this.audiorecord
 
@@ -1099,7 +1100,7 @@ export class EditSurveyComponent {
             this.utility.showError('Question Created Failed')
           } else  if (resp === '"QuestionSuccessfullyUpdated"') {
             this.utility.showSuccess('Question Updated Successfully.');
-            window.location.reload();
+            //window.location.reload();
             // let url = `/survey/manage-survey/${this.crypto.encryptParam(this.surveyId)}`;
             // this.router.navigateByUrl(url);
             //  window.location.reload();
@@ -2818,129 +2819,12 @@ export class EditSurveyComponent {
 
   }
 
-  private mediaRecorder: MediaRecorder | null = null;
-  private audioChunks: Blob[] = [];
-  public audioUrl: string | null = null;
-  public isRecording: boolean = false;
-  audiorecording:any
-  isRecordingaudio:boolean = false
-
-  startRecording() {
-    if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-      navigator.mediaDevices.getUserMedia({ audio: true })
-        .then((stream) => {
-          this.mediaRecorder = new MediaRecorder(stream);
-  
-          this.mediaRecorder.ondataavailable = (event: BlobEvent) => {
-            console.log('Audio chunk available:', event.data);
-            this.audioChunks.push(event.data);
-          };
-  
-          this.mediaRecorder.onstop = () => {
-            if (this.audioChunks.length > 0) {
-              const audioBlob = new Blob(this.audioChunks, { type: 'audio/mp3' });  
-              console.log('Audio Blob:', audioBlob);  
-              this.audioUrl = URL.createObjectURL(audioBlob);
-              const url= URL.revokeObjectURL(this.audioUrl)
-              console.log("url",url)
-              this.audioChunks = []; 
-            } else {
-              console.error('No audio data to create Blob.');
-            }
-          };
-  
-          this.mediaRecorder.start();
-          this.isRecording = true;
-        })
-        .catch((error) => {
-          console.error('Error accessing microphone:', error);
-        });
-    } else {
-      console.error('MediaRecorder not supported on this browser.');
-    }
-  }
-  
-  stopRecording() {
-    if (this.mediaRecorder) {
-      this.mediaRecorder.stop();
-      this.isRecording = false;
-      this.isRecordingaudio = true;
-    }
-  }
-
-  removeAudio() {
-    this.audioUrl = null;  
-    this.isRecordingaudio = false
-  }
 
 
   //video
 
 
-  mediaRecorderVideo!: MediaRecorder;
-  recordedChunks: Blob[] = [];
-  recordedVideoUrl: string | null = null;
-  stream: MediaStream | null = null;  
-  public isRecordingVideo: boolean = false;
-  recordedVideo:boolean = false;
-  
-  async initCamera() {
-    try {
-      this.stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
-      
-      this.videoElement.nativeElement.srcObject = this.stream;
-      
-      this.videoElement.nativeElement.onloadedmetadata = () => {
-        console.log('Video stream initialized');
-      };
-    } catch (error) {
-      console.error('Error accessing camera:', error);
-    }
-  }
-  
-  startRecordingVideo() {
-    if (!this.stream) {
-      console.error('No media stream available');
-      return;
-    }
-  
-    this.mediaRecorderVideo = new MediaRecorder(this.stream);
-    this.recordedChunks = [];
-  
-    this.mediaRecorderVideo.ondataavailable = (event) => {
-      if (event.data.size > 0) {
-        this.recordedChunks.push(event.data);
-      }
-    };
-  
-    this.mediaRecorderVideo.onstop = () => {
-      const blob = new Blob(this.recordedChunks, { type: 'video/webm' });
-      this.recordedVideoUrl = URL.createObjectURL(blob);
-      console.log("recordedVideoUrl",this.recordedVideoUrl)
-    };
-  
-    this.mediaRecorderVideo.start();
-    this.isRecordingVideo = true;
-    console.log('Recording started');
-  }
-  
-  stopRecordingVideo() {
-    if (this.mediaRecorderVideo ) {
-      this.mediaRecorderVideo.stop();
-      this.isRecordingVideo = false;
-      this.recordedVideo = true;
-      console.log('Recording stopped');
-    }
-  }
-  
-  downloadVideo() {
-    if (this.recordedVideoUrl) {
-      const a = document.createElement('a');
-      a.href = this.recordedVideoUrl;
-      a.download = 'recorded-video.webm';
-      a.click();
-    }
-  }
+
 
   openEndedOption(){
     this.showDontKnowOption = true

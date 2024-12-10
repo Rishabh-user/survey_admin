@@ -1,0 +1,72 @@
+<div class="modal right-aligned-modal fade" bsModal #opendendedformModal="bs-modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-fullscreen">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Please select field for your form</h4>
+                <button type="button" class="btn-close" (click)="close()"></button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div>
+                        <div class="mb-4">
+
+                            <div class="infocircle justify-content-start">
+                                <label for="surveyname" class="form-label">Enter Your Question</label>
+                                
+                
+                            </div>
+                            <div class="mb-2">
+                                <input type="text" class="form-control" 
+                                readonly/>
+                            </div>
+                        </div>
+                        <div class="mb-4">
+                            <div ngClass="select-options">
+                                <h5>Select Options</h5>
+                            </div>
+                            <div ngClass="nametext mb-4">
+                                <button type="button"  class="btn btn-outline-primary" (click)="addFormFiled()">Add Form Field</button>
+                            </div> 
+                        </div>
+                        <div>
+                            <form>
+                                <div>
+                                    <label for="lablename" class="form-label">Label Name</label>
+                                    <input type="text" class="form-control"/>
+                                </div>
+                                <div>
+                                    <label for="validationtype" class="form-label">Validation Type</label>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="validationtype" id="email">
+                                        <label class="form-check-label" for="email">
+                                           Email Validation
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="validationtype" id="phone">
+                                        <label class="form-check-label" for="phone">
+                                           Phone Validation
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="validationtype" id="text" >
+                                        <label class="form-check-label" for="text">
+                                           Text Validation
+                                        </label>
+                                    </div>
+                                    <button type="button"  class="btn btn-primary w-100" (click)="removeFormField()">Remove</button>
+                                </div>
+                               
+                            </form>
+                        </div>
+                        
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button"  class="btn btn-primary w-100">Continue</button>
+            </div>
+        </div>
+    </div>
+</div>
+

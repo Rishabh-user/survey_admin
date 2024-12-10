@@ -70,6 +70,7 @@ import { ForeignCountryTravelledPopupComponent } from '../survey/popups/foreign-
 import { CreateSurveyPopupComponent } from '../survey/popups/create-survey-popup/create-survey-popup.component';
 import { MonthlyIncomeForeignPopupComponent } from '../survey/popups/monthly-income-foreign-popup/monthly-income-foreign-popup.component';
 import { DescriptionScreenComponent } from '../survey/popups/description-screen/description-screen.component';
+import { OpenendedFormComponent } from '../survey/popups/openended-form/openended-form.component';
 import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
 @NgModule({
   declarations: [
@@ -120,7 +121,8 @@ import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
     SecLsmPopupComponent,
     OccupationPopupComponent,
     DescriptionScreenComponent,
-
+    OpenendedFormComponent
+    
   ],
   imports: [
     MatChipsModule,
@@ -192,7 +194,7 @@ import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
     SecBnSlPopupComponent,
     FlsmPopupComponent,
     SecLsmPopupComponent,
-    OccupationPopupComponent,
+    OccupationPopupComponent
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 
