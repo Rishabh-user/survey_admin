@@ -61,7 +61,10 @@ export class QuotaManagementComponent {
   constructor(private route: ActivatedRoute, private visibilityService: DataService, private crypto: CryptoService,
     private modalService: NgbModal, private surveyservice: SurveyService, private utils: UtilsService, private utility: UtilsService) {
     this.baseUrl = environment.baseURL;
-    this.initializeQuotaData();
+    if(this.surveyQuotaJson?.quotaId === undefined || this.surveyQuotaJson.quotaId <= 0){
+      this.initializeQuotaData();
+    }
+    // this.initializeQuotaData();
     this.route.paramMap.subscribe(params => {
       let _queryData = params.get('param1');
       if (_queryData) {
@@ -638,8 +641,11 @@ export class QuotaManagementComponent {
     this.surveyservice.getQuotaBySurveyId(this.quotoid).subscribe({
       next: (data: any) => {
         this.isQuotasVisible = true;
-
-        this.initializeQuotaData();
+        this.surveyQuotaJson.quotaId = data.quotaId;
+        // this.initializeQuotaData();
+        // if(this.surveyQuotaJson?.quotaId === undefined || this.surveyQuotaJson.quotaId <= 0){
+        //   this.initializeQuotaData();
+        // }
 
         data.questionDto.forEach((quesid: any) => {
           let selectedquesid = new QuestionDto();
@@ -703,9 +709,15 @@ export class QuotaManagementComponent {
       next: (data: any) => {
         this.isQuotasVisible = true;
 
-        this.initializeQuotaData();
+        // this.initializeQuotaData();
+        // if(this.surveyQuotaJson?.quotaId === undefined || this.surveyQuotaJson.quotaId <= 0){
+        //   this.initializeQuotaData();
+        // }
         this.quotaid = data.quotaId
         this.surveycount = data.totalUsers;
+        this.surveyQuotaJson.totalUsers = data.totalUsers
+        this.surveyQuotaJson.quotaId = data.quotaId
+        this.surveyQuotaJson.questionDto = data.questionDto
         this.vendorid = 390
 
         console.log("quotabyid json", this.surveyQuotaJson)
@@ -728,6 +740,7 @@ export class QuotaManagementComponent {
   manageQuota() {
 
     let isEdit = false;
+    this.surveyQuotaJson.surveyId = this.surveyId;
     //this.surveyQuotaJson.vendarId = this.vendorid
     if (this.surveyQuotaJson.quotaId > 0) {
       isEdit = true;
@@ -772,7 +785,11 @@ export class QuotaManagementComponent {
   onDeleteQuota() {
     this.surveyservice.deleteQuota(this.surveyQuotaJson.quotaId).subscribe({
       next: (response: any) => {
-        this.getQuotaBySurveyId();
+        this.utility.showSuccess("Quota Delete successfully");
+        setTimeout(() => {
+          window.location.reload();
+        }, 500);
+        //this.getQuotaBySurveyId();
       },
       error: (error: any) => {
         console.log("Error while submitting quota:", error);
