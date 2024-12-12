@@ -601,40 +601,46 @@
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-md-4">
+                            <div class="col-md-1">
                                 <label class="mb-3">Word Limit</label>
-                            </div>
-                            <div class="col-md-4">
-                                <label>Input Count</label>
-                            </div>
-                            <div class="col-md-4">
-                                <label>Input Type</label>
-                            </div>
-
-                        </div>
-                        <div class="row mb-3">
-                            <div class="col-md-4">
                                 <input id="answer" type="number" min="1" name="answer" class="form-control"
-                                    [(ngModel)]="textlimit" (blur)="validateSurvey()" />
+                                [(ngModel)]="textlimit" (blur)="validateSurvey()" />
                             </div>
-                            <div class="col-md-4">
+                            <div class="col-md-1">
+                                <label class="mb-3">Input Count</label>
                                 <input id="answer" type="number" min="1" name="answer" class="form-control"
                                     [(ngModel)]="minLimit" (blur)="validateSurvey()" />
                             </div>
-                            <div class="col-md-4">
-                                <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="textarea" value="textarea"
-                                        id="textarea" [(ngModel)]="inputtype" (change)="checkInputType()">
-                                    <label class="form-check-label" for="textarea">Textarea</label>
+                            <div class="col-md-2">
+                                <label class="mb-3">Input Type</label>
+                                <div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="textarea" value="textarea"
+                                            id="textarea" [(ngModel)]="inputtype" (change)="checkInputType()">
+                                        <label class="form-check-label" for="textarea">Textarea</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="textarea" value="textfield"
+                                            id="textfield" [(ngModel)]="inputtype" (change)="checkInputType()">
+                                        <label class="form-check-label" for="textfield">Textfield</label>
+                                    </div>
                                 </div>
-                                <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="textarea" value="textfield"
-                                        id="textfield" [(ngModel)]="inputtype" (change)="checkInputType()">
-                                    <label class="form-check-label" for="textfield">Textfield</label>
-                                </div>
+                                
                             </div>
 
                         </div>
+                        <!-- <div class="row mb-3">
+                            <div class="col-md-4">
+                               
+                            </div>
+                            <div class="col-md-4">
+                                
+                            </div>
+                            <div class="col-md-4">
+                                
+                            </div>
+
+                        </div> -->
                         <div *ngIf="showDontKnowOption" ngClass="mb-4 mt-4" cdkDropList (cdkDropListDropped)="onDropOption($event)">
 
                             <div class="row mb-3 border-bottom" style="font-weight: 500;"
