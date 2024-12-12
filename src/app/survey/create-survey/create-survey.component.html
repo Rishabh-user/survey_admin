@@ -2756,6 +2756,26 @@
                     </div>
                 </div>
             </div>
+            <div class="multiselect-option group-ques">                
+                <div class="grouped-question">
+                    <h5 class="mb-3">Group 1</h5>
+                    <div *ngFor="let item of logicQuestionListById; let i = index"
+                        class="form-check {{item.isDisabled?'disabled':''}}">
+                        <div class="checkbox-wrapper multiselect-img">
+                            {{groupquesid}}
+                            <input type="checkbox" [id]="'checkbox_' + i" [value]="item.id"
+                                [checked]="item?.isChecked || false" (change)="groupQuesId($event,item.id)">
+
+                            <label class="form-check-label" [for]="'checkbox_' + i">
+                                <div class="mb-0">
+                                    <span [innerHTML]="item?.item"></span>
+                                </div>
+
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
     <div class="modal-footer upload">

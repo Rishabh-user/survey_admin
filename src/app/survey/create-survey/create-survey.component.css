@@ -25,6 +25,9 @@
   }
 
  
-.group-ques .checkbox-wrapper{height: auto;}
+.group-ques .checkbox-wrapper{height: auto;margin-left: 0;}
 .group-ques .checkbox-wrapper input[type=checkbox], .group-ques .checkbox-wrapper input[type=radio]{position: absolute;}
-.group-ques .multiselect-option input~label.form-check-label{padding: 1rem;}
+.group-ques.multiselect-option input~label.form-check-label{padding: 1rem 3rem;}
+.multiselect-option.group-ques { display: block;}
+.group-ques.multiselect-option .form-check input{top:50%;}
+.grouped-question { border: 1px solid #ccc; padding: 1rem; border-radius: .5rem;}
