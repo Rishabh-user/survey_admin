@@ -43,7 +43,7 @@
                 
                
                 <mat-form-field>
-                    <mat-select (selectionChange)="vendorSelectId($event)" [(ngModel)]="vendorid" #selectElement >
+                    <mat-select (selectionChange)="vendorSelectId($event)" [(ngModel)]="vendarId" #selectElement >
                         <mat-option *ngFor="let option of vendorsurveydata" [value]="option.id" >
                         {{ option.firstName }} {{option.lastName}}
                         </mat-option>
@@ -78,14 +78,12 @@
             <label class="form-label">Total Count</label>
             <div class="row g-3 mb-4">
                 <div class="col-12 d-flex gap-2 align-items-center">
-                        <input type="number" class="form-control mt-0" name="surveycount" [(ngModel)]="surveyQuotaJson.totalUsers"
-                        (blur)="showQuotas()" (ngModelChange)="changeUserCount();">
-                        <button type="button" class="btn btn-primary" (click)="manageQuota()">Save</button>
-                        <button type="button" class="btn btn-danger" (click)="onDeleteQuota()"><ng-icon name="heroTrash"></ng-icon></button>
-
-                    
-                    <div *ngIf="showCountError" class="text-danger">Please enter a valid survey count.</div>
+                    <input type="number" class="form-control mt-0" name="surveycount" [(ngModel)]="surveyQuotaJson.totalUsers"
+                    (blur)="showQuotas()" (ngModelChange)="changeUserCount();">
+                    <button type="button" class="btn btn-primary" (click)="manageQuota()">Save</button>
+                    <button type="button" class="btn btn-danger" (click)="onDeleteQuota()"><ng-icon name="heroTrash"></ng-icon></button>
                 </div>
+                <div *ngIf="showCountError" class="text-danger">Please enter a valid survey count.</div>
             </div>
         </div>
         <div class="mt-4" *ngIf="role != 'Client' && role !='Vendor'">

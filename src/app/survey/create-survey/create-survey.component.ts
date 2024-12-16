@@ -989,7 +989,6 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
       (response) => {
         if (response && response.length > 0) {
 
-
           // Iterate through each logic entry in the response
           response.forEach((logic: any, logicIndex: number) => {
             if (!this.selectedOptionsLogic[index]) {
@@ -1052,22 +1051,22 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
               id: logic.id,
               ifId: logic.ifId,
               ifExpected: logic.ifExpected,
-              questionIdAndOr: logic.logicConditions[0].questionId,
-              ifIdAndOr: logic.logicConditions[0].ifId, // Assuming there's only one logic condition
-              ifExpectedAndOr: logic.logicConditions[0].ifExpected, // Assuming there's only one logic condition
+              questionIdAndOr: logic.logicConditions[0]?.questionId,
+              ifIdAndOr: logic.logicConditions[0]?.ifId, // Assuming there's only one logic condition
+              ifExpectedAndOr: logic.logicConditions[0]?.ifExpected, // Assuming there's only one logic condition
               thanId: logic.thanId,
               thanExpected: logic.thanExpected,
               elseId: logic.elseId,
               elseExpected: logic.elseTerm,
-              isAnd: logic.logicConditions[0].isAnd, // Assuming there's only one logic condition
-              isOr: logic.logicConditions[0].isOr, // Assuming there's only one logic condition
+              isAnd: logic.logicConditions[0]?.isAnd, // Assuming there's only one logic condition
+              isOr: logic.logicConditions[0]?.isOr, // Assuming there's only one logic condition
               popupText: logic.popupText,
               isEveryTime: logic.isEveryTime,
               timesPeriod: logic.timesPeriod,
               popupTextElse: null,
               isEveryTimeElse: false,
               timesPeriodElse: 0,
-              andOrId: logic.logicConditions[0].id
+              andOrId: logic.logicConditions[0]?.id
             };
             if (newLogicEntry.elseExpected === "null")
               newLogicEntry.elseExpected = 0
@@ -1167,6 +1166,7 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
           //this.questions[index].isLogicShow = !this.questions[index].isLogicShow;
           //alert('Second '+this.questions[index].isLogicShow)
         }
+        
       },
       (error) => {
 

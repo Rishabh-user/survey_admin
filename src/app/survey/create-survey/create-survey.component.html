@@ -288,7 +288,7 @@
                                 (click)="hideTooltip('8')"></button>
                         </div>
                         <div class="toast-body">
-                            Redirection
+                            Add multiple redirect links, including Quota Full, Terminate, and Complete links, to guide respondents based on their survey progress.
                         </div>
                     </div>
                 </div>
@@ -388,7 +388,27 @@
                     <div class="tab-content p-4">
                         <div class="tab-pane active" id="randomaisation" role="tabpanel"
                             aria-labelledby="randomaisation-tab">
-                            <h5 ngClass="mb-4">Randomization</h5>
+                            <div class="d-flex gap-1">
+                                <h5 ngClass="mb-4">Randomization</h5>
+                                <div class="custom-tooltip">
+                                    <ng-icon name="heroInformationCircle" ngClass="edit-action info-circle"
+                                        (click)="toggleTooltip('18')"></ng-icon>
+                                    <div class="toast show" *ngIf="showTooltip['18']">
+                                        <div class="toast-header">
+                                            <img [src]="baseUrl + '/assets/images/icons/Add-new-question.png'"
+                                                class="rounded me-2" width="30" height="30" />
+                                            <h6 class="mb-0 me-auto">Question Randomization</h6>
+                                            <button type="button" class="btn-close" data-bs-dismiss="toast"
+                                                aria-label="Close" (click)="hideTooltip('18')"></button>
+                                        </div>
+                                        <div class="toast-body">
+                                            Define the range for question randomization. Enter the starting and ending question numbers in the first two boxes. 
+                                            Use the third box to specify how many questions should be displayed randomly in the survey.
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
                             <div ngClass="mb-3 d-flex justify-content-between align-items-center">
                                 <h6 class="mb-0">Randomize a set of questions (From Question To Question)
                                 </h6>
@@ -454,7 +474,26 @@
                         </div>
 
                         <div class="tab-pane" id="autocode" role="tabpanel" aria-labelledby="autocode-tab">
-                            <h5 ngClass="mb-4">Autocode</h5>
+                            
+                            <div class="d-flex gap-1">
+                                <h5 ngClass="mb-4">Autocode</h5>
+                                <div class="custom-tooltip">
+                                    <ng-icon name="heroInformationCircle" ngClass="edit-action info-circle"
+                                        (click)="toggleTooltip('19')"></ng-icon>
+                                    <div class="toast show" *ngIf="showTooltip['19']">
+                                        <div class="toast-header">
+                                            <img [src]="baseUrl + '/assets/images/icons/Add-new-question.png'"
+                                                class="rounded me-2" width="30" height="30" />
+                                            <h6 class="mb-0 me-auto">Autocode</h6>
+                                            <button type="button" class="btn-close" data-bs-dismiss="toast"
+                                                aria-label="Close" (click)="hideTooltip('19')"></button>
+                                        </div>
+                                        <div class="toast-body">
+                                            Select the survey where respondents should be redirected after completing the current survey.
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                             <div ngClass="mb-3 row">
 
                                 <div class="mb-3">
@@ -492,7 +531,25 @@
                         <div class="tab-pane" id="blank" role="tabpanel" aria-labelledby="blank-tab">
 
                             <div class="d-flex mb-2">
-                                <h5 ngClass="mb-4 me-2">End Screen</h5>
+                                <div>
+                                    <h5 ngClass="mb-4 me-2">End Screen</h5>
+                                    <div class="custom-tooltip">
+                                        <ng-icon name="heroInformationCircle" ngClass="edit-action info-circle"
+                                            (click)="toggleTooltip('20')"></ng-icon>
+                                        <div class="toast show" *ngIf="showTooltip['20']">
+                                            <div class="toast-header">
+                                                <img [src]="baseUrl + '/assets/images/icons/Add-new-question.png'"
+                                                    class="rounded me-2" width="30" height="30" />
+                                                <h6 class="mb-0 me-auto">End Screen</h6>
+                                                <button type="button" class="btn-close" data-bs-dismiss="toast"
+                                                    aria-label="Close" (click)="hideTooltip('20')"></button>
+                                            </div>
+                                            <div class="toast-body">
+                                                Prevent respondents from being terminated until they reach the specified question in the survey.
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                                 <div class="custom-tooltip">
                                     <ng-icon name="heroInformationCircle" ngClass="edit-action info-circle"
                                         (click)="toggleTooltip('9')"></ng-icon>

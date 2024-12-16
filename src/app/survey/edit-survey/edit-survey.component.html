@@ -926,14 +926,27 @@
                 <div ngClass="border-top p-4">
                     <div ngClass="select-ans-choice mb-5">
                         <h5>Column</h5>
-                        <div class="mb-2 ms-4 d-flex align-items-center">
-                            <h6 class="mb-0 me-2">Enable Description</h6>
-                            <div class="form-check form-switch">
-                                <input class="form-check-input" type="checkbox" role="switch"
-                                    [(ngModel)]="matrixdescpisChecked" name="isChecked"
-                                    (change)="onCheckboxOptionMatrix($event)" style="width: 2.5rem;height: 1.4rem;">
+                        
+                        <div class="mb-2 ms-4 d-flex align-items-center gap-3">
+                            <div class="d-flex align-items-center">
+                                <h6 class="mb-0 me-2">SL Flag</h6>
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input" type="checkbox" role="switch"
+                                        [(ngModel)]="slflagchecked" name="isChecked"
+                                        (change)="onCheckSLFlag($event)" style="width: 2.5rem;height: 1.4rem;">
+                                </div>
                             </div>
+                            <div class="d-flex align-items-center">
+                                <h6 class="mb-0 me-2">Enable Description</h6>
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input" type="checkbox" role="switch"
+                                        [(ngModel)]="matrixdescpisChecked" name="isChecked"
+                                        (change)="onCheckboxOptionMatrix($event)" style="width: 2.5rem;height: 1.4rem;">
+                                </div>
+                            </div>
+                            
                         </div>
+                        
 
                     </div>
                     <div ngClass="mb-4" cdkDropList (cdkDropListDropped)="onDropOption($event)">
@@ -2169,16 +2182,7 @@
                                                                             (click)="hideTooltip('7')"></button>
                                                                     </div>
                                                                     <div class="toast-body">
-                                                                        By implementing Matrix Header Logic, you can
-                                                                        dynamically show or hide
-                                                                        answer options based on the respondents'
-                                                                        answers. This feature
-                                                                        not only streamlines the survey-taking process
-                                                                        but also ensures that
-                                                                        respondents are presented with relevant
-                                                                        questions, leading to
-                                                                        more
-                                                                        accurate and insightful data.
+                                                                        Restrict row selection in the current question using "Exactly," "Minimum," or "Maximum" row selection limits.
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -2259,7 +2263,7 @@
                                                     <div class="tab-pane active" id="branching" role="tabpanel"
                                                         aria-labelledby="branching-tab">
                                                         <div class="infocircle justify-content-start mb-4">
-                                                            <h5>Create Answer Logic</h5>
+                                                            <h5>Answer Logic</h5>
                                                             <div class="custom-tooltip ms-2">
                                                                 <ng-icon name="heroInformationCircle"
                                                                     ngClass="edit-action info-circle"
@@ -2277,16 +2281,7 @@
                                                                             (click)="hideTooltip('7')"></button>
                                                                     </div>
                                                                     <div class="toast-body">
-                                                                        By implementing Matrix Header Logic, you can
-                                                                        dynamically show or hide
-                                                                        answer options based on the respondents'
-                                                                        answers. This feature
-                                                                        not only streamlines the survey-taking process
-                                                                        but also ensures that
-                                                                        respondents are presented with relevant
-                                                                        questions, leading to
-                                                                        more
-                                                                        accurate and insightful data.
+                                                                        Fetch rows from the previous question. The selected options from the previous question will be added automatically to the current question.
                                                                     </div>
                                                                 </div>
                                                             </div>

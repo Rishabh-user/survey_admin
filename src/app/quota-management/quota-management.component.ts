@@ -43,7 +43,7 @@ export class QuotaManagementComponent {
   vendorurl: boolean = false;
   vendorgeneratedurl: string;
   uid: any;
-  vendorid: number
+  vendarId: number
   router: any;
   quotainterlock: QuotaInterlock = new QuotaInterlock();
   interlockquesid: any;
@@ -718,7 +718,7 @@ export class QuotaManagementComponent {
         this.surveyQuotaJson.totalUsers = data.totalUsers
         this.surveyQuotaJson.quotaId = data.quotaId
         this.surveyQuotaJson.questionDto = data.questionDto
-        this.vendorid = 390
+        this.vendarId = 390
 
         console.log("quotabyid json", this.surveyQuotaJson)
         console.log("quotabyid id", this.quotaid)
@@ -741,19 +741,19 @@ export class QuotaManagementComponent {
 
     let isEdit = false;
     this.surveyQuotaJson.surveyId = this.surveyId;
-    //this.surveyQuotaJson.vendarId = this.vendorid
+    this.surveyQuotaJson.vendarId = this.vendarId
     if (this.surveyQuotaJson.quotaId > 0) {
       isEdit = true;
     }
-    console.log("vendorid", this.vendorid)
+    console.log("vendorid", this.vendarId)
 
     this.surveyservice.manageQuota(this.surveyQuotaJson, isEdit).subscribe({
       next: (response: any) => {
-        //this.utility.showSuccess("Quota is Saved")
-        this.getQuotaBySurveyId();
-        // setTimeout(() => {
-        //   window.location.reload();
-        // }, 500);
+        this.utility.showSuccess("Quota is Saved")
+        //this.getQuotaBySurveyId();
+        setTimeout(() => {
+          window.location.reload();
+        }, 500);
 
       },
       error: (error: any) => {
@@ -870,7 +870,7 @@ export class QuotaManagementComponent {
       totalUsers: this.surveycount,
       centerId: this.centerId,
       status: "ACT",
-      vendarId: this.vendorid,
+      vendarId: this.vendarId,
       createdDate: this.getCurrentDateTime(),
       questionDto: {
         quotaQuestionsId: 0,

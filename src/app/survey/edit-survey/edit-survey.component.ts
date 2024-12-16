@@ -158,7 +158,9 @@ export class EditSurveyComponent {
   questimeouton:boolean = false;
   enablequestime:boolean = false;
   audiorecord:any;
-  timeOut:number
+  timeOut:number;
+  audiouploaded: boolean = false;
+  slflagchecked: boolean = false
   
 
   constructor(public themeService: DataService, private router: Router,
@@ -237,6 +239,15 @@ export class EditSurveyComponent {
       this.minLimit = data.minLimit;
       this.isHidden = data.isHidden;
       this.audiorecord = data.audio;
+      this.timeOut = data.timeOut;
+      if(this.timeOut){
+        this.questimeouton = true;
+        this.enablequestime = true
+      }else{
+        this.questimeouton = false;
+        this.enablequestime = false;
+      }
+
       if(data.inputTextArea){
         this.inputtype = 'textarea'
       }else{
@@ -941,6 +952,13 @@ export class EditSurveyComponent {
     // else{
     //   this.question.openEndedType = 'text'
     // }
+    // let audio = '';
+    // if(this.audiouploaded){
+    //     audio = this.audiorecord.split('\\').pop() || this.audiorecord;
+    //   }
+    //   else {
+    //     audio = '';
+    //   }
     
   
 
@@ -2904,6 +2922,7 @@ export class EditSurveyComponent {
       (response: String) => {
 
         this.audiorecord = response
+        this.audiouploaded = true;
         this.audiorecord = response.replace(/"/g, '');
         this.utility.showSuccess("Uploaded Succesfully")
       },
@@ -3222,6 +3241,16 @@ export class EditSurveyComponent {
       });
     }
 
+
+  }
+
+  onCheckSLFlag(event: any){
+    let slflag = event.target.checked;
+    if(slflag){
+      this.slflagchecked = true;
+    }else{
+      this.slflagchecked = false;
+    }
 
   }
   // deleteRowLevelCondition(){
