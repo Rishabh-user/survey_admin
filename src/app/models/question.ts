@@ -44,4 +44,5 @@ export class Question {
     public inputTextType: boolean = false;
     public isListRow1:boolean = false;
     public isListRow2: boolean = false;
+    public sL_Flag_Column: boolean = false;
 }

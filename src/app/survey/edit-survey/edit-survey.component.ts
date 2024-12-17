@@ -161,6 +161,7 @@ export class EditSurveyComponent {
   timeOut:number;
   audiouploaded: boolean = false;
   slflagchecked: boolean = false
+  sL_Flag_Column: boolean = false;
   
 
   constructor(public themeService: DataService, private router: Router,
@@ -240,6 +241,7 @@ export class EditSurveyComponent {
       this.isHidden = data.isHidden;
       this.audiorecord = data.audio;
       this.timeOut = data.timeOut;
+      this.sL_Flag_Column = data.sL_Flag_Column;
       if(this.timeOut){
         this.questimeouton = true;
         this.enablequestime = true
@@ -428,7 +430,7 @@ export class EditSurveyComponent {
 
     if (this.mode != 'modify') {
       this.intializeDefaultValue();
-      if (this.question.questionTypeName !== 'Rating Scale' && this.question.questionTypeName !== 'Boolean' && this.question.questionTypeName !== 'Image Selection' && this.question.questionTypeName !== 'NPS' && this.question.questionTypeName !== 'Open Ended' && this.question.questionTypeName !== 'Slider Scale') {
+      if (this.question.questionTypeName !== 'Rating Scale' && this.question.questionTypeName !== 'Boolean' && this.question.questionTypeName !== 'Image Selection' && this.question.questionTypeName !== 'Audio' && this.question.questionTypeName !== 'Video' && this.question.questionTypeName !== 'NPS' && this.question.questionTypeName !== 'Open Ended' && this.question.questionTypeName !== 'Slider Scale') {
         this.hanldeAddOptionClick();
         this.hanldeAddOptionClick();
         this.hanldeAddOptionClick();
@@ -438,7 +440,7 @@ export class EditSurveyComponent {
 
       }
       if(this.question.questionTypeName === 'Maxdiff'){
-         this.hanldeAddOptionDiffQues();
+         this.hanldeAddOptionDiffQues
       }
       
       if (this.question.questionTypeName === 'Rating Scale') {
@@ -980,6 +982,7 @@ export class EditSurveyComponent {
     this.question.timeOut = this.timeOut;
     //this.question.audio = this.audioUrl
     this.question.audio = this.audiorecord
+    this.question.sL_Flag_Column = this.sL_Flag_Column;
 
     let modifiedoptions: serveyOption[] = [];
     let matrixoption: MatrixHeader[]=[]
@@ -1638,7 +1641,7 @@ export class EditSurveyComponent {
     this.alphabet = false;
 
 
-    if (this.question.questionTypeName !== 'Rating Scale' && this.question.questionTypeName !== 'Boolean' && this.question.questionTypeName !== 'Image Selection' && this.question.questionTypeName !== 'NPS' && this.question.questionTypeName !== 'Open Ended' && this.question.questionTypeName !== 'Slider Scale') {
+    if (this.question.questionTypeName !== 'Rating Scale' && this.question.questionTypeName !== 'Boolean' && this.question.questionTypeName !== 'Image Selection' && this.question.questionTypeName !== 'Audio' && this.question.questionTypeName !== 'Video' && this.question.questionTypeName !== 'NPS' && this.question.questionTypeName !== 'Open Ended' && this.question.questionTypeName !== 'Slider Scale') {
       this.hanldeAddOptionClick();
       this.hanldeAddOptionClick();
       this.hanldeAddOptionClick();
@@ -3247,29 +3250,11 @@ export class EditSurveyComponent {
   onCheckSLFlag(event: any){
     let slflag = event.target.checked;
     if(slflag){
-      this.slflagchecked = true;
+      this.sL_Flag_Column = true;
     }else{
-      this.slflagchecked = false;
+      this.sL_Flag_Column = false;
     }
 
   }
-  // deleteRowLevelCondition(){
-  //   if(this.question.isListRow1){
-  //     this.question.isListRow1 = false
-  //   }
-  //   if(this.question.isListRow2){
-  //     this.question.isListRow2 = false
-  //   }
-
-  // }
-
-
-  
-
-
-  
-  
-
-
 
 }
