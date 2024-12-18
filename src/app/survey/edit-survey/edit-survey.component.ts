@@ -239,7 +239,7 @@ export class EditSurveyComponent {
       this.question.openEndedType = data.openEndedType
       this.minLimit = data.minLimit;
       this.isHidden = data.isHidden;
-      this.audiorecord = data.audio;
+      this.question.audio = data.audio;
       this.timeOut = data.timeOut;
       this.sL_Flag_Column = data.sL_Flag_Column;
       if(this.timeOut){
@@ -3066,7 +3066,10 @@ export class EditSurveyComponent {
     this.question.minLimit = this.minLimit;
     this.question.isHidden = this.isHidden;
     //this.question.audio = this.audioUrl
-    this.question.audio = this.audiorecord
+    
+    if(this.audiorecord){
+      this.question.audio = this.audiorecord
+    }
     this.question.isListRow1 = false;
     this.question.isListRow2 = false;
 

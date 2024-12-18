@@ -1,3 +1,4 @@
+
 <div ngClass="survey">
     <div [ngClass]="{'add-ques-sidebar': true, 'toggle-sidebar': toggleClass}">
 
@@ -2080,15 +2081,13 @@
                 <label class="form-label">Select Your Country</label>
 
                 <mat-form-field>
-                    <mat-select name="countryString" [(value)]="selectedCountryname" placeholder="Country">
-                       
+                    <mat-select name="countryString" [(value)]="selectedCountry" placeholder="Country">
                         <mat-select-trigger>
-                            <img *ngIf="selectedCountryname && selectedCountryname.images"
-                                [src]="baseUrl + '/assets/images/country-flag/' + selectedCountryname?.images"
+                            <img *ngIf="selectedCountry && selectedCountry.images"
+                                [src]="baseUrl + '/assets/images/country-flag/' + selectedCountry.images"
                                 class="me-2 rounded-circle" style="width: 30px;height: 30px;" />
-                            {{selectedCountryname ? selectedCountryname.name : ''}}
+                            {{selectedCountry ? selectedCountry.name : ''}}
                         </mat-select-trigger>
-                        
                         <mat-option *ngFor="let item of country" [value]="item">
                             <img *ngIf="item.images" [src]="baseUrl + '/assets/images/country-flag/' + item.images"
                                 class="me-2 rounded-circle" style="width: 30px;height: 30px;" />

@@ -2615,12 +2615,12 @@
                         </ngx-dropzone>
                 
                     </div>
-                    <div *ngIf="audiorecord && question.audio !== (imageurl + 'Files/Audio/') && filesAudio.length === 0"
+                    <div *ngIf="question.audio && question.audio !== (imageurl + 'Files/Audio/') && filesAudio.length === 0"
                             class="videourl onhover-text mt-4" (mouseover)="showCaptionvideo = true"
                                 (mouseleave)="showCaptionvideo = false">
                             <figure class="image-figure">
                                 <audio width="100%" controls>
-                                    <source [src]="audiorecord" type="audio/mp4" />
+                                    <source [src]="question.audio" type="audio/mp4" />
                                 </audio>
                             </figure>
                     </div>
