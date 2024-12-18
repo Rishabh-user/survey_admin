@@ -210,6 +210,7 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
   isDesktopMode:boolean = true;
   isMobileMode:boolean = true;
   isTabletMode:boolean = true;
+  selectedCountryname:{ id: string, name: string, images: string } | null = null;
   
 
   centerId: number = this.utils.getCenterId();
@@ -547,7 +548,7 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
         this.countryId = data[0]?.countryId
         this.totalItemsCount = data[0]?.totalQuestionCount
         this.isHidden = data[0]?.isHidden
-        // this.selectedCountry = this.countryId
+        this.selectedCountryname = this.countryId
         this.selectedCountry = this.country.find(country => country.id === this.countryId) || null;
         this.categoryId = data[0]?.categoryId
       } else {
@@ -560,6 +561,7 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
         this.otherCategoryName = data.otherCategory;
         this.surveyStatus = data.status;
         this.countryName = data.countryName;
+        this.selectedCountryname = data.countryId
         this.countryImage = data.countryImage;
         this.countryId = data.countryId
         this.totalItemsCount = data.totalQuestionCount
@@ -571,7 +573,7 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
         this.isMobileMode = data.isMobileMode
         this.selectedCountry = this.country.find(country => country.id === this.countryId) || null;
 
-        console.log("countryImage",this.countryImage)
+        console.log("countryImage",this.selectedCountryname)
 
 
         this.surveycreateddate = data.createdDate
