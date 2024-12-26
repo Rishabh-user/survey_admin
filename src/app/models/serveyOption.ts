@@ -19,7 +19,16 @@ export class serveyOption {
         public isFixed: boolean = false,
         public imageAdded: boolean = false,
         public optionToolTip: string = '',
-        public optionDescription:string = ''
+        public optionDescription:string = '',
+        public isNumeric: boolean = false,
+        public isAlphabet: boolean = false,
+        public maxLimit: number = 0,
+        public minLimit: number = 0,
+        public phoneValidation: boolean = false,
+        public emailValidation: boolean = false,
+        public inputValidation: boolean = false,
+        public inputTextField: boolean = false,
+        public inputTextArea: boolean = false
 
     ) { }
 }

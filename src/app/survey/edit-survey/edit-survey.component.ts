@@ -289,6 +289,15 @@ export class EditSurveyComponent {
         newOption.optionToolTip = opt.optionToolTip;
         newOption.optionDescription = opt.optionDescription;
         newOption.imageAdded = false;
+        newOption.isAlphabet = opt.isNumeric;
+        newOption.isNumeric = opt.isAlphabet;
+        newOption.minLimit = opt.minLimit;
+        newOption.maxLimit = opt.maxLimit;
+        newOption.inputTextArea = opt.inputTextArea;
+        newOption.inputTextField = opt.inputTextField;
+        newOption.emailValidation = opt.emailValidation;
+        newOption.phoneValidation = opt.phoneValidation;
+        newOption.inputValidation = opt.inputValidation;
 
         if(opt.optionDescription){
           this.optiondescpisChecked = true;
@@ -438,6 +447,9 @@ export class EditSurveyComponent {
         this.hanldeAddOptionClickMatrix();
         this.hanldeAddOptionClickMatrix();
 
+      }
+      if(this.question.questionTypeName === 'Open Ended'){
+        this.handleOpneEndedAdd();
       }
       if(this.question.questionTypeName === 'Maxdiff'){
          this.hanldeAddOptionDiffQues
@@ -801,6 +813,7 @@ export class EditSurveyComponent {
   textlimitation: boolean = false
   matrixoptionvalidate: boolean = false
   validateSurvey(): boolean {
+    if(this.question.questionTypeName === 'Open Ended'){}
     this.initializeCategoryNameChecks();
     // Validate each field individually
     this.questionadded = !!this.question && !!this.question.question && this.question.question.trim().length > 0;
@@ -837,10 +850,11 @@ export class EditSurveyComponent {
       // this.categoryNameCheck = true;
       this.categoryNameChecks.fill(true); // Skip validation if no groups exist
     }
-
+     let isAnyOptionEmpty = false;
     // Check if the answer input field is empty
-
-    const isAnyOptionEmpty = this.allOptions.some(option => !option.option || option.option.trim() === '');
+    if(this.question.questionTypeName !== 'Open Ended'){
+      isAnyOptionEmpty = this.allOptions.some(option => !option.option || option.option.trim() === '');
+    }
  
     this.isValidSurvey = this.questionadded && this.qusstionaddednext && this.categoryNameChecks.every(check => check) && !isAnyOptionEmpty ;
 
@@ -873,11 +887,11 @@ export class EditSurveyComponent {
     console.log("isHeaderValid",isHeaderValid)
     this.isvalidopenended = this.validateOpenEnded();
 
-    if(!this.isvalidopenended && (this.question.questionTypeName === 'Open Ended' && (this.question.openEndedType === '' || this.question.openEndedType === 'textarea'))){
-      this.utility.showError("Checkbox is required");
-      console.log("isvalidopenended",this.isvalidopenended)
-      return
-    }
+    // if(!this.isvalidopenended && (this.question.questionTypeName === 'Open Ended' && (this.question.openEndedType === '' || this.question.openEndedType === 'textarea'))){
+    //   this.utility.showError("Checkbox is required");
+    //   console.log("isvalidopenended",this.isvalidopenended)
+    //   return
+    // }
 
     if (!isSurveyValid ) {
       this.utility.showError('Please fill all required fields.');
@@ -894,11 +908,12 @@ export class EditSurveyComponent {
     }
 
    
-
-    const isAnyOptionNonUnique = (new Set(this.allOptions.map(option => option.option.trim()))).size !== this.allOptions.length;
-    if (isAnyOptionNonUnique) {
-      this.utility.showError('Duplicate option value.');
-      return;
+    if(this.question.questionTypeName !== 'Open Ended'){
+      const isAnyOptionNonUnique = (new Set(this.allOptions.map(option => option.option.trim()))).size !== this.allOptions.length;
+      if (isAnyOptionNonUnique) {
+        this.utility.showError('Duplicate option value.');
+        return;
+      }
     }
 
     for (let i = 0; i < this.groups.length; i++) {
@@ -1029,6 +1044,7 @@ export class EditSurveyComponent {
         modifiedOption.sort = option.sort;
         modifiedOption.status = option.status;
         modifiedOption.optionToolTip = option.optionToolTip;
+        
         // modifiedOption.optionDescription = option.optionDescription;
         if (index === 0) {
           modifiedOption.optionDescription = 'Not at all likely';
@@ -1101,6 +1117,15 @@ export class EditSurveyComponent {
         modifiedOption.optionToolTip = option.optionToolTip;
         modifiedOption.optionDescription = option.optionDescription;
         modifiedOption.image = option.imageAdded ? option.image : null;
+        modifiedOption.minLimit = option.minLimit;
+        modifiedOption.maxLimit = option.maxLimit;
+        modifiedOption.isNumeric = option.isNumeric;
+        modifiedOption.isAlphabet = option.isAlphabet;
+        modifiedOption.phoneValidation = option.phoneValidation;
+        modifiedOption.emailValidation = option.emailValidation;
+        modifiedOption.inputValidation = option.inputValidation;
+        modifiedOption.inputTextArea = option.inputTextArea,
+        modifiedOption.inputTextField = option.inputTextField
         modifiedoptions.push(modifiedOption);
       });
     }
@@ -1346,6 +1371,9 @@ export class EditSurveyComponent {
 
       this.newoptionImages.splice(index, 1)
       this.optionsArr2.splice(index, 1);
+      if(this.question.questionTypeName === 'Open Ended'){
+        this.showDontKnowOption = false;
+      }
       
       console.log("delete opt2",this.optionsArr2)
 
@@ -2965,7 +2993,7 @@ export class EditSurveyComponent {
     //const isHeaderValid = this.validateHeaders();
     const isHeaderValid = this.validatedHeaders();
     console.log("isHeaderValid",isHeaderValid)
-    this.isvalidopenended = this.validateOpenEnded();
+   this.isvalidopenended = this.validateOpenEnded();
 
     if(!this.isvalidopenended && (this.question.questionTypeName === 'Open Ended' && (this.question.openEndedType === '' || this.question.openEndedType === 'textarea'))){
       this.utility.showError("Checkbox is required");
@@ -3259,5 +3287,175 @@ export class EditSurveyComponent {
     }
 
   }
+
+
+  // handleOpneEndedAdd(type: string | null = null) {
+    
+  //   let newOption = new serveyOption();
+
+  //   newOption.createdDate = this.getCurrentDateTime();
+  //   newOption.modifiedDate = this.getCurrentDateTime();
+  //   this.optionaloption = false;
+    
+
+  //   if (type == 'dontKnow') {
+  //     newOption.option = "Don't know /Can't say";
+  //     newOption.isFixed = true
+  //   }
+  //   else {
+  //     newOption.option = "";
+  //     newOption.status = 'ACT'
+  //   }
+
+  //   // if(type == 'Optional' || type == 'prefernottoanswer'){
+  //   //   this.optiondescp = false
+  //   // }
+
+  //   let sort = 0;
+
+  //   if (this.optionsArr1.length > 0) {
+  //     // Find the maximum sort value in optionsArr1
+  //     const maxSortValue1 = Math.max(...this.optionsArr1.map(option => option.sort));
+  //     const maxSortValue2 = Math.max(...this.optionsArr2.map(option => option.sort));
+  //     sort = (maxSortValue2 > maxSortValue1 ? maxSortValue2 : maxSortValue1) + 1;
+  //   }
+
+  //   if(type){
+  //     this.optionsArr2.push(newOption)
+  //   }else{
+  //     this.optionsArr1.push(newOption);
+  //   }
+
+  //   newOption.sort = sort;
+
+
+  //   // if (type != null) {
+  //   //   this.optionsArr2.push(newOption);
+  //   // } else {
+  //   //   this.optionsArr1.push(newOption);
+  //   // }
+    
+
+  //   console.log("hal1",this.optionsArr1)
+  //   console.log("hal2",this.optionsArr2)
+
+  //   this.newoptionImages = [];
+
+  //   this.filteredOptions = [];
+  //   this.filteredOptions.push(...this.optionsArr1, ...this.optionsArr2);
+
+
+
+  //   this.allOptions = [];
+  //   this.allOptions.push(...this.optionsArr1, ...this.optionsArr2);
+
+  //   console.log("add fixed",this.allOptions)
+   
+  //   // this.question.options.push(newOption);
+  // }
+
+  handleOpneEndedAdd(type: string | null = null): void {
+    const newOption = new serveyOption();
+  
+    newOption.createdDate = this.getCurrentDateTime();
+    newOption.modifiedDate = this.getCurrentDateTime();
+    newOption.sort = 0;
+  
+    if (type === 'dontKnow') {
+      newOption.option = "Don't know /Can't say";
+      newOption.isFixed = true;
+  
+      if (this.optionsArr1.length > 0) {
+        const lastIndex = this.optionsArr1.length - 1;
+  
+        if (!this.optionsArr2[lastIndex]) {
+          this.optionsArr2[lastIndex] = [];
+        }
+  
+        this.optionsArr2[lastIndex].push(newOption); 
+      } else {
+        console.warn("Please add a base option before adding 'Don't know / Can't say'.");
+        return;
+      }
+    } else {
+      newOption.option = '';
+      newOption.status = 'ACT';
+      this.optionsArr1.push(newOption);
+  
+      this.optionsArr2[this.optionsArr1.length - 1] = [];
+    }
+  
+    const maxSort = Math.max(
+      ...this.optionsArr1.map(opt => opt.sort || 0),
+      ...this.optionsArr2.flatMap(arr => arr.map((opt:any) => opt.sort || 0))
+    );
+    newOption.sort = maxSort + 1;
+  
+    this.filteredOptions = [...this.optionsArr1, ...this.optionsArr2.flat()];
+    this.allOptions = [...this.optionsArr1, ...this.optionsArr2.flat()];
+  
+    console.log('Updated optionsArr1:', this.optionsArr1);
+    console.log('Updated optionsArr2:', this.optionsArr2);
+    console.log('Filtered options:', this.filteredOptions);
+  }
+
+  chnageOpenEndedInputType(i: number, type: string) {
+    debugger;
+    
+    if (!this.optionsArr1[i]) {
+      console.error('Option at index', i, 'does not exist');
+      return;
+    }
+  
+    this.optionsArr1[i].createdDate = this.getCurrentDateTime();
+    this.optionsArr1[i].modifiedDate = this.getCurrentDateTime();
+    
+    if (type === "textarea") {
+      this.optionsArr1[i].inputTextField = false;
+      this.optionsArr1[i].inputTextArea = true;
+    } 
+    if (type === "textfield") {
+      this.optionsArr1[i].inputTextField = true;
+      this.optionsArr1[i].inputTextArea = false;
+    }
+  
+    this.allOptions = [...this.optionsArr1];
+    console.log('Updated Option:', this.optionsArr1[i]);
+  }
+
+  chnageOpenEndedValidation(i: number, type: string) {
+    debugger;
+    
+    if (!this.optionsArr1[i]) {
+      console.error('Option at index', i, 'does not exist');
+      return;
+    }
+  
+    this.optionsArr1[i].createdDate = this.getCurrentDateTime();
+    this.optionsArr1[i].modifiedDate = this.getCurrentDateTime();
+    
+    if (type === "email") {
+      this.optionsArr1[i].emailValidation = true;
+      this.optionsArr1[i].phoneValidation = false;
+      this.optionsArr1[i].inputValidation = false;
+    } 
+    if (type === "number") {
+      this.optionsArr1[i].emailValidation = false;
+      this.optionsArr1[i].phoneValidation = true;
+      this.optionsArr1[i].inputValidation = false;
+    }
+    if (type === "text") {
+      this.optionsArr1[i].emailValidation = false;
+      this.optionsArr1[i].phoneValidation = false;
+      this.optionsArr1[i].inputValidation = true;
+    }
+  
+    this.allOptions = [...this.optionsArr1];
+    console.log('Updated Option:', this.optionsArr1[i]);
+    debugger
+  }
+  
+   
+  
 
 }

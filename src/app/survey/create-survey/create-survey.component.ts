@@ -548,7 +548,7 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
         this.totalItemsCount = data[0]?.totalQuestionCount
         this.isHidden = data[0]?.isHidden
         // this.selectedCountry = this.countryId
-        this.selectedCountry = this.country.find(country => country.id === this.countryId) || null;
+        this.selectedCountry = this.country.find(country => country.id.trim() === this.countryId.trim()) || null;
         this.categoryId = data[0]?.categoryId
       } else {
         this.surveyId = data.surveyId
@@ -569,8 +569,9 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
         this.isTabletMode = data.isTabletMode
         this.isDesktopMode = data.isDesktopMode
         this.isMobileMode = data.isMobileMode
-        this.selectedCountry = this.country.find(country => country.id === this.countryId) || null;
-
+        
+        this.selectedCountry = this.country.find(country => country.id.trim() === this.countryId.trim()) || null;
+        
         console.log("countryImage",this.countryImage)
 
 
@@ -690,7 +691,8 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
         name: this.surveyName,
         categoryId: this.categoryId,
         otherCategory: this.otherCategoryName,
-        countryId: this.selectedCountryId,
+        //countryId: this.selectedCountryId,
+        countryId: this.joinedCountryIds,
         isQNumberRequired: this.isQNumberRequired,
         isTabletMode:this.isTabletMode,
         isDesktopMode:this.isDesktopMode,
@@ -1215,7 +1217,7 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
 
 
   createSingleLogicEntry(questionId: any, logicEntry: any, sort: any): void {
-    debugger
+    
     this.createLogicCount++;
     
     console.log('Inside logicEntry', logicEntry)
@@ -1334,7 +1336,7 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
       this.questionLogic.logicConditions[0].ifExpected = logicEntry.ifExpectedAndOr;
     }
 
-    debugger
+    
 
     // if(ifIdValue === 13){
     //   if(questionId > 0){
@@ -1769,14 +1771,14 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
         // Store the API response
         this.apiResponseRandomization = response;
         if (response.length > 0) {
-          debugger
+          
           this.randomizegroupid = response[0].groupNumber;
           this.isRandomizationChecked = response[0].isRandomize
           this.randomizeNumber = response[0].randomizeNumber
           this.randormizeEntries = response.map(randomization => ({
             isRandomizationChecked: randomization.isRandomize
           }))
-          debugger
+          
         }
         console.log("randormizeEntries",this.randormizeEntries.length)
 
@@ -2052,8 +2054,8 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
     this.surveyNameCheck = !!this.surveyName && this.surveyName.length >= 3;
     this.categoryNameCheck = !!this.categoryId && this.categoryId !== 0;
     this.otherCategoryCheck = this.categoryId !== 10 || (!!this.categoryName && this.categoryName.length >= 3);
-    this.selectedCountryId = this.selectedCountry ? this.selectedCountry.id : null;
-    this.countryNameCheck = !!this.selectedCountryId;
+   // this.selectedCountryId = this.selectedCountry ? this.selectedCountry.id : null;
+    this.countryNameCheck = this.selectedCountrys.length > 0;
 
     this.isValidSurvey = this.surveyNameCheck && this.categoryNameCheck && this.otherCategoryCheck && this.countryNameCheck;
   }
@@ -3656,7 +3658,7 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
 
               });
             }
-            debugger
+            
             // And/Or
             if (newLogicEntry.elseId && newLogicEntry.elseExpected > 0){
               this.isMatrixElseShow[index][logicIndex] = true;
@@ -3673,8 +3675,6 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
               this.isMatrixElseShowvalue[index][logicIndex] = false
             else
               this.isMatrixElseShowvalue[index][logicIndex] = true
-            
-            debugger
 
            
             this.matrixLogicsEntriesPerQuestion[index].push(newLogicEntry);
@@ -3798,6 +3798,25 @@ onMobileReq(event: any) {
 }
 onTabletReq(event: any) {
   this.isTabletMode = event.target.checked;
+}
+
+
+
+selectedCountryIds: string | null = null;
+joinedCountryIds: string = '';
+selectedCountrys: { id: string; name: string; images: string }[]  = [];
+
+onCountrySelectionChange(selectedCountries: { id: string; name: string; images: string }[]) {
+  this.selectedCountrys = selectedCountries;
+
+  this.selectedCountryIds = selectedCountries.length > 0 ? selectedCountries[0].id : null;
+
+  this.joinedCountryIds = selectedCountries.map(country => country.id.trim()).join(', ');
+  console.log("joinedCountryIds",this.joinedCountryIds)
+}
+
+getCountryNames(): string {
+  return this.selectedCountrys?.map(c => c.name).join(', ');
 }
 
 

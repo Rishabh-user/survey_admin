@@ -842,6 +842,7 @@
                                                     <button class="nav-link d-flex" id="matrix-tab" data-bs-toggle="tab"
                                                         [attr.data-bs-target]="'#matrixheader' + question.id"
                                                         role="tab">Matrix Logic</button>
+                                                        
                                                 </li>
                                                 <li class="nav-item" role="presentation">
                                                     <button class="nav-link" id="customLogic-tab" data-bs-toggle="tab"
@@ -1303,7 +1304,27 @@
 
                                                 <div class="tab-pane" [id]="'matrixheader' + question.id"
                                                     role="tabpanel" aria-labelledby="matrix-tab">
-                                                    <h5 ngClass="mb-4">Matrix Header Logic</h5>
+                                                    <div class="d-flex gap-2">
+                                                       <h5 ngClass="mb-4">Matrix Header Logic</h5>
+                                                       <div class="custom-tooltip">
+                                                        <ng-icon name="heroInformationCircle"
+                                                            ngClass="edit-action info-circle"
+                                                            (click)="toggleTooltip('20')"></ng-icon>
+                                                        <div class="toast show" *ngIf="showTooltip['20']">
+                                                            <div class="toast-header">
+                                                                <img [src]="baseUrl + '/assets/images/icons/Add-new-question.png'"
+                                                                    class="rounded me-2" width="30" height="30" />
+                                                                <h6 class="mb-0 me-auto">Matrix Logic</h6>
+                                                                <button type="button" class="btn-close"
+                                                                    data-bs-dismiss="toast" aria-label="Close"
+                                                                    (click)="hideTooltip('20')"></button>
+                                                            </div>
+                                                            <div class="toast-body">
+                                                                Apply conditional logic to columns within matrix-type questions
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    </div>
                                                     <div ngClass="d-flex justify-content-between mb-3">
                                                         <h6>Redirect to different questions based on user's answer.</h6>
                                                     </div>
@@ -2080,7 +2101,7 @@
             <div class="mb-4">
                 <label class="form-label">Select Your Country</label>
 
-                <mat-form-field>
+                <!-- <mat-form-field>
                     <mat-select name="countryString" [(value)]="selectedCountry" placeholder="Country">
                         <mat-select-trigger>
                             <img *ngIf="selectedCountry && selectedCountry.images"
@@ -2094,7 +2115,43 @@
                             {{item.name}}
                         </mat-option>
                     </mat-select>
+                </mat-form-field> -->
+                <mat-form-field>
+                    <mat-select
+                      name="countryString"
+                      [(ngModel)]="selectedCountry"
+                      (ngModelChange)="onCountrySelectionChange($event)"
+                      placeholder="Country"
+                      multiple
+                    >
+                      <mat-select-trigger>
+                        <ng-container>
+                           
+                            <ng-container *ngFor="let country of selectedCountrys">
+                              <img
+                                *ngIf="country.images"
+                                [src]="baseUrl + '/assets/images/country-flag/' + country.images"
+                                class="me-2 rounded-circle"
+                                style="width: 30px; height: 30px;"
+                              />
+                            </ng-container>
+                            {{ getCountryNames() }}
+                          </ng-container>
+                          
+                      </mat-select-trigger>
+                  
+                      <mat-option *ngFor="let item of country" [value]="item">
+                        <img
+                          *ngIf="item.images"
+                          [src]="baseUrl + '/assets/images/country-flag/' + item.images"
+                          class="me-2 rounded-circle"
+                          style="width: 30px; height: 30px;"
+                        />
+                        {{ item.name }}
+                      </mat-option>
+                    </mat-select>
                 </mat-form-field>
+                  
                 <div *ngIf="!countryNameCheck" class="text-danger">Country is required.</div>
             </div>
             <div class="mb-4" class="search-categories input-icon">
@@ -2580,7 +2637,10 @@
 <!-- redirection -->
 <ng-template #redirection let-modal>
     <div class="modal-header">
-        <h4 class="modal-title">Redirection</h4>
+        <div>
+            <h4 class="modal-title">Redirection</h4>
+           
+        </div>
         <button type="button" class="btn-close" aria-label="Close"
             (click)="modal.dismiss('Cross click'); isActivescreen = false;"></button>
 

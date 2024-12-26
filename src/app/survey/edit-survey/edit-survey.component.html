@@ -586,269 +586,206 @@
                     </div>
                     <div
                         *ngIf="question.questionTypeName === 'Open Ended' && (question.openEndedType == '' || question.openEndedType == 'textarea')">
-
-                        <div class="mb-3">
-
-                            <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="checkbox" name="numeric" value="numeric"
-                                    id="numeric" [(ngModel)]="numeric" (change)="openEndedValue()">
-                                <label class="form-check-label" for="numeric">Numeric</label>
-                            </div>
-                            <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="checkbox" name="alphabet" value="alphabet"
-                                    id="alphabet" [(ngModel)]="alphabet" (change)="openEndedValue()">
-                                <label class="form-check-label" for="alphabet">Alphabet</label>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-1">
-                                <label class="mb-3">Word Limit</label>
-                                <input id="answer" type="number" min="1" name="answer" class="form-control"
-                                [(ngModel)]="textlimit" (blur)="validateSurvey()" />
-                            </div>
-                            <div class="col-md-1">
-                                <label class="mb-3">Input Count</label>
-                                <input id="answer" type="number" min="1" name="answer" class="form-control"
-                                    [(ngModel)]="minLimit" (blur)="validateSurvey()" />
-                            </div>
-                            <div class="col-md-2">
-                                <label class="mb-3">Input Type</label>
-                                <div>
-                                    <div class="form-check form-check-inline">
-                                        <input class="form-check-input" type="radio" name="textarea" value="textarea"
-                                            id="textarea" [(ngModel)]="inputtype" (change)="checkInputType()">
-                                        <label class="form-check-label" for="textarea">Textarea</label>
-                                    </div>
-                                    <div class="form-check form-check-inline">
-                                        <input class="form-check-input" type="radio" name="textarea" value="textfield"
-                                            id="textfield" [(ngModel)]="inputtype" (change)="checkInputType()">
-                                        <label class="form-check-label" for="textfield">Textfield</label>
-                                    </div>
-                                </div>
-                                
-                            </div>
-
-                        </div>
-                        <!-- <div class="row mb-3">
-                            <div class="col-md-4">
-                               
-                            </div>
-                            <div class="col-md-4">
-                                
-                            </div>
-                            <div class="col-md-4">
-                                
-                            </div>
-
-                        </div> -->
-                        <div *ngIf="showDontKnowOption" ngClass="mb-4 mt-4" cdkDropList (cdkDropListDropped)="onDropOption($event)">
-
-                            <div class="row mb-3 border-bottom" style="font-weight: 500;"
-                                >
-                                <div class="flex-width">S. No</div>
-                                <div class="flex-width">Image</div>
-                                <div class="flex-width"></div>
-                                <div class="flex-2">Option</div>
-                                <div class="flex-2" *ngIf="optiondescp || optiondescpisChecked">
-                                    <div class="d-flex">
-                                        <p>Option Description</p>
-    
-                                    </div>
-                                </div>
-                                <div class="flex-width">Delete</div>
-                                <div class="flex-width">Tooltip</div>
-                            </div>
-                            <ng-contaniner >
-                                <div class="row g-2 align-items-center mb-3" *ngFor="let option of optionsArr1;let i=index;"
-                                    cdkDrag>
-                                    <div class="flex-width">
-                                        <input type="text" id="" class="form-control" value="{{i+1}}" readonly />
-                                    </div>
-    
-    
-                                    <!-- this -->
-                                    <div class="flex-width">
-                                        <ngx-dropzone class="edit-survey-img" ngx-dropzone [accept]="'image/*'"
-                                            (change)="onSelectOptionImage($event, i,question.id, i)">
-                                            <ngx-dropzone-label>
-                                                <img [src]="baseUrl + '/assets/images/icons/attach-image.png'" />
-                                            </ngx-dropzone-label>
-                                            <ngx-dropzone-image-preview ngProjectAs="ngx-dropzone-preview"
-                                                *ngFor="let f of optionImages[i]" [file]="f" [removable]="true"
-                                                (removed)="onRemoveSelectOptionImage(f,i)">
-                                            </ngx-dropzone-image-preview>
-                                        </ngx-dropzone>
-                                    </div>
-    
-                                    <div class="flex-width view-img" *ngIf="optionimagennew.length > 0">
-    
-                                        <ng-container>
-                                            <img [src]="optionimagennew[i]" class="img-fluid">
-                                        </ng-container>
-                                    </div>
-                                    <div class="flex-2">
+                            <ng-container *ngFor="let option of optionsArr1;let i=index;">
+                                <div class="">
+                                    <div >
+                                        Question - 
                                         <input id="answer" type="text" name="answer" class="form-control"
-                                            [(ngModel)]="option.option" (blur)="validateSurvey()" />
-    
-                                        <div *ngIf="!option.option.trim()" class="text-danger" style="position: absolute;">
-                                            Option is required.</div>
+                                        [(ngModel)]="option.option" />
                                     </div>
-    
-                                    <!-- <div class="flex-2" *ngIf="optionaloption || optiondescp || option.optionDescription">
-                                        <input id="answer" type="text" name="answer"  class="form-control" [(ngModel)]="option.optionDescription" placeholder="Option Description" [ngModelOptions]="{standalone: true}" />
-                                            
-                                    </div> -->
-                                    <div class="flex-2"
-                                        *ngIf="option.option !== 'Prefer not to Answer' && option.option !== 'Other (Please specify)' && option.option !== 'None of the above' && option.option !== 'Other' && option.option !== 'Don\'t know /Can\'t say' && (optiondescp || option.optionDescription)">
-                                        <input id="answer" type="text" name="answer" class="form-control"
-                                            [(ngModel)]="option.optionDescription" placeholder="Option Description"
-                                            [ngModelOptions]="{standalone: true}" />
+                                    <div class="mb-3">
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="checkbox" name="Numeric{{i}}" value="Numeric{{i}}"
+                                                id="Numeric{{i}}" [(ngModel)]="option.isNumeric" (change)="openEndedValue()">
+                                            <label class="form-check-label" for="Numeric{{i}}">Numeric </label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="checkbox" name="alphabet{{i}}" value="alphabet{{i}}"
+                                                id="alphabet{{i}}" [(ngModel)]="option.isAlphabet" (change)="openEndedValue()">
+                                            <label class="form-check-label" for="alphabet{{i}}">Alphabet</label>
+                                        </div>
                                     </div>
-    
-                                    <div class="flex-width text-end">
-                                        <a href="javascript:void(0);" (click)="onDeleteOption('optionArr1',i)">
-                                            <ng-icon name="heroTrash"></ng-icon>
-                                        </a>
-                                    </div>
-                                    <div class="flex-width ms-3 text-end">
-                                        <button *ngIf="!optiontooltipadded[i]" type="button" class="btn btn-primary"
-                                            (click)="addOptionTooltip(i)"
-                                            matTooltip="Click on '+' icon to add tooltip on option"><ng-icon
-                                                name="heroPlusCircle"
-                                                style="font-size: 1.2rem;height: auto;"></ng-icon></button>
-                                        <button *ngIf="optiontooltipadded[i]" type="button" class="btn btn-primary"
-                                            (click)="removeOptionTooltip(i)"
-                                            matTooltip="Click on '-' icon to remove tooltip on option"><ng-icon
-                                                name="heroMinusCircle"
-                                                style="font-size: 1.2rem;height: auto;"></ng-icon></button>
-                                    </div>
-                                    <div *ngIf="optiontooltipadded[i] || option.optionToolTip">
-                                        <div class="bg-light p-4 border rounded d-flex align-items-center">
-                                            <h6 class="mb-0 me-3">ToolTip</h6>
-                                            <div class="d-flex align-items-center" style="flex:1;">
-                                                <div class="flex-2">
-                                                    <input class="form-control" [(ngModel)]="option.optionToolTip"
-                                                        name="tooptip" id="tooptip" type="text" />
+                                    <div class="row">
+                                        <div class="col-md-1">
+                                            <label class="mb-3">Word Limit</label>
+                                            <input id="answer" type="number" min="1" name="answer" class="form-control"
+                                            [(ngModel)]="option.maxLimit" (blur)="validateSurvey()" />
+                                        </div>
+                                        <div class="col-md-1">
+                                            <label class="mb-3">Input Count</label>
+                                            <input id="answer" type="number" min="1" name="answer" class="form-control"
+                                                [(ngModel)]="option.minLimit" (blur)="validateSurvey()" />
+                                        </div>
+                                        <div class="col-md-2">
+                                            <label class="mb-3">Input Type</label>
+                                            <!-- <div>
+                                                <div class="form-check form-check-inline">
+                                                    <input class="form-check-input" type="radio" name="textarea{{i}}" value="textarea{{i}}"
+                                                        id="textarea{{i}}"  (change)="chnageOpenEndedInputType(i,'textarea')">
+                                                    <label class="form-check-label" for="textarea{{i}}">Textarea</label>
                                                 </div>
+                                                <div class="form-check form-check-inline">
+                                                    <input class="form-check-input" type="radio" name="textfield{{i}}" value="textarea{{i}}"
+                                                        id="textfield{{i}}" (change)="chnageOpenEndedInputType(i,'textfield')">
+                                                    <label class="form-check-label" for="textfield{{i}}">Textfield</label>
+                                                </div>
+                                            </div> -->
+                                            <div>
+                                                <div class="form-check form-check-inline">
+                                                  <input 
+                                                    class="form-check-input" 
+                                                    type="radio" 
+                                                    name="inputType{{i}}" 
+                                                    value="textarea" 
+                                                    id="textarea{{i}}" 
+                                                    [checked]="option.inputTextArea" 
+                                                    (change)="chnageOpenEndedInputType(i, 'textarea')"
+                                                  />
+                                                  <label class="form-check-label" for="textarea{{i}}">Textarea</label>
+                                                </div>
+                                                <div class="form-check form-check-inline">
+                                                  <input 
+                                                    class="form-check-input" 
+                                                    type="radio" 
+                                                    name="inputType{{i}}" 
+                                                    value="textfield" 
+                                                    id="textfield{{i}}" 
+                                                    [checked]="option.inputTextField" 
+                                                    (change)="chnageOpenEndedInputType(i, 'textfield')"
+                                                  />
+                                                  <label class="form-check-label" for="textfield{{i}}">Textfield</label>
+                                                </div>
+                                              </div>
+                                              
+                                            
+                                        </div>
+                                        <div class="col-md-2">
+                                            <label class="mb-3">Validations</label>
+                                            <div>
+                                                <div class="form-check form-check-inline">
+                                                    <input class="form-check-input" type="radio" name="Validations{{i}}" value="email"
+                                                        id="email{{i}}" [checked]="option.emailValidation" (change)="chnageOpenEndedValidation(i,'email')">
+                                                    <label class="form-check-label" for="email{{i}}">Email</label>
+                                                </div>
+                                                <div class="form-check form-check-inline">
+                                                    <input class="form-check-input" type="radio" name="Validations{{i}}" value="number"
+                                                        id="number{{i}}" [checked]="option.phoneValidation" (change)="chnageOpenEndedValidation(i,'number')">
+                                                    <label class="form-check-label" for="number{{i}}">Number</label>
+                                                </div>
+                                                <div class="form-check form-check-inline">
+                                                    <input class="form-check-input" type="radio" name="Validations{{i}}" value="text"
+                                                        id="text{{i}}" [checked]="option.inputValidation" (change)="chnageOpenEndedValidation(i,'text')">
+                                                    <label class="form-check-label" for="text{{i}}">Text</label>
+                                                </div>
+                                            </div>
+                                            
+                                        </div>
+                                        <div class="col-md-2">
+                                            <div class="flex-width text-end">
+                                                <ng-icon name="heroTrash" (click)="onDeleteOption('optionArr1',i)"></ng-icon>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                                
-                            </ng-contaniner>
-    
-                        </div>
-                        <div>
-                            <ng-container >
-                                <hr *ngIf="optionsArr2.length>0" />
-        
-                                <div ngClass="mb-4">
-                                    <div class="row g-2 align-items-center mb-3"
-                                        *ngFor="let option of optionsArr2;let i=index;">
-                                        <div class="flex-width">
-                                            <input type="text" id="" class="form-control" value="{{optionsArr1.length+i+1}}"
-                                                readonly />
+                                    <div *ngIf="showDontKnowOption"  ngClass="mb-4 mt-4" cdkDropList (cdkDropListDropped)="onDropOption($event)">
+
+                                        <div class="row mb-3 border-bottom" style="font-weight: 500;"
+                                            >
+                                            <div class="flex-width">S. No openended</div>
+                                            <div class="flex-width">Image</div>
+                                            <div class="flex-width"></div>
+                                            <div class="flex-2">Option</div>
+                                            <div class="flex-2" *ngIf="optiondescp || optiondescpisChecked">
+                                                <div class="d-flex">
+                                                    <p>Option Description</p>
+                
+                                                </div>
+                                            </div>
+                                            <div class="flex-width">Delete</div>
+                                            <div class="flex-width">Tooltip</div>
                                         </div>
-        
-                                        <div class="flex-width">
-                                            <ngx-dropzone class="edit-survey-img" ngx-dropzone [accept]="'image/*'"
-                                                (change)="onSelectNewOptionImage($event, i,question.id,option.id)">
-                                                <ngx-dropzone-label>
-                                                    <img [src]="baseUrl + '/assets/images/icons/attach-image.png'" />
-                                                </ngx-dropzone-label>
-                                                <ngx-dropzone-image-preview ngProjectAs="ngx-dropzone-preview"
-                                                    *ngFor="let f of newoptionImages[i]" [file]="f" [removable]="true"
-                                                    (removed)="onRemoveSelectOptionImage(f,i)">
-                                                </ngx-dropzone-image-preview>
-                                            </ngx-dropzone>
-                                        </div>
-                                        <div class="flex-2">
-                                            <input type="text" disabled id="" class="form-control"
-                                                [(ngModel)]="option.option" />
-                                        </div>
-        
-                                        <div class="flex-width text-end">
-                                            <ng-icon name="heroTrash" (click)="onDeleteOption('optionArr2',i)"></ng-icon>
-                                        </div>
-                                        <div class="flex-width ms-3 text-end">
-                                            <button *ngIf="!optiontooltipadded[i]" type="button" class="btn btn-primary"
-                                                (click)="addOptionTooltip(i)"
-                                                matTooltip="Click on '+' icon to add tooltip on option"><ng-icon
-                                                    name="heroPlusCircle"
-                                                    style="font-size: 1.2rem;height: auto;"></ng-icon></button>
-                                            <button *ngIf="optiontooltipadded[i]" type="button" class="btn btn-primary"
-                                                (click)="removeOptionTooltip(i)"
-                                                matTooltip="Click on '-' icon to remove tooltip on option"><ng-icon
-                                                    name="heroMinusCircle"
-                                                    style="font-size: 1.2rem;height: auto;"></ng-icon></button>
-                                        </div>
-                                        <div *ngIf="optiontooltipadded[i] || option.optionToolTip">
-                                            <div class="bg-light p-4 border rounded d-flex align-items-center">
-                                                <h6 class="mb-0 me-3">ToolTip</h6>
-                                                <div class="d-flex align-items-center" style="flex:1;">
-                                                    <div class="flex-2">
-                                                        <input class="form-control" [(ngModel)]="option.optionToolTip"
-                                                            name="tooptip" id="tooptip" type="text" />
+                
+                                    </div>
+                                    <ng-container>
+                                        <hr *ngIf="optionsArr2.length>0" />
+                
+                                        <div ngClass="mb-4">
+                                            <div class="row g-2 align-items-center mb-3"
+                                                *ngFor="let option of optionsArr2[i];let i=index;">
+                                                <div class="flex-width">
+                                                    <input type="text" id="" class="form-control" value="{{optionsArr1.length+i+1}}"
+                                                        readonly />
+                                                </div>
+                
+                                                <div class="flex-width">
+                                                    <ngx-dropzone class="edit-survey-img" ngx-dropzone [accept]="'image/*'"
+                                                        (change)="onSelectNewOptionImage($event, i,question.id,option.id)">
+                                                        <ngx-dropzone-label>
+                                                            <img [src]="baseUrl + '/assets/images/icons/attach-image.png'" />
+                                                        </ngx-dropzone-label>
+                                                        <ngx-dropzone-image-preview ngProjectAs="ngx-dropzone-preview"
+                                                            *ngFor="let f of newoptionImages[i]" [file]="f" [removable]="true"
+                                                            (removed)="onRemoveSelectOptionImage(f,i)">
+                                                        </ngx-dropzone-image-preview>
+                                                    </ngx-dropzone>
+                                                </div>
+                                                <div class="flex-2">
+                                                    <input type="text" disabled id="" class="form-control"
+                                                        [(ngModel)]="option.option" />
+                                                </div>
+                
+                                                <div class="flex-width text-end">
+                                                    <ng-icon name="heroTrash" (click)="onDeleteOption('optionArr2',i)"></ng-icon>
+                                                </div>
+                                                <div class="flex-width ms-3 text-end">
+                                                    <button *ngIf="!optiontooltipadded[i]" type="button" class="btn btn-primary"
+                                                        (click)="addOptionTooltip(i)"
+                                                        matTooltip="Click on '+' icon to add tooltip on option"><ng-icon
+                                                            name="heroPlusCircle"
+                                                            style="font-size: 1.2rem;height: auto;"></ng-icon></button>
+                                                    <button *ngIf="optiontooltipadded[i]" type="button" class="btn btn-primary"
+                                                        (click)="removeOptionTooltip(i)"
+                                                        matTooltip="Click on '-' icon to remove tooltip on option"><ng-icon
+                                                            name="heroMinusCircle"
+                                                            style="font-size: 1.2rem;height: auto;"></ng-icon></button>
+                                                </div>
+                                                <div *ngIf="optiontooltipadded[i] || option.optionToolTip">
+                                                    <div class="bg-light p-4 border rounded d-flex align-items-center">
+                                                        <h6 class="mb-0 me-3">ToolTip</h6>
+                                                        <div class="d-flex align-items-center" style="flex:1;">
+                                                            <div class="flex-2">
+                                                                <input class="form-control" [(ngModel)]="option.optionToolTip"
+                                                                    name="tooptip" id="tooptip" type="text" />
+                                                            </div>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
+                                    </ng-container>
                                 </div>
                             </ng-container>
+                       
+                     
+                        
+                        <div ngClass="mb-4" *ngIf="question.questionTypeName === 'Open Ended'">
+                            <div class="row g-2 align-items-center">
+                                <div class="col-auto" >
+                                    <div class="new-options">
+                                        <a herf="javascript:void(0);" (click)="handleOpneEndedAdd()"><ng-icon
+                                                name="heroPlusCircle"></ng-icon> Add Option</a>
+                                    </div>
+                                </div>
+                                <div class="col-auto">
+                                    <div ngClass="new-options">
+                                        <a herf="javascript:void(0);" (click)="handleOpneEndedAdd('dontKnow');openEndedOption()"><ng-icon
+                                                name="heroPlusCircle"></ng-icon> Add "Don't
+                                            know /Can't say"
+                                            Option</a>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                        <!-- <div class="row">
-                            <div class="col-md-6">
-                                <label>Word Limit</label>
-                            </div>
-                            <div class="col-md-6">
-                                <input id="answer" type="number" min="1" name="answer" class="form-control"
-                                    [(ngModel)]="textlimit" (blur)="validateSurvey()" />
-                            </div>
-
-                        </div>
-                        <div class="row mt-3">
-                            <div class="col-md-6">
-                                <label>Input Count</label>
-                            </div>
-                            <div class="col-md-6">
-                                <input id="answer" type="number" min="1" name="answer" class="form-control"
-                                    [(ngModel)]="minLimit" (blur)="validateSurvey()" />
-                            </div>
-                            <div class="col-md-6">
-                                <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="textarea" value="textarea"
-                                        id="textarea" [(ngModel)]="inputtype" (change)="checkInputType()">
-                                    <label class="form-check-label" for="textarea">Textarea</label>
-                                </div>
-                                <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="textarea" value="textfield"
-                                        id="textfield" [(ngModel)]="inputtype" (change)="checkInputType()">
-                                    <label class="form-check-label" for="textfield">Textfield</label>
-                                </div>
-                            </div>
-
-                        </div>
-                        <div class="row mt-3">
-                            <div class="col-md-6">
-                                <label>Input Type</label>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="textarea" value="textarea"
-                                        id="textarea" [(ngModel)]="inputtype" (change)="checkInputType()">
-                                    <label class="form-check-label" for="textarea">Textarea</label>
-                                </div>
-                                <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="textarea" value="textfield"
-                                        id="textfield" [(ngModel)]="inputtype" (change)="checkInputType()">
-                                    <label class="form-check-label" for="textfield">Textfield</label>
-                                </div>
-                            </div>
-
-
-                        </div> -->
-
+                        
                     </div>
                     <div class="mb-3" *ngIf="question.questionTypeName === 'Auto Continues Sum'">
 
@@ -896,9 +833,9 @@
                                         Option</a>
                                 </div>
                             </div>
-                            <div class="col-auto">
+                            <div class="col-auto" *ngIf="question.questionTypeName !== 'Open Ended'">
                                 <div ngClass="new-options">
-                                    <a herf="javascript:void(0);" (click)="hanldeAddOptionClick('dontKnow'); openEndedOption()"><ng-icon
+                                    <a herf="javascript:void(0);" (click)="hanldeAddOptionClick('dontKnow')"><ng-icon
                                             name="heroPlusCircle"></ng-icon> Add "Don't
                                         know /Can't say"
                                         Option</a>

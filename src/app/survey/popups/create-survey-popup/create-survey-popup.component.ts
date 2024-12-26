@@ -49,6 +49,7 @@ export class CreateSurveyPopupComponent {
   joinedCountryIds: string = '';
   
   onCountrySelectionChange(selectedCountries: { id: string; name: string; images: string }[]) {
+    console.log("selectedCountries",selectedCountries)
     this.selectedCountry = selectedCountries;
   
     this.selectedCountryId = selectedCountries.length > 0 ? selectedCountries[0].id : null;
