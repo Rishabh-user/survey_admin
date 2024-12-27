@@ -587,35 +587,42 @@
                     <div
                         *ngIf="question.questionTypeName === 'Open Ended' && (question.openEndedType == '' || question.openEndedType == 'textarea')">
                             <ng-container *ngFor="let option of optionsArr1;let i=index;">
-                                <div class="">
-                                    <div >
-                                        Question - 
-                                        <input id="answer" type="text" name="answer" class="form-control"
-                                        [(ngModel)]="option.option" />
-                                    </div>
-                                    <div class="mb-3">
-                                        <div class="form-check form-check-inline">
-                                            <input class="form-check-input" type="checkbox" name="Numeric{{i}}" value="Numeric{{i}}"
-                                                id="Numeric{{i}}" [(ngModel)]="option.isNumeric" (change)="openEndedValue()">
-                                            <label class="form-check-label" for="Numeric{{i}}">Numeric </label>
+                                <div class="multirow-openended">
+                                    <div class="mb-2 row">                                        
+                                        <div class="col-md-6">
+                                            <label class="form-label">Question - </label>
+                                            <input id="answer" type="text" name="answer" class="form-control"
+                                            [(ngModel)]="option.option" />
                                         </div>
-                                        <div class="form-check form-check-inline">
-                                            <input class="form-check-input" type="checkbox" name="alphabet{{i}}" value="alphabet{{i}}"
-                                                id="alphabet{{i}}" [(ngModel)]="option.isAlphabet" (change)="openEndedValue()">
-                                            <label class="form-check-label" for="alphabet{{i}}">Alphabet</label>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-md-1">
-                                            <label class="mb-3">Word Limit</label>
+                                        <div class="col-md-3">
+                                            <label class="form-label">Word Limit</label>
                                             <input id="answer" type="number" min="1" name="answer" class="form-control"
                                             [(ngModel)]="option.maxLimit" (blur)="validateSurvey()" />
                                         </div>
-                                        <div class="col-md-1">
-                                            <label class="mb-3">Input Count</label>
+                                        <div class="col-md-3">
+                                            <label class="form-label">Input Count</label>
                                             <input id="answer" type="number" min="1" name="answer" class="form-control"
                                                 [(ngModel)]="option.minLimit" (blur)="validateSurvey()" />
                                         </div>
+                                    </div>
+                                    
+                                    <div class="row mt-4">
+                                        <div class="mb-3 col-md-2">
+                                            <label class="mb-3">Numeric/Alphabet</label>
+                                            <div>
+                                                <div class="form-check form-check-inline">
+                                                    <input class="form-check-input" type="checkbox" name="Numeric{{i}}" value="Numeric{{i}}"
+                                                        id="Numeric{{i}}" [(ngModel)]="option.isNumeric" (change)="openEndedValue()">
+                                                    <label class="form-check-label" for="Numeric{{i}}">Numeric </label>
+                                                </div>
+                                                <div class="form-check form-check-inline">
+                                                    <input class="form-check-input" type="checkbox" name="alphabet{{i}}" value="alphabet{{i}}"
+                                                        id="alphabet{{i}}" [(ngModel)]="option.isAlphabet" (change)="openEndedValue()">
+                                                    <label class="form-check-label" for="alphabet{{i}}">Alphabet</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
                                         <div class="col-md-2">
                                             <label class="mb-3">Input Type</label>
                                             <!-- <div>
@@ -680,9 +687,9 @@
                                             </div>
                                             
                                         </div>
-                                        <div class="col-md-2">
-                                            <div class="flex-width text-end">
-                                                <ng-icon name="heroTrash" (click)="onDeleteOption('optionArr1',i)"></ng-icon>
+                                        <div class="col-md-6 text-end">
+                                            <div class="text-end">
+                                                <button class="btn btn-primary"><ng-icon name="heroTrash" (click)="onDeleteOption('optionArr1',i)"></ng-icon></button>
                                             </div>
                                         </div>
                                     </div>

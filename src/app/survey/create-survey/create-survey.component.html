@@ -1307,23 +1307,23 @@
                                                     <div class="d-flex gap-2">
                                                        <h5 ngClass="mb-4">Matrix Header Logic</h5>
                                                        <div class="custom-tooltip">
-                                                        <ng-icon name="heroInformationCircle"
-                                                            ngClass="edit-action info-circle"
-                                                            (click)="toggleTooltip('20')"></ng-icon>
-                                                        <div class="toast show" *ngIf="showTooltip['20']">
-                                                            <div class="toast-header">
-                                                                <img [src]="baseUrl + '/assets/images/icons/Add-new-question.png'"
-                                                                    class="rounded me-2" width="30" height="30" />
-                                                                <h6 class="mb-0 me-auto">Matrix Logic</h6>
-                                                                <button type="button" class="btn-close"
-                                                                    data-bs-dismiss="toast" aria-label="Close"
-                                                                    (click)="hideTooltip('20')"></button>
+                                                            <ng-icon name="heroInformationCircle"
+                                                                ngClass="edit-action info-circle"
+                                                                (click)="toggleTooltip('20')"></ng-icon>
+                                                            <div class="toast show" *ngIf="showTooltip['20']">
+                                                                <div class="toast-header">
+                                                                    <img [src]="baseUrl + '/assets/images/icons/Add-new-question.png'"
+                                                                        class="rounded me-2" width="30" height="30" />
+                                                                    <h6 class="mb-0 me-auto">Matrix Logic</h6>
+                                                                    <button type="button" class="btn-close"
+                                                                        data-bs-dismiss="toast" aria-label="Close"
+                                                                        (click)="hideTooltip('20')"></button>
+                                                                </div>
+                                                                <div class="toast-body">
+                                                                    Apply conditional logic to columns within matrix-type questions
+                                                                </div>
                                                             </div>
-                                                            <div class="toast-body">
-                                                                Apply conditional logic to columns within matrix-type questions
-                                                            </div>
-                                                        </div>
-                                                    </div>
+                                                         </div>
                                                     </div>
                                                     <div ngClass="d-flex justify-content-between mb-3">
                                                         <h6>Redirect to different questions based on user's answer.</h6>
@@ -2637,8 +2637,26 @@
 <!-- redirection -->
 <ng-template #redirection let-modal>
     <div class="modal-header">
-        <div>
+        <div class="d-flex gap-2 align-items-center">
             <h4 class="modal-title">Redirection</h4>
+            <div class="custom-tooltip">
+                <ng-icon name="heroInformationCircle"
+                    ngClass="edit-action info-circle"
+                    (click)="toggleTooltip('20')"></ng-icon>
+                <div class="toast show" *ngIf="showTooltip['20']">
+                    <div class="toast-header">
+                        <img [src]="baseUrl + '/assets/images/icons/Add-new-question.png'"
+                            class="rounded me-2" width="30" height="30" />
+                        <h6 class="mb-0 me-auto">Redirection Screenc</h6>
+                        <button type="button" class="btn-close"
+                            data-bs-dismiss="toast" aria-label="Close"
+                            (click)="hideTooltip('20')"></button>
+                    </div>
+                    <div class="toast-body">
+                        Learn how to format and write redirection URLs correctly for seamless respondent navigation.
+                    </div>
+                </div>
+             </div>
            
         </div>
         <button type="button" class="btn-close" aria-label="Close"
