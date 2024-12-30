@@ -55,6 +55,33 @@ export class QuotaManagementComponent {
   previousItemIds: any[] = [];
   quotainterlockdata: any[] = [];
   interlockusercount: any;
+
+  showTooltip: { [key: string]: boolean } = {};
+  currentTooltip: string | null = null;
+  toggleTooltip(identifier: any) {
+
+    if (this.currentTooltip && this.currentTooltip !== identifier) {
+      this.showTooltip[this.currentTooltip] = false;
+    }
+
+    this.showTooltip[identifier] = !this.showTooltip[identifier];
+
+    if (this.showTooltip[identifier]) {
+      this.currentTooltip = identifier;
+    } else {
+      this.currentTooltip = null;
+    }
+
+  }
+
+  hideTooltip(identifier: any) {
+    this.showTooltip[identifier] = false;
+
+    if (this.currentTooltip === identifier) {
+      this.currentTooltip = null;
+    }
+
+  }
   //QuotaData: QuotaData;
 
 

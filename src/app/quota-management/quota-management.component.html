@@ -36,8 +36,24 @@
         
         <div >
             <div class="mb-3">
-                <div class="d-flex justify-content-between align-items-center">
+                <div class="d-flex">
                     <label class="form-label">Vendor List</label>
+                    <div class="custom-tooltip ms-2">
+                        <ng-icon name="heroInformationCircle" ngClass="edit-action info-circle"
+                            (click)="toggleTooltip('0')"></ng-icon>
+                        <div class="toast show" *ngIf="showTooltip['0']">
+                            <div class="toast-header">
+                                <img [src]="baseUrl + '/assets/images/icons/Add-new-question.png'" class="rounded me-2"
+                                    width="30" height="30" />
+                                <h6 class="mb-0 me-auto">Vendor List</h6>
+                                <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"
+                                    (click)="hideTooltip('0')"></button>
+                            </div>
+                            <div class="toast-body">
+                                View the list of vendors assigned to the current survey.
+                            </div>
+                        </div>
+                    </div>
                     <!-- <a routerLink="/survey/manage-survey/{{surveyId | encrypt}}">Cancel</a> -->
                 </div>
                 
@@ -165,9 +181,11 @@
                                     </li>
                                 </ul>
                                 <div class="total-count">
-                                    <button type="button" class="btn btn-outline-primary "
+                                    <div class="d-flex align-items-center">
+                                        <button type="button" class="btn btn-outline-primary "
                                         (click)="open(contentInterlock, i,question.questionId)"><ng-icon name="heroLink"></ng-icon></button>
-
+                                    </div>
+                                    
                                     <div class="mt-4 d-flex gap-2 align-items-center">
                                         <p class="mb-0"><strong>Total : </strong> <span>
                                                 {{getTotalSum(question?.optionsDto)}}</span></p>
@@ -194,7 +212,26 @@
     </div>
 
     <div class="common-bg">
-        <h4>Interlocked Quotas</h4>
+        <div class="d-flex">
+            <h4>Interlocked Quotas</h4>
+            <div class="custom-tooltip ms-2">
+                <ng-icon name="heroInformationCircle" ngClass="edit-action info-circle"
+                    (click)="toggleTooltip(2)"></ng-icon>
+                <div class="toast show" *ngIf="showTooltip[2]">
+                    <div class="toast-header">
+                        <img [src]="baseUrl + '/assets/images/icons/Add-new-question.png'" class="rounded me-2"
+                            width="30" height="30" />
+                        <h6 class="mb-0 me-auto">Attach Button of Quota</h6>
+                        <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"
+                            (click)="hideTooltip(2)"></button>
+                    </div>
+                    <div class="toast-body">
+                        Use this option to set up nested quotas involving multiple questions for more precise targeting.
+                    </div>
+                </div>
+            </div>
+        </div>
+        
         <!-- <div class="interlocked-quotas" [style.display]="showInterlockedQuotas ? 'block' : 'none'"> -->
         <div  *ngIf="quotainterlockdata.length > 0">
             <div class="interlocked-quotas" >

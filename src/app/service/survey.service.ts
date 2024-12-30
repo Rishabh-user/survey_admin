@@ -649,4 +649,9 @@ export class SurveyService {
     return this.http.post(url, formData, { responseType: 'text' });
   }
 
+  groupQuestion(data: any):Observable<any> {
+    const url = `${this.apiUrl}api/admin/${this.userId}/GeneralQuestion/AddQuestionGroup`;
+    return this.http.post(url, data, { responseType: 'text' });
+  }
+
 }

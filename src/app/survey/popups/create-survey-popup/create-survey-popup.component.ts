@@ -42,6 +42,7 @@ export class CreateSurveyPopupComponent {
   isDesktopMode:boolean = true;
   isMobileMode:boolean = true;
   isTabletMode:boolean = true;
+  geolocation:boolean = false;
   //selectedCountryId: string | null = null;
 
 
@@ -277,5 +278,11 @@ export class CreateSurveyPopupComponent {
   }
   onTabletReq(event: any) {
     this.isTabletMode = event.target.checked;
+  }
+
+  onChangeGeoLocation(event:any){
+    this.geolocation = event.target.checked;
+    console.log("geolocation",this.geolocation)
+
   }
 }

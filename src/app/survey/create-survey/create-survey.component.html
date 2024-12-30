@@ -691,7 +691,7 @@
                                         </li>
                                         <li *ngIf="question?.logics?.length==0 && question?.isRequired">
                                             <a href="javascript:void(0);" class="dropdown-item"
-                                                (click)="toggleLogic(i,question?.id,'add');getQuestionListBranching(question?.id);getOptionsByQuestionIdLogic(question?.id);openEndedVlaues(question?.questionType);toggleMatrixLogic(i,question?.id,'add');getMatrixLogic(i,question?.id);getMatrixColumnByQuestionIdLogic(question?.id)">
+                                                (click)="toggleLogic(i,question?.id,'add');getQuestionListBranching(question?.id);getOptionsByQuestionIdLogic(question?.id);openEndedVlaues(question?.questionType);getMatrixLogic(i,question?.id);getMatrixColumnByQuestionIdLogic(question?.id)">
                                                 <ng-icon name="heroCommandLine"></ng-icon>
                                                 Logic
                                             </a>
@@ -700,7 +700,7 @@
                                         <li
                                             *ngIf="question?.logics?.length==0 && !question?.isRequired && question?.isOpenEnded">
                                             <a href="javascript:void(0);" class="dropdown-item"
-                                                (click)="toggleLogic(i,question?.id,'add');getQuestionListBranching(question?.id);getOptionsByQuestionIdLogic(question?.id);openEndedVlaues(question?.questionType);toggleMatrixLogic(i,question?.id,'add');getMatrixLogic(i,question?.id);getMatrixColumnByQuestionIdLogic(question?.id)">
+                                                (click)="toggleLogic(i,question?.id,'add');getQuestionListBranching(question?.id);getOptionsByQuestionIdLogic(question?.id);openEndedVlaues(question?.questionType);getMatrixLogic(i,question?.id);getMatrixColumnByQuestionIdLogic(question?.id)">
                                                 <ng-icon name="heroCommandLine"></ng-icon>
                                                 Logic
                                             </a>
@@ -863,6 +863,12 @@
                                                         aria-selected="false"
                                                         (click)="getPipingquesList(question?.id);getpiping(question?.id)">Piping</button>
                                                 </li>
+                                                <li class="nav-item" role="presentation" *ngIf="question?.questionType === 'Matrix Choice'">
+                                                    <button class="nav-link d-flex" id="Matrixcolrow-tab"
+                                                        data-bs-toggle="tab"
+                                                        [attr.data-bs-target]="'#martrixcolsrows' + question.id" role="tab"
+                                                        aria-selected="true">Matrix col & rows</button>
+                                                </li>
                                             </ul>
                                             <div class="tab-content p-4">
                                                 <div class="tab-pane active" [id]="'branching' + question.id"
@@ -871,7 +877,6 @@
                                                     <div ngClass="d-flex justify-content-between mb-3">
                                                         <h6>Redirect to different questions based on user's answer.</h6>
                                                     </div>
-
                                                     <div ngClass="logic-ques"
                                                         *ngFor="let logicEntry of logicEntriesPerQuestion[i]; let j = index">
 
@@ -1328,7 +1333,6 @@
                                                     <div ngClass="d-flex justify-content-between mb-3">
                                                         <h6>Redirect to different questions based on user's answer.</h6>
                                                     </div>
-
                                                     <div ngClass="logic-ques"
                                                         *ngFor="let logicEntry of matrixLogicsEntriesPerQuestion[i]; let j = index">
 
@@ -1449,42 +1453,6 @@
                                                                                 </option>
                                                                             </select>
                                                                         </div>
-                                                                        <!-- <div class="col-md-7"
-                                                                            *ngIf="logicEntry.thanId=='5'">
-                                                                            <div class="d-flex gap-4">
-                                                                                <label class="">
-                                                                                    <span class="w-100">Every
-                                                                                        Time</span>
-                                                                                    <div class="d-flex align-items-center"
-                                                                                        style="height:50px">
-                                                                                        <input type="radio"
-                                                                                            class="form-check-input"
-                                                                                            name="frequency"
-                                                                                            [(ngModel)]="logicEntry.isEveryTime" />
-                                                                                    </div>
-                                                                                </label>
-
-                                                                                <label class="">
-                                                                                    <span class="w-100">Times</span>
-                                                                                    <div
-                                                                                        class="d-flex align-items-center">
-                                                                                        <input type="radio"
-                                                                                            class="form-check-input"
-                                                                                            name="frequency" />
-                                                                                        <input type="text"
-                                                                                            class="form-control ms-2"
-                                                                                            [(ngModel)]="logicEntry.timesPeriod" />
-                                                                                    </div>
-                                                                                </label>
-                                                                                <label class="">
-                                                                                    <span class="w-100">Enter Popup
-                                                                                        Text</span>
-                                                                                    <input type="text"
-                                                                                        class="form-control"
-                                                                                        [(ngModel)]="logicEntry.popupText" />
-                                                                                </label>
-                                                                            </div>
-                                                                        </div> -->
                                                                         <div class="col-md-4"
                                                                             *ngIf="logicEntry.thanId!='3' && logicEntry.thanId!='4' && logicEntry.thanId!='5'">
 
@@ -1943,6 +1911,273 @@
                                                     </div> -->
 
                                                 </div>
+                                                <div class="tab-pane" [id]="'martrixcolsrows' + question.id"
+                                                    role="tabpanel" aria-labelledby="Matrixcolrow-tab">
+                                                    <h5 ngClass="mb-4">Matrix Cols & Rows</h5>
+                                                    <div ngClass="d-flex justify-content-between mb-3">
+                                                        <h6>Redirect to different questions based on user's answer.</h6>
+                                                    </div>
+
+                                                    <div ngClass="logic-ques"
+                                                        *ngFor="let logicEntry of matrixcolsrowslogicEntriesPerQuestion[i]; let j = index">
+
+                                                        <div class="border rounded p-3 mb-4">
+                                                            <!-- <p>{{ logicEntry | json }}</p> -->
+                                                            <h5>Logic {{j+1}}</h5>
+                                                            <div class="branching-quest-clone" #cloneSection>
+                                                                <div class="">
+                                                                    <div class="input-group flex-nowrap">
+                                                                        <span class="input-group-text"
+                                                                            id="addon-wrapping">In</span>
+                                                                        <select class="form-select">
+                                                                            <option selected>
+                                                                                <div [innerHTML]="question?.question">
+                                                                                </div>
+                                                                            </option>
+                                                                        </select>
+                                                                    </div>
+                                                                    <div class="add-multiple-logic">
+                                                                        <div ngClass="if-then">
+                                                                            <span>If</span>
+                                                                        </div>
+                                                                        <div ngClass="mb-4">
+                                                                            <div class="row g-2 align-items-center">
+                                                                                <div class="col-md-1">
+                                                                                    <div>Value</div>
+                                                                                </div>
+                                                                                <div class="col-md-3">
+                                                                                    <select class="form-select"
+                                                                                        [(ngModel)]="logicEntry.ifId"
+                                                                                        (change)="onLogicEntryMatrixColsRowsChange(i,j)">
+                                                                                        <option
+                                                                                            *ngFor="let item of logicValuesList;"
+                                                                                            [ngValue]="item.id">
+                                                                                            {{item.name}}
+                                                                                        </option>
+                                                                                    </select>
+                                                                                </div>
+
+
+                                                                                <div class="col-md-8">
+                                                                                    <div class="row">
+                                                                                        <div class="col-md-5">
+                                                                                            <div class="d-flex align-items-center">
+                                                                                                <label>Rows:</label>
+                                                                                                <select class="form-select ms-3"
+                                                                                                    [(ngModel)]="logicEntry.ifId"
+                                                                                                    >
+                                                                                                    <option
+                                                                                                        *ngFor="let item of valuefilteredOptions"
+                                                                                                        [ngValue]="item.id">
+                                                                                                        {{item.option}}
+                                                                                                    </option>
+                                                                                                </select>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                        <div class="col-md-5">
+                                                                                            <div class="d-flex align-items-center">
+                                                                                                <label>Cols:</label>
+                                                                                                <select class="form-select ms-3"
+                                                                                                    [(ngModel)]="logicEntry.ifId"
+                                                                                                    >
+                                                                                                    <option
+                                                                                                        *ngFor="let item of valuefilteredOptions"
+                                                                                                        [ngValue]="item.id">
+                                                                                                        {{item.option}}
+                                                                                                    </option>
+                                                                                                </select>
+                                                                                            </div>
+                                                                                            
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                
+                                                            </div>
+
+                                                            <div class="add-multiple-logic">
+                                                                <div ngClass="if-then">
+                                                                    <span>Then </span>
+                                                                </div>
+                                                                <div ngClass="mb-4">
+                                                                    <div class="row g-2 align-items-center">
+                                                                        <div class="col-md-4">
+                                                                            <select class="form-select"
+                                                                                #thanIdSelect="ngModel"
+                                                                                [(ngModel)]="logicEntry.thanId"
+                                                                                (change)="onMatrixColsRowsLogicEntryOrThanChange(thanIdSelect.value)">
+                                                                                <option
+                                                                                    *ngFor="let item of logicThensList;let j=index;"
+                                                                                    [value]="item.id">{{item.name}}
+                                                                                </option>
+                                                                            </select>
+                                                                        </div>
+                                                                        <div class="col-md-7"
+                                                                            *ngIf="logicEntry.thanId=='5'">
+                                                                            <div class="d-flex gap-4">
+                                                                                <label class="">
+                                                                                    <span class="w-100">Every
+                                                                                        Time</span>
+                                                                                    <div class="d-flex align-items-center"
+                                                                                        style="height:50px">
+                                                                                        <input type="radio"
+                                                                                            class="form-check-input"
+                                                                                            name="frequency"
+                                                                                            [(ngModel)]="logicEntry.isEveryTime" />
+                                                                                    </div>
+                                                                                </label>
+
+                                                                                <label class="">
+                                                                                    <span class="w-100">Times</span>
+                                                                                    <div
+                                                                                        class="d-flex align-items-center">
+                                                                                        <input type="radio"
+                                                                                            class="form-check-input"
+                                                                                            name="frequency" />
+                                                                                        <input type="text"
+                                                                                            class="form-control ms-2"
+                                                                                            [(ngModel)]="logicEntry.timesPeriod" />
+                                                                                    </div>
+                                                                                </label>
+                                                                                <label class="">
+                                                                                    <span class="w-100">Enter Popup
+                                                                                        Text</span>
+                                                                                    <input type="text"
+                                                                                        class="form-control"
+                                                                                        [(ngModel)]="logicEntry.popupText" />
+                                                                                </label>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="col-md-4"
+                                                                            *ngIf="logicEntry.thanId!='3' && logicEntry.thanId!='4' && logicEntry.thanId!='5'">
+
+                                                                            <select class="form-select"
+                                                                                #thanExpectedSelect="ngModel"
+                                                                                [(ngModel)]="logicEntry.thanExpected"
+                                                                                (ngModelChange)="onSelectChangeoptionMatrixColsRows($event)">
+                                                                                <option value="null">Select Question
+                                                                                </option>
+                                                                                <option
+                                                                                    *ngFor="let item of logicQuestionList;let j=index;"
+                                                                                    [value]="item.item.charAt(0)+'-'+item.id">
+                                                                                    {{item.item}}
+                                                                                </option>
+                                                                            </select>
+                                                                        </div>
+
+                                                                        <div class="col-md-1">
+                                                                            <button type="button"
+                                                                                class="btn btn-outline-primary btn-sm"
+                                                                                (click)="showBranchingElseMatrixColsRows(i,j)">Else</button>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+
+                                                                <div ngClass="if-then"
+                                                                    *ngIf="isBranchingElseShowMatrix[i][j] || logicEntry.elseId != null">
+
+                                                                    <span>Else 11{{logicEntry.elseExpected}}</span>
+                                                                </div>
+                                                                <div ngClass="mb-4"
+                                                                    *ngIf="isBranchingElseShowMatrix[i][j] || logicEntry.elseId != null">
+                                                                    <div class="row g-2 align-items-center">
+                                                                        <div class="col-md-4">
+                                                                            <!-- Use unique template reference variables by appending the index -->
+                                                                            <select class="form-select"
+                                                                                #elseIdSelect="ngModel"
+                                                                                [(ngModel)]="logicEntry.elseId"
+                                                                                (change)="onLogicEntryOrElseChangeMatrixCols(elseIdSelect.value,i,j)">
+
+                                                                                <option
+                                                                                    *ngFor="let item of logicThensList;let j=index;"
+                                                                                    [value]="item.id">{{item.name}}
+                                                                                </option>
+                                                                            </select>
+                                                                        </div>
+                                                                        <div class="col-md-6"
+                                                                            *ngIf="logicEntry.elseId==5">
+                                                                            <div class="d-flex gap-2">
+                                                                                <label class="">
+                                                                                    <span class="w-100">Every
+                                                                                        Time</span>
+                                                                                    <input type="radio"
+                                                                                        class="form-input"
+                                                                                        name="frequencyElse"
+                                                                                        [(ngModel)]="logicEntry.isEveryTimeElse" />
+                                                                                </label>
+
+                                                                                <label class="">
+                                                                                    <span class="w-100">Times</span>
+                                                                                    <div class="d-flex">
+                                                                                        <input type="radio"
+                                                                                            class="form-input"
+                                                                                            name="frequencyElse" />
+                                                                                        <input type="text"
+                                                                                            class="form-input"
+                                                                                            style="width: 50px;"
+                                                                                            [(ngModel)]="logicEntry.timesPeriodElse" />
+                                                                                    </div>
+                                                                                </label>
+                                                                                <label class="">
+                                                                                    <span class="w-100">Enter Popup
+                                                                                        Text</span>
+                                                                                    <input type="text"
+                                                                                        class="form-input"
+                                                                                        [(ngModel)]="logicEntry.popupTextElse" />
+                                                                                </label>
+                                                                            </div>
+                                                                        </div>
+
+                                                                        <div class="col-md-4"
+                                                                            *ngIf="isElseShowmatrixcolsrows[i][j] && logicEntry.elseId!=5">
+                                                                            <select class="form-select"
+                                                                                #thanExpectedSelect="ngModel"
+                                                                                [(ngModel)]="logicEntry.elseExpected">
+                                                                                <option value="null">Select Question
+                                                                                </option>
+                                                                                <option
+                                                                                    *ngFor="let item of logicQuestionListById;let j=index;"
+                                                                                    [value]="item.item.charAt(0)+'-'+item.id">
+                                                                                    {{item.item}}
+                                                                                </option>
+                                                                            </select>
+                                                                        </div>
+                                                                        <div class="col-md-1">
+                                                                            <button type="button"
+                                                                                class="btn btn-outline-primary btn-sm"
+                                                                                (click)="hideBranchingElseMatrixColsRows(i,j,logicEntry)">Remove</button>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="row">
+                                                                <div
+                                                                    class="col-12 text-end d-flex justify-content-between">
+                                                                    <button type="button" class="btn btn-primary btn-sm"
+                                                                        (click)="removeLogicEntryMatrixColsRows(i,j)">Remove Logic
+                                                                        {{j+1}}</button>
+
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                    </div>
+
+                                                    <hr>
+                                                    <div class="row">
+                                                        <div class="col-12 text-end d-flex justify-content-between">
+                                                            <button type="button" class="btn btn-primary btn-sm"
+                                                                (click)="addNewMartrixColsRowsLogicEntry(i)">Add New Logic</button>
+                                                            <button type="button" class="btn btn-primary btn-sm"
+                                                                (click)="createLogic(question?.id, logicEntriesPerQuestion[i])">Save</button>
+                                                        </div>
+                                                    </div>
+                                                    
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -2199,6 +2434,24 @@
                             <input class="form-check-input" type="checkbox" role="switch"
                                 [(ngModel)]="isQNumberRequired" [ngModelOptions]="{standalone: true}"
                                 name="isChecked" (change)="onCheckboxChange($event)"
+                                style="width: 2.5rem;height: 1.4rem;">
+                        </div>
+                    </div>
+                </div>
+                <div class="d-flex justify-content-between align-items-center mt-4" *ngIf="planid == 2500 || planid == 0">
+                    <div class="">
+                        <h5 for="">Add Geo Location</h5>
+                        <div class="mt-2">
+                            <p class="mb-0">If you want to add Geo Location in your survey. you need to
+                                check the toggle.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="d-flex justify-content-end">
+                        <div class="form-check form-switch">
+                            <input class="form-check-input" type="checkbox" role="switch"
+                                [(ngModel)]="geolocation" [ngModelOptions]="{standalone: true}"
+                                name="isChecked" (change)="onChangeGeoLocation($event)"
                                 style="width: 2.5rem;height: 1.4rem;">
                         </div>
                     </div>
@@ -2916,7 +3169,7 @@
     </div>
     <div class="modal-footer upload">
         <button type="button" class="btn close" (click)="modal.close('Close click')">Add</button>
-        <button type="button" class="btn btn-primary icon" (click)="modal.close('Close click')">Create
+        <button type="button" class="btn btn-primary icon" (click)="modal.close('Close click');addQuesGroup()">Create
             <ng-icon name="heroArrowLongRight" class="ms-4"></ng-icon>
         </button>
     </div>

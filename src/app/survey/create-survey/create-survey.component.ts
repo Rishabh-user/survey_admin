@@ -166,7 +166,8 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
   selectedCountryId: string | null = null;
   country: { id: string, name: string, images: string }[] = [];
   logicEntriesPerQuestion: any[] = [];
-  matrixLogicsEntriesPerQuestion:any[]=[];
+  matrixcolsrowslogicEntriesPerQuestion: any[] = [];
+  matrixLogicsEntriesPerQuestion: any[] = [];
   currentPage: number = 1
   files: File[] = [];
   filesImage: any;
@@ -181,7 +182,9 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
   isAndOrLogic: boolean[][] = [];
   visibleaddandlogic: boolean[][] = [];
   isBranchingElseShow: boolean[][] = [];
+  isBranchingElseShowMatrix: boolean[][] =[];
   isElseShow: boolean[][] = [];
+  isElseShowmatrixcolsrows: boolean[][] =[];
   status: any
   notificationmessage: any
   planid: any
@@ -195,7 +198,7 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
   questiontype:any
   pipingques: { [key: number]: any[] } = {}; 
   selectedOptionsLogic: any[][] = [];
-
+  selectedMatrixColsRowsLogic: any[][] = [];
   selectedMatrixHeaderLogic:any[][]=[];
   matrixValuefilteredOptions:any[]=[];
   isMatrixElseShow: boolean[][] = [];
@@ -210,7 +213,7 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
   isDesktopMode:boolean = true;
   isMobileMode:boolean = true;
   isTabletMode:boolean = true;
-  
+  geolocation:boolean = false;
 
   centerId: number = this.utils.getCenterId();
 
@@ -727,15 +730,18 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
   logicIndex: number;
 
   toggleLogic(index: number, questionId: any, mode: string) {
-
+   debugger
     if (this.planid === '500') {
       this.questions[index].isLogicShow = true;
     }
    
     //this.logicIndex = index;
-    if (mode === "add")
+    if (mode === "add"){
       this.addNewLogicEntry(index);
-      // this.addNewMatrixLogicEntry(index);
+      this.addNewMatrixLogicEntry(index);
+      this.addNewMartrixColsRowsLogicEntry(index);
+    }
+    debugger
 
     this.questions[index].isLogicShow = !this.questions[index].isLogicShow;
     /*setTimeout(() => {
@@ -3308,13 +3314,7 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
 
   
 
-  toggleMatrixLogic(index: number, questionId: any, mode: string) {
-
-
-    if (mode === "add")
-      this.addNewMatrixLogicEntry(index);
-
-  }
+ 
 
   matrixColumnOption:any[]=[]
 
@@ -3372,8 +3372,6 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
 
 
   addNewMatrixLogicEntry(index: number): void {
-
-    // Initialize an array for the question if not already done
     if (!this.matrixLogicsEntriesPerQuestion[index]) {
       this.matrixLogicsEntriesPerQuestion[index] = [];
     }
@@ -3392,6 +3390,7 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
     };
 
     this.matrixLogicsEntriesPerQuestion[index].push(newMatrixLogicEntry);
+    
     if (!this.showRemoveandlogicArray[index]) {
       this.showRemoveandlogicArray[index] = [];
     }
@@ -3754,70 +3753,226 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
     console.log("ahk", this.isopenendedvalue[index][quesid]);
 }
 
-deleteAutoCode(){
-  this.surveyservice.deleteAutoCode(this.surveyId).subscribe({
-    next: (resp:any) => {
-        this.utils.showSuccess("Autocode Deleted Successfully")
-        window.location.reload()
-    },
-    error: (err) => {
-        console.warn(err)
-    }
-  });
-}
+  deleteAutoCode(){
+    this.surveyservice.deleteAutoCode(this.surveyId).subscribe({
+      next: (resp:any) => {
+          this.utils.showSuccess("Autocode Deleted Successfully")
+          window.location.reload()
+      },
+      error: (err) => {
+          console.warn(err)
+      }
+    });
+  }
 
-// adding group
 
-groupQuesId(event:any,id:any){
-  console.log("event",event.target.checked)
-  console.log("ids",id)
-  if(event.target.checked){
-    if(!this.groupQues.includes(id)){
-      this.groupQues.push(id);
-    }
-  }else{
-    this.groupQues = this.groupQues?.filter((item) => item !== id)
+  showSerialAvailability(){
+    this.showAvalibility = true
+  }
+  hideSerialAvailability(){
+    this.showAvalibility = false
+  }
+  onDesktopReq(event: any) {
+    this.isDesktopMode = event.target.checked;
+  }
+  onMobileReq(event: any) {
+    this.isMobileMode = event.target.checked;
+  }
+  onTabletReq(event: any) {
+    this.isTabletMode = event.target.checked;
+  }
+  onChangeGeoLocation(event:any){
+    this.geolocation = event.target.checked;
+    console.log("geolocation",this.geolocation)
 
   }
-  
-  console.log("groupQues",this.groupQues);
-
-}
-
-showSerialAvailability(){
-  this.showAvalibility = true
-}
-hideSerialAvailability(){
-  this.showAvalibility = false
-}
-onDesktopReq(event: any) {
-  this.isDesktopMode = event.target.checked;
-}
-onMobileReq(event: any) {
-  this.isMobileMode = event.target.checked;
-}
-onTabletReq(event: any) {
-  this.isTabletMode = event.target.checked;
-}
 
 
+  selectedCountryIds: string | null = null;
+  joinedCountryIds: string = '';
+  selectedCountrys: { id: string; name: string; images: string }[]  = [];
 
-selectedCountryIds: string | null = null;
-joinedCountryIds: string = '';
-selectedCountrys: { id: string; name: string; images: string }[]  = [];
+  onCountrySelectionChange(selectedCountries: { id: string; name: string; images: string }[]) {
+    this.selectedCountrys = selectedCountries;
 
-onCountrySelectionChange(selectedCountries: { id: string; name: string; images: string }[]) {
-  this.selectedCountrys = selectedCountries;
+    this.selectedCountryIds = selectedCountries.length > 0 ? selectedCountries[0].id : null;
 
-  this.selectedCountryIds = selectedCountries.length > 0 ? selectedCountries[0].id : null;
+    this.joinedCountryIds = selectedCountries.map(country => country.id.trim()).join(', ');
+    console.log("joinedCountryIds",this.joinedCountryIds)
+  }
 
-  this.joinedCountryIds = selectedCountries.map(country => country.id.trim()).join(', ');
-  console.log("joinedCountryIds",this.joinedCountryIds)
-}
+  getCountryNames(): string {
+    return this.selectedCountrys?.map(c => c.name).join(', ');
+  }
 
-getCountryNames(): string {
-  return this.selectedCountrys?.map(c => c.name).join(', ');
-}
+  // adding group
+
+  groupQuesId(event:any,id:any){
+    console.log("event",event.target.checked)
+    console.log("ids",id)
+    if(event.target.checked){
+      if(!this.groupQues.includes(id)){
+        this.groupQues.push(id);
+      }
+    }else{
+      this.groupQues = this.groupQues?.filter((item) => item !== id)
+
+    }
+    
+    console.log("groupQues",this.groupQues);
+
+  }
+
+  addQuesGroup(){
+    let groupNumber = 1;
+    const formattedData: { surveyId: string, questionId: string, group: number}[] = [];
+
+    const formattedEntry = this.groupQues.map((id:any,i:number) => {
+      const formattedEntry: { surveyId: any, questionId: any, group: number} = {
+        surveyId: this.surveyId,
+        questionId: id,
+        group: groupNumber
+      };
+      return formattedEntry;
+    });
+    formattedData.push(...formattedEntry)
+
+    this.surveyservice.groupQuestion(formattedData).subscribe({
+      next: (resp:any) => {
+        this.utils.showSuccess("Question group created");
+      },
+      error: (err:any) => {
+        this.utils.showError("Error")
+      }
+
+    })
+  }
+
+  // matrix rows & column
+
+
+  addNewMartrixColsRowsLogicEntry(index: number): void {
+    // Initialize an array for the question if not already done
+
+    if (!this.matrixcolsrowslogicEntriesPerQuestion[index]) {
+      this.matrixcolsrowslogicEntriesPerQuestion[index] = [];
+    }
+    let logicIndex = this.matrixcolsrowslogicEntriesPerQuestion.length
+    if (logicIndex > 0)
+      logicIndex = this.matrixcolsrowslogicEntriesPerQuestion.length + 1
+    // Create a new logic entry object
+    const newLogicEntry = {
+      id: 0,
+      ifId: null,
+      ifExpected: null,
+      thanId: null,
+      thanExpected: null,
+      elseId: null,
+      elseExpected: null,
+      popupTextElse: null,
+      isEveryTimeElse: false,
+      timesPeriodElse: 0,
+    };
+
+    this.matrixcolsrowslogicEntriesPerQuestion[index].push(newLogicEntry);
+    if (!this.showRemoveandlogicArray[index]) {
+      this.showRemoveandlogicArray[index] = [];
+    }
+    this.showRemoveandlogicArray[index][logicIndex] = false;
+    if (!this.visibleaddandlogic[index]) {
+      this.visibleaddandlogic[index] = [];
+    }
+    this.visibleaddandlogic[index][logicIndex] = false;
+    if (!this.isAndOrLogic[index]) {
+      this.isAndOrLogic[index] = [];
+    }
+    this.isAndOrLogic[index][logicIndex] = false;
+    if (!this.isBranchingElseShowMatrix[index]) {
+      this.isBranchingElseShowMatrix[index] = [];
+    }
+    this.isBranchingElseShowMatrix[index][logicIndex] = false;
+
+
+    //isElseShow
+    if (!this.isElseShowmatrixcolsrows[index]) {
+      this.isElseShowmatrixcolsrows[index] = [];
+    }
+    this.isElseShowmatrixcolsrows[index][logicIndex] = true;
+
+    //isElseShowCalculations
+
+
+    if (!this.selectedMatrixColsRowsLogic[index]) {
+      this.selectedMatrixColsRowsLogic[index] = [];
+    } if (!this.selectedMatrixColsRowsLogic[index][logicIndex]) {
+      this.selectedMatrixColsRowsLogic[index][logicIndex] = [];
+    }
+
+  }
+
+  onLogicEntryMatrixColsRowsChange(questionIndex: number, logicIndex: number): void {
+    this.selectedMatrixColsRowsLogic[questionIndex][logicIndex] = []; 
+  }
+  onMatrixColsRowsLogicEntryOrThanChange(thanIdSelect: any): void {
+    const ifIdNumber = +thanIdSelect;
+    if (ifIdNumber === 3 || ifIdNumber === 4)
+      this.isThanShow = false
+    else
+      this.isThanShow = true
+
+  }
+  onSelectChangeoptionMatrixColsRows(selectedValue: any) {
+    // Check if the selected value matches the value that should trigger the popup
+    if (selectedValue === "Show Popup") {
+      this.showPopup = true;
+
+    } else {
+      this.showPopup = false;
+    }
+  }
+
+  showBranchingElseMatrixColsRows(questionIndex: number, logicIndex: number) {
+    this.isBranchingElseShowMatrix[questionIndex][logicIndex] = true;
+  }
+
+  hideBranchingElseMatrixColsRows(questionIndex: number, logicIndex: number,logicEntry:any) {
+    this.isBranchingElseShowMatrix[questionIndex][logicIndex] = false;
+    logicEntry.elseId = null
+    console.log("logicid",logicEntry.elseId)
+   
+  }
+
+  onLogicEntryOrElseChangeMatrixCols(elseIdSelect: any, questionIndex: number, logicIndex: number): void {
+    const ifIdNumber = +elseIdSelect;
+    if (ifIdNumber === 3 || ifIdNumber === 4)
+      this.isElseShowmatrixcolsrows[questionIndex][logicIndex] = false
+    else
+      this.isElseShowmatrixcolsrows[questionIndex][logicIndex] = true
+  }
+
+  removeLogicEntryMatrixColsRows(questionIndex: number, logicIndex: number): void {
+    if (this.matrixcolsrowslogicEntriesPerQuestion[questionIndex]) {
+      if (logicIndex >= 0 && logicIndex < this.matrixcolsrowslogicEntriesPerQuestion[questionIndex].length) {
+        const entryIdToDelete = this.matrixcolsrowslogicEntriesPerQuestion[questionIndex][logicIndex]?.id;
+
+        // Check if entryIdToDelete is defined before proceeding
+        if (entryIdToDelete !== undefined) {
+          if (entryIdToDelete == 0) {
+            this.matrixcolsrowslogicEntriesPerQuestion[questionIndex].splice(logicIndex, 1);
+          }
+          else {
+          }
+
+        } else {
+          console.error('Entry ID is undefined or null.');
+        }
+      } else {
+        console.error('Invalid logicIndex:', logicIndex);
+      }
+    } else {
+      console.error('No logic entries found for question index:', questionIndex);
+    }
+  }
 
 
 
