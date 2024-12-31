@@ -53,7 +53,7 @@ export class DashboardComponent {
   isDesktopMode:boolean = true;
   isMobileMode:boolean = true;
   isTabletMode:boolean = true;
-  geolocation:boolean = false;
+  geoLocation:boolean = false;
   constructor(private visibilityService: DataService, private modalService: NgbModal, public themeService: DataService,
     public surveyservice: SurveyService, private auth: AuthService, private utility: UtilsService, private crypto: CryptoService, private router: Router,
     private csvService: SurveyService,
@@ -524,7 +524,8 @@ export class DashboardComponent {
         isQNumberRequired: this.isQNumberRequired,
         isTabletMode:this.isTabletMode,
         isDesktopMode:this.isDesktopMode,
-        isMobileMode:this.isMobileMode
+        isMobileMode:this.isMobileMode,
+        geoLocation: this.geoLocation
       };
 
 
@@ -596,8 +597,8 @@ export class DashboardComponent {
   }
 
   onChangeGeoLocation(event:any){
-    this.geolocation = event.target.checked;
-    console.log("geolocation",this.geolocation)
+    this.geoLocation = event.target.checked;
+    console.log("geolocation",this.geoLocation)
 
   }
 

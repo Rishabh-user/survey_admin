@@ -213,7 +213,7 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
   isDesktopMode:boolean = true;
   isMobileMode:boolean = true;
   isTabletMode:boolean = true;
-  geolocation:boolean = false;
+  geoLocation:boolean = false;
 
   centerId: number = this.utils.getCenterId();
 
@@ -572,6 +572,7 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
         this.isTabletMode = data.isTabletMode
         this.isDesktopMode = data.isDesktopMode
         this.isMobileMode = data.isMobileMode
+        this.geoLocation = data.geoLocation
         
         this.selectedCountry = this.country.find(country => country.id.trim() === this.countryId.trim()) || null;
         
@@ -699,7 +700,8 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
         isQNumberRequired: this.isQNumberRequired,
         isTabletMode:this.isTabletMode,
         isDesktopMode:this.isDesktopMode,
-        isMobileMode:this.isMobileMode
+        isMobileMode:this.isMobileMode,
+        geoLocation: this.geoLocation
       };
       this.surveyservice.updateSurvey(dataToSend).subscribe(
         response => {
@@ -3782,8 +3784,8 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
     this.isTabletMode = event.target.checked;
   }
   onChangeGeoLocation(event:any){
-    this.geolocation = event.target.checked;
-    console.log("geolocation",this.geolocation)
+    this.geoLocation = event.target.checked;
+    console.log("geolocation",this.geoLocation)
 
   }
 

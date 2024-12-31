@@ -42,7 +42,7 @@ export class CreateSurveyPopupComponent {
   isDesktopMode:boolean = true;
   isMobileMode:boolean = true;
   isTabletMode:boolean = true;
-  geolocation:boolean = false;
+  geoLocation:boolean = false;
   //selectedCountryId: string | null = null;
 
 
@@ -193,7 +193,8 @@ export class CreateSurveyPopupComponent {
         isQNumberRequired: this.isQNumberRequired,
         isTabletMode:this.isTabletMode,
         isDesktopMode:this.isDesktopMode,
-        isMobileMode:this.isMobileMode
+        isMobileMode:this.isMobileMode,
+        geoLocation: this.geoLocation
       };
 
 
@@ -281,8 +282,8 @@ export class CreateSurveyPopupComponent {
   }
 
   onChangeGeoLocation(event:any){
-    this.geolocation = event.target.checked;
-    console.log("geolocation",this.geolocation)
+    this.geoLocation = event.target.checked;
+    console.log("geolocation",this.geoLocation)
 
   }
 }
