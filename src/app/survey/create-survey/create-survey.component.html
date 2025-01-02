@@ -867,7 +867,7 @@
                                                     <button class="nav-link d-flex" id="Matrixcolrow-tab"
                                                         data-bs-toggle="tab"
                                                         [attr.data-bs-target]="'#martrixcolsrows' + question.id" role="tab"
-                                                        aria-selected="true">Matrix col & rows</button>
+                                                        aria-selected="true" (click)="getMatrixColsRowsLogic(i,question?.id)">Matrix col & rows</button>
                                                 </li>
                                             </ul>
                                             <div class="tab-content p-4">
@@ -1948,7 +1948,7 @@
                                                                                 <div class="col-md-3">
                                                                                     <select class="form-select"
                                                                                         [(ngModel)]="logicEntry.ifId"
-                                                                                        (change)="onLogicEntryMatrixColsRowsChange(i,j)">
+                                                                                        (change)="onLogicEntryMatrixColsRowsChange(i,j,logicEntry.expectedRow,logicEntry.expectedColumn)">
                                                                                         <option
                                                                                             *ngFor="let item of logicValuesList;"
                                                                                             [ngValue]="item.id">
@@ -1964,7 +1964,7 @@
                                                                                             <div class="d-flex align-items-center">
                                                                                                 <label>Rows:</label>
                                                                                                 <select class="form-select ms-3"
-                                                                                                    [(ngModel)]="logicEntry.ifId"
+                                                                                                    [(ngModel)]="logicEntry.expectedRow"
                                                                                                     >
                                                                                                     <option
                                                                                                         *ngFor="let item of valuefilteredOptions"
@@ -1978,12 +1978,12 @@
                                                                                             <div class="d-flex align-items-center">
                                                                                                 <label>Cols:</label>
                                                                                                 <select class="form-select ms-3"
-                                                                                                    [(ngModel)]="logicEntry.ifId"
+                                                                                                    [(ngModel)]="logicEntry.expectedColumn"
                                                                                                     >
                                                                                                     <option
-                                                                                                        *ngFor="let item of valuefilteredOptions"
+                                                                                                        *ngFor="let item of activematriccol"
                                                                                                         [ngValue]="item.id">
-                                                                                                        {{item.option}}
+                                                                                                        {{item.header}}
                                                                                                     </option>
                                                                                                 </select>
                                                                                             </div>
@@ -2063,7 +2063,7 @@
                                                                                 </option>
                                                                                 <option
                                                                                     *ngFor="let item of logicQuestionList;let j=index;"
-                                                                                    [value]="item.item.charAt(0)+'-'+item.id">
+                                                                                    [value]="item.id">
                                                                                     {{item.item}}
                                                                                 </option>
                                                                             </select>
@@ -2141,7 +2141,7 @@
                                                                                 </option>
                                                                                 <option
                                                                                     *ngFor="let item of logicQuestionListById;let j=index;"
-                                                                                    [value]="item.item.charAt(0)+'-'+item.id">
+                                                                                    [value]="item.id">
                                                                                     {{item.item}}
                                                                                 </option>
                                                                             </select>
@@ -2158,7 +2158,7 @@
                                                                 <div
                                                                     class="col-12 text-end d-flex justify-content-between">
                                                                     <button type="button" class="btn btn-primary btn-sm"
-                                                                        (click)="removeLogicEntryMatrixColsRows(i,j)">Remove Logic
+                                                                        (click)="removeMatrixRowsColsLogicEntry(question?.id,i,j)">Remove Logic
                                                                         {{j+1}}</button>
 
                                                                 </div>
@@ -2173,7 +2173,7 @@
                                                             <button type="button" class="btn btn-primary btn-sm"
                                                                 (click)="addNewMartrixColsRowsLogicEntry(i)">Add New Logic</button>
                                                             <button type="button" class="btn btn-primary btn-sm"
-                                                                (click)="createLogic(question?.id, logicEntriesPerQuestion[i])">Save</button>
+                                                                (click)="createMatrixColsRowsLogic(question?.id, matrixcolsrowslogicEntriesPerQuestion[i])">Save</button>
                                                         </div>
                                                     </div>
                                                     

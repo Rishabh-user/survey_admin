@@ -854,6 +854,14 @@ export class EditSurveyComponent {
     // Check if the answer input field is empty
     if(this.question.questionTypeName !== 'Open Ended'){
       isAnyOptionEmpty = this.allOptions.some(option => !option.option || option.option.trim() === '');
+    }else{
+      debugger
+      isAnyOptionEmpty = this.allOptions.some(option => 
+        !(option.isNumeric || option.isAlphabet) ||  // Check if neither isNumeric nor isAlphabet is true
+        !(option.inputTextArea || option.inputTextField) // Check if neither inputTextArea nor inputTextField is true
+      );      
+      
+      debugger
     }
  
     this.isValidSurvey = this.questionadded && this.qusstionaddednext && this.categoryNameChecks.every(check => check) && !isAnyOptionEmpty ;
@@ -885,17 +893,22 @@ export class EditSurveyComponent {
     //const isHeaderValid = this.validateHeaders();
     const isHeaderValid = this.validatedHeaders();
     console.log("isHeaderValid",isHeaderValid)
-    this.isvalidopenended = this.validateOpenEnded();
 
     // if(!this.isvalidopenended && (this.question.questionTypeName === 'Open Ended' && (this.question.openEndedType === '' || this.question.openEndedType === 'textarea'))){
     //   this.utility.showError("Checkbox is required");
     //   console.log("isvalidopenended",this.isvalidopenended)
     //   return
     // }
-
-    if (!isSurveyValid ) {
-      this.utility.showError('Please fill all required fields.');
-      return;
+    if(this.question.questionTypeName === 'Open Ended' && (this.question.openEndedType === '' || this.question.openEndedType === 'textarea')){
+      if (!isSurveyValid ) {
+        this.utility.showError('Please check input type & numeric/alphabet');
+        return;
+      }
+    }else{
+      if (!isSurveyValid ) {
+        this.utility.showError('Please fill all required fields');
+        return;
+      }
     }
 
     
@@ -2857,16 +2870,6 @@ export class EditSurveyComponent {
     }
   }
 
-  checkednumeric:boolean=false;
-  checkedalphabet:boolean = false;
-
-  validateOpenEnded():boolean{
-    this.checkednumeric = !!this.numeric;
-    this.checkedalphabet = !!this.alphabet;
-
-    return this.checkednumeric || this.checkedalphabet
-
-  }
 
 
 
@@ -2993,17 +2996,15 @@ export class EditSurveyComponent {
     //const isHeaderValid = this.validateHeaders();
     const isHeaderValid = this.validatedHeaders();
     console.log("isHeaderValid",isHeaderValid)
-   this.isvalidopenended = this.validateOpenEnded();
 
-    if(!this.isvalidopenended && (this.question.questionTypeName === 'Open Ended' && (this.question.openEndedType === '' || this.question.openEndedType === 'textarea'))){
-      this.utility.showError("Checkbox is required");
-      console.log("isvalidopenended",this.isvalidopenended)
-      return
-    }
+    if(this.question.questionTypeName === 'Matrix Choice' || this.question.questionTypeName === 'Continous Sum'){
+   
+      if (!isSurveyValid ) {
+        this.utility.showError('Please fill all required fields.');
+        return;
+      }
+    }else{
 
-    if (!isSurveyValid ) {
-      this.utility.showError('Please fill all required fields.');
-      return;
     }
 
     

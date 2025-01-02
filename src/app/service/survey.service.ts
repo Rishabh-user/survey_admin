@@ -654,4 +654,24 @@ export class SurveyService {
     return this.http.post(url, data, { responseType: 'text' });
   }
 
+  createMatrixColsRows(data:any):Observable<any> {
+    const url =`${this.apiUrl}api/admin/${this.userId}/Logics/CreateMatrixColumnAndRowLogics`;
+    return this.http.post(url, data, {responseType: 'text'});
+  }
+
+  updateMatrixColsRows(data:any):Observable<any> {
+    const url =`${this.apiUrl}api/admin/${this.userId}/Logics/UpdateMatrixColumnAndRowLogics`;
+    return this.http.post(url, data, {responseType: 'text'});
+  }
+
+  getMatrixColsRowsLogic(surveyid:any,quesid:any):Observable<responseDTO[]> {
+    const url =`${this.apiUrl}api/admin/${this.userId}/Logics/GetMatrixColumnAndRowLogics?surveyId=${surveyid}&questionId=${quesid}`;
+    return this.http.get<responseDTO[]>(url);
+  }
+
+  deleteMatrixColsRows(logicid:any,quesid:any):Observable<any> {
+    const url =`${this.apiUrl}api/admin/${this.userId}/Logics/DeleteMatrixColumnAndRowLogic?logicId=${logicid}&groupId=${quesid}`;
+    return this.http.delete(url,{responseType: 'text'});
+  }
+
 }

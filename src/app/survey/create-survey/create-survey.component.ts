@@ -24,7 +24,7 @@ import { MatChipInputEvent } from '@angular/material/chips';
 import { MatrixHeader, Option } from 'src/app/models/option';
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
-import { MatixHeaderLogics } from 'src/app/models/logic';
+import { MatixHeaderLogics, MatixColsRowsLogics } from 'src/app/models/logic';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import { OpenendedFormComponent } from '../popups/openended-form/openended-form.component';
 
@@ -738,6 +738,10 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
     }
    
     //this.logicIndex = index;
+    if (!this.matrixcolsrowslogicEntriesPerQuestion[index]) {
+      this.matrixcolsrowslogicEntriesPerQuestion[index] = [];
+    }
+
     if (mode === "add"){
       this.addNewLogicEntry(index);
       this.addNewMatrixLogicEntry(index);
@@ -746,14 +750,8 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
     debugger
 
     this.questions[index].isLogicShow = !this.questions[index].isLogicShow;
-    /*setTimeout(() => {
-    
-  }, 10000);*/
 
     this.getLogicQuestionList(questionId);
-
-
-    
 
   }
 
@@ -880,7 +878,7 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
 
   addNewLogicEntry(index: number): void {
     // Initialize an array for the question if not already done
-  
+   debugger
     if (!this.logicEntriesPerQuestion[index]) {
       this.logicEntriesPerQuestion[index] = [];
     }
@@ -3854,8 +3852,7 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
 
 
   addNewMartrixColsRowsLogicEntry(index: number): void {
-    // Initialize an array for the question if not already done
-
+    debugger
     if (!this.matrixcolsrowslogicEntriesPerQuestion[index]) {
       this.matrixcolsrowslogicEntriesPerQuestion[index] = [];
     }
@@ -3863,10 +3860,12 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
     if (logicIndex > 0)
       logicIndex = this.matrixcolsrowslogicEntriesPerQuestion.length + 1
     // Create a new logic entry object
+   
     const newLogicEntry = {
       id: 0,
       ifId: null,
-      ifExpected: null,
+      expectedColumn: null,
+      expectedRow:null,
       thanId: null,
       thanExpected: null,
       elseId: null,
@@ -3877,20 +3876,10 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
     };
 
     this.matrixcolsrowslogicEntriesPerQuestion[index].push(newLogicEntry);
-    if (!this.showRemoveandlogicArray[index]) {
-      this.showRemoveandlogicArray[index] = [];
-    }
-    this.showRemoveandlogicArray[index][logicIndex] = false;
-    if (!this.visibleaddandlogic[index]) {
-      this.visibleaddandlogic[index] = [];
-    }
-    this.visibleaddandlogic[index][logicIndex] = false;
-    if (!this.isAndOrLogic[index]) {
-      this.isAndOrLogic[index] = [];
-    }
-    this.isAndOrLogic[index][logicIndex] = false;
+
+    debugger
     if (!this.isBranchingElseShowMatrix[index]) {
-      this.isBranchingElseShowMatrix[index] = [];
+      this.isBranchingElseShowMatrix[index]  = [];
     }
     this.isBranchingElseShowMatrix[index][logicIndex] = false;
 
@@ -3910,10 +3899,15 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
       this.selectedMatrixColsRowsLogic[index][logicIndex] = [];
     }
 
+  
+
   }
 
-  onLogicEntryMatrixColsRowsChange(questionIndex: number, logicIndex: number): void {
-    this.selectedMatrixColsRowsLogic[questionIndex][logicIndex] = []; 
+  onLogicEntryMatrixColsRowsChange(questionIndex: number, logicIndex: number,logicEntryrow:any,logicEntrycol:any): void {
+    
+    logicEntrycol[questionIndex][logicIndex] = null;
+    logicEntryrow[questionIndex][logicIndex] = null;
+    
   }
   onMatrixColsRowsLogicEntryOrThanChange(thanIdSelect: any): void {
     const ifIdNumber = +thanIdSelect;
@@ -3952,8 +3946,155 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
       this.isElseShowmatrixcolsrows[questionIndex][logicIndex] = true
   }
 
-  removeLogicEntryMatrixColsRows(questionIndex: number, logicIndex: number): void {
+
+
+  createMatrixColsRowsLogic(questionId: any, matrixcolsrowsLogicEntries: any[]): void {
+    console.log('logicEntries:', matrixcolsrowsLogicEntries);
+    let delayCounter = 0;
+    let sort = 0;
+
+    for (const logicEntry of matrixcolsrowsLogicEntries) {
+      console.log('logicEntry', logicEntry);
+
+
+      this.createMatrixColsRowsLogicEntry(questionId, logicEntry, sort);
+      sort = sort + 1;
+
+      delayCounter++;
+    }
+  }
+
+  createMatrixColsRowsLogicEntry(questionId: any, logicEntry: any, sort: any): void {
+    const matriccolsrows: MatixColsRowsLogics = new MatixColsRowsLogics();
+    this.createLogicCount++;
+    console.log('Inside logicEntry', logicEntry)
+    const thanTermValue = logicEntry.thanExpected !== null ? logicEntry.thanExpected : 0;
+    const elseTermValue = logicEntry.elseExpected !== null ? logicEntry.elseExpected : 0;
+
+
+    const id = logicEntry.id;
+    const ifIdValue = logicEntry.ifId;
+    const ifExpectedcolsValue = logicEntry.expectedColumn;
+    const ifExpectedrowsValue = logicEntry.expectedRow;
+    const thanIdValue = logicEntry.thanId;
+    const thanExpectedValue = logicEntry.thanExpected !== null ? logicEntry.thanExpected : 0;
+    const elseIdValue = logicEntry.elseId !== null ? logicEntry.elseId : 0;
+    const elseExpectedValue = logicEntry.elseExpected !== null ? logicEntry.elseExpected : 0;
+ 
+    matriccolsrows.id = id;
+    matriccolsrows.surveyId = this.surveyId;
+    matriccolsrows.questionId = questionId;
+    matriccolsrows.ifId = ifIdValue;
+    matriccolsrows.expectedColumn = ifExpectedcolsValue;
+    matriccolsrows.expectedRow = ifExpectedrowsValue;
+    matriccolsrows.thanId = thanIdValue;
+    matriccolsrows.thanExpected = thanExpectedValue;
+    matriccolsrows.elseId = elseIdValue;
+    matriccolsrows.elseExpected = elseExpectedValue;
+    matriccolsrows.sort = sort;
+
+    const matrixColsRowsLogicsArray: MatixColsRowsLogics[] = [matriccolsrows];
+
+
+    if (matriccolsrows.id > 0) {
+      this.surveyservice.updateMatrixColsRows(matrixColsRowsLogicsArray).subscribe(
+        response => {
+
+          this.utils.showSuccess('Logic Created Successfully.');
+         // window.location.reload();
+        },
+        error => {
+          console.error('Error occurred while sending POST request:', error);
+          this.utils.showError(error);
+        }
+      );
+    } else {
+      this.surveyservice.createMatrixColsRows(matrixColsRowsLogicsArray).subscribe(
+        response => {
+          this.utils.showSuccess('Logic Created Successfully.');
+          //window.location.reload();
+        },
+        error => {
+          console.error('Error occurred while sending POST request:', error);
+          this.utils.showError(error);
+        }
+      );
+    }
+  }
+
+  getMatrixColsRowsLogic(index: number, questionId: number): void {
+
+
+    this.matrixcolsrowslogicEntriesPerQuestion[index] = []
+
+    this.getMatrixColumnByQuestionIdLogic(questionId);
+    this.surveyservice.getMatrixColsRowsLogic(this.surveyId,questionId).subscribe(
+      (response) => {
+        if (response && response?.length > 0) {
+          if (Array.isArray(response)) {
+            response?.forEach((logic: any, logicIndex: number) => {
+            
+              if (!this.isBranchingElseShowMatrix[index]) {
+                this.isBranchingElseShowMatrix[index] = [];
+              }
+              if (!this.isElseShowmatrixcolsrows[index]) {
+                this.isElseShowmatrixcolsrows[index] = [];
+              }
+
+              const newLogicEntry = {
+                id: logic.id,
+                ifId: logic.ifId,
+                expectedColumn: logic.expectedColumn,
+                expectedRow: logic.expectedRow,
+                thanId: logic.thanId,
+                thanExpected: logic.thanExpected,
+                elseId: logic.elseId,
+                elseExpected: logic.elseExpected,
+              };
+              if (newLogicEntry.elseExpected === "null")
+                newLogicEntry.elseExpected = 0
+              if (newLogicEntry.thanExpected === "null")
+                newLogicEntry.thanExpected = 0
+
+              // Initialize an array for the question if not already done
+              if (!this.matrixcolsrowslogicEntriesPerQuestion[index]) {
+                this.matrixcolsrowslogicEntriesPerQuestion[index] = [];
+              }
+
+              
+              // And/Or
+              if (newLogicEntry.elseId && newLogicEntry.elseExpected > 0){
+                this.isBranchingElseShowMatrix[index][logicIndex] = true;
+              }
+              else{
+                this.isBranchingElseShowMatrix[index][logicIndex] = false;
+              }
+              console.log("ids",newLogicEntry.elseId && newLogicEntry.elseExpected > 0)
+              //calculation
+              
+
+              const ifIdNumber = +newLogicEntry.elseId;
+              if (ifIdNumber === 3 || ifIdNumber === 4)
+                this.isElseShowmatrixcolsrows[index][logicIndex] = false
+              else
+                this.isElseShowmatrixcolsrows[index][logicIndex] = true
+
+            
+              this.matrixcolsrowslogicEntriesPerQuestion[index].push(newLogicEntry);
+            });
+          }
+        }
+      },
+      (error) => {
+
+      }
+    );
+  }
+
+  removeMatrixRowsColsLogicEntry(quesid:any,questionIndex: number, logicIndex: number): void {
+
     if (this.matrixcolsrowslogicEntriesPerQuestion[questionIndex]) {
+      // Check if the logicIndex is within the bounds of the nested array
       if (logicIndex >= 0 && logicIndex < this.matrixcolsrowslogicEntriesPerQuestion[questionIndex].length) {
         const entryIdToDelete = this.matrixcolsrowslogicEntriesPerQuestion[questionIndex][logicIndex]?.id;
 
@@ -3963,6 +4104,22 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
             this.matrixcolsrowslogicEntriesPerQuestion[questionIndex].splice(logicIndex, 1);
           }
           else {
+
+            this.surveyservice.deleteMatrixColsRows(entryIdToDelete,quesid).subscribe(
+              (resp) => {
+                if(resp === '"LogicDeleteSuccessfully"'){
+                  this.utils.showSuccess("Deleted Successfully")
+                  this.matrixcolsrowslogicEntriesPerQuestion[questionIndex].splice(logicIndex, 1);
+
+                }
+               
+              },
+              (error) => {
+                console.error('Error deleting logic:', error);
+                // Handle error response here
+              }
+            );
+
           }
 
         } else {
@@ -3974,8 +4131,8 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
     } else {
       console.error('No logic entries found for question index:', questionIndex);
     }
-  }
 
+  }
 
 
 }
