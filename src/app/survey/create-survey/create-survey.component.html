@@ -162,7 +162,7 @@
 
             <div class="common-ques"
                 [class.disabled-link]="(totalItemsCount == 20 && planid == '500') || (totalItemsCount == 50 && planid == '1200')">
-                <a href="javascript:void(0);" (click)="openQuesGroup(quesgroup)">
+                <a href="javascript:void(0);" (click)="openQuesGroup(quesgroup);getGroupsQues()">
                     <figure><img [src]="baseUrl + '/assets/images/icons/Add-new-question.png'" width="30" height="30" />
                     </figure>
                     <figcaption>Add Group</figcaption>
@@ -532,25 +532,8 @@
                         <div class="tab-pane" id="blank" role="tabpanel" aria-labelledby="blank-tab">
 
                             <div class="d-flex mb-2">
-                                <div>
-                                    <h5 ngClass="mb-4 me-2">End Screen</h5>
-                                    <div class="custom-tooltip">
-                                        <ng-icon name="heroInformationCircle" ngClass="edit-action info-circle"
-                                            (click)="toggleTooltip('20')"></ng-icon>
-                                        <div class="toast show" *ngIf="showTooltip['20']">
-                                            <div class="toast-header">
-                                                <img [src]="baseUrl + '/assets/images/icons/Add-new-question.png'"
-                                                    class="rounded me-2" width="30" height="30" />
-                                                <h6 class="mb-0 me-auto">End Screen</h6>
-                                                <button type="button" class="btn-close" data-bs-dismiss="toast"
-                                                    aria-label="Close" (click)="hideTooltip('20')"></button>
-                                            </div>
-                                            <div class="toast-body">
-                                                Prevent respondents from being terminated until they reach the specified question in the survey.
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+                               
+                                <h5 ngClass="mb-4 me-2">End Screen</h5>
                                 <div class="custom-tooltip">
                                     <ng-icon name="heroInformationCircle" ngClass="edit-action info-circle"
                                         (click)="toggleTooltip('9')"></ng-icon>
@@ -3145,30 +3128,31 @@
                     </div>
                 </div>
             </div>
-            <div class="multiselect-option group-ques">                
+            <div class="multiselect-option group-ques" *ngFor="let groupId of groupedQuestions | keyvalue">
                 <div class="grouped-question">
-                    <h5 class="mb-3">Group 1</h5>
-                    <div *ngFor="let item of logicQuestionListById; let i = index"
-                        class="form-check {{item.isDisabled?'disabled':''}}">
+                    <h5 class="mb-3">Group {{ groupId.key }}</h5>
+                    <div *ngFor="let item of groupId.value; let i = index" class="form-check {{ item.isDisabled ? 'disabled' : '' }}">
                         <div class="checkbox-wrapper multiselect-img">
-                            {{groupquesid}}
                             <input type="checkbox" [id]="'checkbox_' + i" [value]="item.id"
-                                [checked]="item?.isChecked || false" (change)="groupQuesId($event,item.id)">
-
+                                [checked]="item?.isChecked || false" (change)="groupQuesId($event, item.id)">
+                    
                             <label class="form-check-label" [for]="'checkbox_' + i">
                                 <div class="mb-0">
-                                    <span [innerHTML]="item?.item"></span>
+                                <span [innerHTML]="item?.question"></span>
                                 </div>
-
                             </label>
                         </div>
                     </div>
+                    <div class="text-end group">
+                        <button type="button" class="btn btn-primary icon" (click)="updateGroup(groupId.key)">Update</button>
+                    </div>
+                    
                 </div>
             </div>
         </div>
     </div>
     <div class="modal-footer upload">
-        <button type="button" class="btn close" (click)="modal.close('Close click')">Add</button>
+        <button type="button" class="btn close" (click)="modal.close('Close click')">Close</button>
         <button type="button" class="btn btn-primary icon" (click)="modal.close('Close click');addQuesGroup()">Create
             <ng-icon name="heroArrowLongRight" class="ms-4"></ng-icon>
         </button>

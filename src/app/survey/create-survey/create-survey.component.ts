@@ -3847,6 +3847,45 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
 
     })
   }
+  
+  groupedques:any[]=[];
+  groupedQuestions: { [key: number]: any[] } = {}; 
+  getGroupsQues(){
+    this.surveyservice.getGroupsBySurveyId(this.surveyId).subscribe({
+      next: (resp:any) => {
+        debugger
+        console.log("grp ques",resp.length);
+        this.groupedques = resp;
+        console.log("Last Group:", resp[resp.length - 1]?.group);
+        const groups = resp.map((item:any) => item.group);
+        console.log(groups); 
+
+        const uniqueGroups = [...new Set(groups)];
+        console.log("uniqueGroups",uniqueGroups);
+        this.groupedQuestions ={};
+        uniqueGroups.forEach((id:any) => {
+         this.surveyservice.getGroupsquesById(id,this.surveyId).subscribe({
+          next: (resp:any) => {
+            this.groupedQuestions[id] = resp
+            console.log("lsit",this.groupedQuestions);
+          },
+          error: (err) => {
+            console.log("error")
+          }
+         })
+        })
+        debugger
+        
+      },
+      error: (err:any) => {
+        console.log("no group")
+      }
+    })
+  }
+
+  updateGroup(id:any){
+
+  }
 
   // matrix rows & column
 
@@ -3945,8 +3984,6 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
     else
       this.isElseShowmatrixcolsrows[questionIndex][logicIndex] = true
   }
-
-
 
   createMatrixColsRowsLogic(questionId: any, matrixcolsrowsLogicEntries: any[]): void {
     console.log('logicEntries:', matrixcolsrowsLogicEntries);

@@ -674,4 +674,14 @@ export class SurveyService {
     return this.http.delete(url,{responseType: 'text'});
   }
 
+  getGroupsBySurveyId(surveyID:any):Observable<responseDTO[]> {
+     const url =`${this.apiUrl}api/admin/${this.userId}/GeneralQuestion/GetQuestionGroups?surveyId=${surveyID}`;
+     return this.http.get<responseDTO[]>(url);
+  }
+
+  getGroupsquesById(groupID:any,surveyID:any):Observable<responseDTO[]> {
+    const url =`${this.apiUrl}api/admin/${this.userId}/GeneralQuestion/GetQuestionByGroup?groupId=${groupID}&surveyId=${surveyID}`;
+    return this.http.get<responseDTO[]>(url);
+ }
+
 }

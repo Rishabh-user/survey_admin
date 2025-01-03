@@ -31,3 +31,7 @@
 .multiselect-option.group-ques { display: block;}
 .group-ques.multiselect-option .form-check input{top:50%;}
 .grouped-question { border: 1px solid #ccc; padding: 1rem; border-radius: .5rem;}
+
+.group button.btn.btn-primary.icon {
+  padding: .5rem .5rem;
+}
