@@ -159,10 +159,9 @@
                     </div>
                 </div>
             </div>
-
             <div class="common-ques"
                 [class.disabled-link]="(totalItemsCount == 20 && planid == '500') || (totalItemsCount == 50 && planid == '1200')">
-                <a href="javascript:void(0);" (click)="openQuesGroup(quesgroup);getGroupsQues()">
+                <a href="javascript:void(0);" (click)="openQuesGroup(quesgroup);getGroupsQues()" [class.active]='groupquesvalue'>
                     <figure><img [src]="baseUrl + '/assets/images/icons/Add-new-question.png'" width="30" height="30" />
                     </figure>
                     <figcaption>Add Group</figcaption>
@@ -546,7 +545,7 @@
                                                 aria-label="Close" (click)="hideTooltip('9')"></button>
                                         </div>
                                         <div class="toast-body">
-                                            Add End Screen Logic
+                                            Prevent respondents from being terminated until they reach the specified question in the survey.
                                         </div>
                                     </div>
                                 </div>
@@ -3133,10 +3132,10 @@
                     <h5 class="mb-3">Group {{ groupId.key }}</h5>
                     <div *ngFor="let item of groupId.value; let i = index" class="form-check {{ item.isDisabled ? 'disabled' : '' }}">
                         <div class="checkbox-wrapper multiselect-img">
-                            <input type="checkbox" [id]="'checkbox_' + i" [value]="item.id"
+                            <input type="checkbox" [id]="'checkbox_new' + i" [value]="item.id"
                                 [checked]="item?.isChecked || false" (change)="groupQuesId($event, item.id)">
                     
-                            <label class="form-check-label" [for]="'checkbox_' + i">
+                            <label class="form-check-label" [for]="'checkbox_new' + i">
                                 <div class="mb-0">
                                 <span [innerHTML]="item?.question"></span>
                                 </div>
@@ -3144,7 +3143,8 @@
                         </div>
                     </div>
                     <div class="text-end group">
-                        <button type="button" class="btn btn-primary icon" (click)="updateGroup(groupId.key)">Update</button>
+                        <button type="button" class="btn btn-danger icon" (click)="deleteGroup(groupId.key)">Delete</button>
+                        <button type="button" class="btn btn-primary icon ms-2" (click)="updateGroup(groupId.key)">Update</button>
                     </div>
                     
                 </div>

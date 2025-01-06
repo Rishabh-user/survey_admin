@@ -682,6 +682,21 @@ export class SurveyService {
   getGroupsquesById(groupID:any,surveyID:any):Observable<responseDTO[]> {
     const url =`${this.apiUrl}api/admin/${this.userId}/GeneralQuestion/GetQuestionByGroup?groupId=${groupID}&surveyId=${surveyID}`;
     return this.http.get<responseDTO[]>(url);
- }
+  }
+
+  deleteGroupById(groupID:any, surveyID:any):Observable<any> {
+    const url =`${this.apiUrl}api/admin/${this.userId}/GeneralQuestion/DeleteQuestionGroup?groupId=${groupID}&surveyId=${surveyID}`;
+    return this.http.delete(url, {responseType: 'text'});
+  }
+
+  updateGroupById(data:any):Observable<any> {
+    const url =`${this.apiUrl}api/admin/${this.userId}/GeneralQuestion/UpdateQuestionGroup`;
+    return this.http.put(url, data, {responseType: "text"});
+  }
+
+  getVendorQuotaById(vendarId:any,surveyID:any):Observable<responseDTO[]> {
+    const url =`${this.apiUrl}api/admin/${this.userId}/Quota/GetQuotaByVendorId?surveyId=${surveyID}&vendorId=${vendarId}`;
+    return this.http.get<responseDTO[]>(url);
+  }
 
 }

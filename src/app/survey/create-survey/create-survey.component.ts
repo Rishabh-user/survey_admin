@@ -28,6 +28,7 @@ import { MatixHeaderLogics, MatixColsRowsLogics } from 'src/app/models/logic';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import { OpenendedFormComponent } from '../popups/openended-form/openended-form.component';
 
+
 // import { debug } from 'console';
 
 interface LogicQuestion {
@@ -214,6 +215,7 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
   isMobileMode:boolean = true;
   isTabletMode:boolean = true;
   geoLocation:boolean = false;
+  groupquesvalue: boolean = false;
 
   centerId: number = this.utils.getCenterId();
 
@@ -312,6 +314,7 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
     this.getSurveyLooping();
     this.getPartnerRidirection();
     this.getEndScreen();
+    this.getGroupsQues();
 
     this.pipingQuestionById.forEach(() => {
       this.toppings.push(new FormControl([]));
@@ -3807,6 +3810,10 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
 
   // adding group
 
+  groupedques:any[]=[];
+  groupedQuestions: { [key: number]: any[] } = {}; 
+  lastgroupid:any;
+
   groupQuesId(event:any,id:any){
     console.log("event",event.target.checked)
     console.log("ids",id)
@@ -3824,7 +3831,11 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
   }
 
   addQuesGroup(){
+    
     let groupNumber = 1;
+    if(this.groupedques.length > 0){
+      groupNumber = this.lastgroupid + 1;
+    }
     const formattedData: { surveyId: string, questionId: string, group: number}[] = [];
 
     const formattedEntry = this.groupQues.map((id:any,i:number) => {
@@ -3840,42 +3851,49 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
     this.surveyservice.groupQuestion(formattedData).subscribe({
       next: (resp:any) => {
         this.utils.showSuccess("Question group created");
+        window.location.reload();
       },
       error: (err:any) => {
         this.utils.showError("Error")
       }
-
-    })
+    });
+    
   }
   
-  groupedques:any[]=[];
-  groupedQuestions: { [key: number]: any[] } = {}; 
+
   getGroupsQues(){
     this.surveyservice.getGroupsBySurveyId(this.surveyId).subscribe({
       next: (resp:any) => {
-        debugger
-        console.log("grp ques",resp.length);
-        this.groupedques = resp;
-        console.log("Last Group:", resp[resp.length - 1]?.group);
-        const groups = resp.map((item:any) => item.group);
-        console.log(groups); 
+        if(resp.length > 0){
+            console.log("grp ques",resp.length);
+            this.groupedques = resp;
+            console.log("Last Group:", resp[resp.length - 1]?.group);
+            this.lastgroupid = resp[resp.length - 1]?.group
+            const allgroupquesid = resp.map((item:any) => item.questionId);
+            console.log("allgroupquesid",allgroupquesid);
+            this.logicQuestionListById = this.logicQuestionListById.filter((item: any) => !allgroupquesid.includes(item.id));
+            console.log("logicQuestionListById",this.logicQuestionListById);
+            const groups = resp.map((item:any) => item.group);
+            console.log(groups); 
+            this.groupquesvalue = true;
 
-        const uniqueGroups = [...new Set(groups)];
-        console.log("uniqueGroups",uniqueGroups);
-        this.groupedQuestions ={};
-        uniqueGroups.forEach((id:any) => {
-         this.surveyservice.getGroupsquesById(id,this.surveyId).subscribe({
-          next: (resp:any) => {
-            this.groupedQuestions[id] = resp
-            console.log("lsit",this.groupedQuestions);
-          },
-          error: (err) => {
-            console.log("error")
-          }
-         })
-        })
-        debugger
-        
+            const uniqueGroups = [...new Set(groups)];
+            console.log("uniqueGroups",uniqueGroups);
+            this.groupedQuestions ={};
+            uniqueGroups.forEach((id:any) => {
+            this.surveyservice.getGroupsquesById(id,this.surveyId).subscribe({
+              next: (resp:any) => {
+                this.groupedQuestions[id] = resp
+                console.log("lsit",this.groupedQuestions);
+              },
+              error: (err) => {
+                console.log("error")
+              }
+            })
+          })
+        }else{
+          this.groupquesvalue = false;
+        }
       },
       error: (err:any) => {
         console.log("no group")
@@ -3883,8 +3901,49 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
     })
   }
 
-  updateGroup(id:any){
+  deleteGroup(groupid:any){
+    this.surveyservice.deleteGroupById(groupid, this.surveyId).subscribe({
+      next: response => {
+        if(response === '"DeletedSuccessfully"'){
+          this.utils.showSuccess("Group deleted succesfully")
+          window.location.reload();
+        }
+        else{
+          this.utils.showError("Group not deleted")
+        }
+      },
+      error: err => {
+        this.utils.showError("Error while deleting group")
+      }
+    })
+  }
 
+  updateGroup(grpid:any){
+    const formattedData: { surveyId: string, questionId: string, group: number}[] = [];
+
+    const formattedEntry = this.groupQues.map((id:any,i:number) => {
+      const formattedEntry: { surveyId: any, questionId: any, group: number} = {
+        surveyId: this.surveyId,
+        questionId: id,
+        group: grpid
+      };
+      return formattedEntry;
+    });
+    formattedData.push(...formattedEntry)
+    this.surveyservice.updateGroupById(formattedData).subscribe({
+      next: resp => {
+        if(resp === '"UpdatedSuccessfully"'){
+          this.utils.showSuccess("Updated Successfully")
+          window.location.reload();
+        }else{
+          this.utils.showError("Not Updated");
+        }
+        
+      },
+      error: err => {
+        this.utils.showError("Error While Updating")
+      }
+    })
   }
 
   // matrix rows & column

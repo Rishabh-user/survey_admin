@@ -745,7 +745,7 @@ export class QuotaManagementComponent {
         this.surveyQuotaJson.totalUsers = data.totalUsers
         this.surveyQuotaJson.quotaId = data.quotaId
         this.surveyQuotaJson.questionDto = data.questionDto
-        this.vendarId = 390
+        this.vendarId = data.vendarId
 
         console.log("quotabyid json", this.surveyQuotaJson)
         console.log("quotabyid id", this.quotaid)
@@ -982,9 +982,30 @@ export class QuotaManagementComponent {
     // this.surveyQuotaJson.status=''
     // this.surveyQuotaJson.createdDate= new Date;
     // this.surveyQuotaJson.surveyId=0;
+    console.log("event",event.value)
     this.selectedques = [];
     this.selectedQuestionIds = [];
-    console.log("selected ques clear", this.selectedQuestionIds)
+    this.surveyservice.getVendorQuotaById(event.value,this.surveyId).subscribe({
+      next: (data: any) => {
+        this.isQuotasVisible = true;
+        this.quotaid = data.quotaId
+        this.surveycount = data.totalUsers;
+        this.surveyQuotaJson.totalUsers = data.totalUsers
+        this.surveyQuotaJson.quotaId = data.quotaId
+        this.surveyQuotaJson.questionDto = data.questionDto
+        this.vendarId = data.vendarId
+
+        console.log("vendor", this.surveyQuotaJson)
+        console.log("quotabyid id", this.quotaid)
+        console.log("Quotas: quotabyid", this.quotas);
+        this.getQuotaInterlock(this.quotaid)
+      },
+      error: (err: any) => {
+        this.initializeQuotaData();
+        console.log("Error fetching quotas quotabyid", err);
+      }
+
+    });
 
   }
 
