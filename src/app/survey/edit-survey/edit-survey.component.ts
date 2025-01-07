@@ -268,6 +268,10 @@ export class EditSurveyComponent {
       }else{
         this.descaddededitor = false
       }
+
+      if(this.question.questionTypeName === 'Matrix Choice'){
+        this.changeMatrixLogic(0,'rows')
+      }
       
 
       data.options.forEach((opt: any) => {
@@ -436,7 +440,7 @@ export class EditSurveyComponent {
       this.getOptionLogics();
       this.getMatrixLogic();
     }
-
+    
     if (this.mode != 'modify') {
       this.intializeDefaultValue();
       if (this.question.questionTypeName !== 'Rating Scale' && this.question.questionTypeName !== 'Boolean' && this.question.questionTypeName !== 'Image Selection' && this.question.questionTypeName !== 'Audio' && this.question.questionTypeName !== 'Video' && this.question.questionTypeName !== 'NPS' && this.question.questionTypeName !== 'Open Ended' && this.question.questionTypeName !== 'Slider Scale') {
@@ -446,7 +450,6 @@ export class EditSurveyComponent {
         this.hanldeAddOptionClickMatrix();
         this.hanldeAddOptionClickMatrix();
         this.hanldeAddOptionClickMatrix();
-
       }
       if(this.question.questionTypeName === 'Open Ended'){
         this.handleOpneEndedAdd();
@@ -467,9 +470,8 @@ export class EditSurveyComponent {
       if (this.question.questionTypeName === 'Slider Scale') {
         this.addsliderscale();
       }
-     
-
     }
+
     this.logicEntries.push({
       optionlogicquesid: null,
       optionlogicifid: null,
@@ -477,11 +479,10 @@ export class EditSurveyComponent {
       optionlogicthanid: null,
       optionlogicthanexpectedid: null,
       optionlogicelseid: null,
-      optionlogicelseexpected: null
+      optionlogicelseexpected: null,
+      isMatrixColumnLogic: false
     });
-    
     this.getMultiAnsLimitValues();
-    
   }
 
   onQuestionTypeClick(id: any) {
@@ -2139,10 +2140,26 @@ export class EditSurveyComponent {
       optionlogicthanid: null,
       optionlogicthanexpectedid: null,
       optionlogicelseid: null,
-      optionlogicelseexpected: null
+      optionlogicelseexpected: null,
+      isMatrixColumnLogic: false
     });
+    this.changeMatrixLogic(this.logicEntries.length - 1,'rows')
     //this.selectedifexpected = new Array(this.logicEntries.length).fill('');
 
+  }
+
+  matrixrowsvalue:boolean[] = [];
+  matrixcolsvalue:boolean[] = [];
+  changeMatrixLogic(index:any, value:any){
+    if(value === 'rows'){
+      this.matrixrowsvalue[index] = true;
+      this.matrixcolsvalue[index] = false;
+      this.logicEntries[index].isMatrixColumnLogic = false;
+    }else{
+      this.matrixcolsvalue[index] = true;
+      this.matrixrowsvalue[index] = false;
+      this.logicEntries[index].isMatrixColumnLogic = true;
+    }
   }
 
 
@@ -2186,7 +2203,8 @@ export class EditSurveyComponent {
         elseExpected: entry.optionlogicelseexpected,
         sort: index,  
         onLogicQuestionId: this.questionId,
-        surveyId: this.surveyId
+        surveyId: this.surveyId,
+        isMatrixColumnLogic: entry.isMatrixColumnLogic
       };
       
       this.surveyservice.optionLogics(datatosend).subscribe({
@@ -2194,7 +2212,7 @@ export class EditSurveyComponent {
           if (resp === '"UpdatedSuccessfully"') {
             this.utility.showSuccess('Updated Successfully');
             if (index === this.logicEntries.length - 1) {
-              window.location.reload();
+              //window.location.reload();
             }
           }
         },
@@ -2228,15 +2246,11 @@ export class EditSurveyComponent {
           optionlogicthanexpectedid: response.thanExpected,
           optionlogicelseid: response.elseId,
           optionlogicelseexpected: response.elseExpected,
-          
-
+          isMatrixColumnLogic: response.isMatrixColumnLogic
         }));
-
-        
-  
-        // Initialize createanswerthenSection and selectedOptions arrays
       
         this.createanswerthenSection = new Array(this.logicEntries.length).fill(false);
+        this.matrixcolsvalue = new Array(this.logicEntries.length).fill(false);
         this.selectedOptions = new Array(this.logicEntries.length).fill([]);
   
       
@@ -2244,7 +2258,6 @@ export class EditSurveyComponent {
           setTimeout(() => {
             this.getOptionsByQuestion(entry.optionlogicquesid, index);
           }, index * 1000);
-          // Adding delay to avoid overwhelming the server
         });
 
         console.log("values list",this.optionListByQuestionId)
@@ -2255,10 +2268,17 @@ export class EditSurveyComponent {
           if(this.logicEntries[index].optionlogicelseid && this.logicEntries[index].optionlogicelseexpected){
             this.createanswerthenSection[index] = true;
           }
+          if(this.logicEntries[index].isMatrixColumnLogic){
+            this.matrixcolsvalue[index] = true;
+            this.matrixrowsvalue[index] = false;
+          }else{
+            this.matrixrowsvalue[index] = true;
+            this.matrixcolsvalue[index] = false;
+          }
             
         });
       } else {
-        // Handle empty response or error
+        console.log("error")
       }
      
     });

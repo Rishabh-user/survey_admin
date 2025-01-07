@@ -1721,6 +1721,21 @@
                                                                     answer.</h6>
 
                                                             </div>
+                                                            <div class="mb-3" *ngIf="question.questionTypeName === 'Matrix Choice'">
+                                                                <p>Choose logic applying for Rows & Columns</p>
+                                                                <div>
+                                                                    <div class="form-check form-check-inline">
+                                                                        <input class="form-check-input" type="radio" name="Validations{{i}}" value="rows" 
+                                                                            id="rows{{i}}"  (change)="changeMatrixLogic(i,'rows')" [checked]="matrixrowsvalue[i]">
+                                                                        <label class="form-check-label" for="rows{{i}}">Rows</label>
+                                                                    </div>
+                                                                    <div class="form-check form-check-inline">
+                                                                        <input class="form-check-input" type="radio" name="Validations{{i}}" value="cols"
+                                                                            id="cols{{i}}"  (change)="changeMatrixLogic(i,'cols')" [checked]="matrixcolsvalue[i]">
+                                                                        <label class="form-check-label" for="cols{{i}}">Columns</label>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
                                                             <div class="alert alert-danger" role="alert"
                                                                 *ngIf="filteredQuestionList.length == 0">
                                                                 <p>Option Logic can not apply to this Question</p>
@@ -1797,7 +1812,7 @@
                                                                 </div>
                                                                 <div>
                                                                     <div ngClass="if-then">
-                                                                        <span>Then</span>
+                                                                        <span>Then </span>
                                                                     </div>
                                                                     <div ngClass="mb-4">
                                                                         <div class="row g-2 align-items-center">
@@ -1811,7 +1826,7 @@
                                                                                         {{item.name}}</option>
                                                                                 </select>
                                                                             </div>
-                                                                            <div class="col-md-4">
+                                                                            <div class="col-md-4" *ngIf="matrixrowsvalue[i]">
                                                                                 <select class="form-select"
                                                                                     [(ngModel)]="logicEntry.optionlogicthanexpectedid"
                                                                                     #thanExpectedSelect>
@@ -1819,6 +1834,16 @@
                                                                                         *ngFor="let item of optionsArr1;let i=index;"
                                                                                         value="{{item.id}}">
                                                                                         {{item.option}}</option>
+                                                                                </select>
+                                                                            </div>
+                                                                            <div class="col-md-4" *ngIf="matrixcolsvalue[i]">
+                                                                                <select class="form-select"
+                                                                                    [(ngModel)]="logicEntry.optionlogicthanexpectedid"
+                                                                                    #thanExpectedSelect>
+                                                                                    <option
+                                                                                        *ngFor="let item of matrixAllOptions;let i=index;"
+                                                                                        value="{{item.id}}">
+                                                                                        {{item.header}}</option>
                                                                                 </select>
                                                                             </div>
                                                                             <div class="col-md-1">
@@ -1846,7 +1871,7 @@
                                                                                         {{item.name}}</option>
                                                                                 </select>
                                                                             </div>
-                                                                            <div class="col-md-4">
+                                                                            <div class="col-md-4" *ngIf="matrixrowsvalue[i]">
                                                                                 <select class="form-select"
                                                                                     [(ngModel)]="logicEntry.optionlogicelseexpected"
                                                                                     #elseExpectedSelect>
@@ -1854,6 +1879,16 @@
                                                                                         *ngFor="let item of optionsArr1;let i=index;"
                                                                                         value="{{item.id}}">
                                                                                         {{item.option}}</option>
+                                                                                </select>
+                                                                            </div>
+                                                                            <div class="col-md-4" *ngIf="matrixcolsvalue[i]">
+                                                                                <select class="form-select"
+                                                                                    [(ngModel)]="logicEntry.optionlogicelseexpected"
+                                                                                    #thanExpectedSelect>
+                                                                                    <option
+                                                                                        *ngFor="let item of matrixAllOptions;let i=index;"
+                                                                                        value="{{item.id}}">
+                                                                                        {{item.header}}</option>
                                                                                 </select>
                                                                             </div>
                                                                             <div class="col-md-4">

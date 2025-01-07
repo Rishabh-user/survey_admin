@@ -2060,12 +2060,12 @@
                                                                 </div>
 
                                                                 <div ngClass="if-then"
-                                                                    *ngIf="isBranchingElseShowMatrix[i][j] || logicEntry.elseId != null">
+                                                                    *ngIf="isBranchingElseShowMatrix[i][j] || logicEntry.elseId > 0">
 
                                                                     <span>Else 11{{logicEntry.elseExpected}}</span>
                                                                 </div>
                                                                 <div ngClass="mb-4"
-                                                                    *ngIf="isBranchingElseShowMatrix[i][j] || logicEntry.elseId != null">
+                                                                    *ngIf="isBranchingElseShowMatrix[i][j] || logicEntry.elseId > 0">
                                                                     <div class="row g-2 align-items-center">
                                                                         <div class="col-md-4">
                                                                             <!-- Use unique template reference variables by appending the index -->

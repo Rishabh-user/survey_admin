@@ -3865,22 +3865,22 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
     this.surveyservice.getGroupsBySurveyId(this.surveyId).subscribe({
       next: (resp:any) => {
         if(resp.length > 0){
-            console.log("grp ques",resp.length);
-            this.groupedques = resp;
-            console.log("Last Group:", resp[resp.length - 1]?.group);
-            this.lastgroupid = resp[resp.length - 1]?.group
-            const allgroupquesid = resp.map((item:any) => item.questionId);
-            console.log("allgroupquesid",allgroupquesid);
-            this.logicQuestionListById = this.logicQuestionListById.filter((item: any) => !allgroupquesid.includes(item.id));
-            console.log("logicQuestionListById",this.logicQuestionListById);
-            const groups = resp.map((item:any) => item.group);
-            console.log(groups); 
-            this.groupquesvalue = true;
+          console.log("grp ques",resp.length);
+          this.groupedques = resp;
+          console.log("Last Group:", resp[resp.length - 1]?.group);
+          this.lastgroupid = resp[resp.length - 1]?.group
+          const allgroupquesid = resp.map((item:any) => item.questionId);
+          console.log("allgroupquesid",allgroupquesid);
+          this.logicQuestionListById = this.logicQuestionListById.filter((item: any) => !allgroupquesid.includes(item.id));
+          console.log("logicQuestionListById",this.logicQuestionListById);
+          const groups = resp.map((item:any) => item.group);
+          console.log(groups); 
+          this.groupquesvalue = true;
 
-            const uniqueGroups = [...new Set(groups)];
-            console.log("uniqueGroups",uniqueGroups);
-            this.groupedQuestions ={};
-            uniqueGroups.forEach((id:any) => {
+          const uniqueGroups = [...new Set(groups)];
+          console.log("uniqueGroups",uniqueGroups);
+          this.groupedQuestions ={};
+          uniqueGroups.forEach((id:any) => {
             this.surveyservice.getGroupsquesById(id,this.surveyId).subscribe({
               next: (resp:any) => {
                 this.groupedQuestions[id] = resp
@@ -3920,21 +3920,24 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
 
   updateGroup(grpid:any){
     const formattedData: { surveyId: string, questionId: string, group: number}[] = [];
+    // const updateentry = this.groupedQuestions[grpid].filter((item:any) => item.id != this.groupQues);
+    // console.log("updateentry",updateentry)
 
     const formattedEntry = this.groupQues.map((id:any,i:number) => {
-      const formattedEntry: { surveyId: any, questionId: any, group: number} = {
+      //console.log("this.groupedQuestions[id]",this.groupedQuestions[id])
+      const formattedEntry: { surveyId: any, questionId: any,group: number} = {
         surveyId: this.surveyId,
         questionId: id,
         group: grpid
       };
       return formattedEntry;
-    });
+    }); 
     formattedData.push(...formattedEntry)
     this.surveyservice.updateGroupById(formattedData).subscribe({
       next: resp => {
         if(resp === '"UpdatedSuccessfully"'){
           this.utils.showSuccess("Updated Successfully")
-          window.location.reload();
+         // window.location.reload();
         }else{
           this.utils.showError("Not Updated");
         }
