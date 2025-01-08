@@ -3920,8 +3920,8 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
 
   updateGroup(grpid:any){
     const formattedData: { surveyId: string, questionId: string, group: number}[] = [];
-    // const updateentry = this.groupedQuestions[grpid].filter((item:any) => item.id != this.groupQues);
-    // console.log("updateentry",updateentry)
+    const updateentry = this.groupedQuestions[grpid].filter((item:any) => !this.groupQues.includes(item.id));
+    console.log("updateentry",updateentry)
 
     const formattedEntry = this.groupQues.map((id:any,i:number) => {
       //console.log("this.groupedQuestions[id]",this.groupedQuestions[id])
@@ -3932,12 +3932,21 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
       };
       return formattedEntry;
     }); 
-    formattedData.push(...formattedEntry)
+    const remaningformattedEntry = updateentry.map((item:any,i:number) => {
+      //console.log("this.groupedQuestions[id]",this.groupedQuestions[id])
+      const formattedEntry: { surveyId: any, questionId: any,group: number} = {
+        surveyId: this.surveyId,
+        questionId: item.id,
+        group: 0
+      };
+      return formattedEntry;
+    }); 
+    formattedData.push(...formattedEntry,...remaningformattedEntry)
     this.surveyservice.updateGroupById(formattedData).subscribe({
       next: resp => {
         if(resp === '"UpdatedSuccessfully"'){
           this.utils.showSuccess("Updated Successfully")
-         // window.location.reload();
+         window.location.reload();
         }else{
           this.utils.showError("Not Updated");
         }

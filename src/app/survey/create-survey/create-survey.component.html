@@ -3132,10 +3132,10 @@
                     <h5 class="mb-3">Group {{ groupId.key }}</h5>
                     <div *ngFor="let item of groupId.value; let i = index" class="form-check {{ item.isDisabled ? 'disabled' : '' }}">
                         <div class="checkbox-wrapper multiselect-img">
-                            <input type="checkbox" [id]="'checkbox_new' + i" [value]="item.id"
+                            <input type="checkbox" [id]="'checkbox_new' + groupId.key + i" [value]="item.id"
                                 [checked]="item?.isChecked || false" (change)="groupQuesId($event, item.id)">
                     
-                            <label class="form-check-label" [for]="'checkbox_new' + i">
+                            <label class="form-check-label" [for]="'checkbox_new' + groupId.key + i">
                                 <div class="mb-0">
                                 <span [innerHTML]="item?.question"></span>
                                 </div>
