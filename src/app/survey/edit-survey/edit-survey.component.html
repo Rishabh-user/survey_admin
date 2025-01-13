@@ -1670,6 +1670,10 @@
                                         <button class="nav-link" id="answerlogicrow-tab" data-bs-toggle="tab"
                                             data-bs-target="#answerlogicrow" role="tab" aria-selected="false">Answer Logic</button>
                                     </li>
+                                    <li class="nav-item" role="presentation">
+                                        <button class="nav-link" id="leastfillquota-tab" data-bs-toggle="tab"
+                                            data-bs-target="#leastfillquota" role="tab" aria-selected="false">Least Fill Quota Logic</button>
+                                    </li>
                                 </ul>
                                 <div class="tab-content p-4">
                                     <div class="tab-pane active" id="answerlogic" role="tabpanel"
@@ -1776,7 +1780,7 @@
                                                                         </div>
                                                                         <div class="col-md-3">
                                                                             <mat-form-field class="example-chip-list">
-                                                                                <mat-chip-grid #chipGrid
+                                                                                <mat-chip-grid #chipGrid1
                                                                                     aria-label="City selection">
                                                                                     <mat-chip-row
                                                                                         *ngFor="let option of selectedOptions[i]; let option_index=index;">
@@ -1790,14 +1794,14 @@
                                                                                     </mat-chip-row>
                                                                                     <input
                                                                                         [(ngModel)]="logicEntry.optionlogicifexpectedid"
-                                                                                        [matChipInputFor]="chipGrid"
-                                                                                        [matAutocomplete]="auto"
+                                                                                        [matChipInputFor]="chipGrid1"
+                                                                                        [matAutocomplete]="auto1"
                                                                                         [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
                                                                                         (matChipInputTokenEnd)="addOption($event,i)">
                                                                                 </mat-chip-grid>
 
                                                                                 <mat-autocomplete
-                                                                                    #auto="matAutocomplete"
+                                                                                    #auto1="matAutocomplete"
                                                                                     (optionSelected)="selectedOption($event,i);selectOptionOneValue($event,i,logicEntry.optionlogicifid)">
                                                                                     <mat-option
                                                                                         *ngFor="let option of optionListByQuestionId"
@@ -2013,7 +2017,7 @@
                                                                     <div class="col-md-3">
 
                                                                         <mat-form-field class="example-chip-list">
-                                                                            <mat-chip-grid #chipGrid
+                                                                            <mat-chip-grid #chipGridMatrix
                                                                                 aria-label="City selection">
                                                                                 <mat-chip-row
                                                                                     *ngFor="let option of selectedMatricHeaderOptions; let i=index;">
@@ -2026,12 +2030,12 @@
                                                                                 </mat-chip-row>
                                                                                 <input
                                                                                     [(ngModel)]="matrixlogicifexpectedid"
-                                                                                    [matChipInputFor]="chipGrid"
-                                                                                    [matAutocomplete]="auto"
+                                                                                    [matChipInputFor]="chipGridMatrix"
+                                                                                    [matAutocomplete]="matrixauto"
                                                                                     [matChipInputSeparatorKeyCodes]="separatorKeysCodes">
                                                                             </mat-chip-grid>
 
-                                                                            <mat-autocomplete #auto="matAutocomplete"
+                                                                            <mat-autocomplete #matrixauto="matAutocomplete"
                                                                                 (optionSelected)="selectedMatrixHeaderOption($event)">
                                                                                 <mat-option
                                                                                     *ngFor="let option of matrixAllOptions"
@@ -2135,10 +2139,8 @@
 
                                     <div class="tab-pane" id="ansselection" role="tabpanel"
                                         aria-labelledby="answerselection-tab">
-                                        <!-- <h5 ngClass="mb-4">Matrix Logic</h5> -->
                                         <div ngClass="mb-4">
                                             <div class="logic-tab">
-                                                <!-- Logic Question -->
                                                 <div class="tab-content p-4">
                                                     <div class="tab-pane active" id="branching" role="tabpanel"
                                                         aria-labelledby="branching-tab">
@@ -2234,10 +2236,8 @@
                                        
                                     <div class="tab-pane" id="answerlogicrow" role="tabpanel"
                                         aria-labelledby="answerlogicrow-tab">
-                                        <!-- <h5 ngClass="mb-4">Matrix Logic</h5> -->
                                         <div ngClass="mb-4">
                                             <div class="logic-tab">
-                                                <!-- Logic Question -->
                                                 <div class="tab-content p-4">
                                                     <div class="tab-pane active" id="branching" role="tabpanel"
                                                         aria-labelledby="branching-tab">
@@ -2292,6 +2292,98 @@
                                                             Logic</button>
                                                         </div>
                                                         
+                                                       </div>
+                                                        
+                                                    </div>
+
+                                                </div>
+
+                                            </div>
+                                            
+                                        </div>
+                                    </div>
+
+                                    <div class="tab-pane" id="leastfillquota" role="tabpanel"
+                                        aria-labelledby="leastfillquota-tab">
+                                        <div ngClass="mb-4">
+                                            <div class="logic-tab">
+                                                <div class="tab-content p-4">
+                                                    <div class="tab-pane active" id="branching" role="tabpanel"
+                                                        aria-labelledby="branching-tab">
+                                                        <div class="infocircle justify-content-start mb-4">
+                                                            <h5>Create Least Fill Quota</h5>
+                                                            <div class="custom-tooltip ms-2">
+                                                                <ng-icon name="heroInformationCircle"
+                                                                    ngClass="edit-action info-circle"
+                                                                    (click)="toggleTooltip('7')"></ng-icon>
+                                                                <div class="toast show" *ngIf="showTooltip['7']">
+                                                                    <div class="toast-header">
+                                                                        <img [src]="baseUrl + '/assets/images/icons/Add-new-question.png'"
+                                                                            class="rounded me-2" width="30"
+                                                                            height="30" />
+                                                                        <h6 class="mb-0 me-auto">Create Least Fill Quota
+                                                                        </h6>
+                                                                        <button type="button" class="btn-close"
+                                                                            data-bs-dismiss="toast" aria-label="Close"
+                                                                            (click)="hideTooltip('7')"></button>
+                                                                    </div>
+                                                                    <div class="toast-body">
+                                                                       Craete Least Fill Quota
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div ngClass="d-flex justify-content-between mb-3">
+                                                            <h6>Redirect to different questions based on user's answer.
+                                                            </h6>
+
+                                                        </div>
+                                                       <div>
+                                                        <div class="row g-2 align-items-center">
+                                                            <div class="col-md-1">
+                                                                <div>Value</div>
+                                                            </div>
+                                                            <div class="col-md-4">
+
+                                                                <mat-form-field class="example-chip-list">
+                                                                    <mat-chip-grid #chipGridLeast
+                                                                        aria-label="City selection">
+                                                                        <mat-chip-row
+                                                                            *ngFor="let option of selectedLeastFillQuotaOption; let i=index;">
+                                                                            {{option.option}}
+                                                                            <button matChipRemove
+                                                                                [attr.aria-label]="'remove'"
+                                                                                (click)="removeLeastFillOption(option)">
+                                                                                <mat-icon>cancel</mat-icon>
+                                                                            </button>
+                                                                        </mat-chip-row>
+                                                                        <input
+                                                                            [(ngModel)]="leastFillQuotaid"
+                                                                            [matChipInputFor]="chipGridLeast"
+                                                                            [matAutocomplete]="autoLeast"
+                                                                            [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                                                                            (matChipInputTokenEnd)="addLeastFillOption($event)">
+                                                                    </mat-chip-grid>
+
+                                                                    <mat-autocomplete #autoLeast="matAutocomplete"
+                                                                        (optionSelected)="selectedLeastFillQuota($event)">
+                                                                        <mat-option
+                                                                            *ngFor="let option of allOptions"
+                                                                            [value]="option">
+                                                                            {{option.option}}
+
+                                                                        </mat-option>
+                                                                    </mat-autocomplete>
+                                                                </mat-form-field>
+                                                            </div>
+                                                            <div class="col-md-4">
+                                                                <div class="d-flex">
+                                                                    <div>Randomize Number</div>
+                                                                    <input type="number" id="randamizeno" name="randamizeno" class="form-control"
+                                                                        [(ngModel)]="randomizeNumber" />
+                                                                </div>
+                                                            </div>
+                                                        </div>
                                                        </div>
                                                         
                                                     </div>

@@ -32,7 +32,9 @@ import { fastDiff } from '@ckeditor/ckeditor5-utils';
   styleUrls: ['./edit-survey.component.css'],
 
 })
+
 export class EditSurveyComponent {
+  
   // Tooltip
   @ViewChild('videoElement') videoElement!: ElementRef<HTMLVideoElement>;
   showTooltip: { [key: string]: boolean } = {};
@@ -162,6 +164,34 @@ export class EditSurveyComponent {
   audiouploaded: boolean = false;
   slflagchecked: boolean = false
   sL_Flag_Column: boolean = false;
+  leastFillQuotaid:any;
+  selectedLeastFillQuotaOption:any[]=[];
+  anslimit:boolean=true;
+  anslimitvalues:any[]=[];
+  questiontooltipadded:boolean = false;
+  optiontooltipadded:boolean[] = [];
+  matrixoptiontooltip:boolean[]=[];
+  isOptionBlurred: boolean[] = [];
+  matrixlogicquesid:any;
+  matriclogicifId:any;
+  matrixlogicifexpectedid=[]
+  matrixheaderthenid:any;
+  matrixlogicthanexpected:any;
+  matrixlogicifexpected:any
+  matrixlogicelseid:any;
+  matrixlogicelseexpected:any;
+  selectedMatricHeaderOptions: any[] = [];
+  getoptionlogic:any[]=[]
+  optionlogicquesid:any;
+  optionlogicifid:any;
+  optionlogicid:any;
+  optionlogicthanid:any;
+  optionlogicthanexpectedid:any;
+  optionlogicelseid:any;
+  optionlogicelseexpected:any;
+  createanslogic:any;
+  randomizeNumber:any;
+
   
 
   constructor(public themeService: DataService, private router: Router,
@@ -1567,22 +1597,27 @@ export class EditSurveyComponent {
     );
   }
   getLogicQuestionList(questionId: any) {
+    debugger
     this.logicQuestionList = '';
     const dataToSend = {
       surveyId: this.surveyId,
       questionId: questionId
     };
     this.surveyservice.getLogicQuestionList(dataToSend).subscribe((response: responseDTO) => {
-
       this.questionsort = this.question.sort
       this.pipeQuestionList = response
       //this.logicQuestionList = response.filter((item: Question) => item.sort < this.question.sort);
       this.logicQuestionList = this.pipeQuestionList
-      console.log("logicQuestionList",this.logicQuestionList)
-      if (this.logicQuestionList.length > 0) {
+      console.log("logicQuestionList",this.logicQuestionList);
+      if (this.logicQuestionList && this.logicQuestionList.length > 0) {
         this.getOptionsByQuestionId(this.logicQuestionList[0].id);
       }
+      
+      // if (this.logicQuestionList.length > 0) {
+      //   this.getOptionsByQuestionId(this.logicQuestionList[0].id);
+      // }
     });
+    debugger
   }
   getLogicValues() {
     this.surveyservice.getLogicValues().subscribe((response: { [x: string]: any; }) => {
@@ -2173,14 +2208,6 @@ export class EditSurveyComponent {
   
   }
  
-  optionlogicquesid:any;
-  optionlogicifid:any;
-  optionlogicid:any;
-  optionlogicthanid:any;
-  optionlogicthanexpectedid:any;
-  optionlogicelseid:any;
-  optionlogicelseexpected:any;
-  createanslogic:any
 
 
   onLogicSave(): void {
@@ -2224,12 +2251,10 @@ export class EditSurveyComponent {
   }
   
   
-  
-
-  getoptionlogic:any[]=[]
   getOptionLogics(): void {
     
     this.surveyservice.GetOptionLogic(this.questionId, this.surveyId).subscribe((data: any[]) => {
+     
       if (data && data.length > 0) {
         this.getoptionlogic = data[0];
         this.visibleanslogic = true
@@ -2479,15 +2504,7 @@ export class EditSurveyComponent {
     })
   }
 
-  matrixlogicquesid:any;
-  matriclogicifId:any;
-  matrixlogicifexpectedid=[]
-  matrixheaderthenid:any;
-  matrixlogicthanexpected:any;
-  matrixlogicifexpected:any
-  matrixlogicelseid:any;
-  matrixlogicelseexpected:any;
-  selectedMatricHeaderOptions: any[] = [];
+  
 
   addMatrixHeaderOption(event: MatChipInputEvent): void {
 
@@ -2661,11 +2678,6 @@ export class EditSurveyComponent {
   }
 
 
-  
-  questiontooltipadded:boolean = false;
-  optiontooltipadded:boolean[] = [];
-  matrixoptiontooltip:boolean[]=[];
-  isOptionBlurred: boolean[] = [];
 
   addQuestionTooltip(){
     this.questiontooltipadded = true;
@@ -2772,9 +2784,6 @@ export class EditSurveyComponent {
     console.log("matrixAllOptions",this.matrixAllOptions)
    
   }
-
-  anslimit:boolean=true;
-  anslimitvalues:any[]=[]
 
   getMultiAnsLimitValues(){
     this.surveyservice.getMultiSelectValues(false).subscribe((data:any[]) => {
@@ -3474,6 +3483,52 @@ export class EditSurveyComponent {
     this.allOptions = [...this.optionsArr1];
     console.log('Updated Option:', this.optionsArr1[i]);
     debugger
+  }
+
+
+ 
+  addLeastFillOption(event: MatChipInputEvent): void {
+
+    const input = event.input;
+    const value = event.value.trim();
+
+    const matchingOption = this.allOptions.find((option: any) => option.option === value);
+
+    if (matchingOption && !this.selectedLeastFillQuotaOption.includes(matchingOption)) {
+      this.selectedLeastFillQuotaOption.push(matchingOption);
+    }
+
+    if (input) {
+      input.value = '';
+    }
+    this.matrixlogicifexpectedid = [];
+    console.log("matrix selected option",this.selectedMatricHeaderOptions);
+    console.log("matrix add option",matchingOption);
+    console.log("marix all",this.matrixAllOptions)
+
+  }
+  
+  removeLeastFillOption(option: any): void {
+    const index = this.selectedLeastFillQuotaOption.indexOf(option);
+    if (index >= 0) {
+      this.selectedLeastFillQuotaOption.splice(index, 1);
+    }
+  }
+
+  selectedLeastFillQuota(event: MatAutocompleteSelectedEvent): void {
+    const selectedOption = event.option.value;
+
+  
+    if (!this.selectedLeastFillQuotaOption.includes(selectedOption)) {
+      this.selectedLeastFillQuotaOption.push(selectedOption);
+
+      const selectedMatrixArray = this.selectedLeastFillQuotaOption;
+      const selectedMatrixString = selectedMatrixArray.map((option: { id: any; }) => option.id).join(', ');
+
+      this.matrixlogicifexpected = selectedMatrixString;
+    }
+
+
   }
   
    
