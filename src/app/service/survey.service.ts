@@ -699,4 +699,9 @@ export class SurveyService {
     return this.http.get<responseDTO[]>(url);
   }
 
+  createLeastFillQuota(data:any):Observable<any> {
+    const url =`${this.apiUrl}api/admin/${this.userId}/GeneralQuestion/AddLeastFillQuota`;
+    return this.http.post(url, data, {responseType: "text"});
+  }
+
 }

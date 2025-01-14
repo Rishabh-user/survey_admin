@@ -2336,60 +2336,68 @@
                                                         <div ngClass="d-flex justify-content-between mb-3">
                                                             <h6>Redirect to different questions based on user's answer.
                                                             </h6>
-
                                                         </div>
-                                                       <div>
-                                                        <div class="row g-2 align-items-center">
-                                                            <div class="col-md-1">
-                                                                <div>Value</div>
-                                                            </div>
-                                                            <div class="col-md-4">
+                                                        <div>
+                                                            <div class="row g-2 align-items-center">
+                                                                <div class="col-md-1">
+                                                                    <div>Value</div>
+                                                                </div>
+                                                                <div class="col-md-4">
 
-                                                                <mat-form-field class="example-chip-list">
-                                                                    <mat-chip-grid #chipGridLeast
-                                                                        aria-label="City selection">
-                                                                        <mat-chip-row
-                                                                            *ngFor="let option of selectedLeastFillQuotaOption; let i=index;">
-                                                                            {{option.option}}
-                                                                            <button matChipRemove
-                                                                                [attr.aria-label]="'remove'"
-                                                                                (click)="removeLeastFillOption(option)">
-                                                                                <mat-icon>cancel</mat-icon>
-                                                                            </button>
-                                                                        </mat-chip-row>
-                                                                        <input
-                                                                            [(ngModel)]="leastFillQuotaid"
-                                                                            [matChipInputFor]="chipGridLeast"
-                                                                            [matAutocomplete]="autoLeast"
-                                                                            [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
-                                                                            (matChipInputTokenEnd)="addLeastFillOption($event)">
-                                                                    </mat-chip-grid>
+                                                                    <mat-form-field class="example-chip-list">
+                                                                        <mat-chip-grid #chipGridLeast
+                                                                            aria-label="City selection">
+                                                                            <mat-chip-row
+                                                                                *ngFor="let option of selectedLeastFillQuotaOption; let i=index;">
+                                                                                {{option.option}}
+                                                                                <button matChipRemove
+                                                                                    [attr.aria-label]="'remove'"
+                                                                                    (click)="removeLeastFillOption(option)">
+                                                                                    <mat-icon>cancel</mat-icon>
+                                                                                </button>
+                                                                            </mat-chip-row>
+                                                                            <input
+                                                                                [(ngModel)]="leastFillQuotaid"
+                                                                                [matChipInputFor]="chipGridLeast"
+                                                                                [matAutocomplete]="autoLeast"
+                                                                                [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                                                                                (matChipInputTokenEnd)="addLeastFillOption($event)">
+                                                                        </mat-chip-grid>
 
-                                                                    <mat-autocomplete #autoLeast="matAutocomplete"
-                                                                        (optionSelected)="selectedLeastFillQuota($event)">
-                                                                        <mat-option
-                                                                            *ngFor="let option of allOptions"
-                                                                            [value]="option">
-                                                                            {{option.option}}
+                                                                        <mat-autocomplete #autoLeast="matAutocomplete"
+                                                                            (optionSelected)="selectLeastFillQuota($event)">
+                                                                            <mat-option
+                                                                                *ngFor="let option of allOptions"
+                                                                                [value]="option">
+                                                                                {{option.option}}
 
-                                                                        </mat-option>
-                                                                    </mat-autocomplete>
-                                                                </mat-form-field>
-                                                            </div>
-                                                            <div class="col-md-4">
-                                                                <div class="d-flex">
-                                                                    <div>Randomize Number</div>
-                                                                    <input type="number" id="randamizeno" name="randamizeno" class="form-control"
-                                                                        [(ngModel)]="randomizeNumber" />
+                                                                            </mat-option>
+                                                                        </mat-autocomplete>
+                                                                    </mat-form-field>
+                                                                </div>
+                                                                <div class="col-md-4">
+                                                                    <div class="d-flex">
+                                                                        <div>Randomize Number</div>
+                                                                        <input type="number" id="randamizeno" name="randamizeno" class="form-control"
+                                                                            [(ngModel)]="randomizeNumber" />
+                                                                    </div>
                                                                 </div>
                                                             </div>
-                                                        </div>
                                                        </div>
                                                         
                                                     </div>
 
                                                 </div>
 
+                                            </div>
+                                            <div class="row mt-3">
+                                                <div class="col-12 text-end">
+                                                    <button type="button" class="btn btn-primary px-5"
+                                                        (click)="createLeastFillQuota()">Save
+                                                        Logic</button>
+                                                    <button type="button" class="btn trash-icon px-5 ms-4"
+                                                        (click)="deleteLeastFillQuota()">Delete</button>
+                                                </div>
                                             </div>
                                             
                                         </div>

@@ -886,13 +886,12 @@ export class EditSurveyComponent {
     if(this.question.questionTypeName !== 'Open Ended'){
       isAnyOptionEmpty = this.allOptions.some(option => !option.option || option.option.trim() === '');
     }else{
-      debugger
+      
       isAnyOptionEmpty = this.allOptions.some(option => 
         !(option.isNumeric || option.isAlphabet) ||  // Check if neither isNumeric nor isAlphabet is true
         !(option.inputTextArea || option.inputTextField) // Check if neither inputTextArea nor inputTextField is true
       );      
       
-      debugger
     }
  
     this.isValidSurvey = this.questionadded && this.qusstionaddednext && this.categoryNameChecks.every(check => check) && !isAnyOptionEmpty ;
@@ -1597,7 +1596,7 @@ export class EditSurveyComponent {
     );
   }
   getLogicQuestionList(questionId: any) {
-    debugger
+    
     this.logicQuestionList = '';
     const dataToSend = {
       surveyId: this.surveyId,
@@ -1617,7 +1616,7 @@ export class EditSurveyComponent {
       //   this.getOptionsByQuestionId(this.logicQuestionList[0].id);
       // }
     });
-    debugger
+    
   }
   getLogicValues() {
     this.surveyservice.getLogicValues().subscribe((response: { [x: string]: any; }) => {
@@ -3430,7 +3429,6 @@ export class EditSurveyComponent {
   }
 
   chnageOpenEndedInputType(i: number, type: string) {
-    debugger;
     
     if (!this.optionsArr1[i]) {
       console.error('Option at index', i, 'does not exist');
@@ -3454,7 +3452,7 @@ export class EditSurveyComponent {
   }
 
   chnageOpenEndedValidation(i: number, type: string) {
-    debugger;
+  
     
     if (!this.optionsArr1[i]) {
       console.error('Option at index', i, 'does not exist');
@@ -3482,7 +3480,6 @@ export class EditSurveyComponent {
   
     this.allOptions = [...this.optionsArr1];
     console.log('Updated Option:', this.optionsArr1[i]);
-    debugger
   }
 
 
@@ -3513,14 +3510,18 @@ export class EditSurveyComponent {
     if (index >= 0) {
       this.selectedLeastFillQuotaOption.splice(index, 1);
     }
+    console.log("selectedLeastFillQuotaOption del",this.selectedLeastFillQuotaOption)
   }
 
-  selectedLeastFillQuota(event: MatAutocompleteSelectedEvent): void {
+  
+  selectLeastFillQuota(event: MatAutocompleteSelectedEvent): void {
     const selectedOption = event.option.value;
 
   
     if (!this.selectedLeastFillQuotaOption.includes(selectedOption)) {
       this.selectedLeastFillQuotaOption.push(selectedOption);
+
+      console.log("selectedLeastFillQuotaOption",this.selectedLeastFillQuotaOption)
 
       const selectedMatrixArray = this.selectedLeastFillQuotaOption;
       const selectedMatrixString = selectedMatrixArray.map((option: { id: any; }) => option.id).join(', ');
@@ -3528,6 +3529,31 @@ export class EditSurveyComponent {
       this.matrixlogicifexpected = selectedMatrixString;
     }
 
+  }
+
+  createLeastFillQuota(){
+    const dataToSend = this.selectedLeastFillQuotaOption.map((item: any) => ({
+      optionId: item.id,
+      isRandomize: true,
+      groupNumber: 1,
+      randomizeNumber: this.randomizeNumber
+    }));
+
+    this.surveyservice.createLeastFillQuota(dataToSend).subscribe({
+      next: response => {
+        if(response === '"CreatedSuccessfully"'){
+          this.utility.showSuccess("Logic Created")
+        }else{
+          this.utility.showError("Error while creating logic")
+        }
+      },
+      error: err => {
+        this.utility.showError(err);
+      }
+    })
+  }
+
+  deleteLeastFillQuota(){
 
   }
   
