@@ -299,9 +299,10 @@ export class EditSurveyComponent {
         this.descaddededitor = false
       }
 
-      if(this.question.questionTypeName === 'Matrix Choice'){
-        this.changeMatrixLogic(0,'rows')
-      }
+      // if(this.question.questionTypeName === 'Matrix Choice'){
+      //   this.changeMatrixLogic(0,'rows')
+      // }
+      this.changeMatrixLogic(0,'rows');
       
 
       data.options.forEach((opt: any) => {
@@ -2458,20 +2459,26 @@ export class EditSurveyComponent {
   deleteOptionLogics(index:number): void {
     const id = this.logicEntries[index].optionlogicid
     console.log("id",id)
-    this.surveyservice.deleteOptionLogicById(id).subscribe({
-      next: (resp:any) => {
+    if(id){
+      this.surveyservice.deleteOptionLogicById(id).subscribe({
+        next: (resp:any) => {
 
-        if(resp === '"DeletedSuccessfully"'){
-          this.utility.showSuccess("Deleted Successfully");
-          window.location.reload();
+          if(resp ==='"DeletedSuccessfully"'){
+            this.utility.showSuccess("Deleted Successfully");
+            setTimeout(() => {
+              window.location.reload();
+            }, 500);
+          }
+
+        },
+        error:(err:any) => {
+          this.utility.showError("Error")
         }
-
-      },
-      error:(err:any) => {
-        this.utility.showError("Error")
-      }
-      
-    });
+        
+      });
+    }else{
+      this.logicEntries.splice(index,1);
+    }
   }
 
  

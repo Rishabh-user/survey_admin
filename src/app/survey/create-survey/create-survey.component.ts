@@ -580,6 +580,7 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
         this.selectedCountry = this.country.find(country => country.id.trim() === this.countryId.trim()) || null;
         
         console.log("countryImage",this.countryImage)
+        console.log("countries", this.selectedCountry);
 
 
         this.surveycreateddate = data.createdDate
