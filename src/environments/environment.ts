@@ -1,6 +1,7 @@
 export const environment = {
   production: true,
-  apiUrl: 'https://beta.angular.opinionest.com/',
+  // apiUrl: 'https://beta.angular.opinionest.com/',
+  apiUrl: 'https://betaangular.opinionest.com/',
   CryptoKey: 'SurveyAdmin@2023',
 
   LINKEDIN_API_KEY: '86eis8gtexue3g',
@@ -10,7 +11,8 @@ export const environment = {
     siteKey: '6LeBkKoUAAAAAMRcP2yPpPCpbDP-TCEYj7f0IhVd',
   },
   baseURL: '/manage',
-  mainURL: 'https://mobile.angular.opinionest.com/',
+  mainURL: 'https://betaangular.opinionest.com/'
+  //mainURL: 'https://mobile.angular.opinionest.com/',
   // baseURL: '',
   // mainURL: 'http://localhost:4201/'
 }

@@ -216,6 +216,7 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
   isTabletMode:boolean = true;
   geoLocation:boolean = false;
   groupquesvalue: boolean = false;
+  countryList: any[] = [];
 
   centerId: number = this.utils.getCenterId();
 
@@ -646,6 +647,13 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
         }
 
       }
+      const names = this.countryName.split(',').map((name:any) => name.trim());
+      const images = this.countryImage.split(',').map((img:any) => img.trim());
+
+      this.countryList = names.map((name:any, index:any) => ({
+        name: name,
+        image: images[index]
+      }));
 
       this.getNames();
 
