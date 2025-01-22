@@ -11,7 +11,7 @@ export const environment = {
     siteKey: '6LeBkKoUAAAAAMRcP2yPpPCpbDP-TCEYj7f0IhVd',
   },
   baseURL: '/manage',
-  mainURL: 'https://betaangular.opinionest.com/'
+  mainURL: 'https://mobileangular.opinionest.com/'
   //mainURL: 'https://mobile.angular.opinionest.com/',
   // baseURL: '',
   // mainURL: 'http://localhost:4201/'
