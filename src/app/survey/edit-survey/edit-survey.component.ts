@@ -2934,7 +2934,7 @@ export class EditSurveyComponent {
       this.question.isListRow1= true;
       this.question.isListRow2 = false;
       console.log("isListRow1",this.question.isListRow1)
-    }else{
+    }else if(this.rowlevetype == 'rowlevel2'){
       this.question.isListRow2 = true;
       this.question.isListRow1= false;
       console.log("isListRow2",this.question.isListRow2)
