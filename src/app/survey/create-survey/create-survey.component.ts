@@ -4118,7 +4118,9 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
         response => {
 
           this.utils.showSuccess('Logic Created Successfully.');
-         // window.location.reload();
+          setTimeout(() => {
+            window.location.reload();
+          }, 500);
         },
         error => {
           console.error('Error occurred while sending POST request:', error);
@@ -4129,7 +4131,9 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
       this.surveyservice.createMatrixColsRows(matrixColsRowsLogicsArray).subscribe(
         response => {
           this.utils.showSuccess('Logic Created Successfully.');
-          //window.location.reload();
+          setTimeout(() => {
+            window.location.reload();
+          }, 500);
         },
         error => {
           console.error('Error occurred while sending POST request:', error);
@@ -4211,11 +4215,9 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
   removeMatrixRowsColsLogicEntry(quesid:any,questionIndex: number, logicIndex: number): void {
 
     if (this.matrixcolsrowslogicEntriesPerQuestion[questionIndex]) {
-      // Check if the logicIndex is within the bounds of the nested array
       if (logicIndex >= 0 && logicIndex < this.matrixcolsrowslogicEntriesPerQuestion[questionIndex].length) {
         const entryIdToDelete = this.matrixcolsrowslogicEntriesPerQuestion[questionIndex][logicIndex]?.id;
 
-        // Check if entryIdToDelete is defined before proceeding
         if (entryIdToDelete !== undefined) {
           if (entryIdToDelete == 0) {
             this.matrixcolsrowslogicEntriesPerQuestion[questionIndex].splice(logicIndex, 1);
@@ -4227,13 +4229,14 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
                 if(resp === '"LogicDeleteSuccessfully"'){
                   this.utils.showSuccess("Deleted Successfully")
                   this.matrixcolsrowslogicEntriesPerQuestion[questionIndex].splice(logicIndex, 1);
-
+                  setTimeout(() => {
+                    window.location.reload();
+                  }, 500);
                 }
                
               },
               (error) => {
                 console.error('Error deleting logic:', error);
-                // Handle error response here
               }
             );
 

@@ -171,7 +171,7 @@ export class ProfileByIdComponent {
       lastName: this.lastname,
       createdDate: this.createdDate,
       modifiedDate: this.getCurrentDateTime(),
-      status: "ACT",
+      status: status,
       password: "",
       contactNo: this.contactNo,
       email: this.email,
