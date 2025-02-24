@@ -1,19 +1,33 @@
 <div ngClass="common-bg">
     <div ngClass="all-survey">
         <div ngClass="row common-heading">
-            <div class="col-md-9">
+            <div class="col-md-8">
                 <h4>Survey List</h4>
                 <p>Manage your Track Opinion "Survey List" page</p>
             </div>
-            <div class="col-md-3">
-
-                <mat-form-field>
-                    <mat-select [(ngModel)]="selectedCategory">
-                        <mat-option selected value="All Categories">All Categories</mat-option>
-                        
-                        <mat-option *ngFor="let item of categoryList" [value]="item.name">{{item.name}}</mat-option>
-                    </mat-select>
-                </mat-form-field>
+            <div class="col-md-4">
+                <div class="d-flex gap-3">
+                    <div class="search-bar flex-1" [class.vendor-link]="role === 'Vendor' || role === 'Client'">
+                        <mat-form-field class="search-bar">
+                            <input type="text" matInput [formControl]="surveyControl" placeholder="Search Survey"
+                                [matAutocomplete]="auto">
+                            <ng-icon name="heroMagnifyingGlass" class="magnifyingicon"></ng-icon>
+                            <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onSurveySelected($event)">
+                                <mat-option *ngFor="let survey of filteredSurveys" [value]="survey.name">
+                                    {{ survey.name }}
+                                </mat-option>
+                            </mat-autocomplete>
+                        </mat-form-field>
+                    </div>
+                        <mat-form-field class="flex-1">
+                            <mat-select [(ngModel)]="selectedCategory">
+                                <mat-option selected value="All Categories">All Categories</mat-option>
+                                
+                                <mat-option *ngFor="let item of categoryList" [value]="item.name">{{item.name}}</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                </div>
+               
             </div>
         </div>
         <div class="table-responsive">

@@ -25,6 +25,20 @@
                 </div>
                 <p>Manage your Track Opinion "Reports Listing" page</p>
             </div>
+            <div class="col-md-3">
+                <div class="search-bar">
+                    <mat-form-field class="search-bar">
+                        <input type="text" matInput [formControl]="surveyControl" placeholder="Search Report"
+                            [matAutocomplete]="auto">
+                        <ng-icon name="heroMagnifyingGlass" class="magnifyingicon"></ng-icon>
+                        <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onSurveySelected($event)">
+                            <mat-option *ngFor="let survey of filteredSurveys" [value]="survey.name">
+                                {{ survey.name }}
+                            </mat-option>
+                        </mat-autocomplete>
+                    </mat-form-field>
+                </div>
+            </div>
         </div>
         <div class="table-responsive">
             <table class="table">

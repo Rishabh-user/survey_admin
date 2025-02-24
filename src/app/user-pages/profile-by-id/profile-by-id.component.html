@@ -1,22 +1,37 @@
 <div ngClass="common-bg">
     <div ngClass="all-survey">
         <div ngClass="row common-heading">
-            <div class="col-md-9">
+            <div class="col-md-7">
                 <h4>Manage Your Existing Users with Scrip8</h4>
                 <p>Manage your Track Opinion "View All Users" page</p>
             </div>
-            <div class="col-md-3">
-                <div class="input-group flex-nowrap sort">
-                    <span class="input-group-text" id="addon-wrapping">Sort By:</span>
-                    <select class="form-select" [(ngModel)]="selectedCategory">
-                        <option selected value="All Roles">All Roles</option>
-                        <option value="SuperAdmin">Super Admin</option>
-                        <option value="Admin">Admin</option>
-                        <option value="User">User</option>
-                        <option value="Vendor">Vendor</option>
-                        <option value="Client">Client</option>
-                    </select>
+            <div class="col-md-5">
+                <div class="d-flex gap-3">
+                    <div class="search-bar flex-1">
+                        <mat-form-field class="search-bar">
+                            <input type="text" matInput [formControl]="surveyControl" placeholder="Search Users"
+                                [matAutocomplete]="auto">
+                            <ng-icon name="heroMagnifyingGlass" class="magnifyingicon"></ng-icon>
+                            <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onSurveySelected($event)">
+                                <mat-option *ngFor="let survey of filteredSurveys" [value]="survey.firstName + ' ' + survey.lastName">
+                                    {{ survey.firstName }} {{ survey.lastName }}
+                                </mat-option>
+                            </mat-autocomplete>
+                        </mat-form-field>
+                    </div>
+                    <div class="input-group flex-nowrap sort flex-1">
+                        <span class="input-group-text" id="addon-wrapping">Sort By:</span>
+                        <select class="form-select" [(ngModel)]="selectedCategory">
+                            <option selected value="All Roles">All Roles</option>
+                            <option value="SuperAdmin">Super Admin</option>
+                            <option value="Admin">Admin</option>
+                            <option value="User">User</option>
+                            <option value="Vendor">Vendor</option>
+                            <option value="Client">Client</option>
+                        </select>
+                    </div>
                 </div>
+                
             </div>
         </div>
         <div class="table-responsive">

@@ -1,9 +1,10 @@
 import { ChangeDetectorRef, Component } from '@angular/core';
 import { NgModule } from '@angular/core';
-
+import { FormControl } from '@angular/forms';
 import { SurveyService } from 'src/app/service/survey.service';
 import { environment } from 'src/environments/environment';
 import { UtilsService } from 'src/app/service/utils.service';
+import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 
 @Component({
   selector: 'app-reports',
@@ -21,6 +22,8 @@ export class ReportsComponent {
   reportSurvey: any;
   surveyId: any;
   imageurl:any
+  filteredSurveys: any = [];
+  surveyControl = new FormControl();
 
   toggleTooltip(identifier: string) {
     this.showTooltip[identifier] = !this.showTooltip[identifier];
@@ -50,6 +53,17 @@ export class ReportsComponent {
 
       this.reportSurvey = data.surveyType;
       this.totalItemsCount = data.totalCount;
+
+      setTimeout(() => {
+        this.surveyControl.valueChanges
+          .pipe(
+            debounceTime(300),
+            distinctUntilChanged()
+          )
+          .subscribe((value: string) => {
+            this.filterSurveys(value);
+          });
+      }, 500);
 
       this.cdr.detectChanges();
     });
@@ -84,5 +98,31 @@ export class ReportsComponent {
   }
   refresh() {
     this.getSurveyReportBySurvey(this.pageSize, 1);
+  }
+
+  filterSurveys(value: string) {
+    debugger
+    console.log("value",value)
+    if (!value || value.trim() == "") {
+      //this.filteredSurveys = this.reportSurvey;
+      this.getSurveyReportBySurvey(this.pageNumber, this.pageSize);
+      return;
+    }
+    value = value.toLowerCase();
+    this.filteredSurveys = this.reportSurvey.filter((survey: any) =>
+      survey.name.toLowerCase().includes(value)
+    );
+    debugger
+  }
+
+  onSurveySelected(event: any) {
+    const selectedSurveyName = event.option.value;
+    const selectedSurvey = this.reportSurvey.find((survey: any) => survey.name === selectedSurveyName);
+    console.log("reportSurvey filter",selectedSurvey)
+    if (selectedSurvey) {
+       const selectedSurvey = this.reportSurvey.find((survey: any) => survey.name === selectedSurveyName);
+        this.reportSurvey = [selectedSurvey]; 
+    }
+    
   }
 }

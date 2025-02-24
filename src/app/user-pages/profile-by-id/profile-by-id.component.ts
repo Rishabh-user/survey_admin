@@ -6,6 +6,8 @@ import { ModalDirective } from 'ngx-bootstrap/modal';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ProfileIdPopupComponent } from 'src/app/survey/popups/profile-id-popup/profile-id-popup.component';
 import { SurveyService } from 'src/app/service/survey.service';
+import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
+import { FormControl } from '@angular/forms';
 
 @Component({
   selector: 'app-profile-by-id',
@@ -35,6 +37,8 @@ export class ProfileByIdComponent {
   createdDate: any;
   roleId: number = 0;
   centerId: number = this.utility.getCenterId();
+  filteredSurveys: any = [];
+  surveyControl = new FormControl();
   
 
 
@@ -84,8 +88,17 @@ export class ProfileByIdComponent {
 
     this.themeService.GetAllUserProfileById(this.userId, this.centerId).subscribe((data: any) => {
       this.UserData = data;
-
-
+      setTimeout(() => {
+        this.surveyControl.valueChanges
+          .pipe(
+            debounceTime(300),
+            distinctUntilChanged()
+          )
+          .subscribe((value: string) => {
+            this.filterSurveys(value);
+          });
+      }, 500);
+      
 
       this.cdr.detectChanges();
     });
@@ -283,14 +296,33 @@ export class ProfileByIdComponent {
     }
   }
 
- 
 
-  // userstring(){
+  filterSurveys(value: string) {
+    if (!value || value.trim() === "") {
+      //this.filteredSurveys = this.UserData;
+      this.getAllUser();
+      return;
+    }
     
-  //   for (const role of this.roles) {
-  //     console.log(`ID: ${role.id}, Name: ${role.name}`);
-  // }
-  // }
+    value = value.toLowerCase();
+    
+    this.filteredSurveys = this.UserData.filter((survey: any) =>
+      `${survey.firstName} ${survey.lastName}`.toLowerCase().includes(value)
+    );
+  }
+
+  onSurveySelected(event: any) {
+    console.log("event.option.value",event.option.value)
+    const selectedSurveyName = event.option.value;
+    const selectedSurvey = this.UserData.find(
+      (survey: any) => `${survey.firstName} ${survey.lastName}` === selectedSurveyName
+    );
+  
+    if (selectedSurvey) {
+      this.UserData = [selectedSurvey]; 
+    }
+    
+  }
 
 
 }

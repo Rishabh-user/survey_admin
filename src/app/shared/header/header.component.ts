@@ -121,7 +121,6 @@ export class HeaderComponent {
   search(searchQuery: string): void {
     this.themeService.setSearchQuery(searchQuery);
     this.surveyService.getSurveySearch({ surveyname: searchQuery }).subscribe((response) => {
-      // Assuming response contains the survey data
       this.SurveyData = response.filter((item: { name: string; userName: string; email: string; }) => {
         return (
           item.name.toLowerCase().includes(searchQuery.toLowerCase()) ||

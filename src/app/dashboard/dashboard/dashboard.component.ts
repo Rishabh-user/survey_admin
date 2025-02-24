@@ -217,7 +217,7 @@ export class DashboardComponent {
   ];
   selectedYear: string = '2024';
   years: string[] = [
-    '2023', '2024', '2025', '2026', '2027', '2027', '2028', '2029', '2030'
+    '2023', '2024', '2025'
   ];
   getReportForSelectedYear(): void {
     if (this.selectedMonth === 'All') {
@@ -308,24 +308,25 @@ export class DashboardComponent {
           {
             label: "Hold",
             data: holData,
-            borderColor: '#33FFB8',
-            backgroundColor: 'rgba(51, 255, 184, 0.2)',
-            fill: {
-              target: 'origin',
-              above: 'rgba(51, 255, 184, 0.2)',
-              below: 'rgba(51, 255, 184, 0)'
-            },
-            tension: 0.3
-          },
-          {
-            label: "Active",
-            data: actData,
             borderColor: '#3363FF',
             backgroundColor: 'rgba(51, 99, 255, 0.2)',
             fill: {
               target: 'origin',
               above: 'rgba(51, 99, 255, 0.2)',
               below: 'rgba(51, 99, 255, 0)'
+            },
+            
+            tension: 0.3
+          },
+          {
+            label: "Active",
+            data: actData,
+            borderColor: '#33FFB8',
+            backgroundColor: 'rgba(51, 255, 184, 0.2)',
+            fill: {
+              target: 'origin',
+              above: 'rgba(51, 255, 184, 0.2)',
+              below: 'rgba(51, 255, 184, 0)'
             },
             tension: 0.3
           }

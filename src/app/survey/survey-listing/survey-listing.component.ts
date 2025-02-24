@@ -1,5 +1,6 @@
 import { ChangeDetectorRef, Component } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
+import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { Observable, Subscription } from 'rxjs';
 import { startWith, map } from 'rxjs/operators';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -8,6 +9,8 @@ import { SurveyService } from 'src/app/service/survey.service';
 import { FormControl } from '@angular/forms';
 import { UtilsService } from 'src/app/service/utils.service';
 import { environment } from 'src/environments/environment';
+import { EncryptPipe } from 'src/app/pipes/encrypt.pipe';
+import { CryptoService } from 'src/app/service/crypto.service';
 
 
 @Component({
@@ -16,7 +19,12 @@ import { environment } from 'src/environments/environment';
   styleUrls: ['./survey-listing.component.css']
 })
 export class SurveyListingComponent {
-  
+  filteredSurveys: any = [];
+  surveyData: any = "";
+  categoryList: any;
+  selectedCategory: string = 'All Categories';
+  imageurl:any;
+  surveyControl = new FormControl();
 
   showTooltip: { [key: string]: boolean } = {};
   toggleTooltip(identifier: string) {
@@ -26,11 +34,7 @@ export class SurveyListingComponent {
     this.showTooltip[identifier] = false;
   }
 
-  surveyData: any = "";
-  categoryList: any;
-  selectedCategory: string = 'All Categories';
-  imageurl:any
-  constructor(private visibilityService: DataService, private util: UtilsService, private modalService: NgbModal, public themeService: SurveyService, private utility: UtilsService, private cdr: ChangeDetectorRef) {
+  constructor(private visibilityService: DataService, private util: UtilsService, private modalService: NgbModal, public themeService: SurveyService, private utility: UtilsService,private router: Router, private crypto: CryptoService,private cdr: ChangeDetectorRef) {
     this.baseUrl = environment.baseURL;
     this.imageurl = environment.apiUrl
     visibilityService.closeSideBar();
@@ -70,6 +74,14 @@ export class SurveyListingComponent {
 
       this.applyFilter(searchQuery);
     });
+    this.surveyControl.valueChanges
+          .pipe(
+            debounceTime(300),
+            distinctUntilChanged()
+          )
+          .subscribe((value: string) => {
+            this.filterSurveys(value);
+      });
   }
 
   filteredSurveyData: any[] = [];
@@ -197,6 +209,37 @@ export class SurveyListingComponent {
     })
 
   }
+
+
+  onSurveySelected(event: any) {
+    const selectedSurveyName = event.option.value;
+    const selectedSurvey = this.surveyData.find((survey: any) => survey.name === selectedSurveyName);
+
+    if (selectedSurvey) {
+      for (const key in selectedSurvey) {
+        if (Object.prototype.hasOwnProperty.call(selectedSurvey, key)) {
+        }
+      }
+      const encryptedId = this.encryptId(selectedSurvey.surveyId);
+      this.router.navigate(['/survey/manage-survey/', encryptedId]);
+    }
+  }
+
+  filterSurveys(value: string) {
+    if (!value) {
+      this.filteredSurveys = this.surveyData;
+      return;
+    }
+    value = value.toLowerCase();
+    this.filteredSurveys = this.surveyData.filter((survey: any) =>
+      survey.name.toLowerCase().includes(value)
+    );
+  }
+
+  encryptId(id: number): string {
+      const encryptPipe = new EncryptPipe(this.crypto);
+      return encryptPipe.transform(id);
+    }
 
 
 
