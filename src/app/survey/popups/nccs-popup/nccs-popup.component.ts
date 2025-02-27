@@ -117,10 +117,19 @@ export class NccsPopupComponent {
 
     const currentDateTime = this.getCurrentDateTime();
 
-    if (!this.questions.every(question => question.options.some(option => option.selected))) {
-      this.utility.showError("Please select at least one option for each question");
-      return;
+    // if (!this.questions.every(question => question.options.some(option => option.selected))) {
+    //   this.utility.showError("Please select at least one option for each question");
+    //   return;
+    // }
+
+    if (!this.questions.every(question => 
+      question.id === 56 || (question.options && question.options.some(option => option.isSelected))
+    )) {
+        console.log("Some questions (except ID 56) do not have a selected option.");
+    } else {
+        console.log("All required questions have selected options.");
     }
+  
 
     // const questionsWithSelectedOptions = this.questions.filter(question =>
     //   question.options.some(option => option.selected)
@@ -130,7 +139,7 @@ export class NccsPopupComponent {
     //   this.utility.showError("Please enter a valid question number (qNo) for all questions with selected options");
     //   return;
     // }
-
+ debugger
     let successfulAPICalls = 0;
     let delayCounter = 0;
     for (let i = 0; i < this.questions.length; i++) {
@@ -162,11 +171,13 @@ export class NccsPopupComponent {
         option.modifiedDate = currentDateTime;
 
       });
-      if (!currentQuestion.options.some(option => option.selected)) {
-        continue;
-      }
+      // if (!currentQuestion.options.some(option => option.selected)) {
+      //   continue;
+      // }
+      currentQuestion.options = currentQuestion.options?.filter(option => option.selected) || [];
 
 
+  
 
       setTimeout(() => {
         this.surveyservice.CreateGeneralQuestion(currentQuestion).subscribe({
@@ -186,7 +197,7 @@ export class NccsPopupComponent {
       }, delayCounter * 1000);
       delayCounter++;
     }
-
+    debugger
   }
 
   getSerialNumber(){
