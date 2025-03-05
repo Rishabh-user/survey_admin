@@ -125,9 +125,9 @@ export class NccsPopupComponent {
     if (!this.questions.every(question => 
       question.id === 56 || (question.options && question.options.some(option => option.isSelected))
     )) {
-        console.log("Some questions (except ID 56) do not have a selected option.");
+        console.log("no option req");
     } else {
-        console.log("All required questions have selected options.");
+        console.log("options req");
     }
   
 
@@ -139,7 +139,7 @@ export class NccsPopupComponent {
     //   this.utility.showError("Please enter a valid question number (qNo) for all questions with selected options");
     //   return;
     // }
- debugger
+
     let successfulAPICalls = 0;
     let delayCounter = 0;
     for (let i = 0; i < this.questions.length; i++) {
@@ -151,7 +151,12 @@ export class NccsPopupComponent {
       } else {
         currentQuestion.questionTypeId = this.questionTypeId
       }
-
+      
+      if( i == this.questions.length -1){
+        currentQuestion.isRequired = false;
+        currentQuestion.openEndedType = "text";
+      }
+      
       currentQuestion.surveyTypeId = this.surveyId
       // currentQuestion.qNo = this.qNo
       currentQuestion.createdDate = this.getCurrentDateTime()
@@ -197,7 +202,7 @@ export class NccsPopupComponent {
       }, delayCounter * 1000);
       delayCounter++;
     }
-    debugger
+   
   }
 
   getSerialNumber(){
