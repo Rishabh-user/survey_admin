@@ -128,6 +128,7 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
   @ViewChild('MonthlyIncomeModalforeign', { static: true }) monthlyincomeforeignModal!: ModalDirective;
   @ViewChild('DescriptionScreenModal', { static: true }) DescriptionScreenModal!: ModalDirective;
   @ViewChild('opendendedformModal', { static: true }) opendendedformModal!: ModalDirective;
+  @ViewChild('LsmModal', { static: true }) lsmModal!: ModalDirective;
 
   public Editor = ClassicEditor;
 
@@ -411,6 +412,8 @@ export class CreateSurveyComponent implements OnInit, AfterViewInit {
     } 
     else if (type === "Occupation") {
       this.occupationModal.show();
+    }else if (type === "LSM") {
+      this.lsmModal.show();
     }
     // else if (type === "Occupation") {
     //   this.opendendedformModal.show();

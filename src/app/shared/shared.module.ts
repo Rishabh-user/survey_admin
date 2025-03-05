@@ -72,6 +72,8 @@ import { MonthlyIncomeForeignPopupComponent } from '../survey/popups/monthly-inc
 import { DescriptionScreenComponent } from '../survey/popups/description-screen/description-screen.component';
 import { OpenendedFormComponent } from '../survey/popups/openended-form/openended-form.component';
 import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
+import { LsmPopupComponent } from '../survey/popups/lsm-popup/lsm-popup.component';
+
 @NgModule({
   declarations: [
     ConvertToUrlPipe,
@@ -121,8 +123,8 @@ import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
     SecLsmPopupComponent,
     OccupationPopupComponent,
     DescriptionScreenComponent,
-    OpenendedFormComponent
-    
+    OpenendedFormComponent,
+    LsmPopupComponent
   ],
   imports: [
     MatChipsModule,
@@ -194,7 +196,8 @@ import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
     SecBnSlPopupComponent,
     FlsmPopupComponent,
     SecLsmPopupComponent,
-    OccupationPopupComponent
+    OccupationPopupComponent,
+    LsmPopupComponent
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 
