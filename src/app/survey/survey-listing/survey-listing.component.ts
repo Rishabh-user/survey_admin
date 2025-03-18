@@ -226,14 +226,19 @@ export class SurveyListingComponent {
   }
 
   filterSurveys(value: string) {
-    if (!value) {
-      this.filteredSurveys = this.surveyData;
+    debugger
+    console.log("value",value)
+    if (!value || value == '') {
+      this.getAllSurveyList(this.pageNumber, this.pageSize)
       return;
     }
-    value = value.toLowerCase();
-    this.filteredSurveys = this.surveyData.filter((survey: any) =>
-      survey.name.toLowerCase().includes(value)
-    );
+    debugger
+    this.themeService.getSurveyNameSearch(value).subscribe((data:any) => {
+      console.log(data)
+      this.surveyData =data
+   
+    })
+  
   }
 
   encryptId(id: number): string {

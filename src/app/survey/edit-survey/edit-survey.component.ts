@@ -466,6 +466,7 @@ export class EditSurveyComponent {
     this.getMultiSelectAnsLogic();
     // this.getOptionLogics();
     this.openEndedValue();
+    this.getLeastFillQuota();
     // this.getMatrixLogic();
     if(this.questionId > 1){
       this.getOptionLogics();
@@ -3549,7 +3550,11 @@ export class EditSurveyComponent {
     this.surveyservice.createLeastFillQuota(dataToSend).subscribe({
       next: response => {
         if(response === '"CreatedSuccessfully"'){
-          this.utility.showSuccess("Logic Created")
+          this.utility.showSuccess("Logic Created");
+          setTimeout(() => {
+            window.location.reload();
+          }, 500)
+         
         }else{
           this.utility.showError("Error while creating logic")
         }
@@ -3560,7 +3565,42 @@ export class EditSurveyComponent {
     })
   }
 
+  getLeastFillQuota() {
+    this.surveyservice.getLeastFillQuota(this.questionId).subscribe({
+      next: (data: any[]) => {
+        if (data && data.length > 0) {
+          data.forEach((item: any) => {
+            this.visibleanslogic = true
+            this.randomizeNumber = item.randomizeNumber;
+  
+            const matchingOption = this.allOptions.find((option: any) => option.id === item.optionId);
+            
+            if (matchingOption) {
+              this.selectedLeastFillQuotaOption.push(matchingOption);
+            }
+            
+          });
+        }
+      },
+      error: (err: any) => {
+        this.utility.showError(err);
+      }
+    });
+  }
+
   deleteLeastFillQuota(){
+    this.surveyservice.deleteLeastFillQuota(this.questionId).subscribe({
+      next: (resp:any) => {
+        if(resp === '"DeletedSuccessfully"'){
+          this.utility.showSuccess("Deleted Successfully")
+          window.location.reload();
+        }else{
+          this.utility.showError("Error while deleting")
+        }
+      }, error: (err:any) => {
+        this.utility.showError(err);
+      }
+    })
 
   }
   

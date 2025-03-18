@@ -704,4 +704,38 @@ export class SurveyService {
     return this.http.post(url, data, {responseType: "text"});
   }
 
+  deleteLeastFillQuota(questionId:any):Observable<any> {
+    const url =`${this.apiUrl}api/admin/${this.userId}/GeneralQuestion/DeleteLeastFillQuota?questionId=${questionId}`;
+    return this.http.delete(url,  {responseType: "text"});
+  }
+
+  getLeastFillQuota(questionId:any):Observable<responseDTO[]> {
+    const url =`${this.apiUrl}api/admin/${this.userId}/GeneralQuestion/GetLeastFillQuota?questionId=${questionId}`;
+    return this.http.get<responseDTO[]>(url);
+  }
+
+  getSurveyNameSearch(surveyName: any): Observable<any> {
+    const url =`${this.apiUrl}api/admin/${this.userId}/Survey/GetSurveySearch?surveyName=${surveyName}`;
+    return this.http.get<responseDTO[]>(url);
+  }
+
+  getUserSearch(email?: string, userName?: string): Observable<any> {
+    const params = new HttpParams()
+        .set("email", email || "")
+        .set("userName", userName || "");
+
+    const url = `${this.apiUrl}api/admin/${this.userId}/Survey/GetSurveySearch`;
+    return this.http.get<responseDTO[]>(url, { params });
+  }
+
+  getReportSearch(surveyId?: any, surveName?: string): Observable<any> {
+    const params = new HttpParams()
+        .set("surveyId", surveyId || 0)
+        .set("surveName", surveName || "");
+
+    const url = `${this.apiUrl}api/admin/${this.userId}/Report/SearchSurveyReport`;
+    return this.http.get<responseDTO[]>(url, { params });
+  }
+
+
 }

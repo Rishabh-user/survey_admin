@@ -299,17 +299,21 @@ export class ProfileByIdComponent {
 
   filterSurveys(value: string) {
     if (!value || value.trim() === "") {
-      //this.filteredSurveys = this.UserData;
-      this.getAllUser();
-      return;
+        this.getAllUser();
+        return;
     }
-    
-    value = value.toLowerCase();
-    
-    this.filteredSurveys = this.UserData.filter((survey: any) =>
-      `${survey.firstName} ${survey.lastName}`.toLowerCase().includes(value)
-    );
+
+    value = value.trim();
+
+    const isEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
+
+    this.surveyservice.getUserSearch(isEmail ? value : undefined, !isEmail ? value : undefined)
+        .subscribe((data: any) => {
+            console.log(data);
+            this.UserData = data;
+        });
   }
+
 
   onSurveySelected(event: any) {
     console.log("event.option.value",event.option.value)

@@ -2,7 +2,7 @@
     <div ngClass="all-survey">
         <div ngClass="row common-heading">
             <div class="col-md-7">
-                <h4>Manage Your Existing Users with Scrip8</h4>
+                <h4>Manage Your Existing Users with Scrip8 </h4>
                 <p>Manage your Track Opinion "View All Users" page</p>
             </div>
             <div class="col-md-5">
@@ -60,18 +60,35 @@
                         <td class="profileimage">
                             <div class="d-flex align-items-center">
                                 <ng-container
-                                    *ngIf="item.image !== (imageurl + 'Files/Images/')">
+                                    *ngIf="item.image !== (imageurl + 'Files/Images/') && !item.userImage">
+                                    
                                     <img [src]="item.image" class="me-2 rounded-circle"
                                         style="width: 30px; height: 30px;" />
                                 </ng-container>
+                                <ng-container *ngIf="item.userImage && item.userImage !== (imageurl + 'Files/Images/')">
+                                 
+                                    <img [src]="item.userImage" class="me-2 rounded-circle"
+                                    style="width: 30px; height: 30px;" />
+                                </ng-container>
+
+                               {{item.imageurl}}
                                 <ng-container
-                                    *ngIf="item.image === (imageurl + 'Files/Images/')">
+                                    *ngIf="item.image != null && item.image === (imageurl + 'Files/Images/') && item.userImage == null">
                                     <div class="me-2 rounded-circle defaultprofile">
                                         {{ (item.firstName ? item.firstName.charAt(0) : '') + (item.lastName ?
                                         item.lastName.charAt(0) : '') }}
                                     </div>
                                 </ng-container>
+                                <ng-container
+                                    *ngIf="item.userImage === (imageurl + 'Files/Images/') && item.image == null">
+                                    <div class="me-2 rounded-circle defaultprofile">
+                                        {{ (item.userName ? item.userName.charAt(0) : '') + (item.userName ?
+                                        item.userName.charAt(0) : '') }}
+                                    </div>
+                                </ng-container>
+                                
                                 <span>{{ item.firstName }} {{ item.lastName }}</span>
+                                <span>{{item.userName}}</span>
                             </div>
                         </td>
                         <td>{{ getRoleName(item.roleId) }}</td>

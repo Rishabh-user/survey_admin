@@ -104,14 +104,17 @@ export class ReportsComponent {
     debugger
     console.log("value",value)
     if (!value || value.trim() == "") {
-      //this.filteredSurveys = this.reportSurvey;
       this.getSurveyReportBySurvey(this.pageNumber, this.pageSize);
       return;
     }
-    value = value.toLowerCase();
-    this.filteredSurveys = this.reportSurvey.filter((survey: any) =>
-      survey.name.toLowerCase().includes(value)
-    );
+
+    const surveyId = /^[0-9]*$/.test(value) ? parseInt(value) : null;
+    
+    this.themeService.getReportSearch(surveyId ? value : undefined, !surveyId ? value : undefined)
+    .subscribe((data: any) => {
+      console.log("data",data)
+        this.reportSurvey = data.surveyType;
+    });
     debugger
   }
 
