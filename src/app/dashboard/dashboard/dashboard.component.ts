@@ -215,7 +215,7 @@ export class DashboardComponent {
     { name: 'January', value: 1 },
     { name: 'February', value: 2 }
   ];
-  selectedYear: string = '2024';
+  selectedYear: string = '2025';
   years: string[] = [
     '2023', '2024', '2025'
   ];
