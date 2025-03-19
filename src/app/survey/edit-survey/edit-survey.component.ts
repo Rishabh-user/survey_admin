@@ -191,6 +191,7 @@ export class EditSurveyComponent {
   optionlogicelseexpected:any;
   createanslogic:any;
   randomizeNumber:any;
+  updateLeastFillQuota: boolean = false;
 
   
 
@@ -3546,16 +3547,23 @@ export class EditSurveyComponent {
       groupNumber: 1,
       randomizeNumber: this.randomizeNumber
     }));
-
-    this.surveyservice.createLeastFillQuota(dataToSend).subscribe({
+     
+    const apiCall = this.updateLeastFillQuota ? this.surveyservice.updateLeastFillQuota(dataToSend) : this.surveyservice.createLeastFillQuota(dataToSend);
+    apiCall.subscribe({
       next: response => {
         if(response === '"CreatedSuccessfully"'){
           this.utility.showSuccess("Logic Created");
           setTimeout(() => {
             window.location.reload();
+          }, 500);
+         
+        }else if(response == '"UpdatedSuccessfully"'){
+          this.utility.showSuccess("Logic Updated");
+          setTimeout(() => {
+            window.location.reload();
           }, 500)
          
-        }else{
+        } else {
           this.utility.showError("Error while creating logic")
         }
       },
@@ -3563,6 +3571,7 @@ export class EditSurveyComponent {
         this.utility.showError(err);
       }
     })
+    
   }
 
   getLeastFillQuota() {
@@ -3570,7 +3579,8 @@ export class EditSurveyComponent {
       next: (data: any[]) => {
         if (data && data.length > 0) {
           data.forEach((item: any) => {
-            this.visibleanslogic = true
+            this.visibleanslogic = true;
+            this.updateLeastFillQuota = true;
             this.randomizeNumber = item.randomizeNumber;
   
             const matchingOption = this.allOptions.find((option: any) => option.id === item.optionId);

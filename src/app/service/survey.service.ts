@@ -704,6 +704,11 @@ export class SurveyService {
     return this.http.post(url, data, {responseType: "text"});
   }
 
+  updateLeastFillQuota(data:any):Observable<any> {
+    const url =`${this.apiUrl}api/admin/${this.userId}/GeneralQuestion/UpdateLeastFillQuota`;
+    return this.http.put(url, data, {responseType: "text"});
+  }
+
   deleteLeastFillQuota(questionId:any):Observable<any> {
     const url =`${this.apiUrl}api/admin/${this.userId}/GeneralQuestion/DeleteLeastFillQuota?questionId=${questionId}`;
     return this.http.delete(url,  {responseType: "text"});

@@ -237,7 +237,7 @@ export class ProfileByIdComponent {
     this.surveyservice.updateProfile(dataToSend).subscribe({
       next: (resp: any) => {
         this.utility.showSuccess('Updated.');
-        // window.location.reload();
+         window.location.reload();
       },
       error: (err: any) => {
         this.utility.showError('error');
