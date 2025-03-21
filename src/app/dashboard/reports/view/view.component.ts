@@ -138,34 +138,25 @@ export class ViewComponent {
       console.error("Survey report data is empty.");
       return;
     }
-
     this.surveyReportById.forEach((item, index) => {
       const canvasId = `canvas${index + 1}`;
       const canvas = document.getElementById(canvasId) as HTMLCanvasElement | null;
-
+    
       if (this.defaultchart[index]) {
         this.defaultchart[index].destroy();
       }
-
+    
       if (!canvas) {
         console.error(`Canvas element with ID ${canvasId} not found.`);
         return;
       }
-
+    
       const ctx = canvas.getContext('2d');
       if (!ctx) {
         console.error(`Failed to get 2D context for canvas element with ID ${canvasId}.`);
         return;
       }
-
-      const datasets = item.responsOptions
-        .filter(option => option.option !== null)
-        .map(option => ({
-          label: option.option,
-          data: [option.count],
-          backgroundColor: this.getRandomColor()
-        }));
-
+    
       let chartType: ChartType = 'bar';
       if (this.graphtypevalue == 1) {
         chartType = 'doughnut';
@@ -179,43 +170,133 @@ export class ViewComponent {
         chartType = 'scatter';
       }
 
+      const labels = item.responsOptions.map(option => option.option);
+ 
+    
+      const datasets = [{
+        data: item.responsOptions
+          .filter(option => option.option !== null)
+          .map(option => option.count),
+        backgroundColor: item.responsOptions.map(() => this.getRandomColor())
+      }];
+
+      let showLabel = true
+      if(chartType == 'bar' || chartType == 'line' || chartType == 'scatter')
+        showLabel = false;
+
       this.defaultchart[index] = new Chart(ctx, {
         type: chartType,
-        data: {
-          labels: item.responsOptions.map(option => option.option),
-          datasets: datasets
-        },
+        data: {  labels, datasets },
         options: {
           responsive: true,
-          
           plugins: {
             title: {
               display: true,
               text: 'Question Options',
             },
             legend: {
+              display: showLabel, 
+              position: 'top',
               labels: {
                 usePointStyle: true
               }
             },
           },
-          
           scales: {
             x: {
-              display: true, // Display the x-axis
+              display: true, 
               title: {
                 display: true,
-                text: 'Question Options' // Add a title to the x-axis if needed
+                text: 'Question Options' 
               }
             },
             y: {
               beginAtZero: true
             }
           },
-          
         }
       });
     });
+    
+
+  
+    // this.surveyReportById.forEach((item, index) => {
+    //   const canvasId = `canvas${index + 1}`;
+    //   const canvas = document.getElementById(canvasId) as HTMLCanvasElement | null;
+
+    //   if (this.defaultchart[index]) {
+    //     this.defaultchart[index].destroy();
+    //   }
+
+    //   if (!canvas) {
+    //     console.error(`Canvas element with ID ${canvasId} not found.`);
+    //     return;
+    //   }
+
+    //   const ctx = canvas.getContext('2d');
+    //   if (!ctx) {
+    //     console.error(`Failed to get 2D context for canvas element with ID ${canvasId}.`);
+    //     return;
+    //   }
+
+    //   const datasets = item.responsOptions
+    //     .filter(option => option.option !== null)
+    //     .map(option => ({
+    //       label: option.option,
+    //       data: [option.count],
+    //       backgroundColor: this.getRandomColor()
+    //     }));
+
+    //   let chartType: ChartType = 'bar';
+    //   if (this.graphtypevalue == 1) {
+    //     chartType = 'doughnut';
+    //   } else if (this.graphtypevalue == 2) {
+    //     chartType = 'bar';
+    //   } else if (this.graphtypevalue == 3) {
+    //     chartType = 'polarArea';
+    //   } else if (this.graphtypevalue == 4) {
+    //     chartType = 'line';
+    //   } else if (this.graphtypevalue == 5) {
+    //     chartType = 'scatter';
+    //   }
+
+    //   this.defaultchart[index] = new Chart(ctx, {
+    //     type: chartType,
+    //     data: {
+    //       labels: item.responsOptions.map(option => option.option),
+    //       datasets: datasets
+    //     },
+    //     options: {
+    //       responsive: true,
+          
+    //       plugins: {
+    //         title: {
+    //           display: true,
+    //           text: 'Question Options',
+    //         },
+    //         legend: {
+    //           labels: {
+    //             usePointStyle: true
+    //           }
+    //         },
+    //       },
+          
+    //       scales: {
+    //         x: {
+    //           display: true, 
+    //           title: {
+    //             display: true,
+    //             text: 'Question Options' 
+    //           }
+    //         },
+    //         y: {
+    //           beginAtZero: true
+    //         }
+    //       },
+          
+    //     }
+    //   });
+    // });
   }
 
   getRandomColor(): string {
