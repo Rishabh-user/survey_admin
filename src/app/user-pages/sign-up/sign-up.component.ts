@@ -140,17 +140,22 @@ export class SignUpComponent {
 
       this.authService.registerOrganization(formData).subscribe(
         (response) => {
-          if (response.message === 'AlreadyExists') {
+          
+          if (response.message == 'AlreadyExists') {
             this.utility.showError("This Organisation Already Registered");
 
-          } else if (response.message === 'EmailAlreadyExits') {
+          } else if (response.message == 'EmailAlreadyExits') {
             this.utility.showError("This Email Id Already Registered");
 
-          } else {
+          } else if (response.message == "UserAlreadyExits") {
+            this.utility.showError("User Already Exits");
+          }
+          else {
             this.organizationId = response.centerId
             this.userId = response.userId
             this.showUserDetails = true;
           }
+          
         },
         (error) => {
           console.error('Registration failed:', error);

@@ -15,7 +15,7 @@
               <option value="3">Pie Chart</option>
               <!-- <option value="4">HTML Legend</option> -->
               <option value="4">Radar</option>
-              <option value="5">Point</option>
+              <!-- <option value="5">Point</option> -->
             </select>
           </div>
           <div class="col input-group flex-nowrap ps-3">
@@ -24,18 +24,18 @@
               <option *ngFor="let item of usertype" [value]="item">{{item}}</option>
             </select>
           </div>
-          <!-- <div *ngIf="planid != 500">
+          <div *ngIf="planid != 500">
             <div class="dropdown">
               <a class="btn btn-secondary dropdown-toggle btn btn-primary ms-2" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
-               CSV
+                Excel
               </a>
               <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                <li><a class="dropdown-item" href="javascript:" (click)="generateCSV()">CSV(ques)</a></li>
-                <li><a class="dropdown-item" href="javascript:" (click)="generateCountCSV()">CSV(count)</a></li>
-                <li><a class="dropdown-item" href="javascript:" (click)="generateOptionCountCSV()">CSV(optioncount)</a></li>
+                <li><a class="dropdown-item" href="javascript:" (click)="generateBinaryExcel()">Excel(ques)</a></li>
+                <li><a class="dropdown-item" href="javascript:" (click)="generateCountCSV()">Excel(count)</a></li>
+                <li><a class="dropdown-item" href="javascript:" (click)="generateOptionCountCSV()">Excel(optioncount)</a></li>
               </ul>
             </div>
-          </div> -->
+          </div>
           <!-- <div class="col input-group flex-nowrap ps-3">
             <select class="form-select usertype" (change)="onSelectChangegraph($event)">
               <option selected value="Select CSV">Select</option>
@@ -46,8 +46,8 @@
           </div> -->
           <a *ngIf="planid != 500" href="javascript:" class="btn btn-primary ms-2"
             (click)="generatePDF()">Download PDF <ng-icon class="ms-3" name="heroArrowLongRight"></ng-icon></a>
-          <a *ngIf="planid != 500" href="javascript:" class="btn btn-primary ms-2"
-          (click)="generateBinaryExcel()">Excel <ng-icon class="ms-3" name="heroArrowLongRight"></ng-icon></a>
+          <!-- <a *ngIf="planid != 500" href="javascript:" class="btn btn-primary ms-2"
+          (click)="generateBinaryExcel()">Excel <ng-icon class="ms-3" name="heroArrowLongRight"></ng-icon></a> -->
           <!-- <a *ngIf="planid != 500" href="javascript:" class="btn btn-primary ms-2" (click)="generateCSV()">Download
             CSV <ng-icon class="ms-3" name="heroArrowLongRight"></ng-icon></a> -->
           

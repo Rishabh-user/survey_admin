@@ -16,7 +16,7 @@ export class HttpInterceptorService implements HttpInterceptor {
     const token = localStorage.getItem('authToken');
     //const token ='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJzY3JpcDgiLCJpc3MiOiJzY3JpcDgiLCJqdGkiOiJhNTI2NDgxMi00MDZhLTRiMjAtODI0Mi1hZThmMThmYjcyY2YiLCJ1c2VyIjoie1wiSWRcIjoxLFwiTmFtZVwiOlwiVmlqYXkgS3VtYXJcIixcIkVtYWlsXCI6XCJ2ai52aWpheUBnbWFpbC5jb21cIixcIlJvbGVJZFwiOjEsXCJSb2xlXCI6XCJTdXBlckFkbWluXCIsXCJFcnJvclwiOm51bGwsXCJDZW50ZXJJZFwiOjEsXCJDZW50ZXJOYW1lXCI6XCJ0cmFja29waW5pb25cIixcIlBhaWRcIjp0cnVlLFwiUGxhbklkXCI6MjUwMCxcIkNlbnRlckRhdGVcIjpcIjIwMjQtMDEtMDlUMTc6MTA6MzEuNjYzXCJ9IiwiZXhwIjoxNzE5MDU4OTgzfQ.mFZbg7fIpgu_I9BO56aCo15Iluk8fohiVDYJTjPb6Bs'
     const isLoginPage = this.router.url.includes('/login');
-
+     
     if (token && !isLoginPage) {
       request = request.clone({
         setHeaders: {
@@ -44,7 +44,9 @@ export class HttpInterceptorService implements HttpInterceptor {
       }),
       finalize(() => {
         this.loaderService.hide();
+        
       })
     );
+    
   }
 }

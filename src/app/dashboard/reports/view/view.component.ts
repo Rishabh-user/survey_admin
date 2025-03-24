@@ -5,6 +5,7 @@ import { CryptoService } from 'src/app/service/crypto.service';
 import { SurveyService } from 'src/app/service/survey.service';
 import { AfterViewInit } from '@angular/core';
 import { UtilsService } from 'src/app/service/utils.service';
+import { LoaderService } from 'src/app/service/loader.service';
 
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
@@ -78,7 +79,8 @@ export class ViewComponent {
     public themeService: SurveyService,
     private route: ActivatedRoute,
     private crypto: CryptoService,
-    private utils: UtilsService
+    private utils: UtilsService,
+    private loadersevice: LoaderService
   ) {
     this.route.paramMap.subscribe(params => {
       let _queryData = params.get('param1');
@@ -114,9 +116,9 @@ export class ViewComponent {
   if (selectedValue === '2') {
     this.generateCountCSV();
   }
-  // if (selectedValue === '3') {
-  //   this.generateOptionCountCSV();
-  // }
+  if (selectedValue === '3') {
+    this.generateOptionCountCSV();
+  }
 }
 
 
@@ -607,6 +609,7 @@ export class ViewComponent {
   generatePDF(): void {
     this.showForPDF = true;
     this.showpdf = !this.showpdf;
+    this.loadersevice.show();
 
     setTimeout(() => {
         const content = this.content.nativeElement;
@@ -663,6 +666,7 @@ export class ViewComponent {
                 });
             } else {
                 pdf.save('report.pdf');
+                this.loadersevice.hide();
                 this.showForPDF = false;
                 this.showpdf = !this.showpdf;
             }
@@ -677,127 +681,125 @@ export class ViewComponent {
 
 
 
-//   generateOptionCountCSV(): void {
-//     const csvContent = this.optionCountConvertToCSV(this.surveyreport);
-//     this.downloadCSV(csvContent, 'Survey_Report_Option_Count.csv');
-//   }
+  generateOptionCountCSV(): void {
+    const csvContent = this.optionCountConvertToCSV(this.surveyreport);
+    this.downloadCSV(csvContent, 'Survey_Report_Option_Count.csv');
+  }
   
-//   optionCountConvertToCSV(data: any[]): string {
-//     // Initialize header fields with basic information
-//     const headerFields = [
-//         'S.No',
-//         'Survey ID',
-//         'Survey Name',
-//         'Survey Attempt ID',
-//         'Start Date',
-//         'End Date',
-//         'Status',
-//         'Link Type',
-//         'IP Address'
-//     ];
+  optionCountConvertToCSV(data: any[]): string {
+    // Initialize header fields with basic information
+    const headerFields = [
+        'S.No',
+        'Survey ID',
+        'Survey Name',
+        'Survey Attempt ID',
+        'Start Date',
+        'End Date',
+        'Status',
+        'Link Type',
+        'IP Address'
+    ];
 
-//     // Create a map to store questions and their options
-//     const questionsWithOptionsMap: Map<string, { question: string; options: string[] }> = new Map();
+    // Create a map to store questions and their options
+    const questionsWithOptionsMap: Map<string, { question: string; options: string[] }> = new Map();
 
-//     // Iterate over the data and populate the map
-//     data.forEach(item => {
-//         const key = `${item.questionId}_${item.question}`;
-//         if (!questionsWithOptionsMap.has(key)) {
-//             questionsWithOptionsMap.set(key, { question: `${item.sort}. ${item.question}`, options: [] });
-//         }
-//         const options = item.responsOptions.map((option: { option: string }) => option.option);
-//         const existingOptions = questionsWithOptionsMap.get(key)?.options || []; // Handle undefined case
-//         questionsWithOptionsMap.set(key, {
-//             question: `${item.sort}. ${item.question.replace(/<[^>]+>/g, '')}`,
-//             options: Array.from(new Set([...existingOptions, ...options]))
-//         });
-//     });
-
-
-//     // Add questions and options to header
-//     let questionIndex = 1;
-//     questionsWithOptionsMap.forEach((value, key) => {
-//         headerFields.push(value.question);
-//         value.options.forEach((option, oIndex) => {
-//             headerFields.push(`${questionIndex}${String.fromCharCode(97 + oIndex)}. ${option}`);
-//         });
-//         questionIndex++;
-//     });
-
-//     // Prepare CSV content
-//     let csvContent = '\uFEFF' + headerFields.map(value => `"${value}"`).join(',') + '\n';
-//     let sno = 1;
-
-//     // Group data by surveyAttemptId
-//     const groupedData: { [attemptId: string]: any[] } = {};
-//     data.forEach(item => {
-//         if (!groupedData[item.surveyAttemptId]) {
-//             groupedData[item.surveyAttemptId] = [];
-//         }
-//         groupedData[item.surveyAttemptId].push(item);
-//     });
-
-//     // Generate rows for each group
-
-//     const formatDateTime = (dateString: string): string => {
-//       if (!dateString) return '';
-//       const date = new Date(dateString);
-//       const day = String(date.getDate()).padStart(2, '0');
-//       const month = String(date.getMonth() + 1).padStart(2, '0');
-//       const year = date.getFullYear();
-//       const hours = String(date.getHours()).padStart(2, '0');
-//       const minutes = String(date.getMinutes()).padStart(2, '0');
-//       return `${day}/${month}/${year} ${hours}:${minutes}`;
-//   };
-//     for (const attemptId in groupedData) {
-//         const items = groupedData[attemptId];
-//         const baseItem = items[0];
-//         const row = [
-//             sno++,
-//             baseItem.surveyId,
-//             baseItem.surveyName,
-//             baseItem.surveyAttemptId,
-//             formatDateTime(baseItem.startDate),
-//             formatDateTime(baseItem.endDate || ''),
-//             baseItem.status,
-//             baseItem.userType,
-//             baseItem.ip
-//         ];
-
-//         // Initialize an object to hold the counts for each option
-//         const optionCounts: { [key: string]: number } = {};
-
-//         questionsWithOptionsMap.forEach((value, key) => {
-//             value.options.forEach(option => {
-//                 optionCounts[`${key}_${option}`] = 0;
-//             });
-//         });
-
-//         // Populate the optionCounts with counts for each option
-//         items.forEach(item => {
-//             const key = `${item.questionId}_${item.question}`;
-//             item.responsOptions.forEach((response: { option: string }) => {
-//                 if (questionsWithOptionsMap.has(key)) {
-//                     optionCounts[`${key}_${response.option}`]++;
-//                 }
-//             });
-//         });
-
-//         // Add counts for each option to the row
-//         questionsWithOptionsMap.forEach((value, key) => {
-//             row.push(''); // Add blank cell for the question column
-//             value.options.forEach(option => {
-//                 row.push(optionCounts[`${key}_${option}`]);
-//             });
-//         });
-
-//         csvContent += row.map(value => `"${value}"`).join(',') + '\n';
-//     }
-
-//     return csvContent;
-// }
+    // Iterate over the data and populate the map
+    data.forEach(item => {
+        const key = `${item.questionId}_${item.question}`;
+        if (!questionsWithOptionsMap.has(key)) {
+            questionsWithOptionsMap.set(key, { question: `${item.sort}. ${item.question}`, options: [] });
+        }
+        const options = item.responsOptions.map((option: { option: string }) => option.option);
+        const existingOptions = questionsWithOptionsMap.get(key)?.options || []; // Handle undefined case
+        questionsWithOptionsMap.set(key, {
+            question: `${item.sort}. ${item.question.replace(/<[^>]+>/g, '')}`,
+            options: Array.from(new Set([...existingOptions, ...options]))
+        });
+    });
 
 
+    // Add questions and options to header
+    let questionIndex = 1;
+    questionsWithOptionsMap.forEach((value, key) => {
+        headerFields.push(value.question);
+        value.options.forEach((option, oIndex) => {
+            headerFields.push(`${questionIndex}${String.fromCharCode(97 + oIndex)}. ${option}`);
+        });
+        questionIndex++;
+    });
+
+    // Prepare CSV content
+    let csvContent = '\uFEFF' + headerFields.map(value => `"${value}"`).join(',') + '\n';
+    let sno = 1;
+
+    // Group data by surveyAttemptId
+    const groupedData: { [attemptId: string]: any[] } = {};
+    data.forEach(item => {
+        if (!groupedData[item.surveyAttemptId]) {
+            groupedData[item.surveyAttemptId] = [];
+        }
+        groupedData[item.surveyAttemptId].push(item);
+    });
+
+    // Generate rows for each group
+
+    const formatDateTime = (dateString: string): string => {
+      if (!dateString) return '';
+      const date = new Date(dateString);
+      const day = String(date.getDate()).padStart(2, '0');
+      const month = String(date.getMonth() + 1).padStart(2, '0');
+      const year = date.getFullYear();
+      const hours = String(date.getHours()).padStart(2, '0');
+      const minutes = String(date.getMinutes()).padStart(2, '0');
+      return `${day}/${month}/${year} ${hours}:${minutes}`;
+  };
+    for (const attemptId in groupedData) {
+        const items = groupedData[attemptId];
+        const baseItem = items[0];
+        const row = [
+            sno++,
+            baseItem.surveyId,
+            baseItem.surveyName,
+            baseItem.surveyAttemptId,
+            formatDateTime(baseItem.startDate),
+            formatDateTime(baseItem.endDate || ''),
+            baseItem.status,
+            baseItem.userType,
+            baseItem.ip
+        ];
+
+        // Initialize an object to hold the counts for each option
+        const optionCounts: { [key: string]: number } = {};
+
+        questionsWithOptionsMap.forEach((value, key) => {
+            value.options.forEach(option => {
+                optionCounts[`${key}_${option}`] = 0;
+            });
+        });
+
+        // Populate the optionCounts with counts for each option
+        items.forEach(item => {
+            const key = `${item.questionId}_${item.question}`;
+            item.responsOptions.forEach((response: { option: string }) => {
+                if (questionsWithOptionsMap.has(key)) {
+                    optionCounts[`${key}_${response.option}`]++;
+                }
+            });
+        });
+
+        // Add counts for each option to the row
+        questionsWithOptionsMap.forEach((value, key) => {
+            row.push(''); // Add blank cell for the question column
+            value.options.forEach(option => {
+                row.push(optionCounts[`${key}_${option}`]);
+            });
+        });
+
+        csvContent += row.map(value => `"${value}"`).join(',') + '\n';
+    }
+
+    return csvContent;
+}
 
 
 
@@ -810,98 +812,100 @@ export class ViewComponent {
 
 
 
-  // opitonCountConvertToCSV(data: any[]): string {
-  //   const headerFields = [
-  //     'S.No',
-  //     'Survey ID',
-  //     'Survey Name',
-  //     'Survey Attempt ID',
-  //     'Start Date',
-  //     'End Date',
-  //     'Status',
-  //     'Link Type',
-  //     'IP Address'
-  //   ];
+
+
+  opitonCountConvertToCSV(data: any[]): string {
+    const headerFields = [
+      'S.No',
+      'Survey ID',
+      'Survey Name',
+      'Survey Attempt ID',
+      'Start Date',
+      'End Date',
+      'Status',
+      'Link Type',
+      'IP Address'
+    ];
   
-  //   // Collect unique questions with their options in the order they appear in 'data'
-  //   const questionsWithOptions: { questionId: number; question: string; options: string[] }[] = [];
+    // Collect unique questions with their options in the order they appear in 'data'
+    const questionsWithOptions: { questionId: number; question: string; options: string[] }[] = [];
   
-  //   data.forEach(item => {
-  //     if (!questionsWithOptions.some(q => q.questionId === item.questionId)) {
-  //       const questionOptions = item.responsOptions.map((option: { option: string }) => option.option);
-  //       questionsWithOptions.push({
-  //         questionId: item.questionId,
-  //         question: `${item.sort}. ${item.question.replace(/<[^>]+>/g, '')}`,
-  //         options: questionOptions
-  //       });
-  //     }
-  //   });
+    data.forEach(item => {
+      if (!questionsWithOptions.some(q => q.questionId === item.questionId)) {
+        const questionOptions = item.responsOptions.map((option: { option: string }) => option.option);
+        questionsWithOptions.push({
+          questionId: item.questionId,
+          question: `${item.sort}. ${item.question.replace(/<[^>]+>/g, '')}`,
+          options: questionOptions
+        });
+      }
+    });
   
-  //   // Add the ordered questions and their options to the header
-  //   questionsWithOptions.forEach((questionWithOptions, qIndex) => {
-  //     headerFields.push(questionWithOptions.question);
-  //     questionWithOptions.options.forEach((option, oIndex) => {
-  //       headerFields.push(`${qIndex + 1}${String.fromCharCode(97 + oIndex)}. ${option}`);
-  //     });
-  //   });
+    // Add the ordered questions and their options to the header
+    questionsWithOptions.forEach((questionWithOptions, qIndex) => {
+      headerFields.push(questionWithOptions.question);
+      questionWithOptions.options.forEach((option, oIndex) => {
+        headerFields.push(`${qIndex + 1}${String.fromCharCode(97 + oIndex)}. ${option}`);
+      });
+    });
   
-  //   // Add BOM for UTF-8 encoding
-  //   let csvContent = '\uFEFF' + headerFields.map(value => `"${value}"`).join(',') + '\n';
+    // Add BOM for UTF-8 encoding
+    let csvContent = '\uFEFF' + headerFields.map(value => `"${value}"`).join(',') + '\n';
   
-  //   // Group data by surveyAttemptId
-  //   let sno = 1;
-  //   const groupedData: { [attemptId: string]: any } = {};
-  //   data.forEach(item => {
-  //     if (!groupedData[item.surveyAttemptId]) {
-  //       groupedData[item.surveyAttemptId] = {
-  //         surveyId: item.surveyId,
-  //         surveyName: item.surveyName,
-  //         surveyAttemptId: item.surveyAttemptId,
-  //         startDate: item.startDate,
-  //         endDate: item.endDate || '',
-  //         status: item.status,
-  //         userType: item.userType,
-  //         ip: item.ip,
-  //         responses: {}
-  //       };
-  //     }
-  //     groupedData[item.surveyAttemptId].responses[item.questionId] = item.responsOptions;
-  //   });
+    // Group data by surveyAttemptId
+    let sno = 1;
+    const groupedData: { [attemptId: string]: any } = {};
+    data.forEach(item => {
+      if (!groupedData[item.surveyAttemptId]) {
+        groupedData[item.surveyAttemptId] = {
+          surveyId: item.surveyId,
+          surveyName: item.surveyName,
+          surveyAttemptId: item.surveyAttemptId,
+          startDate: item.startDate,
+          endDate: item.endDate || '',
+          status: item.status,
+          userType: item.userType,
+          ip: item.ip,
+          responses: {}
+        };
+      }
+      groupedData[item.surveyAttemptId].responses[item.questionId] = item.responsOptions;
+    });
   
-  //   // Create rows for each survey attempt
-  //   for (const attemptId in groupedData) {
-  //     const item = groupedData[attemptId];
-  //     const row = [
-  //       sno++,
-  //       item.surveyId,
-  //       item.surveyName,
-  //       item.surveyAttemptId,
-  //       item.startDate,
-  //       item.endDate,
-  //       item.status,
-  //       item.userType,
-  //       item.ip
-  //     ];
+    // Create rows for each survey attempt
+    for (const attemptId in groupedData) {
+      const item = groupedData[attemptId];
+      const row = [
+        sno++,
+        item.surveyId,
+        item.surveyName,
+        item.surveyAttemptId,
+        item.startDate,
+        item.endDate,
+        item.status,
+        item.userType,
+        item.ip
+      ];
   
-  //     questionsWithOptions.forEach(questionWithOptions => {
-  //       const responses = item.responses[questionWithOptions.questionId];
-  //       if (responses) {
-  //         row.push(''); // Placeholder for the question itself, if needed
-  //         questionWithOptions.options.forEach(option => {
-  //           const responseOption = responses.find((o: any) => o.option === option);
-  //           row.push(responseOption ? responseOption.count : 0);
-  //         });
-  //       } else {
-  //         row.push('');
-  //         questionWithOptions.options.forEach(() => row.push(0));
-  //       }
-  //     });
+      questionsWithOptions.forEach(questionWithOptions => {
+        const responses = item.responses[questionWithOptions.questionId];
+        if (responses) {
+          row.push(''); // Placeholder for the question itself, if needed
+          questionWithOptions.options.forEach(option => {
+            const responseOption = responses.find((o: any) => o.option === option);
+            row.push(responseOption ? responseOption.count : 0);
+          });
+        } else {
+          row.push('');
+          questionWithOptions.options.forEach(() => row.push(0));
+        }
+      });
   
-  //     csvContent += row.map(value => `"${value}"`).join(',') + '\n';
-  //   }
+      csvContent += row.map(value => `"${value}"`).join(',') + '\n';
+    }
   
-  //   return csvContent;
-  // }
+    return csvContent;
+  }
   
 
 
