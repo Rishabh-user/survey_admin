@@ -37,6 +37,7 @@ interface SurveyQuestionreport {
   surveyId: number;
   surveyName: string;
   questionId: number;
+  questionTypeId: any;
   surveyAttemptId: any
   question: string;
   userType: string; // Assuming userType is a string
@@ -337,47 +338,54 @@ export class ViewComponent {
     console.log("surveyreport", this.surveyreport);
 
     const headerFields = [
-      'S.No',
-      'Survey ID',
-      'Survey Name',
-      'Survey Attempt ID',
-      'Start Date',
-      'End Date',
-      'Status',
-      'Link Type',
-      'IP Address'
+        'S.No',
+        'Survey ID',
+        'Survey Name',
+        'Survey Attempt ID',
+        'Start Date',
+        'End Date',
+        'Status',
+        'Link Type',
+        'IP Address'
     ];
 
-    // Store all questions and their possible options
+    const questionHeaders: { [questionId: number]: string[] } = {};
+    const orderedQuestions: { [questionId: number]: { text: string; type: number } } = {};
     const questionOptionsMap: { [questionId: number]: Set<string> } = {};
-    const orderedQuestions: { [questionId: number]: string } = {};
 
+    // Grouping questions and options
     data.forEach(item => {
-      if (!questionOptionsMap[item.questionId]) {
-        questionOptionsMap[item.questionId] = new Set();
-        orderedQuestions[item.questionId] = item.sort + '.' + item.question.replace(/<[^>]+>/g, '');
-      }
-      if (item.options) {
-        questionOptionsMap[item.questionId].add(item.options);
-      }
+        if (!questionOptionsMap[item.questionId]) {
+            questionOptionsMap[item.questionId] = new Set();
+            orderedQuestions[item.questionId] = { 
+                text: item.sort + '. ' + item.question.replace(/<[^>]+>/g, ''), 
+                type: item.questionTypeId 
+            };
+        }
+        if (item.options) {
+            // Adding each option to the Set to ensure uniqueness
+            item.options.split(',').forEach((option:any) => {
+                questionOptionsMap[item.questionId].add(option.trim());
+            });
+        }
     });
 
-    // Generate headers for each question and its options
-    const questionOptionHeaders: { [questionId: number]: string[] } = {};
-    Object.keys(orderedQuestions).forEach(questionId => {
-      const questionText = orderedQuestions[+questionId];
-      questionOptionHeaders[+questionId] = [];
+    // Preparing headers based on question type
+    Object.keys(orderedQuestions).sort().forEach(questionId => {
+        const questionText = orderedQuestions[+questionId].text;
+        const questionTypeId = orderedQuestions[+questionId].type;
+        const optionsSet = questionOptionsMap[+questionId];
 
-      if (questionOptionsMap[+questionId].size > 0) {
-        questionOptionsMap[+questionId].forEach(option => {
-          const columnHeader = `${questionText} - ${option}`;
-          questionOptionHeaders[+questionId].push(columnHeader);
-          headerFields.push(columnHeader);
-        });
-      } else {
-        // If no options exist, just add the question as a column
-        headerFields.push(questionText);
-      }
+        if (questionTypeId === 8) {
+            // For `questionTypeId === 8`, display the question text in the first column
+            headerFields.push(questionText); // Add actual question text as header for the first column
+            optionsSet.forEach(option => {
+                headerFields.push(option); // Add each unique option as a header in separate columns
+            });
+        } else {
+            // For other question types, display the question in the header and its options in rows
+            headerFields.push(questionText);
+        }
     });
 
     let csvContent = '\uFEFF' + headerFields.map(value => `"${value}"`).join(',') + '\n';
@@ -385,74 +393,80 @@ export class ViewComponent {
     let sno = 1;
     const groupedData: { [attemptId: string]: any } = {};
 
+    // Grouping responses by attemptId and questionId
     data.forEach(item => {
-      if (!groupedData[item.surveyAttemptId]) {
-        groupedData[item.surveyAttemptId] = {
-          surveyId: item.surveyId,
-          surveyName: item.surveyName,
-          surveyAttemptId: item.surveyAttemptId,
-          startDate: item.startDate,
-          endDate: item.endDate || '',
-          status: item.status,
-          userType: item.userType,
-          ip: item.ip,
-          responses: {}
-        };
-      }
-      if (!groupedData[item.surveyAttemptId].responses[item.questionId]) {
-        groupedData[item.surveyAttemptId].responses[item.questionId] = new Set<string>();
-      }
-      if (item.options) {
-        groupedData[item.surveyAttemptId].responses[item.questionId].add(item.options);
-      }
+        if (!groupedData[item.surveyAttemptId]) {
+            groupedData[item.surveyAttemptId] = {
+                surveyId: item.surveyId,
+                surveyName: item.surveyName,
+                surveyAttemptId: item.surveyAttemptId,
+                startDate: item.startDate,
+                endDate: item.endDate || '',
+                status: item.status,
+                userType: item.userType,
+                ip: item.ip,
+                responses: {}
+            };
+        }
+        if (!groupedData[item.surveyAttemptId].responses[item.questionId]) {
+            groupedData[item.surveyAttemptId].responses[item.questionId] = new Set<string>();
+        }
+        if (item.options) {
+            // Splitting options and adding them to the responses Set
+            item.options.split(',').forEach((option:any) => {
+                groupedData[item.surveyAttemptId].responses[item.questionId].add(option.trim());
+            });
+        }
     });
 
     const formatDateTime = (dateString: string): string => {
-      if (!dateString) return '';
-      const date = new Date(dateString);
-      const day = String(date.getDate()).padStart(2, '0');
-      const month = String(date.getMonth() + 1).padStart(2, '0');
-      const year = date.getFullYear();
-      const hours = String(date.getHours()).padStart(2, '0');
-      const minutes = String(date.getMinutes()).padStart(2, '0');
-      return `${day}/${month}/${year} ${hours}:${minutes}`;
+        if (!dateString) return '';
+        const date = new Date(dateString);
+        return `${date.toLocaleDateString()} ${date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`;
     };
 
+    // Generating rows for each attempt
     Object.values(groupedData).forEach(attempt => {
-      const row: (string | number)[] = [
-        sno++,
-        attempt.surveyId,
-        attempt.surveyName,
-        attempt.surveyAttemptId,
-        formatDateTime(attempt.startDate),
-        formatDateTime(attempt.endDate),
-        attempt.status,
-        attempt.userType,
-        attempt.ip
-      ];
+        const row: (string | number)[] = [
+            sno++,
+            attempt.surveyId,
+            attempt.surveyName,
+            attempt.surveyAttemptId,
+            formatDateTime(attempt.startDate),
+            formatDateTime(attempt.endDate),
+            attempt.status,
+            attempt.userType,
+            attempt.ip
+        ];
 
-      // Add response data for each question's options
-      Object.keys(orderedQuestions).forEach(questionId => {
-        if (questionOptionsMap[+questionId].size > 0) {
-          // If options exist, mark "True" or "False"
-          questionOptionsMap[+questionId].forEach(option => {
-            if (attempt.responses[+questionId]?.has(option)) {
-              row.push("True");
+        // Loop through each question for that attempt
+        Object.keys(orderedQuestions).sort().forEach(questionId => {
+            const optionsSet = questionOptionsMap[+questionId];
+            const questionTypeId = orderedQuestions[+questionId].type;
+
+            if (questionTypeId === 8) {
+                // Add the question text (actual question) as the first column
+                row.push(orderedQuestions[+questionId].text); // Question text as the first column
+
+                // For each option, mark TRUE/FALSE based on responses
+                optionsSet.forEach(option => {
+                    // Check if the option is in the responses set for the current question
+                    row.push(attempt.responses[+questionId]?.has(option) ? "TRUE" : "FALSE");
+                });
             } else {
-              row.push("False");
+                // For other question types, join selected options in a single string
+                const selectedOption = [...attempt.responses[+questionId] || []].join(', ') || "";
+                row.push(selectedOption);
             }
-          });
-        } else {
-          // If no options, just leave it blank
-          row.push("");
-        }
-      });
+        });
 
-      csvContent += row.map(value => `"${value}"`).join(',') + '\n';
+        csvContent += row.map(value => `"${value}"`).join(',') + '\n';
     });
 
     return csvContent;
-  }
+}
+
+
 
 
 
